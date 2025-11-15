@@ -1,0 +1,81 @@
+*{
+    border: 0;
+    font-family: monospace;
+    padding: 0;
+    margin: 0;
+}
+:root{
+--lightblue: #6DE1D2;
+    --energetic--yellow: #FFD63A;
+    --passion-orange: #FFA955;
+    --tomato: #F75A5A;
+    --complement-of-yellow: #203E5F;
+    --darker-black: #1A2634;
+    --notso-energetic-yellow: #EEC550;
+}
+#NAV{
+    background-color: whitesmoke;
+    display: grid;
+    grid-template: 100% / 4fr 2fr 2fr 2fr;
+     align-items: center;
+    align-content: space-evenly;
+    justify-items: center;
+    span{
+        cursor: pointer;
+        font-size: 2.5vw;
+        border-radius: 3px;
+        background-color: var(--notso-energetic-yellow);
+        padding: 0.5vw;
+
+    }
+    img{
+        height: 3vw;
+    }
+    .logo{
+        background-color: transparent;
+        display: flex;
+        align-items: baseline;
+        font-weight: 700;
+        color: var(--darker-black);
+        justify-self: start;
+    }
+}
+
+#MAIN_CONTENT{
+    display: grid;
+    background-color: lightseagreen;
+    grid-template: 7fr 3fr / 1fr;
+    height: 490px;
+    align-items: center;
+    align-content: space-evenly;
+    justify-items: center;
+        #PROMPT{
+        background-color: lightblue;
+        width: 22vw;
+        font-size: 3vw;
+        padding: 2vw;
+        text-align: center;
+    }
+
+    button {
+        background-color: lightblue;
+        color: var(--darker-black);
+        margin: 0;
+        padding: 10px 20px;
+        box-shadow: 0 7px 0 black; /* angled shadow */
+        transition: all 150ms ease;
+        border-radius: 3px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        position: relative;
+    }
+    /* Hover (pressed state) */
+    button:active {
+        transform: translate(0, 7px); /* move button exactly onto the shadow */
+        box-shadow: 0 0 0 black;        /* shadow disappears */
+        background-color: #C0D6DF;
+        color: #ffffff;
+        
+    }
+}
