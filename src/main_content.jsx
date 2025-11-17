@@ -18,15 +18,17 @@ function givedecison(e){
                             { name: "cyan",         hsla: "hsla(180, 100%, 50%, 1)" },]
    
 
-    let  selector_color = Math.floor(Math.random()*list_of_colors.length);
+    let  selector_color1 = Math.floor(Math.random()*list_of_colors.length);
     let  selector_color2 = Math.floor(Math.random()*list_of_colors.length);
 
     let current_value = e.target.textContent;
+    
+    e.target.style.color = `${list_of_colors[selector_color1 + 2 >= list_of_colors.length ? selector_color1 - 3 : selector_color1 + 2 ].hsla}`
+    e.target.textContent = `${list_of_colors[selector_color2 + 2 >= list_of_colors.length ? selector_color2 - 3 : selector_color2 + 2 ].name}`
 
-
-    if (list_of_colors[selector_color].name !== current_value) {
-        e.target.style.color = `${list_of_colors[selector_color].hsla}`
-        e.target.textContent = `${list_of_colors[selector_color2].name}`
+    /*if (list_of_colors[selector_color1].name !== current_value) {
+        e.target.style.color = `${list_of_colors[selector_color1 + 2 > list_of_colors.length ? selector_color1 - 3 : selector_color1 + 2 ].hsla}`
+        e.target.textContent = `${list_of_colors[selector_color2 + 2 > list_of_colors.length ? selector_color2 - 3 : selector_color2 + 2 ].name}`
     }
 
     else if (list_of_colors[selector_color].name === current_value) {
@@ -37,7 +39,7 @@ function givedecison(e){
         e.target.style.color = `${list_of_colors[selector_color4].hsla}`
         e.target.textContent = `${list_of_colors[selector_color3].name}`
 
-    }
+    }*/
 };
 
 function BODY(){
