@@ -1,3 +1,7 @@
+
+
+
+
 function givedecison(e){
     let list_of_colors =  [ { name: "red",    hsla: "hsla(0, 100%, 50%, 1)" },
                             { name: "orange", hsla: "hsla(30, 100%, 50%, 1)" },
@@ -22,16 +26,12 @@ function givedecison(e){
     let  selector_color2 = Math.floor(Math.random()*list_of_colors.length);
 
     let current_value = e.target.textContent;
-    
+    if (list_of_colors[selector_color1].name !== current_value) {
     e.target.style.color = `${list_of_colors[selector_color1 + 2 >= list_of_colors.length ? selector_color1 - 3 : selector_color1 + 2 ].hsla}`
     e.target.textContent = `${list_of_colors[selector_color2 + 2 >= list_of_colors.length ? selector_color2 - 3 : selector_color2 + 2 ].name}`
-
-    /*if (list_of_colors[selector_color1].name !== current_value) {
-        e.target.style.color = `${list_of_colors[selector_color1 + 2 > list_of_colors.length ? selector_color1 - 3 : selector_color1 + 2 ].hsla}`
-        e.target.textContent = `${list_of_colors[selector_color2 + 2 > list_of_colors.length ? selector_color2 - 3 : selector_color2 + 2 ].name}`
     }
+    else if (list_of_colors[selector_color1].name === current_value) {
 
-    else if (list_of_colors[selector_color].name === current_value) {
         let indexremove = list_of_colors.indexOf(current_value)
         list_of_colors.splice(indexremove, 1)
         let  selector_color3 = Math.floor(Math.random()*list_of_colors.length)
@@ -39,14 +39,16 @@ function givedecison(e){
         e.target.style.color = `${list_of_colors[selector_color4].hsla}`
         e.target.textContent = `${list_of_colors[selector_color3].name}`
 
-    }*/
+    }
+
 };
 
 function BODY(){
     return(
         <main>
+            <tips/>
             <section id="MAIN_CONTENT">
-                <button id="PROMPT" onClick={(e) => givedecison(e)}>MAKE YOUR DECISION!!!</button>
+                <button id="PROMPT" onClick={(e) => givedecison(e)}>COLOR!!!</button>
             </section>
         </main>
     );

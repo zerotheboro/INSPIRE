@@ -7,9 +7,9 @@ function NAV(){
         <header>
             <section id="NAV">
                 <span class="logo"><img src={img_source}/>RAPID CHOICE</span>
-                <span>BENEFITS</span>
-                <span>STEPS</span>
-                <span>CONTACT</span>
+                <span><a href="">BENEFITs</a></span>
+                <span><a href="">STEPs</a></span>
+                <span><a href="#contact" target="_self">CONTACTs</a></span>
             </section>
         </header>
     );
