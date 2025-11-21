@@ -5,6 +5,7 @@
     margin: 0;
     font-family: var(--HEADER), var(--P);
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 :root{
 --lightblue: lightseagreen;
@@ -28,7 +29,6 @@
     justify-items: center;
     position: fixed;
     z-index: 100;
-    
     span{
         cursor: pointer;
         font-size: 2.5vw;
@@ -93,27 +93,72 @@
         
     }
 }
+@media only screen  and (max-width: 730px){
+    .TIP div{
+    height: min(600px, 80vh);
+    background-color: var(--lightblue);
+    padding: 1vh 1vw;
+    
+    h1{
+        text-align: center;
+        font-size: 7vw;
+        font-family: var(--HEADER);
+        margin-bottom: 2vh;
+    }
+    div{
+        height: 70%;
+        padding: 0;
+        display: flex;
+        gap: 7vh;
+        justify-content: flex-start;
+        align-content: center;
+        flex-direction: column;
+        align-items: center;
+        p{
+            font-size: 3rem;
+            font-family: var(--P);
+            display: inline-flex;
+            justify-content: center;
+            width: 50%;
+        }
+    }
+    img{
+            width: 22vw;
+            height: 22vw;
+        }
+}
+}
+@media only screen and (min-width: 730px){
 .TIP div{
-    height: max(700px, 100vh);
+    height: max(700px, 130vh);
     background-color: var(--lightblue);
     padding: 2.5vh 2.5vw;
+    
     h1{
         text-align: center;
         font-size: 10vw;
         font-family: var(--HEADER);
+        margin-bottom: 8vh;
     }
     div{
         height: 70%;
+        padding: 0;
+        display: flex;
+        gap: 2vw;
+        justify-content: center;
+        align-content: center;
         p{
-            font-size: 7vw;
+            font-size: 5rem;
             font-family: var(--P);
-            display: inline-block;
-        }
-        img{
-            width: 10vw;
+            display: inline-flex;
+            width: 50%;
         }
     }
-}
+    img{
+            width: 22vw;
+            height: 22vw;
+        }
+}}
 
 
 footer{

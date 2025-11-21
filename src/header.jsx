@@ -6,7 +6,7 @@ function NAV(){
     return(
         <header>
             <section id="NAV">
-                <span class="logo"><img src={img_source}/>RAPID CHOICE</span>
+                <span class="logo"><img src={img_source}/>QIWK MIND</span>
                 <span><a href="">BENEFITs</a></span>
                 <span><a href="">STEPs</a></span>
                 <span><a href="#contact" target="_self">CONTACTs</a></span>
