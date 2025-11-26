@@ -19,6 +19,19 @@
     --HEADER:"Bebas Neue";
     --P:   "Oswald", "Open Sans", monospace;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 #NAV{
     width: 100vw;
     background-color: var(--darker-black);
@@ -30,19 +43,53 @@
     position: fixed;
     z-index: 100;
     span{
+        text-align: center;
         cursor: pointer;
         font-size: 2.5vw;
-        border-radius: 3px;
+        width: var(--width_of_span);
+        --width_of_span: 10vw;
+        border-radius: var(--radius);
+        --radius:3px;
         background-color: var(--notso-energetic-yellow);
         padding: 0.5vw;
+        position: relative;
+
         a{
             text-decoration: none;
             color: var(--darker-black);
         }
+        ul{
+
+            position: absolute;
+            background-color: var(--notso-energetic-yellow);
+            visibility: hidden;
+            list-style: none;
+            border-radius: var(--radius);
+            width: var(--width_of_span);
+            right: 0;
+            height: 0;
+        }
+        li{
+            transition: all 0.3s;
+            background-color: var(--notso-energetic-yellow);
+        }
     }
+    span:hover{
+           ul{
+            visibility: visible;
+
+            li:hover{
+                background-color: var(--passion-orange);
+                color: var(--font-color); 
+            }
+           } 
+        }
+
+
     img{
         height: 3vw;
     }
+
     .logo{
         background-color: transparent;
         display: flex;
@@ -51,8 +98,45 @@
         color: var(--font-color);
         justify-self: start;
         font-size: 3vw;
+        letter-spacing: 0.1vw;
+        width: 16vw;
     }
 }
+section#options_of_tips_to_choose{
+    height: 70vh;
+    width: 100vw;
+    background-color: var(--lightblue);
+    button{
+        height: 55vh;
+        width: 30vw;
+        margin: 1vw;
+    }
+}
+
+
+
+
+
+
+div#BENEFIT{
+    font-size: 4rem;
+    text-align: center;
+    background-color: var(--lightblue);
+    height: 120vh;
+    padding-top: 20vh;
+    li{
+        margin-left: 30vw;
+        text-align: left;
+    }
+}
+
+
+
+
+
+
+
+
 
 #MAIN_CONTENT{
     display: grid;
@@ -93,6 +177,15 @@
         
     }
 }
+
+
+
+
+
+
+
+
+
 @media only screen  and (max-width: 730px){
     .TIP div{
     height: min(600px, 80vh);
@@ -159,6 +252,20 @@
             height: 22vw;
         }
 }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 footer{

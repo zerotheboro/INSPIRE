@@ -1,0 +1,18 @@
+
+
+
+function Benifit(){
+
+
+    return(
+    <div id="BENEFIT">
+        <h1>WHY USE IT?</h1>
+        <ul>
+            <li>UNLOCK <a href="https://www.youtube.com/watch?v=OkJuc7fXbxY">META-LEARNING</a><br/>FOR FREE</li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>)
+}
+
+export default Benifit;

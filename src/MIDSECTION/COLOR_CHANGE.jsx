@@ -16,9 +16,7 @@ function givedecison(e){
                             { name: "crimson",      hsla: "hsla(348, 83%, 47%, 1)" },
                             { name: "darkorange",   hsla: "hsla(33, 100%, 45%, 1)" },
                             { name: "gold",         hsla: "hsla(50, 100%, 50%, 1)" },
-                            { name: "lightyellow",  hsla: "hsla(60, 100%, 80%, 1)" },
                             { name: "lime",         hsla: "hsla(120, 100%, 50%, 1)" },
-                            { name: "forestgreen",  hsla: "hsla(120, 60%, 33%, 1)" },
                             { name: "cyan",         hsla: "hsla(180, 100%, 50%, 1)" },]
    
 
