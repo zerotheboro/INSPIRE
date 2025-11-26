@@ -1,6 +1,7 @@
 import LOGO from "../image/LOGO.png";
 import Main from './COLOR_CHANGE.jsx';
-import React from "react";
+import React, {useState} from "react";
+import Initial_Choice from "../HEADER/HOOKINTRO.jsx";
 
 // A simple model class for tips
 class TypeOfTips {
@@ -42,8 +43,17 @@ export const list_of_tips = [
 const [PRE, META, NOTE] = list_of_tips;
 
 export default function Tips(props) {
+
+
+    
+    
+  const [show, setShow] = useState({
+    "PRE-LEARN" : false,
+    "META-LEARN" : false,
+  }); 
+
   const PRE0 = (
-    <section id={PRE.type}>
+    <section id={PRE.type} key={PRE.type} style={{display : show[PRE.type] ? "block" : "none"}}>
       <Main />
       {PRE.list.map((the_tip, idx) => (
         <section className="TIP" key={`pre-${idx}`}>
@@ -60,7 +70,8 @@ export default function Tips(props) {
   );
 
   const META0 = (
-    <section id={META.type}>
+    <section id={META.type} key={META.type} style={{display : show[META.type] ? "block" : "none"}}>
+      
       {META.list.map((the_tip, idx) => (
         <section className="TIP" key={`meta-${idx}`}>
           <div>
@@ -72,11 +83,12 @@ export default function Tips(props) {
           </div>
         </section>
       ))}
+
     </section>
   );
 
   const NOTE0 = (
-    <section id={NOTE.type}>
+    <section id={NOTE.type} key={NOTE.type} style={{display : show[NOTE.type] ? "block" : "none"}}>
       {NOTE.list.map((the_tip, idx) => (
         <section className="TIP" key={`note-${idx}`}>
           <div>
@@ -91,8 +103,24 @@ export default function Tips(props) {
     </section>
   );
   
+
+ function handleClick(section){
+    setShow(prevShow => ({
+        ...prevShow,
+        [section]: !prevShow[section]
+    }))
+}
+  
+
+
   return (
     <>
+    <section id="options_of_tips_to_choose">
+        {list_of_tips.map((section) =>
+        <button onClick={() => handleClick(section._type)}>
+            {section._type}
+        </button> )}
+    </section>
       {META0}
       {NOTE0}
       {PRE0}

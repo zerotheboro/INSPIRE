@@ -110,6 +110,10 @@ section#options_of_tips_to_choose{
         height: 55vh;
         width: 30vw;
         margin: 1vw;
+        cursor: pointer;
+    }
+    button:hover{
+        background-color: var(--passion-orange);
     }
 }
 
