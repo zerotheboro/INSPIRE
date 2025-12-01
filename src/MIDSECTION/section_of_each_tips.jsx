@@ -1,13 +1,15 @@
 import LOGO from "../image/LOGO.png";
 import Main from './COLOR_CHANGE.jsx';
 import React, {useState} from "react";
-import Initial_Choice from "../HEADER/HOOKINTRO.jsx";
+import {the_animation_obj} from "./../HEADER/ANIMATION.jsx";
+import gsap from "gsap";
 
-// A simple model class for tips
+/*THE 2 CLASS */
 class TypeOfTips {
-  constructor(type, list) {
+  constructor(type, list, additional_material = null) {
     this._type = type;
     this._list = list;
+    this._additional_material = additional_material
   }
   get type() {
     return this._type;
@@ -15,116 +17,105 @@ class TypeOfTips {
   get list() {
     return this._list;
   }
+  get additional_material(){
+    return this._additional_material;
+  };
 }
+
+
+class DetailOfTips{
+  constructor(header = "hey this is a header", paragraph = "hey this is a text", img = LOGO){
+    this._header = header;
+    this._paragraph = paragraph;
+    this._img = img;
+  }
+  get header(){
+    return this._header;
+  }
+  get paragraph(){
+    return this._paragraph;
+  }
+  get img(){
+    return this._img;
+  }
+}
+
+
 
 // Module-scope data; export at top-level (not inside a function)
 export const list_of_tips = [
   new TypeOfTips("PRE-LEARN", [
-    "Prime mind",
-    "WATER ur face/body",
-    "BREAK is neccesary",
-    "Structure your day",
-    "small workout",
-    "Track progress ",
-  ]),
+    new DetailOfTips("Prime mind"),
+    new DetailOfTips("WATER ur face/body"),
+    new DetailOfTips("BREAK is necessary"),
+    new DetailOfTips("Structure your day"),
+    new DetailOfTips("small workout"),
+    new DetailOfTips("Track progress")
+  ], <Main/>),
   new TypeOfTips("META-LEARN", [
-    "increase peripheral vision",
-    "Use length pointer",
-    "NO inner voice",
-    "varied/spacial Repetition",
-    "Memory palace",
-    "Do what you crave last",
-    "encode the more paths remember",
-    "story telling",
+     new DetailOfTips("increase peripheral vision"),
+    new DetailOfTips("Use length pointer"),
+    new DetailOfTips("NO inner voice"),
+    new DetailOfTips("varied/spacial Repetition"),
+    new DetailOfTips("Memory palace"),
+    new DetailOfTips("Do what you crave last"),
+    new DetailOfTips("encode the more paths remember"),
+    new DetailOfTips("story telling")
   ]),
-  new TypeOfTips("NOTE-TAKE", ["Note-taking 4x4", "NO word-for-word"]),
+  new TypeOfTips("NOTE-TAKE", [
+    new DetailOfTips("Note-taking 4x4"),
+    new DetailOfTips("NO word-for-word"),
+  ]),
 ];
 
-const [PRE, META, NOTE] = list_of_tips;
 
+
+/*JUST JSX for render */
 export default function Tips(props) {
 
-
-    
-    
   const [show, setShow] = useState({
-
-  }); 
-
-  const PRE0 = (
-    <section id={PRE.type} key={PRE.type} style={{display : show[PRE.type] ? "block" : "none"}}>
-      <Main />
-      {PRE.list.map((the_tip, idx) => (
-        <section className="TIP" key={`pre-${idx}`}>
-          <div>
-            <h1>{the_tip}</h1>
-            <div>
-              <p>hey this is a text</p>
-              <img src={LOGO} alt="logo" />
-            </div>
-          </div>
-        </section>
-      ))}
-    </section>
-  );
-
-  const META0 = (
-    <section id={META.type} key={META.type} style={{display : show[META.type] ? "block" : "none"}}>
-      
-      {META.list.map((the_tip, idx) => (
-        <section className="TIP" key={`meta-${idx}`}>
-          <div>
-            <h1>{the_tip}</h1>
-            <div>
-              <p>hey this is a text</p>
-              <img src={LOGO} alt="logo" />
-            </div>
-          </div>
-        </section>
-      ))}
-
-    </section>
-  );
-
-  const NOTE0 = (
-    <section id={NOTE.type} key={NOTE.type} style={{display : show[NOTE.type] ? "block" : "none"}}>
-      {NOTE.list.map((the_tip, idx) => (
-        <section className="TIP" key={`note-${idx}`}>
-          <div>
-            <h1>{the_tip}</h1>
-            <div>
-              <p>hey this is a text</p>
-              <img src={LOGO} alt="logo" />
-            </div>
-          </div>
-        </section>
-      ))}
-    </section>
-  );
+  });
   
 
- function handleClick(section){
+
+  const list_of_tips_JSX = list_of_tips.map((each_section) => 
+    <section id={each_section.type} key={each_section.type} style={{display : show[each_section.type] ? "block" : "none"}}>
+      {each_section.additional_material}
+
+      {each_section.list.map((the_tip, idx) => (
+        <section className="TIP" key={`${each_section.type}-${idx}`}>
+          <div>
+            <h1>{the_tip.header}</h1>
+            <div>
+              <p>{the_tip.paragraph}</p>
+              <img src={the_tip.img} alt="logo" />
+            </div>
+          </div>
+        </section>
+      ))}
+
+    </section>
+  );
+
+ /*function handleClick(section){
     setShow(prevShow => ({
         ...prevShow,
         [section]: !prevShow[section]
     }))
-}
-
-
+}*/
 
 function handleClickfor1(section){
   setShow(prevShow => {
-    const NewState = {};
 
+    const NewState = {};
     list_of_tips.forEach((object) => {
-      NewState[object.type] = (object.type === section)? true : false;
+      NewState[object.type] = (object.type === section)? !prevShow[section] : false;
     });
 
     return NewState
   })
-}
-  
 
+}
 
   return (
     <>
@@ -134,9 +125,8 @@ function handleClickfor1(section){
             {section._type}
         </button> )}
     </section>
-      {META0}
-      {NOTE0}
-      {PRE0}
+      {list_of_tips_JSX}
     </>
   );
+
 }

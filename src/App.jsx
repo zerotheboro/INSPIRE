@@ -4,7 +4,11 @@ import Footer from './footer.jsx';
 import { useState } from 'react';
 
 
+
+
 function App() {
+
+
   return (
     <>
       <NAV/>

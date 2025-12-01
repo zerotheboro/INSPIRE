@@ -1,7 +1,7 @@
 
 import LOGO from "./../image/LOGO.png";
 import Benifit from "./BENEFIT";
-import Initial_Choice from "./HOOKINTRO";
+
 function NAV(){
     const img_source = LOGO;
     return(
@@ -15,7 +15,6 @@ function NAV(){
                 </span>
                 <span><a href="#contact" target="_self">CONTACTs</a></span>
             </section>
-            <Initial_Choice/>
             <Benifit/>
         </header>
     );
