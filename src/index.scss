@@ -6,6 +6,7 @@
     font-family: var(--HEADER), var(--P);
     box-sizing: border-box;
 }
+
 html{
     scroll-behavior: smooth;
 }
@@ -78,10 +79,20 @@ button:active {
         background-color: var(--notso-energetic-yellow);
         padding: 0.5vw;
         position: relative;
-
         a{
             text-decoration: none;
             color: var(--darker-black);
+            transition: all 300ms;
+        }
+    }
+    span:hover{
+        background-color: var(--passion-orange);
+        color: var(--font-color);
+        text-decoration: none;
+        transition: all 300ms;
+        a{
+            text-decoration: none;
+            color: var(--font-color);
         }
     }
     img{
@@ -137,6 +148,16 @@ div#BENEFIT{
         font-size: var(--P-size);
         margin-left: 30vw;
         text-align: left;
+    }
+    a, li{
+        transition: all 300ms
+    }
+    a:hover{
+        background-color: var(--passion-orange);
+        color: var(--font-color);
+        padding: 0.2vw;
+        text-decoration: none;
+
     }
 }
 
@@ -200,9 +221,9 @@ div#BENEFIT{
 
 
 
-@media only screen  and (max-width: 730px), ( orientation: portrait){
+@media only screen  and (max-width: 800px), ( orientation: portrait){
     .TIP div{
-    height: min(600px, 80vh);
+    height: max(600px, 80vh);
     background-color: var(--lightblue);
     padding: 1vh 1vw;
     
@@ -218,9 +239,10 @@ div#BENEFIT{
         display: flex;
         gap: 7vh;
         justify-content: flex-start;
-        align-content: center;
+        align-content: flex-start;
         flex-direction: column;
         align-items: center;
+        justify-items: flex-start;
         p{
             font-size: 3rem;
             font-family: var(--P);
@@ -239,7 +261,7 @@ div#BENEFIT{
 
 
 
-@media only screen and (min-width: 730px), (orientation: landscape){
+@media only screen and (min-width: 800px), (orientation: landscape){
 .TIP div{
     height: max(700px, 130vh);
     background-color: var(--lightblue);

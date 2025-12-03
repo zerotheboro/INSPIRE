@@ -45,10 +45,10 @@ class DetailOfTips{
 // Module-scope data; export at top-level (not inside a function)
 export const list_of_tips = [
   new TypeOfTips("PRE-LEARN", [
-    new DetailOfTips("Prime mind"),
-    new DetailOfTips("WATER ur face/body"),
-    new DetailOfTips("BREAK is necessary"),
-    new DetailOfTips("Structure your day"),
+    new DetailOfTips("Prime mind", "this is excercise where you would try to find incetives and "),
+    new DetailOfTips("WATER ur face/body", " althought quite obvious but does it come in common pratice"),
+    new DetailOfTips("BREAK is necessary ", "your brain needs break every 45minutes because"),
+    new DetailOfTips("Structure your day", "your brain loves certainty and doing this reduce energy of deciding what to do next"),
     new DetailOfTips("small workout"),
     new DetailOfTips("Track progress")
   ], <Main/>),
@@ -111,8 +111,17 @@ function handleClickfor1(section){
     list_of_tips.forEach((object) => {
       NewState[object.type] = (object.type === section)? !prevShow[section] : false;
     });
+    
+    setTimeout(() => {
+      const selected_section = document.getElementById(section)
+      
+      if (selected_section){
+        the_animation_obj.the_tip_anime(selected_section.querySelectorAll(".TIP"))
+      }
+    }, 3)
 
-    return NewState
+    return NewState;
+
   })
 
 }
