@@ -116,7 +116,7 @@ function handleClickfor1(section){
       const selected_section = document.getElementById(section)
       
       if (selected_section){
-        the_animation_obj.the_tip_anime(selected_section.querySelectorAll(".TIP"))
+        the_animation_obj.the_tip_anime(selected_section.querySelectorAll(".TIP h1, .TIP div p, .TIP img"))
       }
     }, 3)
 
