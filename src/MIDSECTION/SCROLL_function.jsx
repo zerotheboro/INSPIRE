@@ -1,19 +1,31 @@
 
 import { the_animation_obj } from "../HEADER/ANIMATION";
 
+export default function animation_of_each_tip(section){
+    window.addEventListener("animationend", () => {});
 
-export default function animation_of_each_tip(){
+    let array_of_tips = document.querySelectorAll(`.TIP`)
+
+    let array_of_tips_component = document.querySelectorAll(`.TIP h1`)
+
+    let array_of_tips_img = document.querySelectorAll(`.TIP img`)
+
+    let array_of_tips_p = document.querySelectorAll(`.TIP p`)
+
     window.addEventListener("scroll", () => {
 
-    let array_of_tips = document.querySelectorAll(".TIP")
+    
 
     for (let i = 0; i < array_of_tips.length; i++) {
 
         let rect = array_of_tips[i].getBoundingClientRect();
 
-        const HALF_VIEWER_HEIGHT = window.innerHeight * 1.5;
+        const VIEWER_HEIGHT = window.innerHeight ;
 
-        let inViewdetermination = rect.bottom <=  HALF_VIEWER_HEIGHT;
+        let inViewdetermination = rect.top >  VIEWER_HEIGHT ;
+        /*BARELY need FUTHER IMPROVING */
+        (inViewdetermination) ? the_animation_obj.the_tip_anime([ array_of_tips_img[i], array_of_tips_p[i],  array_of_tips_component[i],]) : null; //most important thing
+    
 
-        (inViewdetermination) ? true : false; //most important thing
+        
     }});}
