@@ -6,7 +6,7 @@ const the_animation_obj = {
         animated_stuff.forEach((component) => {
             gsap.fromTo(
             component, 
-            {opacity: 0, y: 100},
+            {opacity: 0, y: 200},
             {opacity: 1, y: 0, duration: 0.7,
             })}
         )},

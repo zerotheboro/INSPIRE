@@ -41,7 +41,7 @@ class DetailOfTips{
 // Module-scope data; export at top-level (not inside a function)
 export const list_of_tips = [
   new TypeOfTips("PRE-LEARN", [
-    new DetailOfTips("Prime mind", "this is excercise where you would try to find incetives and "),
+    new DetailOfTips("Prime mind", "this is excercise where you would try to find incetives and", ),
     new DetailOfTips("WATER ur face/body", " althought quite obvious but does it come in common pratice"),
     new DetailOfTips("BREAK is necessary ", "your brain needs break every 45minutes because"),
     new DetailOfTips("Structure your day", "your brain loves certainty and doing this reduce energy of deciding what to do next"),
