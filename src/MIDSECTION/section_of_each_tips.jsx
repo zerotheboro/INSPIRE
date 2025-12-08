@@ -17,9 +17,11 @@ export default function Tips(props) {
       {each_section.list.map((the_tip, idx) => (
         <section className="TIP" key={`${each_section.type}-${idx}`}>
           <div>
-            <h1>{the_tip.header}</h1>
+            <h1>{idx + 1}. {the_tip.header}</h1>
             <div>
-              <p>{the_tip.paragraph}</p>
+              <p>
+                {the_tip.paragraph}
+              </p>
               <img src={the_tip.img} alt="logo" />
             </div>
           </div>

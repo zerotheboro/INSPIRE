@@ -77,8 +77,8 @@ export const list_of_tips = [
     new DetailOfTips("Prime mind", "this is excercise where you would try to find incetives and", image_importor("brain.svg")),
     new DetailOfTips("WATER ur face/body", " althought quite obvious but does it come in common pratice", image_importor("water")),
     new DetailOfTips("BREAK is necessary ", "brain needs break every 45minutes because", image_importor("relaxing_cat")),
-    new DetailOfTips("Structure your day", "brain loves certainty, structuring reduces energy of deciding what to do next", image_importor("multiple_checkbox")),
     new DetailOfTips("small workout", "jumpstart ur blood circulating around the body", image_importor("dumbell")),
+    new DetailOfTips("Structure your day", "brain loves certainty, structuring reduces energy of deciding what to do next", image_importor("multiple_checkbox")),
     new DetailOfTips("Track progress", "motivate you and keep you in mind how much you progress", image_importor("checkbox"))
   ], <Main/>),
   new TypeOfTips("META-LEARN", [

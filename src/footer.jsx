@@ -26,8 +26,8 @@ function Footer(){
             <div id="contact">
                 {divs_of_contacts}
             </div>
-            <p>phone number</p>
-            <p>email</p> 
+            <p>phone number: 0909528511</p>
+            <p>email:<a href="mailto:2002070343@royal.edu.vn">2002070343@royal.edu.vn</a></p> 
         </footer>
     )
 }

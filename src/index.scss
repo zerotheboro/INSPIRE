@@ -284,6 +284,8 @@ div#BENEFIT{
             font-size: var(--P-size);
             font-family: var(--P);
             display: inline-flex;
+            gap: 7%;
+            flex-direction: column;
             width: 50%;
         }
     }
@@ -291,6 +293,20 @@ div#BENEFIT{
             width: 22vw;
             height: 22vw;
         }
+    /*div.citation{
+        background-color: var(--font-color);
+        display: inline-block;
+        height: 7vh;
+        transition: all 300ms;
+        padding-left: 0.2vw;
+        font-size: calc(var(--P-size)/2);
+    }
+    div.citation:hover{
+        background-color: var(--passion-orange);
+        color: var(--font-color);
+        padding-left: 0.7vw;
+        text-decoration: none;
+    }*/
 }}
 
 
