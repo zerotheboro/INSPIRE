@@ -22,6 +22,8 @@ let divs_of_contacts = list_of_contact.map((source) => <div><a href={source.scr}
 
 function Footer(){
     return(
+        <>
+        <div className='footer_border'></div>
         <footer id="FOOTER">
             <div id="contact">
                 {divs_of_contacts}
@@ -29,6 +31,7 @@ function Footer(){
             <p>phone number: 0909528511</p>
             <p>email:<a href="mailto:2002070343@royal.edu.vn">2002070343@royal.edu.vn</a></p> 
         </footer>
+        </>
     )
 }
 

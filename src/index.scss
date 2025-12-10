@@ -15,7 +15,7 @@ body{
 }
 
 :root{
---lightblue: lightseagreen;
+--lightblue: #20b2aa;
     --energetic--yellow: #FFD63A;
     --passion-orange: #FFA955;
     --tomato: #F75A5A;
@@ -323,7 +323,14 @@ div#BENEFIT{
 
 
 
-
+.footer_border{
+        width: 100%;
+        aspect-ratio: 18/5;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url(./image/layered-waves-haikei.svg);
+    }
 footer{
     background-color: var(--darker-black);
     height: max(700px, 100vh);
@@ -331,6 +338,9 @@ footer{
     justify-content: center;
     flex-direction: column;
     font-size: calc(var(--HEADER-2-size) / 2);
+    p{
+        background-color: transparent;
+    }
     #contact{
         display: flex;
         justify-content: center;

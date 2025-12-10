@@ -59,10 +59,6 @@ function handleClickfor1(section){
       }, 7)
 
 
-
-
-
-
     return NewState;
 
   })
