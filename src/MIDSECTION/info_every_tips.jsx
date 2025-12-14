@@ -68,9 +68,9 @@ class DetailOfTips{
 // Module-scope data; export at top-level (not inside a function)
 export const list_of_tips = [
   new TypeOfTips("PRE-LEARN", [
-    new DetailOfTips("Prime mind", "this is excercise where you would try to find incetives and", image_importor("brain.svg")),
-    new DetailOfTips("WATER ur face/body", " althought quite obvious but does it come in common pratice", image_importor("water")),
-    new DetailOfTips("BREAK is necessary ", "brain needs break every 45minutes because", image_importor("relaxing_cat")),
+    new DetailOfTips("Prime mind", "this is where you asking 4 questions why must I?, when must I use it?, How is it relavent to my life?,", image_importor("brain.svg")),
+    new DetailOfTips("WATER ur face/body", "a little shift of % can affect ur brain alot!", image_importor("water")),
+    new DetailOfTips("BREAK ≠ DISTRACTION", "don't pull out ur phone cause distraction unlike break it hooks u up and take more uneccsary time", image_importor("relaxing_cat")),
     new DetailOfTips("small workout", "jumpstart ur blood circulating around the body", image_importor("dumbell")),
     new DetailOfTips("Structure your day", "brain loves certainty, structuring reduces energy of deciding what to do next", image_importor("multiple_checkbox")),
     new DetailOfTips("Track progress", "motivate you and keep you in mind how much you progress", image_importor("checkbox"))
