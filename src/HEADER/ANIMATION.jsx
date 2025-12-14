@@ -12,5 +12,12 @@ const the_animation_obj = {
         )},
         
     the_section_anime : null,
+    the_nav_anime:
+    (animated_stuff, translating_length) => {
+        gsap.to(
+            animated_stuff,
+            {y: translating_length, duration: 0.7, overwrite: "auto"}
+        )
+    }
 }
 export {the_animation_obj};

@@ -48,14 +48,7 @@ function handleClickfor1(section){
     });
     
     setTimeout(() => {
-      
-
       animation_of_each_tip(section);
-
-      /*const selected_section = document.getElementById(section);
-      if (animation_of_each_tip){
-        the_animation_obj.the_tip_anime(selected_section.querySelectorAll(".TIP h1, .TIP div p, .TIP img"))
-      */
       }, 7)
 
 
