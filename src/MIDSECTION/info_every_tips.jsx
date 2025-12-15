@@ -73,7 +73,8 @@ export const list_of_tips = [
     new DetailOfTips("BREAK ≠ DISTRACTION", "don't pull out ur phone cause distraction unlike break it hooks u up and take more uneccsary time", image_importor("relaxing_cat")),
     new DetailOfTips("small workout", "jumpstart ur blood circulating around the body", image_importor("dumbell")),
     new DetailOfTips("Structure your day", "brain loves certainty, structuring reduces energy of deciding what to do next", image_importor("multiple_checkbox")),
-    new DetailOfTips("Track progress", "motivate you and keep you in mind how much you progress", image_importor("checkbox"))
+    new DetailOfTips("Track progress", "motivate you and keep you in mind how much you progress", image_importor("checkbox")),
+    new DetailOfTips("AUTO GOOGLE", "an underated feature is auto pop up page, 1.click 3 dots at top-right screen 2.scroll to bottom click setting 3.locate on start up")
   ], <Main/>),
   new TypeOfTips("META-LEARN", [
     new DetailOfTips("increase peripheral vision", "next time you read try not to read each word but in group", image_importor("eye")),

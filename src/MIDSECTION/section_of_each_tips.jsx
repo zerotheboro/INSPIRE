@@ -1,5 +1,5 @@
 
-import react, {useState} from "react";
+import react, {useState, useEffect} from "react";
 import {the_animation_obj} from "./../HEADER/ANIMATION.jsx";
 import { list_of_tips } from "./info_every_tips.jsx";
 import animation_of_each_tip from "./SCROLL_function.jsx";
@@ -9,6 +9,16 @@ export default function Tips(props) {
 
   const [show, setShow] = useState({
   });
+
+  useEffect(() => {  
+    const section_id = Object.keys(show).find(section => show[section] === true)
+
+    const section = document.getElementById(section_id);
+
+    if(section){
+      section.scrollIntoView({behavior: "smooth"})
+    }
+  },[show])
   
   const list_of_tips_JSX = list_of_tips.map((each_section) => 
     <section id={each_section.type} key={each_section.type} style={{display : show[each_section.type] ? "block" : "none"}}>
@@ -38,17 +48,17 @@ export default function Tips(props) {
     }))
 }*/
 
-function handleClickfor1(section){
+function handleClickfor1(section_id){
   setShow(prevShow => {
 
     const NewState = {};
 
     list_of_tips.forEach((object) => {
-      NewState[object.type] = (object.type === section)? !prevShow[section] : false;
+      NewState[object.type] = (object.type === section_id)? !prevShow[section_id] : false;
     });
     
     setTimeout(() => {
-      animation_of_each_tip(section);
+      animation_of_each_tip(section_id);
       }, 7)
 
 
@@ -57,6 +67,8 @@ function handleClickfor1(section){
   })
 
 }
+
+
 
   return (
     <>
