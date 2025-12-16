@@ -32,7 +32,14 @@ export default function Tips(props) {
               <p>
                 {the_tip.paragraph}
               </p>
-              <img src={the_tip.img} alt="logo" />
+              {
+                (the_tip.asset.format === "video") ? 
+                <video autoPlay controls>
+                  <source src={the_tip.asset.src} type="video/mp4"/>
+                </video> 
+                : <img src={the_tip.asset.src} alt="logo" />
+              }
+              
             </div>
           </div>
         </section>

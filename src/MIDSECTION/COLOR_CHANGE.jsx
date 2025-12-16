@@ -46,7 +46,7 @@ function BODY(){
         <>
             <section id="MAIN_CONTENT" className="TIP">
                 <h1>STROOP EFFECT</h1>
-                <p>help ur brain manage information disorder</p>
+                <p>help manage info disorder<br></br> by reading the color ONLY</p>
                 <button id="PROMPT" onClick={(e) => givedecison(e)}>COLOR!!!</button>
             </section>
         </>

@@ -1,7 +1,7 @@
 import LOGO from "../image/LOGO.png";
 import Main from './COLOR_CHANGE.jsx';
 
-const images = import.meta.glob("../image/*.{png,jpg,jpeg,webp,gif,svg}", { eager: true });
+const images = import.meta.glob("../image/*.{png,jpg,jpeg,webp,gif,svg,mp4}", { eager: true });
 /*return an object of file */
 const imageFiles = Object.entries(images).map(([path, module]) => ({
   path,
@@ -9,13 +9,17 @@ const imageFiles = Object.entries(images).map(([path, module]) => ({
 }));
 /*convert it back to another form of object */
 
-function image_importor(name) {
+function image_importor(name, type = "image") {
   const found = imageFiles.find(file => file.path.includes(name));
   if (!found) {
     console.warn(`Image not found: ${name}`);
     return null;
   }
-  return found.url;
+  else{
+  return {src : found.url,
+          format : type
+  }
+}
 }
 
 /*async function image_selector(url_of_image, format='.svg'){
@@ -45,12 +49,12 @@ class TypeOfTips {
   };
 }
 
-
+/*change img into asset */
 class DetailOfTips{
-  constructor(header = "hey this is a header", paragraph = "hey this is a text", img = LOGO){
+  constructor(header = "hey this is a header", paragraph = "hey this is a text", asset = { src:LOGO, type: "image"}){
     this._header = header;
     this._paragraph = paragraph;
-    this._img = img;
+    this._asset = asset;
   }
   get header(){
     return this._header;
@@ -58,8 +62,8 @@ class DetailOfTips{
   get paragraph(){
     return this._paragraph;
   }
-  get img(){
-    return this._img;
+  get asset(){
+    return this._asset;
   }
 }
 
@@ -74,7 +78,7 @@ export const list_of_tips = [
     new DetailOfTips("small workout", "jumpstart ur blood circulating around the body", image_importor("dumbell")),
     new DetailOfTips("Structure your day", "brain loves certainty, structuring reduces energy of deciding what to do next", image_importor("multiple_checkbox")),
     new DetailOfTips("Track progress", "motivate you and keep you in mind how much you progress", image_importor("checkbox")),
-    new DetailOfTips("AUTO GOOGLE", "an underated feature is auto pop up page, 1.click 3 dots at top-right screen 2.scroll to bottom click setting 3.locate on start up")
+    new DetailOfTips("AUTO GOOGLE", "an underated feature is auto pop up page, 1.click 3 dots at top-right screen 2.scroll to bottom click setting 3.locate on start up", image_importor("google", "video"))
   ], <Main/>),
   new TypeOfTips("META-LEARN", [
     new DetailOfTips("increase peripheral vision", "next time you read try not to read each word but in group", image_importor("eye")),
