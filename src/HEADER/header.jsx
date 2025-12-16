@@ -40,11 +40,9 @@ function NAV(){
         <header>  
             <section id="NAV">
                 <span className="logo"><img src={img_source}/>EBULLIENCE</span>
-                <span><a>BENEFITs</a></span>
-                <span>
-                    <a>tips group</a>
-                </span>
-                <span><a>CONTACTs</a></span>
+                <span><a href="#BENEFIT">BENEFITs</a></span>
+                <span><a href="#options_of_tips_to_choose">tips group</a></span>
+                <span><a href="#contact">CONTACTs</a></span>
             </section>
             <Benifit/>
         </header>

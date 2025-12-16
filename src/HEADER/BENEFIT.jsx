@@ -8,7 +8,7 @@ function Benifit(){
     <div id="BENEFIT">
         <h1>WHY USE IT?</h1>
         <ul>
-            <li>automated, group for u</li>
+            <li>filter from atomic habits, Jim Kwik,...</li>
             <li>COMMUNITY PROGRAM</li>
             <li>1 of <a href="">11A2's projects</a></li>
             <li>25+tips, 1+ must fit u</li>
