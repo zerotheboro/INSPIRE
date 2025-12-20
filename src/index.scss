@@ -218,8 +218,10 @@ div#BENEFIT{
 
 
 .TIP div:has(video){
+    display: flex !important;
     flex-direction: column;
     height: auto;
+    align-items: center;
     p {
         width: 90% !important;
         align-self: center;
