@@ -81,6 +81,7 @@ export const list_of_tips = [
     new DetailOfTips("AUTO GOOGLE", "This feature conditions u into going to the tab you want to learn rigth away; there is a set up tutorial", image_importor("google", "video"))
   ], <Main/>),
   new TypeOfTips("META-LEARN", [
+    new DetailOfTips("HEADER first", "often we don't put much thoughts into headings but putting more processing into it aids u in getting the overall idea better"),
     new DetailOfTips("peripheral vision", "next time you read try not to read each word but in group", image_importor("eye")),
     new DetailOfTips("Use length pointer", "use pointer finger or ruler... to track ur reading allowing continutity(no progression) which saves ur time", image_importor("book_pointer")),
     new DetailOfTips("NO verbal voice", "ur can read ≈  140 words, process "),
@@ -93,7 +94,8 @@ export const list_of_tips = [
   new TypeOfTips("NOTE-TAKE", [
     new DetailOfTips("Note-take 4x4"),
     new DetailOfTips("NO word-for-word"),
-    new DetailOfTips("CORNELL method")
+    new DetailOfTips("CORNELL method", "main section(this retangle) write the content details and the side rectangle writes the main idea and the footer(lower square) recap overall idea."),
+    new DetailOfTips("HIGHLIGHT!", "" )
   ]),
 ];
 

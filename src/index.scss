@@ -236,7 +236,7 @@ div#BENEFIT{
     
 }
 
-@media only screen  and (max-width: 1150px), ( orientation: portrait){
+@media only screen  and (max-width: 1200px), ( orientation: portrait){
     .TIP div{
     height: max(600px, 80vh);
     background-color: var(--lightblue);
@@ -296,7 +296,7 @@ div#BENEFIT{
 
 
 
-@media only screen and (min-width: 1150px), (orientation: landscape){
+@media only screen and (min-width: 1200px), (orientation: landscape){
 .TIP div{
     height: auto;
     background-color: var(--lightblue);
@@ -311,7 +311,7 @@ div#BENEFIT{
         margin-bottom: 8vh;
     }
     div{
-        height: max(104vh, 700px);
+        height: max(80vh, 700px);
         display: grid;
         grid-template: 1fr/ 6fr 3fr;
         gap: 2vw;
@@ -325,7 +325,7 @@ div#BENEFIT{
         }
     }
     img{
-            margin-top: 4vh;
+            margin-top: 12vh;
             width: auto;
             height: 32vh;
         }
