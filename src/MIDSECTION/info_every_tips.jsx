@@ -111,7 +111,7 @@ export const list_of_tips = [
     image_importor("checkbox")),
 
 
-    new DetailOfTips("HEALTHY DIET", 
+    new DetailOfTips("BRAIN DIET", 
     <>
       your brain need the nutrition and
       drinking low sugar matcha, water
@@ -139,7 +139,7 @@ export const list_of_tips = [
     new DetailOfTips("NO verbal voice", "ur can read ≈  140 words, process "),
     new DetailOfTips("Repetition", "repeatition is mastery and learning how to do it helps a lot. There are 2 ways to do it, 1 spacial repeat ur knowledge at certain space and 2 mix the order up "),
     new DetailOfTips("most craving is last", "doing this makes u do everything you need with the drive of doing the things you crave the most!; I like coding and so I would do economy then bussiness lastly coding", image_importor("pirate_map")),
-    new DetailOfTips("encode cues", "cues can be emotion, picture, "),
+    new DetailOfTips("encode cues", "cues can be emotion, picture, keyword, icon"),
     new DetailOfTips("story telling", "story like`the oxygen concentration we breath is heated by our body temperature, passes to ur lungs suface area` is an ex of using it to remember what influences gas exchange"),
     new DetailOfTips("ABBREVIATION!","Putting everything in 1 words and so would save memory & time with little effort; like HoChiMinhInternationalSchool helps me remember factors affecting demand (HabitsComplementsMarketingIncomeSubsitute)")
   ]),

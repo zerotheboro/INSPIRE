@@ -6,11 +6,11 @@ function Benifit(){
 
     return(
     <div id="BENEFIT">
-        <h1>HELPFULNESS</h1>
+        <h1>WHY USE IT?</h1>
         <ul>
-            <li>25+ ways, 1+ must fit u</li>
+            <li>25+ tips, 1+ must fit u</li>
             <li>summerized from:<br/><a href="https://jamesclear.com/atomic-habits">Atomic Habits</a>, <a href="https://www.youtube.com/@JimKwik">Jim Kwik</a>,...</li>
-            <li>less time learning long-term<br/>these ways boost productivity</li>
+            <li>these tips boost productivity<br/>therefore less time learning</li>
         </ul>
     </div>)
 }
