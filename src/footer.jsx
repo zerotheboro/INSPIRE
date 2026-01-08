@@ -1,4 +1,5 @@
 import facebook from './image/facebook.svg';
+import IG from './image/IG_ICON.png';
 import youtube from './image/youtube.svg';
 import gmail from './image/gmail.svg';
 import DONATE  from './image/QR_donation.png';
@@ -18,6 +19,11 @@ const list_of_contact = [
     {
         image : gmail,
         scr : "mailto:2002070343@royal.edu.vn"
+    }
+    {
+        image : IG,
+        scr: "https://www.instagram.com/kingston_bussiness/"
+
     }
 ];
 let divs_of_contacts = list_of_contact.map((source) => <div><a href={source.scr} target='_blank'><img src={source.image}/></a></div>)
