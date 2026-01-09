@@ -19,11 +19,10 @@ const list_of_contact = [
     {
         image : gmail,
         scr : "mailto:2002070343@royal.edu.vn"
-    }
+    },
     {
         image : IG,
-        scr: "https://www.instagram.com/kingston_bussiness/"
-
+        scr : "https://www.instagram.com/kingston_bussiness/"
     }
 ];
 let divs_of_contacts = list_of_contact.map((source) => <div><a href={source.scr} target='_blank'><img src={source.image}/></a></div>)
@@ -41,7 +40,7 @@ function Footer(){
             </div>
             <h1>DONATION means alot</h1>
             <a href='' target='_blank'><img src={DONATE}></img></a>
-            <h1>SURVEY improve alot</h1>
+            <h1>UR OPINION MATTERS</h1>
             <a href='https://forms.gle/dfjrofp26qWphvJK7' target='_blank'><img src={SURVEY}></img></a>
             <div>
                 <p>phone number:<h1>0909528511</h1></p>
