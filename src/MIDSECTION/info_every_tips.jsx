@@ -127,7 +127,17 @@ export const list_of_tips = [
         click {<button type="button" onClick={() => {navigator.clipboard.writeText("chrome://settings/onStartup")}}>link</button>} to copy & paste
         or follow the turtorial below
       </>,
-      image_importor("google", "video"))
+      image_importor("google", "video")),
+
+      
+    new DetailOfTips("summary & print",
+      <>
+        this is a google doc that would
+        help u print all the tips,
+        and explain it in more details + evidences
+        <a href="https://docs.google.com/document/d/1qfUi1f6OYUYhAAmggj1jGT7vZiK1PzGi_ZmotVSADTo/edit?usp=sharing" target="_blank"><button>THE GG DOC</button></a>
+      </>
+    ),
 
   ], <Main/>),
 
@@ -184,7 +194,15 @@ export const list_of_tips = [
     new DetailOfTips("Note-take 4x4"),
     new DetailOfTips("NO word-for-word"),
     new DetailOfTips("CORNELL method", "main section(this retangle) write the content details and the side rectangle writes the main idea and the footer(lower square) recap overall idea."),
-    new DetailOfTips("HIGHLIGHT!", "only do it after reading full topic and have " )
+    new DetailOfTips("HIGHLIGHT!", "only do it after reading full topic and have " ),
+    new DetailOfTips("summary & print",
+      <>
+        this is a google doc that would
+        help u print all the tips,
+        and explain it in more details + evidences
+        <a href="https://docs.google.com/document/d/1qfUi1f6OYUYhAAmggj1jGT7vZiK1PzGi_ZmotVSADTo/edit?usp=sharing" target="_blank"><button>THE GG DOC</button></a>
+      </>
+    ),
   ]),
 ];
 
