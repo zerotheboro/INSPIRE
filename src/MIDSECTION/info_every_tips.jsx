@@ -85,11 +85,19 @@ export const list_of_tips = [
       reflect the importance.
     </>, image_importor("brain.svg"),),
 
+    new DetailOfTips("Everything in 1 place", 
+    <>
+      free up ur mind by putting everything u
+      need at 1 place, Moreover u would notice 
+      easier and get it done, <a href="https://zerotheboro.github.io/KINGSTON/" target="_blank">BOXITO</a> can help u achive that
+    </>,
+    image_importor("BOXITO")),
 
     new DetailOfTips("WATER ur face/body", 
     <>
       Drink water around a glass of water
-      and splash water onto ur face
+      and splash water onto ur face to awake
+      your mind!
     </>,
     image_importor("water"), "left"),
 
@@ -116,16 +124,6 @@ export const list_of_tips = [
       reduces energy of deciding what to do next
     </>,
     image_importor("multiple_checkbox")),
-
-    new DetailOfTips("Everything in 1 place", 
-    <>
-      free up ur mind by putting everything u
-      need at 1 place, Moreover u would notice 
-      easier and get it done, <a href="https://zerotheboro.github.io/KINGSTON/" target="_blank">BOXITO</a> can help u achive that
-    </>,
-    image_importor("BOXITO")),
-
-    
 
     new DetailOfTips("most craving is last",
       <>
@@ -181,9 +179,19 @@ export const list_of_tips = [
       but doing it aids u in getting
       the overall idea better
     </>),
-    new DetailOfTips("peripheral vision", "next time you read try not to read each word but in group", image_importor("eye"), "left"),
-    new DetailOfTips("Use length pointer", "use pointer finger or ruler... to track ur reading allowing continutity(no progression) which saves ur time", image_importor("book_pointer")),
-    new DetailOfTips("NO verbal voice", "u can "),
+    new DetailOfTips("peripheral vision", 
+    <>
+      next time you read try not
+       to read each word but in group
+    </>, image_importor("eye"), "left"),
+    
+    new DetailOfTips("Use length pointer", 
+      <>
+        use pointer finger or ruler...
+         to track ur reading allowing continutity
+         (no progression) which saves ur time
+      </>, image_importor("book_pointer")),
+
     new DetailOfTips("Repetition", "repeatition is mastery and learning how to do it helps a lot. There are 2 ways to do it, 1 spacial repeat ur knowledge at certain space and 2 mix the order up ", "left"),
     new DetailOfTips("story telling",
       <>
@@ -191,7 +199,7 @@ export const list_of_tips = [
         we breath is heated by our body temperature,
         passes to ur lungs suface area` is an ex of
         using it to remember what influences gas exchange
-      </>),
+      </>, image_importor('storytelling')),
     new DetailOfTips("PRESENTATION", 
       <>
         Telling & recalling what u have learnt to 
@@ -227,32 +235,43 @@ export const list_of_tips = [
          activate ur comprehension skill
       </>
     ),
+    new DetailOfTips("divide steps",
+      <>
+        divide your excercise into steps
+        with clear instructions like how
+        Cambrigde do it
+      </>, image_importor("STEP")
+    ),
+
     new DetailOfTips("Note-take 4x4",
     <>
       a simplifed version of mind map,
       each ideas divide into another 4 ideas
       like how the picture show
-    </>),
+    </>, image_importor("4X4")),
+
     new DetailOfTips("you vs book cycle",
     <>
       listen and write the down what
       you had listen into a notebook as what
       you know and finally compare to your book
       if there are errors, then repeat or ask
-    </>
-    ),
+    </>,
+    image_importor("CYCLE"), "left"),
+
     new DetailOfTips("CORNELL method", 
     <>
-      main section(this retangle) write the content 
-      details and the side rectangle writes the main
-      idea and the footer(lower square) recap overall idea.
-    </>,),
+       the side rectangle writes the main idea 
+       main section retangle write the content details and
+       the footer lower squarerecap overall idea.
+    </>, image_importor('CORNELL')),
+
     new DetailOfTips("HIGHLIGHT!", 
     <>
       only do it after reading full topic
       and have summerized in ur own words
     </>,
-    image_importor("highlight")),
+    image_importor("highlight"), "left"),
 
     new DetailOfTips("summary & print",
       <>

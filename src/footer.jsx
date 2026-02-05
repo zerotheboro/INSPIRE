@@ -4,6 +4,7 @@ import youtube from './image/youtube.svg';
 import gmail from './image/gmail.svg';
 import DONATE  from './image/QR_donation.png';
 import SURVEY from './image/SURVEY.png'
+import DIS from './image/discord.svg'
 
 const list_of_contact = [
     {
@@ -11,7 +12,6 @@ const list_of_contact = [
         scr: "https://www.facebook.com/teo.tr.2025/"
 
     },
-
     {
         image : youtube,
         scr: "https://www.youtube.com/@gunnychannel204"
@@ -23,6 +23,10 @@ const list_of_contact = [
     {
         image : IG,
         scr : "https://www.instagram.com/kingston_bussiness/"
+    },
+    {
+        image : DIS,
+        scr :"https://discordapp.com/users/964457442815660074" 
     }
 ];
 let divs_of_contacts = list_of_contact.map((source) => <div><a href={source.scr} target='_blank'><img src={source.image}/></a></div>)
@@ -40,7 +44,9 @@ function Footer(){
             </div>
             <h1>UR DONATION means alot</h1>
             <a href='' target='_blank'><img src={DONATE}></img></a>
-            <h1>UR OPINION MATTERS & 15% off BOXITO </h1>
+            <h1>UR OPINION MATTERS</h1>
+            <a href='https://forms.gle/dfjrofp26qWphvJK7' target='_blank'><img src={SURVEY}></img></a>
+            <h1>UR PRIVACY MATTERS</h1>
             <a href='https://forms.gle/dfjrofp26qWphvJK7' target='_blank'><img src={SURVEY}></img></a>
             <div>
                 <p>phone number:<h1>0909528511</h1></p>

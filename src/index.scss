@@ -30,7 +30,7 @@ html{
 }
 h1{
     font-family: var(--HEADER);
-    font-size: var(--HEADER-2-size);
+    font-size: var(--HEADER-size);
 }
 p{
     font-family: var(--P);
@@ -121,6 +121,7 @@ section#options_of_tips_to_choose{
         font-size: var(--P-size);
         height: 55vh;
         width: 30vw;
+        max-height: 700px;
         margin: 1vw;
         cursor: pointer;
         transition: all 0.3s;
@@ -143,7 +144,7 @@ div#BENEFIT{
     height: 130vh;
     padding: 20vh 0 10vh 0;
     li{
-        font-size: var(--P-size);
+        font-size: max(var(--P-size), calc(var(--HEADER-size) - 2vw));
         margin-left: 35%;
         text-align: left;
     }
@@ -220,6 +221,12 @@ div#BENEFIT{
     will-change: opacity, transform;
 }
 @media only screen  and (max-width: 1200px), ( orientation: portrait){
+    h1{
+        font-size: calc(var(--HEADER-size) + 4vw);
+    }
+    p, li{
+        font-size: calc(var(--HEADER-size) + 1vw);
+    }
     .TIP div{
     height: max(600px, 80vh);
     background-color: var(--lightblue);
@@ -235,14 +242,13 @@ div#BENEFIT{
         margin-bottom: 2vh;
     }
     p{
-            font-size: calc(var(--P-size) + 1vw);
             font-family: var(--P);
             width: 80%;
-         
+            text-wrap: pretty;
     }
     img{
-            height: 24vh;
-            width: 24vh;
+            height: 20vh;
+            width: 20vh;
         }
     button{
         font-size: calc(var(--P-size) + 1vw);
@@ -262,7 +268,9 @@ div#BENEFIT{
         button{
             height: 20vh;
             width: 90vw;
+            font-size: calc(var(--HEADER-size) + 1vw);
         }
+
     }
     #MAIN_CONTENT{
         height: max(600px, 80vh);
@@ -353,13 +361,14 @@ footer{
     background-color: var(--darker-black);
     height: auto;
     display: flex;
+    gap: 4vh;
     justify-content: flex-start;
     flex-direction: column;
     align-items: center;
-    font-size: calc(var(--HEADER-2-size) / 2);
     p, h1{
         background-color: transparent;
         color: var(--font-color);
+        font-size: calc(var(--HEADER-size));
     }
     a > img{
         width: 28vh;
@@ -368,6 +377,7 @@ footer{
     #contact{
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
         gap: 5vw;
         text-align: center;
         div{
@@ -381,6 +391,8 @@ footer{
             justify-items: center;
             width: var(--circe--);
             height: var(--circe--);
+            min-height: 100px;
+            min-width: 100px;
             transition: background-color 300ms;
             a{
                 display: flex;
