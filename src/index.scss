@@ -14,7 +14,7 @@ html{
     scroll-behavior: smooth;
 }
 :root{
---lightblue: #20b2aa;
+    --lightblue: #20b2aa;
     --energetic--yellow: #FFD63A;
     --passion-orange: #FFA955;
     --tomato: #F75A5A;
@@ -22,10 +22,10 @@ html{
     --darker-black: #1A2634;
     --notso-energetic-yellow: #EEC550;
     --font-color: whitesmoke;
-    --HEADER:"Bebas Neue";
+    --HEADER:"Space Mono", "Bebas Neue";
     --HEADER-size: max(6vw, 2rem);
     --HEADER-2-size: 5vw;
-    --P:   "Oswald", "Open Sans", monospace;
+    --P:   "Space Grotesk", "Oswald", "Open Sans", monospace;
     --P-size:  3.7vw;
     --P-NAV-size : 2.5vw;
 }
