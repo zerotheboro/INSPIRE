@@ -1,10 +1,10 @@
-import facebook from './image/facebook.svg';
-import IG from './image/IG.png';
-import youtube from './image/youtube.svg';
-import gmail from './image/gmail.svg';
-import DONATE  from './image/QR_donation.png';
-import SURVEY from './image/SURVEY.png'
-import DIS from './image/discord.svg'
+import facebook from './assets/facebook.svg';
+import IG from './assets/IG.png';
+import youtube from './assets/youtube.svg';
+import gmail from './assets/gmail.svg';
+import DONATE  from './assets/QR_donation.png';
+import SURVEY from './assets/SURVEY.png'
+import DIS from './assets/discord.svg'
 
 const list_of_contact = [
     {
