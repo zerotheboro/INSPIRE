@@ -1,4 +1,6 @@
 import { FormEvent, ReactNode, useMemo, useState } from 'react'
+import { submitCounselingBooking } from "./services/formService";
+import { askInspireAI } from "./services/InspireAIconnect";
 
 type IconName =
   | 'spark'
@@ -85,23 +87,7 @@ const suggestions = [
   'Tôi đang gặp vấn đề trong một mối quan hệ',
 ]
 
-const getMockResponse = (message: string): string => {
-  const normalized = message.toLowerCase()
 
-  if (normalized.includes('căng thẳng') || normalized.includes('stress')) {
-    return 'Mình nghe thấy bạn đang phải mang khá nhiều áp lực. Trước khi tìm cách giải quyết, bạn có thể kể cho mình biết điều gì đang khiến bạn căng thẳng nhất lúc này không?'
-  }
-
-  if (normalized.includes('cảm xúc') || normalized.includes('buồn')) {
-    return 'Có vẻ bạn đang muốn hiểu rõ hơn điều đang diễn ra bên trong mình. Nếu chọn một cảm xúc nổi bật nhất ngay lúc này, bạn nghĩ đó là cảm xúc nào — và bạn thường cảm nhận nó rõ nhất ở thời điểm nào?'
-  }
-
-  if (normalized.includes('mối quan hệ') || normalized.includes('gia đình') || normalized.includes('người yêu')) {
-    return 'Mối quan hệ thường có nhiều lớp: điều đã xảy ra, cảm xúc của bạn, điều bạn cần và điều bạn đang sợ mất đi. Bạn muốn bắt đầu từ chuyện vừa xảy ra gần đây nhất không?'
-  }
-
-  return 'Cảm ơn bạn đã chia sẻ. Mình sẽ không vội đưa ra kết luận. Bạn có thể nói thêm một chút về điều khiến chuyện này quan trọng với bạn lúc này không?'
-}
 
 const services: Array<{ icon: IconName; title: string; text: string }> = [
   { icon: 'heart', title: 'Lắng nghe & thấu hiểu', text: 'Một không gian đủ an toàn để bạn nói ra điều đang khó nói, theo nhịp độ của chính mình.' },
@@ -128,45 +114,121 @@ const socialLinks: Array<{ icon: IconName; label: string; value: string }> = [
   { icon: 'instagram', label: 'Instagram', value: '@inspire.placeholder' },
   { icon: 'tiktok', label: 'TikTok', value: '@inspire.placeholder' },
   { icon: 'youtube', label: 'YouTube', value: 'INSPIRE' },
-  { icon: 'zalo', label: 'Zalo', value: '0xxx xxx xxx' },
+  { icon: 'zalo', label: 'Zalo', value: '0903 183 418' },
 ]
 
 function App() {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 1,
-      role: 'assistant',
-      text: 'Chào bạn, mình là AI hỗ trợ của INSPIRE. Đây hiện là bản mô phỏng. Bạn muốn bắt đầu với điều gì đang ở trong đầu mình hôm nay?',
-    },
-  ])
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [isSending, setIsSending] = useState(false);
   const [input, setInput] = useState('')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const lastId = useMemo(() => messages[messages.length - 1]?.id ?? 0, [messages])
+  const sendMessage = async (text: string) => {
+  const clean = text.trim();
 
-  const sendMessage = (text: string) => {
-    const clean = text.trim()
-    if (!clean) return
+  if (!clean || isSending) return;
 
-    const userMessage: ChatMessage = { id: lastId + 1, role: 'user', text: clean }
+  const id = Date.now();
+
+  const userMessage: ChatMessage = {
+    id,
+    role: "user",
+    text: clean
+  };
+
+  setMessages((prev) => [
+    ...prev,
+    userMessage
+  ]);
+
+  setInput("");
+  setIsSending(true);
+
+  try {
+    const answer = await askInspireAI(clean);
+
     const assistantMessage: ChatMessage = {
-      id: lastId + 2,
-      role: 'assistant',
-      text: getMockResponse(clean),
-    }
+      id: id + 1,
+      role: "assistant",
+      text: answer
+    };
 
-    setMessages((prev) => [...prev, userMessage, assistantMessage])
-    setInput('')
-  }
+    setMessages((prev) => [
+      ...prev,
+      assistantMessage
+    ]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    sendMessage(input)
+  } catch (error) {
+    console.error("INSPIRE AI error:", error);
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: id + 1,
+        role: "assistant",
+        text:
+          "Xin lỗi, INSPIRE hiện chưa thể phản hồi. Vui lòng thử lại."
+      }
+    ]);
+
+  } finally {
+    setIsSending(false);
   }
+  };
+
+  const handleSubmit = (
+  event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    void sendMessage(input);
+  };
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     setMobileMenuOpen(false)
+  }
+
+  // This is the section resposible for handling frontend code
+
+    const [bookingForm, setBookingForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    service: "",
+    preferredDate: "",
+    preferredTime: "",
+    note: ""
+  });
+
+  const [bookingStatus, setBookingStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+
+  async function handleBookingSubmit(
+  event: React.FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+
+    try {
+      setBookingStatus("loading");
+
+      await submitCounselingBooking(bookingForm);
+
+      setBookingStatus("success");
+
+      setBookingForm({
+        name: "",
+        phone: "",
+        email: "",
+        service: "",
+        preferredDate: "",
+        preferredTime: "",
+        note: ""
+      });
+    } catch (error) {
+      console.error("Booking error:", error);
+      setBookingStatus("error");
+    }
   }
 
   return (
@@ -181,9 +243,9 @@ function App() {
         </button>
 
         <nav className={`main-nav ${mobileMenuOpen ? 'open' : ''}`}>
-          <button onClick={() => scrollTo('counseling')}>Tham vấn</button>
-          <button onClick={() => scrollTo('ai-chat')}>AI INSPIRE</button>
-          <button onClick={() => scrollTo('resort')}>Nghỉ dưỡng</button>
+          <button onClick={() => scrollTo('counseling')}>Tham vấn tâm lý</button>
+          <button onClick={() => scrollTo('ai-chat')}>AI Inspire</button>
+          <button onClick={() => scrollTo('resort')}>Nghỉ dưỡng | dưỡng sinh</button>
           <button onClick={() => scrollTo('contact')}>Liên hệ</button>
         </nav>
 
@@ -207,7 +269,7 @@ function App() {
               <span>để dừng lại, lắng nghe và chuyển mình.</span>
             </h1>
             <p>
-              INSPIRE kết hợp tham vấn, công nghệ hỗ trợ và một không gian nghỉ dưỡng ven sông —
+              INSPIRE là 1 nơi tham vấn tâm lý với một không gian nghỉ dưỡng ven sông —
               để việc chăm sóc tinh thần không chỉ diễn ra trong một cuộc trò chuyện, mà trong cả trải nghiệm sống.
             </p>
             <div className="hero-actions">
@@ -335,7 +397,7 @@ function App() {
                 placeholder="Chia sẻ điều bạn đang nghĩ..."
                 aria-label="Tin nhắn cho AI INSPIRE"
               />
-              <button type="submit" aria-label="Gửi tin nhắn"><Icon name="arrow" size={18}/></button>
+              <button type="submit" aria-label="Gửi tin nhắn" disabled={isSending || !input.trim()}><Icon name="arrow" size={18}/></button>
             </form>
             <p className="chat-note">AI chỉ hỗ trợ thông tin ban đầu và không thay thế bác sĩ hoặc chuyên gia có thẩm quyền.</p>
           </div>
@@ -345,7 +407,7 @@ function App() {
           <div className="section-heading centered">
             <div className="eyebrow">THAM KHẢO DỊCH VỤ</div>
             <h2>Bạn có thể bắt đầu theo cách phù hợp với mình.</h2>
-            <p>Các mức giá dưới đây đang là placeholder để bạn thay sau khi chốt mô hình vận hành.</p>
+            <p>(Hỏi ba/mẹ thêm gì không)</p>
           </div>
 
           <div className="pricing-grid">
@@ -403,8 +465,7 @@ function App() {
               <h2>Một hệ sinh thái nhỏ cho việc nghỉ ngơi và hồi phục.</h2>
             </div>
             <p>
-              Không gian được tổ chức để mỗi người có thể chọn mức độ kết nối phù hợp: ở riêng, vận động nhẹ,
-              thư giãn cơ thể, đọc sách, trò chuyện hoặc đơn giản là ngồi cạnh dòng nước.
+              Không gian được tổ chức để mỗi người có thể chọn mức độ kết nối phù hợp: ở riêng, vận động nhẹ, thư giãn cơ thể, đọc sách, trò chuyện hoặc đơn giản là ngồi cạnh dòng nước
             </p>
           </div>
           <div className="resort-grid">
@@ -423,22 +484,70 @@ function App() {
             <div>
               <div className="eyebrow">ĐẶT LỊCH</div>
               <h2>Bắt đầu bằng một cuộc gặp phù hợp với bạn.</h2>
-              <p>Form này là giao diện demo. Sau này bạn có thể nối với hệ thống đặt lịch, thanh toán và quản lý chuyên gia.</p>
+              <p>(Hỏi ba/mẹ thêm gì không)</p>
             </div>
-            <form className="booking-form" onSubmit={(e) => e.preventDefault()}>
-              <label>Họ và tên<input placeholder="Nguyễn Văn A" /></label>
-              <label>Số điện thoại<input placeholder="0xxx xxx xxx" /></label>
+            <form className="booking-form" onSubmit={handleBookingSubmit}>
+              <label>Họ và tên
+                <input type="text"
+                       required 
+                       placeholder="Nguyễn Văn A"
+                       value={bookingForm.name}
+                       onChange={(e) =>
+                        setBookingForm({
+                          ...bookingForm,
+                          name: e.target.value
+                        })
+                       }/>
+              </label>
+
+              <label>Số điện thoại
+                <input
+                    type="tel"
+                    required
+                    placeholder="Số điện thoại"
+                    value={bookingForm.phone}
+                    onChange={(e) =>
+                      setBookingForm({
+                        ...bookingForm,
+                        phone: e.target.value
+                      })
+                    }/>
+              </label>
+
+              <label>Email
+                <input type="text"
+                       required 
+                       placeholder="inspirelife@gmail.com"
+                       value={bookingForm.email}
+                       onChange={(e) =>
+                        setBookingForm({
+                          ...bookingForm,
+                          email: e.target.value
+                        })
+                       }/>
+              </label>
+
               <label>Dịch vụ
-                <select defaultValue="">
+                <select required onChange={(e) => setBookingForm({...bookingForm, service: e.target.value})}   value={bookingForm.service}>
                   <option value="" disabled>Chọn dịch vụ</option>
-                  <option>Tham vấn riêng</option>
-                  <option>Nghỉ dưỡng INSPIRE</option>
-                  <option>Tham vấn + nghỉ dưỡng</option>
+                  <option value="Tham vấn riêng">Tham vấn riêng</option>
+                  <option value="Nghỉ dưỡng INSPIRE">Nghỉ dưỡng INSPIRE</option>
+                  <option value="Tham vấn + nghỉ dưỡng">Tham vấn + nghỉ dưỡng</option>
                 </select>
               </label>
-              <label>Ghi chú<textarea placeholder="Bạn muốn INSPIRE biết điều gì trước cuộc hẹn?" rows={3}></textarea></label>
-              <button className="primary-btn full" type="button">Tiếp tục đặt lịch</button>
-              <span className="form-note">Thanh toán trực tuyến sẽ được tích hợp ở phiên bản sau.</span>
+              <label>Ghi chú<textarea  placeholder="Bạn muốn INSPIRE biết điều gì trước cuộc hẹn?" rows={3} onChange={(e) => setBookingForm({...bookingForm, note: e.target.value})}  value={bookingForm.note}  ></textarea></label>
+              <button className="primary-btn full" type="submit" disabled={bookingStatus === "loading"}>{bookingStatus === "loading"? "Đang gửi...": "Tiếp tục đặt lịch"}</button>
+              {bookingStatus === "success" && (
+              <span className="form-note">
+                  ✓ Yêu cầu đặt lịch đã được gửi thành công.
+                </span>
+              )}
+
+              {bookingStatus === "error" && (
+                <span className="form-note">
+                  Không thể gửi yêu cầu. Vui lòng thử lại.
+                </span>
+              )}
             </form>
           </div>
         </section>
@@ -446,16 +555,12 @@ function App() {
         <section className="section contact-section" id="contact">
           <div className="contact-copy">
             <div className="eyebrow">04 · LIÊN HỆ INSPIRE</div>
-            <h2>Khi bạn muốn hỏi thêm,<br/>hãy bắt đầu từ đây.</h2>
-            <p>
-              Toàn bộ thông tin hiện là placeholder để bạn thay sau. Tôi đã bố trí sẵn các kênh chính để khi có tài khoản thật,
-              bạn chỉ cần thay link và nội dung.
-            </p>
-
+            <h2>Khi bạn muốn hỏi thêm,<br/>hãy bắt đầu từ đây.</h2>  
+            <p>Inspire có trên những nền tảng mạng xã hội nổi tiếng (Hỏi ba/mẹ thêm gì không)</p>
             <div className="contact-info">
-              <a href="#" onClick={(e) => e.preventDefault()}><span><Icon name="phone"/></span><div><small>Điện thoại</small><strong>0xxx xxx xxx</strong></div></a>
-              <a href="#" onClick={(e) => e.preventDefault()}><span><Icon name="mail"/></span><div><small>Email</small><strong>hello@inspire.vn</strong></div></a>
-              <a href="#" onClick={(e) => e.preventDefault()}><span><Icon name="pin"/></span><div><small>Địa chỉ</small><strong>Địa chỉ INSPIRE sẽ cập nhật sau</strong></div></a>
+              <a href="tel:+84903183418"><span><Icon name="phone"/></span><div><small>Điện thoại</small><strong>0903 183 418</strong></div></a>
+              <a href="mailto:dieutritamlyinspire@gmail.com"><span><Icon name="mail"/></span><div><small>Email</small><strong>dieutritamlyinspire@gmail.com</strong></div></a>
+              <a href="https://maps.app.goo.gl/Aqno7dVDGaoqrz5P6" target='_blank'><span><Icon name="pin"/></span><div><small>Địa chỉ</small><strong>K2/16C Bửu Hoà 1, Biên Hoà, Đồng Nai</strong></div></a>
             </div>
           </div>
 
@@ -476,9 +581,9 @@ function App() {
       </main>
 
       <footer>
-        <div className="footer-brand"><span className="brand-mark"><Icon name="leaf" size={21}/></span><div><strong>INSPIRE</strong><small>Tham vấn · Nghỉ dưỡng · Kết nối</small></div></div>
+        <div className="footer-brand"><span className="brand-mark"><Icon name="leaf" size={21}/></span><div><strong>INSPIRE</strong><small>Tham vấn tâm lý · Nghỉ dưỡng | dưỡng sinh · Kết nối</small></div></div>
         <p>© {new Date().getFullYear()} INSPIRE. Nội dung và thông tin liên hệ đang ở phiên bản mẫu.</p>
-        <div className="footer-links"><button onClick={() => scrollTo('counseling')}>Tham vấn</button><button onClick={() => scrollTo('resort')}>Nghỉ dưỡng</button><button onClick={() => scrollTo('contact')}>Liên hệ</button></div>
+        <div className="footer-links"><button onClick={() => scrollTo('counseling')}>Tham vấn tâm lý</button><button onClick={() => scrollTo('resort')}>Nghỉ dưỡng | dưỡng sinh</button><button onClick={() => scrollTo('contact')}>Liên hệ</button></div>
       </footer>
     </div>
   )

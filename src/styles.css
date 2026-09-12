@@ -113,7 +113,7 @@ a { color: inherit; text-decoration: none; }
 .hero-visual { position: relative; height: 560px; z-index: 2; }
 .visual-card { background: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.85); box-shadow: var(--shadow); backdrop-filter: blur(12px); }
 .main-card { position: absolute; inset: 30px 12px 30px 28px; border-radius: 34px; padding: 34px; overflow: hidden; }
-.main-card h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 34px; line-height: 1.08; font-weight: 500; color: var(--green-dark); margin: 18px 0 0; }
+.main-card h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 34px; line-height: 1.08; font-weight: 500; color: var(--green-dark); margin: 18px 0 0; z-index: 99; position: relative;}
 .mini-label { display: inline-block; font-size: 10px; letter-spacing: .16em; font-weight: 700; color: #6e7c73; }
 .river-art { position: absolute; inset: 170px 0 0; background: linear-gradient(180deg, #dae7df 0 35%, #a8c3bc 35% 65%, #6e9991 65% 100%); overflow: hidden; }
 .sun { width: 65px; height: 65px; border-radius: 50%; background: #f3d9a7; position: absolute; right: 60px; top: 34px; }
@@ -215,10 +215,10 @@ a { color: inherit; text-decoration: none; }
 .booking-card > div > p { color: var(--muted); line-height: 1.7; }
 .booking-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .booking-form label { display: grid; gap: 7px; color: #53635a; font-size: 11px; font-weight: 650; }
-.booking-form label:nth-child(3), .booking-form label:nth-child(4), .booking-form button, .form-note { grid-column: 1 / -1; }
+.booking-form label:nth-child(3),.booking-form label:nth-child(4), .booking-form label:nth-child(5), .booking-form button, .form-note { grid-column: 1 / -1; }
 .booking-form input, .booking-form select, .booking-form textarea { width: 100%; border: 1px solid rgba(47,88,69,.14); background: rgba(255,255,255,.78); border-radius: 12px; padding: 12px 13px; outline: none; color: var(--ink); resize: vertical; }
 .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus { border-color: #7e9b89; }
-.form-note { color: #7f8b84; font-size: 9px; text-align: center; }
+.form-note { color: #7f8b84; font-size: 12px; text-align: center; }
 
 .contact-section { display: grid; grid-template-columns: 1fr .8fr; gap: 80px; padding-top: 80px; }
 .contact-copy > p { color: var(--muted); line-height: 1.7; max-width: 640px; }
