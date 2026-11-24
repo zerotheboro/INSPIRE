@@ -1,0 +1,35 @@
+{
+  "privateStorageLeaf": "offline-demo-93c2e45e-430f-4503-8a57-cc0956d22ab3",
+  "privateTrial": "cli-owner-draft",
+  "purpose": "Local owner disclosure only; not authorization or dispatch",
+  "firstTurnBodies": [
+    {
+      "conversation": "C1",
+      "body_sha256": "06350da5873830a8f1d0cc1fc71880fc9c835d4cfca915c72b4e18c7d5f0f8f0",
+      "body_bytes": 3841,
+      "authorized": false
+    },
+    {
+      "conversation": "C2",
+      "body_sha256": "36488d6795c97a9055634191a6434ea547fa59a7b1ffbf7011bfbaf5ca08c8c0",
+      "body_bytes": 3839,
+      "authorized": false
+    },
+    {
+      "conversation": "C3",
+      "body_sha256": "be5935407195397ac1c6ed46ac295bdbe877147f1203775aecf9d0c0f0e7acaf",
+      "body_bytes": 6005,
+      "authorized": false
+    },
+    {
+      "conversation": "C4",
+      "body_sha256": "2c03aeba2af29bdd5ec9acc53c7543e86523aed3b07e7b4922541114a0499a05",
+      "body_bytes": 3918,
+      "authorized": false
+    }
+  ],
+  "laterEightBodies": "Require previously unknown, reviewed model outputs and fresh exact previews",
+  "actualSourceGrants": 0,
+  "paidCalls": 0,
+  "sourceTextCopiedIntoWorkspace": false
+}

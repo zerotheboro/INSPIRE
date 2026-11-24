@@ -1,0 +1,9 @@
+{
+  "executed": true,
+  "exitCode": 0,
+  "passed": true,
+  "scope": "Read-only git apply --check against exact pre-task uncommitted files in an isolated directory outside Git",
+  "workspacePatchApplied": false,
+  "patchSHA256": "4433fa4e11b1439ee973c5768b5c69aad90af6fffd2d5d1e5be19181244a5e67",
+  "diagnostic": ""
+}

@@ -1,0 +1,11 @@
+{
+  "results": [
+    {
+      "check": "Production preview keeps sending closed with no API requests",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "emulatorRequests": [],
+  "chatRequests": 0
+}

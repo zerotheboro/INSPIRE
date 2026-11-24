@@ -1,0 +1,13 @@
+{
+  "executed": true,
+  "passed": true,
+  "exitCode": 0,
+  "durationMs": 65714,
+  "at": "2026-11-14T06:23:31.219Z",
+  "command": [
+    "C:\\Users\\Admin\\OneDrive\\Desktop\\web_develope\\INSPIRE\\.tools.local\\python312\\python.exe",
+    "-X",
+    "utf8",
+    "tests/inspire-research.test.py"
+  ]
+}

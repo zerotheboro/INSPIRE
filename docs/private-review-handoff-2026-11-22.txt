@@ -1,0 +1,110 @@
+INSPIRE — private knowledge milestone handoff, 22 November 2026
+
+Generation is BLOCKED. No live calls, API-key fallback, new spending permission,
+source approval, deployment, commit or push were made. Product code is unchanged
+by this handoff. The old one-attempt release does not authorize a new session.
+
+RUN ON THE EXISTING INSPIRE MACHINE
+1. npm.cmd ci
+2. npm.cmd --prefix functions ci
+3. node tests/start-inspire-emulators.mjs
+4. In another PowerShell terminal:
+   node --import ./tests/register-ts.mjs tests/import-inspire-knowledge.mjs --discover
+   $env:INSPIRE_PRIVATE_TEST = '1'
+   $env:INSPIRE_LUNA_API_PREVIEW = '0'
+   npm.cmd run dev -- --host 127.0.0.1 --port 5173 --strictPort
+5. Open http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+
+The father can use synthetic Vietnamese situations, follow-ups and corrections.
+Replies are SIMULATION. Held, permission-filtered model input is under “Dành cho
+con”. Refresh clears the conversation. There is no per-message approval form.
+The existing private Controller package and Python dependencies are required for
+its native checks; they are deliberately not redistributed in this ZIP. On a new
+machine their absence is a concrete dependency, not an instruction to reconstruct
+canonical documents. Java 21+, installed Node and lockfile versions are recorded
+in the review evidence. Portable runtimes and emulator data are excluded.
+
+EXECUTED RESULTS — DO NOT COMBINE THESE INTO A COMPLETE-SUITE PASS
+- Initial broad run: 48 passed / 49, one native Controller failure. Original log
+  retained unchanged. The log proves ATTEMPT_FAILED, not its precise root cause.
+- Isolated native Controller rerun: 1 passed / 1 with injected offline responses.
+  This does not convert the initial complete run into a pass.
+- Final knowledge/conversation/recovery checks: 4 / 4 passed.
+- Separate account/emulator rerun: 10 / 10 passed.
+- Actual local HTTP simulation: three Vietnamese turns, each HTTP 200, including
+  follow-up/correction and native simulation Controller receipts; zero model calls.
+- Builds/lint/public-file checks have their own logs. The November 21 redirected
+  website build printed completion but its PowerShell wrapper returned 1 after
+  stderr warnings; the November 22 subprocess result records the actual exit code.
+- Current visual verification: NOT VERIFIED. Computer Use stopped because it
+  could not reliably establish Chrome's URL. Included November 11 screenshot is
+  historical evidence only, not evidence of the current retrieval diagnostics.
+
+CONTENT PROPOSED FOR THE FIRST TEST — ONE COLLECTION, NOT THE WHOLE LIBRARY
+Proposed collection: website-counseling-first-test-v1 (NOT APPROVED).
+One actual content file: docs/counseling-topics-source.md
+Document ID: website-counseling
+SHA-256: 043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4
+Existing status: published-supporting / supporting-retrieval for local use.
+External-use permission: unresolved; remains ineligible for external retrieval.
+It contains these six reader-facing topics, not six separate source documents:
+  Quan hệ với chính mình; Đời sống nội tâm; Quan hệ với người khác;
+  Vận hành và hành động; Phương hướng, giá trị và lựa chọn; Ý nghĩa và cách sống.
+
+DRAFT / REVIEW-REQUIRED CONTENT — SEPARATE, NOT IN THE PROPOSED COLLECTION
+  INSPIRE-07 v1.0 + 07-A: Quan hệ với chính mình.
+  INSPIRE-08 v1.0 + 08-A: Đời sống nội tâm.
+  INSPIRE-09 v1.0 + 09-A: Quan hệ với người khác.
+  INSPIRE-10 v1.0 + 10-A: Vận hành và hành động.
+  INSPIRE-11 v2.0: Phương hướng, giá trị và lựa chọn (older 11 omitted here).
+  INSPIRE-12 v2.0: Ý nghĩa và cách sống.
+  Bản đồ tổng thể 14 định hướng, 17/11/2026: explicitly a working draft.
+  Content patch / 458-lesson material: review-only; not authoritative runtime text.
+All retain their recorded restrictions. Amendments remain linked, not counted as
+extra independent content documents. Source-list.json preserves exact IDs/hashes.
+Code, archives, management instructions, duplicate/older versions and unverified
+binary content are outside this short first-test list; nothing is deleted or
+silently declared superseded in the source library. This is not a new Core audit.
+
+MỘT QUYẾT ĐỊNH VỀ BỘ NGUỒN — ĐỀ XUẤT, CHƯA ĐƯỢC ĐỒNG Ý
+Đề nghị cho phép dùng nội bộ và gửi sang OpenAI qua đăng nhập ChatGPT các đoạn
+tham khảo từ đúng bản “Các chủ đề tham vấn trên website INSPIRE” nêu trên, cho
+một cuộc trò chuyện giả định tối đa ba lượt gọi mô hình, không tự thử lại.
+Mỗi lượt chỉ chọn tối đa ba đoạn liên quan, mỗi đoạn tối đa 1.400 ký tự; kèm tên
+nguồn, mã tài liệu, phiên bản, dấu kiểm tra nội dung và vị trí đoạn để đối chiếu.
+Các đoạn có thể thuộc sáu chủ đề trên; hệ thống tự chọn theo câu hỏi, các lượt
+trước và đính chính. Danh sách đoạn chính xác có trong export-candidates.json.
+Không gửi cả thư viện. Cùng các đoạn đó có câu hỏi/lịch sử giả định, sở thích
+xưng hô/ngôn ngữ được cho phép và chỉ dẫn tiếng Việt của phần mềm. Kết nối còn
+có thông tin xác thực và dữ liệu kỹ thuật mạng thông thường của dịch vụ.
+Không gửi hồ sơ cá nhân, dữ liệu khách thật, đặt lịch, bản nháp, quy tắc vận hành
+chưa được duyệt, MOI, bản tái dựng hay kho 458 bài. Các tài liệu tham khảo không
+được dùng để tự cấp quyền can thiệp hoặc đổi quy tắc.
+Mức đề nghị: tối đa 512 token trả lời/lượt và KHÔNG phát sinh thêm tiền, không
+dùng tín dụng mua thêm, không tự nạp. Nếu chưa chứng minh được điều kiện này,
+hoặc chưa bảo đảm giới hạn kỹ thuật, vẫn không chạy. Đồng ý bộ nguồn này không
+tự mở phiên thử; cần quyết định cho chạy riêng sau khi đóng các chỗ còn thiếu.
+
+TECHNICAL BLOCKERS
+- Installed Codex 0.171.0-alpha.13 schema exposes no typed turn output-token cap.
+  A 2,000-character validator, outputSchema or turn/interrupt cannot guarantee
+  512 generated tokens or stop billing at that boundary.
+- turn/start has no typed retry-disable field; error notifications expose willRetry.
+  Official provider configuration documents request_max_retries and
+  stream_max_retries. Their effect on the managed ChatGPT path, WebSocket
+  reconnection and all replacement-attempt layers is not verified here.
+  https://learn.chatgpt.com/docs/config-file/config-reference
+- There is no connected app-server generation transport/event-to-Controller
+  delivery binding or durable three-attempt session ledger. Monthly/guest quotas
+  and the older API one-shot marker are not substitutes for that ledger.
+- Native preflight, scope guard and exact-output receipts passed offline injected
+  candidate tests; these do not prove live ChatGPT delivery or clinical quality.
+- PDF/DOCX/ZIP source receipts are preserved but not section-extracted.
+
+OWNER / ACCOUNT DECISIONS
+- Decide once on the exact proposed content collection above. No approvals have
+  been inferred, and all 71 real-source receipts remain externally ineligible.
+- Establish included-usage-only billing with no purchased-credit consumption,
+  auto-top-up or additional charge. Prior hasCredits:false is not that guarantee.
+- After technical blockers are resolved, separately release the bounded session.
+  Original US$0.0016065 authorization is neither increased nor reused.

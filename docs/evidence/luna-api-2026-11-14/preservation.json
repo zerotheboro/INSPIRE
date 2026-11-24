@@ -1,0 +1,38 @@
+{
+  "baseline": "Exact pre-API-task working-tree checkpoint, not Git HEAD",
+  "earlierFilesChecked": 276,
+  "earlierFilesByteUnchanged": 260,
+  "focusedChangedFiles": [
+    "REVIEW.md",
+    "docs/inspire-luna-api.md",
+    "functions/inspire_luna_bridge.py",
+    "functions/inspire_research_controller.py",
+    "functions/package.json",
+    "functions/src/inspireChatContract.ts",
+    "functions/src/inspireChatSimulation.ts",
+    "functions/src/inspireKnowledge.ts",
+    "functions/src/inspireLocalService.ts",
+    "functions/src/inspireLunaApi.ts",
+    "functions/src/inspireLunaController.ts",
+    "functions/src/inspireLunaService.ts",
+    "src/pages/AIInspire.tsx",
+    "src/services/InspireAIconnect.ts",
+    "src/services/inspireConversation.ts",
+    "src/styles.css",
+    "tests/import-inspire-knowledge.mjs",
+    "tests/inspire-consolidation.test.mjs",
+    "tests/inspire-luna-api.test.mjs",
+    "tests/inspire-luna-http.mjs",
+    "tests/inspire-luna-production.mjs",
+    "tests/package-inspire-luna-review.py",
+    "tests/verify-inspire-luna-api.mjs",
+    "vite.config.ts"
+  ],
+  "generatedBuildCachesExcluded": [
+    "tsconfig.app.tsbuildinfo",
+    "tsconfig.node.tsbuildinfo"
+  ],
+  "unexpectedEarlierChanges": [],
+  "missingEarlierFiles": [],
+  "Z_PROJECT": "Not accessed or modified by this milestone"
+}

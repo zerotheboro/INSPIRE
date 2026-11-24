@@ -1,0 +1,3 @@
+Verified 11 exact section candidates; ZERO export/runtime approvals created.
+
+EXIT_CODE=0

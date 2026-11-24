@@ -1,0 +1,26 @@
+{
+  "executedAutomatedTests": 79,
+  "passedAutomatedTests": 79,
+  "testCountsFromExecutedLogs": {
+    "core": 46,
+    "consolidation": 5,
+    "research": 28
+  },
+  "bothBuildsPassed": true,
+  "touchedBackendLintPassed": true,
+  "privateAndProductionHTTPPassed": true,
+  "realProviderRequests": 0,
+  "generationArmed": false,
+  "ownerAuthorizationCreated": false,
+  "browser": "NOT VERIFIED",
+  "retainedFailure": "core-concurrent-timeout.txt: an earlier parallel suite run hit the bounded 20-second native preflight; shared-emulator file suites are now serialized, while explicit concurrency regressions remain concurrent",
+  "preExistingLimitations": [
+    "Existing >500 KB frontend bundle advisory",
+    "Global legacy booking lint failures were not part of touched-backend lint"
+  ],
+  "unverified": [
+    "Actual API authentication/model entitlement/billing receipt",
+    "Generated Vietnamese quality and clinical validity",
+    "Desktop/mobile browser rendering"
+  ]
+}

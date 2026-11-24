@@ -1,0 +1,575 @@
+{
+  "purpose": "INSPIRE review only; no deployment/model/source permission",
+  "root": ".",
+  "manifestSelfExcludedFromHashList": true,
+  "excluded": [
+    "node_modules",
+    "secrets/credentials",
+    ".git",
+    ".env*",
+    "private originals/raw",
+    "runtime databases/exports",
+    "browser profiles",
+    "portable tools",
+    "generated output/build caches",
+    "real user data"
+  ],
+  "secretScan": "Executed finite path/PEM/provider-key scan; public Firebase web configuration and explicit synthetic test fixtures are not live credentials.",
+  "files": [
+    {
+      "relativePath": ".firebaserc",
+      "bytes": 60,
+      "sha256": "906233a9b8d6b3129c4eb0e7c0c18ec5befd2f866ce2f7fb71b6f592454d18ea"
+    },
+    {
+      "relativePath": ".gitignore",
+      "bytes": 342,
+      "sha256": "b62d3856e2b3d02447b37070f92399e8da06e0d7ce336f866a4f80a6ae5e2739"
+    },
+    {
+      "relativePath": "README.md",
+      "bytes": 836,
+      "sha256": "d011fc840f6ef618ed8fdc1ced8ac488bcbfcdd35d558595a06ffc9fcc7163a1"
+    },
+    {
+      "relativePath": "REVIEW.md",
+      "bytes": 10107,
+      "sha256": "c326b5ee772b72762216270449c3e89c246c9e7cc8f7a05f0f0aedb97bb3a596"
+    },
+    {
+      "relativePath": "UNRESOLVED.md",
+      "bytes": 1418,
+      "sha256": "d6ab1dea38c07e1bb4ecd337c5e3d350ee7d246626717b612a738d84bd7484de"
+    },
+    {
+      "relativePath": "ads.txt",
+      "bytes": 58,
+      "sha256": "3ec52e319aacafdcfa12c446ef811e75d1c495c2531e5d7fe3ff4c581c97931a"
+    },
+    {
+      "relativePath": "docs/counseling-topics-source.md",
+      "bytes": 35014,
+      "sha256": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/account-profile-desktop.png",
+      "bytes": 239920,
+      "sha256": "14605f753b02cc7691c4c33f76c9aea5dc4d15f420e807946c7408ca6dc4d74f"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/account-profile-mobile.png",
+      "bytes": 175059,
+      "sha256": "1deb0ba1f3fba4cb99ca79d2637b045c9576e6b9e73600869dccf2b593a374cc"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/browser-results.json",
+      "bytes": 2004,
+      "sha256": "d6f8b65359e790b12503a63dbade642d387d8bb55a9e6511ad619334e31d28ac"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/closed-production.png",
+      "bytes": 172846,
+      "sha256": "01afa4f9777b7ad4fabecaf4f1ab1cc24636cc56a8fa786263dafe7fd108978a"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/conversation-desktop.png",
+      "bytes": 205751,
+      "sha256": "d048d98f613b3085b1d986bf9de19208334df803c4aa526998055237f9b34afb"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/conversation-mobile.png",
+      "bytes": 137607,
+      "sha256": "e01399da7420a2d833036db238c54d2d6e2a5e735e02b2a7e0ebf2988a73f58a"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/production-results.json",
+      "bytes": 199,
+      "sha256": "b43a964e384a60b3c7b4a90322bbc67fb53456538b2449fe35af7b12eb6c5e21"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/retry-desktop.png",
+      "bytes": 190068,
+      "sha256": "0e2857d313c7ba84a0fbee4d6fd66064c7ed259b6dda8fc9f543c943ceff0e56"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-chat/welcome-desktop.png",
+      "bytes": 204665,
+      "sha256": "9f9f2f1ac69323e9edb4c938a3a7086c50be0b53e4867c9ff0947ef05d04a960"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/adapter-input-trace.json",
+      "bytes": 2432,
+      "sha256": "e915dc522f9ef6d7a0cc5a39d3df5f064cc5d0e0753aab043b1ee3adfc7a9da3"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/backend-lint-full.json",
+      "bytes": 28445,
+      "sha256": "4467c1fdb8d14b1d4ca3d3512a84970880cbd32f65c937340f887a89962f5a64"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/backend-lint-full.txt",
+      "bytes": 427,
+      "sha256": "1c5e6bc231edef9d5cf7551b21a180effa1333330ff404ac76a5ddd916c5666c"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/backend-lint-touched.txt",
+      "bytes": 321,
+      "sha256": "3d36942091a9d7c64f7c94fef626be81d7d61d83f640e8f2fd9996c6637b1fb5"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/complete-working-tree.patch",
+      "bytes": 632182,
+      "sha256": "3dd89d1020c98d9c2bb1cba8b84788d373aabd396f91e254aff8fd39c0489ad4"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/conversation-tests.txt",
+      "bytes": 1922,
+      "sha256": "70074b4529324fdbd9054f86385b33e69f40410ec89740cd13a0e68348480027"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/development-browser.txt",
+      "bytes": 1247,
+      "sha256": "76f90013efae7abacb0bfa339c086f5bd3e4eebcbabadd9b4c07b5fb34ee4f8e"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/emulator-tests.txt",
+      "bytes": 2397,
+      "sha256": "458cdf5b40b51b4aa0185728898dff5f342ea53e64432d6d0ad3af2e085e053c"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/executed-results.json",
+      "bytes": 2442,
+      "sha256": "1e8196ca8487a89806867f2efe32740084c4b752b5f629fad77d32cd615dc272"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/functions-build.txt",
+      "bytes": 148,
+      "sha256": "1bb100785e347a0dfa78182bac2b345419cf5a4c9bedf2c693167fa865fd839e"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/lint-baseline-comparison.json",
+      "bytes": 5245,
+      "sha256": "9701963c179d0c5377e2c793aaa1b1b1a5578d1d2c62e18e98b29eb07deeef57"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/production-browser.txt",
+      "bytes": 153,
+      "sha256": "76d1588c1fe94b3478d5a673750944d0a9048be4f448c4ff7cf3e08ca62e0693"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/production-build.txt",
+      "bytes": 926,
+      "sha256": "030de33f3340df325fbcdf6f7ae3c57e73079ec2fa7982d3f96059b08c847099"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/public-build-audit.json",
+      "bytes": 749,
+      "sha256": "a4295ad3c29e6c49c5be03105e335836df751b02a0202eac105523f5e2463106"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/public-build-audit.txt",
+      "bytes": 159,
+      "sha256": "84bd7f4fabe105d166e436617ca7e6870ac5a7bfcf63ec461fca6d3c0e2ce477"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/root-lint-baseline.json",
+      "bytes": 172,
+      "sha256": "b877b4ec1671600471f3559e97f8d427e1c51ffd76b63b4f043630e566c2e14c"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/root-lint-config-preexisting.txt",
+      "bytes": 1173,
+      "sha256": "b49eefbc19c0081835aefcfff4382d10920046155102d51cf131966132eeecf9"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/source-integrity-and-permissions.json",
+      "bytes": 5565,
+      "sha256": "0dfa1930d3696a84ebe0be2abef7e212b9e2d5c6e2523bd193772b62802ba3ef"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/source-integrity-audit.txt",
+      "bytes": 204,
+      "sha256": "02f11d508079e13325d3f82d93242980f9e08be2593d2d3d84a172f5c1647869"
+    },
+    {
+      "relativePath": "docs/evidence/inspire-review/targeted-consolidation-tests.txt",
+      "bytes": 805,
+      "sha256": "0ad85249350a2f18c8d9e5de01e54ef8e05516cc89b7cb137620ff953b9dfbc2"
+    },
+    {
+      "relativePath": "docs/inspire-chat-prototype.md",
+      "bytes": 8295,
+      "sha256": "a60c2f3c471ae981a83b0be482ad1ab117ee7a3482ced5cf75107d50be2ac0b9"
+    },
+    {
+      "relativePath": "docs/inspire-service-emulator.md",
+      "bytes": 12567,
+      "sha256": "e563f7a523d85b46367cf7f5bfc49e1fab44956a975bcb06ed9bc01aa33404aa"
+    },
+    {
+      "relativePath": "eslint.config.js",
+      "bytes": 758,
+      "sha256": "da0cbf3213f2994741024e2aa5165d017e0345f389dcd2f8a0db97fee7289d1b"
+    },
+    {
+      "relativePath": "firebase.json",
+      "bytes": 637,
+      "sha256": "3ae960dc9e395b7044cabdec555cfceb834494bb1c94b814c9a88e59006c4a71"
+    },
+    {
+      "relativePath": "firestore.rules",
+      "bytes": 306,
+      "sha256": "9c77df62a617eb94110da7544c86be7de195ab128820165543963d595e07e954"
+    },
+    {
+      "relativePath": "functions/.eslintrc.js",
+      "bytes": 836,
+      "sha256": "aa6c4835ad627601a00ebeaef5a23d3de45609c7bc88d063ee4a2e04582a6a5c"
+    },
+    {
+      "relativePath": "functions/.gitignore",
+      "bytes": 153,
+      "sha256": "efcf3d0efaa4287fef0d8170018c5ee5189a567d55d04098b36f82e5ed768b8e"
+    },
+    {
+      "relativePath": "functions/lint.cjs",
+      "bytes": 524,
+      "sha256": "80f4a912bcb49ca65687e5eea1363d32e98459aa7187a24bc7351704115e7d91"
+    },
+    {
+      "relativePath": "functions/package-lock.json",
+      "bytes": 377727,
+      "sha256": "46e99cc9bbcb1dbb5f6a7eff281d89bad1ba090ccacf32fd8caa36594442b259"
+    },
+    {
+      "relativePath": "functions/package.json",
+      "bytes": 1126,
+      "sha256": "e94ae12a356a77ac8e66c8f7d6524466207841d17e540f3f4d9b260f13241d69"
+    },
+    {
+      "relativePath": "functions/src/index.ts",
+      "bytes": 2892,
+      "sha256": "45702580b57cb570cbb01e51cd4e67ef13c33f3e1daa8a16dd98f73e37ccb4a0"
+    },
+    {
+      "relativePath": "functions/src/inspireAI.ts",
+      "bytes": 4905,
+      "sha256": "0e27d8b9fda09bdc60a3623403f9f97e6aa5523a6209d5c4d4fefb5c4b587797"
+    },
+    {
+      "relativePath": "functions/src/inspireAccount.ts",
+      "bytes": 12938,
+      "sha256": "5f96a1a0c4bad04aee4f01cd0a8c6f3f5f52d4abbc647dc27b1af5953f317ac4"
+    },
+    {
+      "relativePath": "functions/src/inspireChatContract.ts",
+      "bytes": 6157,
+      "sha256": "6cd74b1a2d71e17be24960560face5a3ddaf2c69b42d537a18920b4d0ce70962"
+    },
+    {
+      "relativePath": "functions/src/inspireChatSimulation.ts",
+      "bytes": 8129,
+      "sha256": "18acdca82746298547610a169626473ede2743cd546a58bf34ac0775a0619e8e"
+    },
+    {
+      "relativePath": "functions/src/inspireKnowledge.ts",
+      "bytes": 6648,
+      "sha256": "957775ae1e8a62a26f9d3a7e27b097c207e7ce2f6b7d4e9607732fd31e73dfde"
+    },
+    {
+      "relativePath": "functions/src/inspireLocalService.ts",
+      "bytes": 4734,
+      "sha256": "b870b8bfe92b68047c114d2bc1844f7550b14c33118246b76fb2072c5866b101"
+    },
+    {
+      "relativePath": "functions/tsconfig.dev.json",
+      "bytes": 126,
+      "sha256": "756db75968bc16be8bb8ff7b065208f9e462f16d82c2054d6fb07db23b5ae5fd"
+    },
+    {
+      "relativePath": "functions/tsconfig.json",
+      "bytes": 345,
+      "sha256": "01974fd71ddc8d9b4b611dff73b40b40f1975c990de6089510ab71c9e6b1f863"
+    },
+    {
+      "relativePath": "index.html",
+      "bytes": 989,
+      "sha256": "cca1e5e08358af579fe708b31e9a3f30e6269d328c9c23cf4e9f22e6b55185f9"
+    },
+    {
+      "relativePath": "package-lock.json",
+      "bytes": 394895,
+      "sha256": "4c617867b9246443e0a78a8a3e821e92f049a517d637d2b7dc1d9e7733b92515"
+    },
+    {
+      "relativePath": "package.json",
+      "bytes": 1122,
+      "sha256": "f1ffe526c36057b8ef16c8e5b0879a86e8533204c9e5830537a273d7d7eb496b"
+    },
+    {
+      "relativePath": "public/404.html",
+      "bytes": 737,
+      "sha256": "378396f35ff4c7a691bd9917b3680069e054fca2596b9df195c5162277101d0a"
+    },
+    {
+      "relativePath": "public/CNAME",
+      "bytes": 16,
+      "sha256": "4628b9844cc2cad1104123eecbae9def2488eef436442e737a3dea9dc7049321"
+    },
+    {
+      "relativePath": "public/retreat/Inspireriver.jpg",
+      "bytes": 174313,
+      "sha256": "d0f2c4fe1f3aa80613aec19fc4c13e1bc8f0fa5e22963708b438151e7a4ad144"
+    },
+    {
+      "relativePath": "public/retreat/backyard (2).jpg",
+      "bytes": 637134,
+      "sha256": "a490016a21332a07a2f03d9e87a8739236c779eb80c16a378e4dd4dce1359701"
+    },
+    {
+      "relativePath": "public/retreat/backyard.jpg",
+      "bytes": 348912,
+      "sha256": "174e11e258abab0d5691ed0171fd3310990d17a66347a749c3e1d7d05c277d68"
+    },
+    {
+      "relativePath": "public/retreat/bedroomlandscape.jpg",
+      "bytes": 186602,
+      "sha256": "9a723b7dcbf652e775415f622644840976f07482a7af39e0605817c0ecad1656"
+    },
+    {
+      "relativePath": "public/retreat/bedroomportrait.jpg",
+      "bytes": 179295,
+      "sha256": "2900efd0cc3e8bd18487273b479f0b5b3b5c8a815437abf25efad4ad66f30c93"
+    },
+    {
+      "relativePath": "public/retreat/counselroom.jpg",
+      "bytes": 103722,
+      "sha256": "59ce6fb2d924c28fc9f523759293ccdc83fe22cf57c28ea7c0823be5fa0cae17"
+    },
+    {
+      "relativePath": "public/retreat/frontyard (2).jpg",
+      "bytes": 493970,
+      "sha256": "744e7cc54d6118d6ed2ceb9cd0357f213c29b20a2cd951f5b57bd87aab2eb18b"
+    },
+    {
+      "relativePath": "public/retreat/frontyard.jpg",
+      "bytes": 302712,
+      "sha256": "a728647ce4f1931f6c34bcb85127d96a3c36e20934ee15ef21b4cbdfb53ed9a6"
+    },
+    {
+      "relativePath": "public/retreat/outsidebedroom.jpg",
+      "bytes": 155714,
+      "sha256": "b9ff829b32ee89be3517bdbe93b5fb630c18eb323db299ae426da851ae33a345"
+    },
+    {
+      "relativePath": "public/retreat/sauna-wide.jpg",
+      "bytes": 171128,
+      "sha256": "04399abe369f59930f21f34784c299f110bdf54b5214c8924a6439842fc08fbd"
+    },
+    {
+      "relativePath": "public/retreat/sauna.jpg",
+      "bytes": 216682,
+      "sha256": "ea3ce0e63ab0ddde0e1fab821d457fb6ea517c6b6318382b54942169729d9022"
+    },
+    {
+      "relativePath": "src/App.tsx",
+      "bytes": 901,
+      "sha256": "9b20dad92392fef8921ac5fe5634daf653c5fadd03401a22b613e4961d1efa93"
+    },
+    {
+      "relativePath": "src/components/Contact.tsx",
+      "bytes": 3146,
+      "sha256": "0d74ac94bb7e255d0496ee1b4e03d5c9d0b1df18451e357e543425278cd093c7"
+    },
+    {
+      "relativePath": "src/components/CounselingLongImage.tsx",
+      "bytes": 2903,
+      "sha256": "e914313bd26e683f253a15c48028a2526f3e011c473a65d3fcf431e4a37deccf"
+    },
+    {
+      "relativePath": "src/components/Footer.tsx",
+      "bytes": 889,
+      "sha256": "076abf8e0ee5c3282350a34c9b43b257da377cafd28b7404a3291a190dd49a4f"
+    },
+    {
+      "relativePath": "src/components/Header.tsx",
+      "bytes": 2334,
+      "sha256": "d97bd2983f73a8ac86b02f311f133e94307bccce360d3b0ff3db369e275c800a"
+    },
+    {
+      "relativePath": "src/components/Icon.tsx",
+      "bytes": 4011,
+      "sha256": "e03b1e87c8bef6b4c6603e35596ea98f5e03fb65469bb5ce4a48bb2f550c8b1e"
+    },
+    {
+      "relativePath": "src/components/InspireAccountPanel.tsx",
+      "bytes": 7785,
+      "sha256": "3f9cda2f02bb7aa91c63eddf7fd01c7c67b1060440cc1fc38205f54570cd7e41"
+    },
+    {
+      "relativePath": "src/components/ScrollToTop.tsx",
+      "bytes": 660,
+      "sha256": "07fc029783fbb9fd8ddd88b2c39e18c201ffa9a7e0db8a2cef2f609ddfcd0218"
+    },
+    {
+      "relativePath": "src/data/counselingTopics.ts",
+      "bytes": 5432,
+      "sha256": "fa535216f168b811e4b9abfd7acf42ef8b161b82e6ed04681263995e3f8e13fe"
+    },
+    {
+      "relativePath": "src/firebase.ts",
+      "bytes": 1115,
+      "sha256": "b8d4677bcfe597bed63f2dacba99f0a33769b057f1aed395d745409f359da0ca"
+    },
+    {
+      "relativePath": "src/global.d.ts",
+      "bytes": 104,
+      "sha256": "3d7007698b5d0c2bf7037d9bb4e9fa966bee9f7f992f85a5c39f524d5d2f44fb"
+    },
+    {
+      "relativePath": "src/main.tsx",
+      "bytes": 324,
+      "sha256": "c2eca6c12459ea2df31efb7a26da714acc4587daf43ccf15eea0965c95813a6e"
+    },
+    {
+      "relativePath": "src/pages/AIInspire.tsx",
+      "bytes": 9907,
+      "sha256": "0c4ff980fea3a76e7aaa093087a45beb57ce8b81812a66ffd459c7ff286ef107"
+    },
+    {
+      "relativePath": "src/pages/CounselingTopic.tsx",
+      "bytes": 8074,
+      "sha256": "60760070c0092f32d56590b36076c81022611b98723d721e4c350eb000c40629"
+    },
+    {
+      "relativePath": "src/pages/Home.tsx",
+      "bytes": 15110,
+      "sha256": "65c528bdbf7ba8aa68d69a059e9df7d1d897bed490404dff37296930fbb1b9df"
+    },
+    {
+      "relativePath": "src/pages/NghiDuongDuongSinh.tsx",
+      "bytes": 18705,
+      "sha256": "8deb63a39984ccab968d06b7404f8f10789b6c9a3e920a5aa0302ba4d1218844"
+    },
+    {
+      "relativePath": "src/pages/ThamVanTamLy.tsx",
+      "bytes": 19376,
+      "sha256": "090ce1cff36572eb9ba9fe71020b87be5503532dd4a8a05737400181396ccc3a"
+    },
+    {
+      "relativePath": "src/services/InspireAIconnect.ts",
+      "bytes": 2405,
+      "sha256": "20cf262568a3d8663791dea34aed35d0339131577393a1bd0eaeadd5c2a7a5d6"
+    },
+    {
+      "relativePath": "src/services/formService.ts",
+      "bytes": 619,
+      "sha256": "b38588913b435586d5e42aa7f34f9317cc156365756799202923bc35fe443035"
+    },
+    {
+      "relativePath": "src/services/inspireConversation.ts",
+      "bytes": 4500,
+      "sha256": "934800b1b0559d5336a43139069c7302e1b3114c417e9e8d011c05a8cc0b8dd4"
+    },
+    {
+      "relativePath": "src/services/inspireIdentity.ts",
+      "bytes": 4579,
+      "sha256": "4298ac1c3922ea73493442c0489fae871ee5fbb4f1fa66905844f21908238e82"
+    },
+    {
+      "relativePath": "src/styles.css",
+      "bytes": 81046,
+      "sha256": "ddce12afcc8d62dcb67e84d34875954ae5945920c393f388c9b3840c5870ba70"
+    },
+    {
+      "relativePath": "src/utils/exportCounseling.ts",
+      "bytes": 3666,
+      "sha256": "30f1da64d7a8508edf469ae74a66b71f426f486cf29d62b77322ba43caa946ed"
+    },
+    {
+      "relativePath": "tests/import-inspire-knowledge.mjs",
+      "bytes": 2580,
+      "sha256": "36300870f3ca2ebdab2d466b7153929e231dac2d607accc00b5c94ea39d80403"
+    },
+    {
+      "relativePath": "tests/inspire-browser.mjs",
+      "bytes": 20566,
+      "sha256": "b90469dac4b2ec8bed6c7f21f62456daeaedb601c9bb89667e8e78e6416f901e"
+    },
+    {
+      "relativePath": "tests/inspire-build-audit.mjs",
+      "bytes": 1495,
+      "sha256": "d11e4eb2d8c4d645b4a4d12345751f45341eff8ea98eca778a2290547a04f2dc"
+    },
+    {
+      "relativePath": "tests/inspire-chat.test.mjs",
+      "bytes": 13924,
+      "sha256": "adaadcc47070c6909598fcb43ef59ba1cbcd44eef2b11c0a863374d6604ca5cf"
+    },
+    {
+      "relativePath": "tests/inspire-consolidation.test.mjs",
+      "bytes": 9704,
+      "sha256": "2c81653ceb83f95f5b3fa97b177b36e6b1c4db2a41341cab24ea052bb396a22e"
+    },
+    {
+      "relativePath": "tests/inspire-diff.mjs",
+      "bytes": 1276,
+      "sha256": "321759565c186988dd454f2ab89f06902160bb403ac9e944c8952429aea22983"
+    },
+    {
+      "relativePath": "tests/inspire-emulator.test.mjs",
+      "bytes": 16845,
+      "sha256": "314758c8a3c5412db1af2648293b03e56cbf33bc97cf019c25235421944d6c46"
+    },
+    {
+      "relativePath": "tests/inspire-review-package.mjs",
+      "bytes": 3501,
+      "sha256": "3a2bfc03966424fba65858d9532364e6cdca0b9d030c672701bc090b0d197e91"
+    },
+    {
+      "relativePath": "tests/inspire-review-verify.mjs",
+      "bytes": 4552,
+      "sha256": "03731614955dbd6415e49057e491de4c3f8f27417598f4aa9f8d6185c7521b8f"
+    },
+    {
+      "relativePath": "tests/inspire-source-audit.mjs",
+      "bytes": 4524,
+      "sha256": "51769cec993ceb10fdf128e2692781b56b9144603023961c42312505f02c1bed"
+    },
+    {
+      "relativePath": "tests/package-inspire-review.mjs",
+      "bytes": 3201,
+      "sha256": "1d0049c9df738bdc1d95989f87b6066aec4da637aeac6d8c95b2c20972d2f9f4"
+    },
+    {
+      "relativePath": "tests/register-ts.mjs",
+      "bytes": 868,
+      "sha256": "2d63677a9d6911afa8f4c3cc2f5cab2ace79c5088e3dce3843f8b96411c21cb9"
+    },
+    {
+      "relativePath": "tests/start-inspire-emulators.mjs",
+      "bytes": 1012,
+      "sha256": "bc58569b5cd3c320e86158240fea1d79cc39a3162bca210fb1eda065a6643120"
+    },
+    {
+      "relativePath": "tsconfig.app.json",
+      "bytes": 507,
+      "sha256": "a7266d1c85fa6947c70073256d9a73e4c459e97b0b4ef24b5c48dcab498ef4c5"
+    },
+    {
+      "relativePath": "tsconfig.json",
+      "bytes": 119,
+      "sha256": "770b4140bbb581e2dfd9ea9946ffc9c75a1d86ba7d2db5f77c83e37cbdf9d808"
+    },
+    {
+      "relativePath": "tsconfig.node.json",
+      "bytes": 220,
+      "sha256": "b5fcaec8aa95889b9ea8e91e47523341c18c9c71dd3d6e4b86352f33c56991c3"
+    },
+    {
+      "relativePath": "vite.config.ts",
+      "bytes": 3775,
+      "sha256": "b941279814cfefcd29b71b37e3aea4c7f169e048665c73f5e49d1730e7242993"
+    }
+  ]
+}

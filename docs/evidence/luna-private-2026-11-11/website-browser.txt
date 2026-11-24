@@ -1,0 +1,21 @@
+PASS Desktop welcome and simulation disclosure 
+PASS Multi-turn context, loading and duplicate submission prevention 
+PASS Explicit correction preserves original message 
+PASS Actual lost HTTP response and explicit replay Same user and operation; error outside timeline
+PASS Conversation switching and independent drafts 
+PASS 390px mobile layout, 18px message text, 48px controls and conversation navigation { body: '18px', send: 48, menu: 48 }
+PASS Refresh resets prototype conversations and drafts 
+PASS Browser email registration/link, optional profile, signout/reload and sign-in No replacement guest allowance; registered allowance 30
+PASS Six counselling topics; PDF, share handler and real PNG export [
+  'Quan hệ với chính mình',
+  'Đời sống nội tâm',
+  'Quan hệ với người khác',
+  'Vận hành và hành động',
+  'Phương hướng, giá trị và lựa chọn',
+  'Ý nghĩa và cách sống'
+]
+PASS Retreat page and booking form render No booking submitted
+PASS No provider/booking calls or unhandled browser exceptions 
+11 browser checks passed. Evidence: C:\Users\Admin\OneDrive\Desktop\web_develope\INSPIRE\docs\evidence\luna-private-2026-11-11\website-browser
+
+EXIT_CODE=0

@@ -1,0 +1,16 @@
+✔ Luna preparation preserves ordered history, correction and separate preferences; no private source/profile/instructions leave (3.529ms)
+✔ Invalid roles, authority, corrections, history mismatch, oversized inputs and replay cannot prepare generation (0.8409ms)
+✔ Candidate binding and exact bytes are checked but no Controller/delivery permission is claimed (0.8385ms)
+✔ Real Luna generation and use in the simulation service stay closed without any API fallback (2.0329ms)
+✔ Private testing requires server opt-in and observed loopback; rejects remote, rebinding, cross-origin and production (0.8087ms)
+✔ Actual development middleware rejects private remote requests before identity or quota processing (5.774ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4774.3447
+
+EXIT_CODE=0

@@ -1,0 +1,18 @@
+{
+  "checkedOn": "2026-11-14",
+  "model": "gpt-6-luna",
+  "primarySources": [
+    "https://developers.openai.com/api/docs/models/gpt-6-luna",
+    "https://developers.openai.com/api/docs/pricing"
+  ],
+  "standardUSDPerMillion": {
+    "input": 0.1,
+    "output": 0.5
+  },
+  "reservedInputUSDPerMillion": 0.25,
+  "outputTokenCap": 512,
+  "reservationMethod": "UTF-8 body bytes plus 4096 framing tokens; no caching discount",
+  "accountEntitlement": "UNVERIFIED; no real API credential read",
+  "providerInvoiceObserved": false,
+  "noPaidCall": true
+}

@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-10",
+  "executed": true,
+  "archive_payloads_verified": 156,
+  "existing_handoff_files_unchanged": 156,
+  "nine_source_and_section_hashes_rechecked": true,
+  "owner_decisions_all_pending": true,
+  "scenario_user_turns": 12,
+  "private_first_turn_payloads": 4,
+  "last_eight_payloads_depend_on_future_replies": true,
+  "fixed_reservation_total_microUSD": 1920000,
+  "all_in_rate_token_proof_implemented": false,
+  "adapter_generate_still_unconditionally_raises": true,
+  "app_tests_rerun": false,
+  "paid_calls": 0,
+  "runtime_changes": false,
+  "notes": [
+    "Documentation/proposal validation only; no model quality or live execution readiness established.",
+    "Source-containing proposal previews are outside OneDrive workspace; sync/ACL/encryption isolation is still unverified."
+  ]
+}

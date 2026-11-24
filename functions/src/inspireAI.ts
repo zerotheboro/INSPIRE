@@ -1,12 +1,8 @@
-import { onCall, HttpsError } from "firebase-functions/v2/https";
-import { defineSecret } from "firebase-functions/params";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
-import { createHash } from "node:crypto";
-import OpenAI from "openai";
+import {onCall, HttpsError} from "firebase-functions/v2/https";
+import {getFirestore, Timestamp} from "firebase-admin/firestore";
+import {createHash} from "node:crypto";
+import {validateRequest, ChatError} from "./inspireChatContract";
 
-const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
-
-const MAX_MESSAGE_LENGTH = 2_000;
 const TEN_MINUTES_MS = 10 * 60 * 1_000;
 const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1_000;
 const TEN_MINUTE_LIMIT = 10;
@@ -17,13 +13,24 @@ type RateLimitResult =
   | { allowed: true }
   | { allowed: false; retryAfterSeconds: number };
 
-function getVisitorKey(ipAddress: string): string {
+/**
+ * Hash server-observed IP data for the shared request-rate record.
+ * @param {string} ipAddress Server-observed address.
+ * @return {string} Opaque record key.
+ */
+export function getVisitorKey(ipAddress: string): string {
   return createHash("sha256")
     .update(ipAddress)
     .digest("hex");
 }
 
-async function checkRateLimit(
+/**
+ * Atomically enforce the existing rolling IP request limits.
+ * @param {string} visitorKey Hashed server-observed address.
+ * @param {number} now Server time in milliseconds.
+ * @return {Promise<RateLimitResult>} Admission or retry interval.
+ */
+export async function checkRateLimit(
   visitorKey: string,
   now: number
 ): Promise<RateLimitResult> {
@@ -36,8 +43,8 @@ async function checkRateLimit(
     const snapshot = await transaction.get(rateLimitRef);
     const storedAttempts = snapshot.data()?.attempts;
 
-    const recentAttempts = Array.isArray(storedAttempts)
-      ? storedAttempts
+    const recentAttempts = Array.isArray(storedAttempts) ?
+      storedAttempts
         .filter(
           (attempt): attempt is number =>
             typeof attempt === "number" &&
@@ -45,8 +52,8 @@ async function checkRateLimit(
             attempt > now - TWENTY_FOUR_HOURS_MS &&
             attempt <= now
         )
-        .sort((first, second) => first - second)
-      : [];
+        .sort((first, second) => first - second) :
+      [];
 
     const tenMinuteAttempts = recentAttempts.filter(
       (attempt) => attempt > now - TEN_MINUTES_MS
@@ -83,39 +90,37 @@ async function checkRateLimit(
       updatedAt: Timestamp.fromMillis(now),
     });
 
-    return { allowed: true };
+    return {allowed: true};
   });
+}
+
+/**
+ * Keep model access closed until integration is explicitly authorized.
+ * @return {boolean} Always false; there is no configuration bypass.
+ */
+function liveModelAuthorized(): boolean {
+  return false;
 }
 
 export const inspireAI = onCall(
   {
     region: "asia-southeast1",
-    secrets: [OPENAI_API_KEY],
     invoker: "public",
     cors: true,
   },
   async (request) => {
-    const message = request.data?.message;
-
-    if (typeof message !== "string") {
-      throw new HttpsError(
-        "invalid-argument",
-        "Tin nhắn phải là văn bản."
-      );
+    // The live callable is closed until authorization and controller controls
+    // are connected and tested. Never fall back to a single-prompt model call.
+    try {
+      validateRequest(request.data);
+    } catch (error) {
+      throw new HttpsError("invalid-argument", error instanceof ChatError ?
+        error.message : "Yêu cầu không hợp lệ.");
     }
 
-    if (message.trim().length === 0) {
-      throw new HttpsError(
-        "invalid-argument",
-        "Vui lòng nhập nội dung tin nhắn."
-      );
-    }
-
-    if (message.length > MAX_MESSAGE_LENGTH) {
-      throw new HttpsError(
-        "invalid-argument",
-        `Tin nhắn không được vượt quá ${MAX_MESSAGE_LENGTH} ký tự.`
-      );
+    if (!liveModelAuthorized()) {
+      throw new HttpsError("failed-precondition",
+        "Kết nối mô hình AI chưa được bật. Bản mô phỏng chỉ chạy cục bộ.");
     }
 
     const clientIp =
@@ -159,33 +164,9 @@ export const inspireAI = onCall(
       );
     }
 
-    try {
-      const openai = new OpenAI({
-        apiKey: OPENAI_API_KEY.value(),
-      });
-
-      const response = await openai.responses.create({
-        model: "gpt-5.6",
-        input: message.trim(),
-      });
-
-      return {
-        answer: response.output_text,
-      };
-    } catch (error) {
-      console.error("OpenAI request failed", {
-        errorName:
-          error instanceof Error ? error.name : "UnknownError",
-        status:
-          error instanceof OpenAI.APIError
-            ? error.status
-            : undefined,
-      });
-
-      throw new HttpsError(
-        "internal",
-        "AI INSPIRE hiện chưa thể phản hồi. Vui lòng thử lại."
-      );
-    }
+    // Keep the shared Firestore limits above intact for a future authorized
+    // adapter. No provider implementation or key is loaded by this callable.
+    throw new HttpsError("failed-precondition",
+      "Chưa có bộ kết nối mô hình được phê duyệt.");
   }
 );

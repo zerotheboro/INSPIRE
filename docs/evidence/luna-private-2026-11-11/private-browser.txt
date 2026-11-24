@@ -1,0 +1,4 @@
+PASS Private Vietnamese screen, disabled Luna, duplicate protection, follow-up, correction and memory-only feedback 
+PASS Private mobile layout; refresh clears conversation and feedback; no provider or booking call 
+
+EXIT_CODE=0

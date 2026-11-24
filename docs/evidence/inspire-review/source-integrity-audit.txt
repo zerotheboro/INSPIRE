@@ -1,0 +1,5 @@
+C:\Program Files\nodejs\node.exe tests/inspire-source-audit.mjs
+
+Byte verified 5/5 known original files and raw copies. Established actual-source runtime permissions: 0. No approval changes.
+
+EXIT_CODE=0

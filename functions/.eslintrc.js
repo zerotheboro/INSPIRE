@@ -14,6 +14,7 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
+    tsconfigRootDir: __dirname,
     project: ["tsconfig.json", "tsconfig.dev.json"],
     sourceType: "module",
   },
@@ -25,6 +26,10 @@ module.exports = {
     "@typescript-eslint",
     "import",
   ],
+  overrides: [{
+    files: ["*.cjs"],
+    rules: {"@typescript-eslint/no-require-imports": "off"},
+  }],
   rules: {
     "quotes": ["error", "double"],
     "import/no-unresolved": 0,

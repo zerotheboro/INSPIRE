@@ -1,0 +1,8 @@
+C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js --prefix functions run lint:chat
+
+
+> lint:chat
+> node lint.cjs lint.cjs src/inspireAI.ts src/inspireAccount.ts src/inspireChatContract.ts src/inspireChatSimulation.ts src/inspireKnowledge.ts src/inspireLocalService.ts
+
+
+EXIT_CODE=0

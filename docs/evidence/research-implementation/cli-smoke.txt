@@ -1,0 +1,3 @@
+PASS CLI draft denial → offline preview → native validation → encrypted quarantine → replay → two fixture reviews; one reserved attempt; no source grants or network
+
+EXIT_CODE=0

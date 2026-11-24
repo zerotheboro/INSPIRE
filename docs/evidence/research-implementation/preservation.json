@@ -1,0 +1,92 @@
+{
+  "executed": true,
+  "preTaskFilesPreserved": 65,
+  "handoffFilesChecked": 157,
+  "unexpectedHandoffChanges": [],
+  "controllerFilesVerified": 1234,
+  "existingWebsiteAndBusinessCodeChanged": false,
+  "sourcePermissionsChanged": false,
+  "taskChanges": [
+    {
+      "path": "REVIEW.md",
+      "before_sha256": "dcf30345898d180c2e056f8ac90fa22cd8b888e0ea0d1eb30c0fa8a72f42d4ae",
+      "after_sha256": "0082ef85637129ea81a41cd3a9765b213eb703ed17ff3e017cb611aa8077df23"
+    },
+    {
+      "path": "docs/inspire-research-implementation.md",
+      "before_sha256": null,
+      "after_sha256": "3161b60db15d87df2499d58c285bdcec4b7f7b0cc0c20a9f52b4a3a4011043d6"
+    },
+    {
+      "path": "functions/inspire_research.py",
+      "before_sha256": null,
+      "after_sha256": "f677e618b9feb40e3aacc175e5334969d38dc0ab8e90050e248cc89ecd5a0645"
+    },
+    {
+      "path": "functions/inspire_research_admission.py",
+      "before_sha256": null,
+      "after_sha256": "31f1f7e8d79361a5c6e49b6ead6be32e5626c2a4cdf11380c853344c27861fe9"
+    },
+    {
+      "path": "functions/inspire_research_cli.py",
+      "before_sha256": null,
+      "after_sha256": "099fe74ad885ae183433d202428b28ca1118726e63ee41f5dc90ba38eadbac1c"
+    },
+    {
+      "path": "functions/inspire_research_controller.py",
+      "before_sha256": null,
+      "after_sha256": "84df6b60160f8422fdc96d1f59c7678cfe5bbf8f35efb36bfd84ffd5404b8ec6"
+    },
+    {
+      "path": "functions/inspire_research_live.py",
+      "before_sha256": null,
+      "after_sha256": "eb743f61d64ffb4c3568a403897893e3f903173fd7e9b5955a8917fc28adb310"
+    },
+    {
+      "path": "functions/inspire_research_store.py",
+      "before_sha256": null,
+      "after_sha256": "a4de3a8ffbbcea199902395f30f19f27216ce80e1f46dbf6b58cc30b3b3cdf11"
+    },
+    {
+      "path": "functions/package.json",
+      "before_sha256": "f9e0e119577a8458e8ceff7bd38147ef746968b852adfce4615733878ac387d2",
+      "after_sha256": "8c41a79919c17383337836791ffcf966da9b8257ee5a4ff92805eae3cba57baf"
+    },
+    {
+      "path": "functions/src/inspireResearchAdmission.ts",
+      "before_sha256": null,
+      "after_sha256": "0e56d1bb53baa84351b8d3d1b96dcee4f26f699ae1bba2a7d1b13deb36f86e1f"
+    },
+    {
+      "path": "tests/inspire-research-admission.py",
+      "before_sha256": null,
+      "after_sha256": "83a4694793b019dcdbf655fd6bacb85ffc94efb3353077fd26871530d485a2d2"
+    },
+    {
+      "path": "tests/inspire-research-admission.test.mjs",
+      "before_sha256": null,
+      "after_sha256": "d7629c050c22d4d23dacf44c5bf3313692571dcdfb6c055eedb96ae8bbe1940c"
+    },
+    {
+      "path": "tests/inspire-research-cli-smoke.mjs",
+      "before_sha256": null,
+      "after_sha256": "6b36c93b3791e461d4318a2981c1e2cdcd3ec7173ea7f908dc58fd02d8646e3a"
+    },
+    {
+      "path": "tests/inspire-research-preservation.py",
+      "before_sha256": null,
+      "after_sha256": "4a35f4c7281ec6622f4ff9059428bc2c0ccf72686abcc4b8a0ed7438279349ae"
+    },
+    {
+      "path": "tests/inspire-research.test.py",
+      "before_sha256": null,
+      "after_sha256": "77c28a04004d09a1572b80cf7b4427b137594b15ad7d84f64d02d9d7b4b1a2bb"
+    },
+    {
+      "path": "tests/verify-inspire-research.mjs",
+      "before_sha256": null,
+      "after_sha256": "fd36ac8cd27a5e611c811b8f37172ce6818f13c248cbc6e9deb7ac82c4952e9f"
+    }
+  ],
+  "limitation": "Snapshot comparison verifies bytes, not interactive website behavior."
+}

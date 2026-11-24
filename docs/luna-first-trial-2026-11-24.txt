@@ -1,0 +1,57 @@
+INSPIRE first Luna test — technical preparation, 24 November 2026
+
+Billing controls: accepted as verified by the owner in this conversation.
+No further billing approval is requested. No old spending grant is reused.
+No generation, paid call, deployment or public activation occurred.
+
+Current app-server: codex-cli 0.171.0-alpha.13.2, ChatGPT sign-in route only.
+Fresh TurnStartParams/ThreadStartParams/ConfigReadResponse inspection found no
+output-token limit or retry-disable field. Documented provider HTTP/SSE retry
+settings do not establish control over all managed generation/retry layers.
+https://learn.chatgpt.com/docs/config-file/config-reference
+Hard 512 output tokens: NOT VERIFIED / cannot currently enforce.
+All managed generation retries disabled: NOT VERIFIED / cannot guarantee.
+Prompt instructions, cancellation and output-length validation are not substitutes.
+Safest alternative under the existing requirements: retain the frozen offline
+test and wait for a supported, verifiable ChatGPT control path. No API fallback.
+
+Exact model content and request IDs are frozen in:
+  %LOCALAPPDATA%\INSPIRE-ChatGPT-FirstTrial\proposal.json
+Authorization record in the same directory: authorization.json, approved=false.
+Review copy: docs/evidence/luna-first-trial-2026-11-24/frozen-request.json
+Fingerprint: b138874e90e6bbc8e6747508c991811e099970a41ba2cea372962695a175291c
+Model-input SHA-256: 90b94250147b6f8c03f43e0cbc9169a3d5d3693d779be1e00a794126e4b1d637
+Operation: luna-first-attempt-20261124; message: synthetic-first-question.
+The model input contains the existing Vietnamese engineering safeguards, neutral
+language/addressing, precisely one synthetic question and an empty source list.
+No private INSPIRE text, personal information or proposed operating rules.
+
+This is the complete model content, NOT a complete executable turn/start RPC:
+app-server must issue threadId, and isolated thread configuration still needs
+verification to exclude inherited workspace instructions, files, tools and memory.
+No thread was started and no server identifier was invented. These missing wire
+details must be resolved and included in the final review before any run release.
+The normal private composer does not load this operator-only frozen proposal.
+The website and its Controller/simulation behavior are unchanged.
+
+Implemented: exclusive, fsynced first-attempt marker wraps the existing runner
+and native Controller; failed/uncertain/successful attempts all prevent another
+attempt after restart. Modified proposals/grants and pending authorization fail
+before transport. Default runtime has no sender, even with an approved grant.
+Mock dependency injection is code-only and unavailable through HTTP or config.
+Missing/corrupt frozen content is not overwritten. Proposal changes require a
+new review; this preparer cannot issue owner approval.
+
+Executed: six new offline tests pass, including actual child-process exit,
+concurrent attempts, native Controller output binding, corruption, authorization,
+payload tampering and production lockout. Six existing boundary tests pass.
+Both builds and new-backend lint pass. Initial sandbox run was 5/6; the native
+Controller success assertion failed after about 20 seconds; exact underlying
+cause was not established. The subsequent complete host run was 6/6.
+Evidence: docs/evidence/luna-first-trial-2026-11-24/executed-checks.json
+Reproduce: node tests/verify-inspire-first-trial.mjs
+Prepare/read back pending proposal only:
+  node --import ./tests/register-ts.mjs tests/prepare-inspire-first-trial.mjs
+
+READY FOR REAL OWNER RELEASE: NO. Technical guarantees and complete isolated
+RPC binding remain unresolved. No owner approval can supply a missing guarantee.

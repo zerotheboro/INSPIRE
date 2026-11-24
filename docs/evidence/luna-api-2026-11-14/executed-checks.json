@@ -1,0 +1,142 @@
+{
+  "results": {
+    "core": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 105482,
+      "at": "2026-11-14T06:28:49.210Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "--test-concurrency=1",
+        "tests/inspire-luna-api.test.mjs",
+        "tests/inspire-chat.test.mjs",
+        "tests/inspire-luna.test.mjs",
+        "tests/inspire-emulator.test.mjs"
+      ]
+    },
+    "consolidation": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 17390,
+      "at": "2026-11-14T06:22:25.498Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-consolidation.test.mjs"
+      ]
+    },
+    "research": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 65714,
+      "at": "2026-11-14T06:23:31.219Z",
+      "command": [
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\web_develope\\INSPIRE\\.tools.local\\python312\\python.exe",
+        "-X",
+        "utf8",
+        "tests/inspire-research.test.py"
+      ]
+    },
+    "lint": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 36732,
+      "at": "2026-11-14T06:24:07.960Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "--prefix",
+        "functions",
+        "run",
+        "lint:chat"
+      ]
+    },
+    "functions-build": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 19164,
+      "at": "2026-11-14T06:24:27.131Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "--prefix",
+        "functions",
+        "run",
+        "build"
+      ]
+    },
+    "import": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 33176,
+      "at": "2026-11-14T06:21:11.474Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "tests/import-inspire-knowledge.mjs",
+        "--controller-originals"
+      ]
+    },
+    "http": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 1214,
+      "at": "2026-11-14T06:24:57.233Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-luna-http.mjs"
+      ]
+    },
+    "privacy": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 248,
+      "at": "2026-11-14T06:24:56.010Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-build-audit.mjs"
+      ]
+    },
+    "website-build": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 28615,
+      "at": "2026-11-14T06:24:55.755Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "run",
+        "build"
+      ]
+    },
+    "production-http": {
+      "executed": true,
+      "passed": true,
+      "exitCode": 0,
+      "durationMs": 459,
+      "at": "2026-11-14T06:28:49.685Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-luna-production.mjs"
+      ]
+    }
+  },
+  "realProviderRequests": 0,
+  "ownerAuthorizationCreated": false,
+  "modelQuality": "NOT_ASSESSED"
+}

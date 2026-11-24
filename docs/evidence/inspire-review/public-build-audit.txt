@@ -1,0 +1,5 @@
+C:\Program Files\nodejs\node.exe tests/inspire-build-audit.mjs
+
+PASS: 17 production files contain none of 8 private/source/emulator-auth markers.
+
+EXIT_CODE=0

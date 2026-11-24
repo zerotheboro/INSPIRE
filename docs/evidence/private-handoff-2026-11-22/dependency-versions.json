@@ -1,0 +1,15 @@
+{
+  "node": "v25.2.0",
+  "npm": "11.6.2",
+  "codex": "0.171.0-alpha.13",
+  "python": "existing private .tools.local/python312 installation required",
+  "java": "21+ required",
+  "packages": {
+    "vite": "7.2.2",
+    "react": "19.3.0",
+    "firebase": "12.18.0",
+    "firebase-admin": "13.10.0",
+    "openai": "7.10.0",
+    "typescript": "6.0.3"
+  }
+}

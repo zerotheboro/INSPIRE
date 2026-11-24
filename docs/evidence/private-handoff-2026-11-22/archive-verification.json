@@ -1,0 +1,11 @@
+{
+  "archive": "INSPIRE-review-private-knowledge-2026-11-22.zip",
+  "sha256": "da9bb0f9697be09169f6ba3e65613cd2bc38fbc65006fa71e1b93880e2a26585",
+  "bytes": 3942330,
+  "sourceEvidenceFiles": 160,
+  "zipCRCAndByteHashes": "PASS",
+  "privateOriginalsCredentialsDatabasesRuntimesExcluded": true,
+  "screenshots": "one historical 2026-11-11 image; current visual verification NOT VERIFIED",
+  "completeSuitePassed": false,
+  "generationRequests": 0
+}

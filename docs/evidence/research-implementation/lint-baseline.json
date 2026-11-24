@@ -1,0 +1,13 @@
+{
+  "executed": true,
+  "unchangedBookingFile": true,
+  "baselineErrors": 30,
+  "currentErrors": 30,
+  "exactRuleLineMessageMatch": true,
+  "introducedErrorsInOtherBackendFiles": 0,
+  "rootConfig": {
+    "unchanged": true,
+    "actualExitCode": 1,
+    "missingDependency": true
+  }
+}

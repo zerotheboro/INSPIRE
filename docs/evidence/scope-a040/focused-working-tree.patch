@@ -1,0 +1,1321 @@
+diff --git a/REVIEW.md b/REVIEW.md
+index 2914b8d..e4a178c 100644
+--- a/REVIEW.md
++++ b/REVIEW.md
+@@ -1,3 +1,12 @@
++# Current Scope A / Controller 0.4.0 review
++
++The current milestone is documented in [docs/scope-a040.md](docs/scope-a040.md).
++Read its private-package/Python prerequisites before starting the site. The
++actual 0.4.0 mock Controller is now connected and tested offline; actual
++execution and model access remain closed. New evidence is separate in
++`docs/evidence/scope-a040/`. The earlier consolidation report below is retained
++as historical evidence; its missing-package/Controller statements are superseded.
++
+ # INSPIRE review package — 9 November 2026
+ 
+ This package consolidates the existing implementation for review. It does not
+diff --git a/UNRESOLVED.md b/UNRESOLVED.md
+index 87ad3f3..3c5b535 100644
+--- a/UNRESOLVED.md
++++ b/UNRESOLVED.md
+@@ -1,4 +1,16 @@
+-# Unresolved issues — review status
++# Current dependencies
++
++See [docs/scope-a040.md](docs/scope-a040.md) for current verified boundaries.
++The private 0.4.0 package and all 55 indexed records are now byte-accessible and
++verified. Its original mock Controller controls execute in the website's offline
++path. Actual-source runtime permission, an actual permission registry, generative
++knowledge use, real OAuth, clinical validity and production readiness remain
++unverified/blocked. No permission or canonical source was changed.
++
++The earlier consolidation snapshot below is retained for review history; its
++missing-package and wholly unconnected-Controller statements are superseded.
++
++# Unresolved issues — earlier consolidation snapshot
+ 
+ - **Blocked:** separate actual-source runtime permission evidence; the original
+   24-document bundle and authoritative Core were not byte-accessible in the
+diff --git a/docs/scope-a040.md b/docs/scope-a040.md
+new file mode 100644
+--- /dev/null
++++ b/docs/scope-a040.md
+@@ -0,0 +1,189 @@
++# Scope A: website and original 0.4.0 mock Controller
++
++This milestone fixes the two independent-review defects and connects the existing
++website to the supplied Controller's **offline mock path only**. It does not
++establish generative conversation quality, clinical validation, source approval,
++actual execution permission or deployment permission. Use invented accounts and
++messages only. No paid/local model, booking or deployment was executed.
++
++The attached review and `CODEX_NEXT_TASK.md` were read as engineering input to
++the user's request, not as approvals. The review ZIP, its original evidence and
++the preview ZIP were not modified. No package frontend, launcher, SQLite store,
++budget-approval utility or authorization-writing tool is used.
++
++## Focused changes
++
++- `functions/src/inspireHttp.ts` and `vite.config.ts`: cap original incoming
++  bytes at 128000, concatenate once, strictly decode UTF-8 once, then parse JSON.
++  Malformed encoding returns `INVALID_UTF8`; oversize returns HTTP 413. Text is
++  never normalized. The regression invokes the actual middleware with one-byte
++  chunks, Vietnamese, emoji, decomposed characters, both roles and a correction.
++- `tests/start-inspire-emulators.mjs`: pure child-environment construction uses
++  the platform PATH delimiter and `java.exe`/`java` discovery. Parent environment,
++  demo project and loopback restrictions are preserved. Windows Java 21 executes;
++  POSIX construction/discovery are tested with fixtures, not on Linux/macOS.
++- `functions/src/inspireController040.ts` and `functions/controller040_bridge.py`:
++  small private JSON-lines bridge to the **unmodified** preview modules. Node pins
++  the received manifest; Python verifies every listed payload before import.
++  UTF-8 mode also prevents the preview's implicit file reads using Windows legacy
++  encoding. A stripped child environment supplies no provider credentials;
++  outbound socket connections are disabled before importing package modules.
++  Each service owns its worker and closes it with the development HTTP server.
++- The existing local service supplies the complete structured `ModelContext`
++  and validated request. It uses the bridge by default; missing dependencies or
++  failed controls hold the request rather than falling back to an unchecked echo.
++  Model adapters remain rejected. No frontend architecture or UI was replaced.
++- Account quotas, persistent IP limits, strict request validation, ordered history,
++  correction references, stable retry/replay IDs, technical errors outside the
++  timeline and production closure are retained. No new transcript persistence.
++- Tests/evidence include targeted regressions, actual native control denials,
++  process loss, browser navigation timing and a finite public-build privacy scan.
++
++## Source receipt and permission are separate
++
++`docs/evidence/scope-a040/package-audit.json` records the received archive hash,
++all source hashes/statuses and the verification result: **1234/1234 manifest
++payloads and 55/55 indexed source records match**, including INSPIRE-01–24.
++Verification was rerun after exercising the bridge. Originals and versions remain
++private and unchanged; no canonical text was recreated.
++
++| Category | Current result |
++| --- | --- |
++| Original/indexed sources present | All 55 indexed records byte-verified; 24 main IDs present. This is receipt/integrity, not equal authority. |
++| Actual-source user-facing runtime approval | Not established. No actual record was newly imported into the website's permitted retrieval collection. |
++| Synthetic permitted retrieval | Test-only invented Firestore fixture with explicit supporting-use metadata; removed after the integration test. This grants no actual-source permission. |
++| Original preview working source | Exact MOI-01 v1.0 parent, hash `931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3`, sections XCII, XCIII, CLVI, CLVII, CLIX, CLXIII, retained as Proposal/Pending Review, not permission or approved Core. Used only inside the original synthetic research path. |
++| Restricted material | 54 records retain `UNCHANGED_NOT_GRANTED_BY_INTAKE`; one retains `PROPOSAL_PENDING_REVIEW`. Historical MOI-01-A remains `SOURCE_VERIFICATION_PENDING`. The 43 educational draft payloads/458 lessons remain `DRAFT_NOT_MODEL_PROMPT_NOT_AUTHORITY`. Content patches/reconstructed materials are not promoted. |
++
++The six website `coreInstructions` strings are not a reconstructed Knowledge Core.
++The supplied source-version manifests and restrictions are preserved verbatim in
++the private package. Hash checks do not grant architectural or clinical approval.
++
++## What actually executes
++
++```text
++existing React conversation store / HTTP transport
++  → local Vite API: strict JSON + verified emulator identity
++  → existing history/operation authority, IP limiter and account reservation
++  → permitted private retrieval + separate preferences → ModelContext
++  → hash-bound private Python bridge
++  → original ConversationController.prepare
++      source/excerpt verification, heuristic triage, structural quote-bound ledger
++      original model_messages + original SimulationAdapter
++      ScopeGuard, PermissionInspector, MockPolicy, GeneratedValidator
++  → original ConversationController.finish
++      validator recheck, source/policy/state recheck, MockSink receipt, Session.commit
++  → Node checks context/request/worker/output/receipt binding
++  → existing completion accounting and response validation → website
++```
++
++The website's supporting passages and exact document/version/hash/section/text
++reach the wrapper's **constructed structured input**. Its digest is carried in
++the Controller decision/ledger context binding. The native `model_messages`
++builds its original system context with the six exact proposal-source sections,
++and receives the full ordered dialogue with explicit correction cues. Raw website
++history and original wording remain intact. Explicit name/address/language
++preferences are mapped; other optional fields stay supporting data in the bound
++context, not case formulation.
++
++Important boundary: the native `SimulationAdapter.generate(messages, profile)`
++only quotes the latest message. It does **not** consume retrieved passages to
++produce an informed answer. The wrapper traces their arrival; it does not pretend
++that a separate structured context is a model-grounding implementation. A reviewed
++contract for including permitted retrieval in a generative adapter is still
++missing. No runtime responses come from evaluation-answer fixtures.
++
++Instrumentation delegates to the original implementations. Evidence records
++which checks executed, not invented pass labels. `PermissionInspector` uses the
++original unconfigured registry and returns `HOLD_ACTUAL_EXECUTION`; mock policy
++eligibility is not actual permission. Architecture/clinical/deployment approval
++flags remain false. `ScopeGuard` checks format in the MOCK branch and **skips its
++semantic rules** there. Ledger quote checks and research triage are not independent
++clinical or semantic validation. No complete psychological Controller is claimed.
++
++## Executed evidence
++
++See `docs/evidence/scope-a040/` for current results, including command exit codes.
++Execution used Windows, Node 25.2.0, Python 3.12.10 and Java 21.0.13. The declared
++Functions production Node 22 runtime was not exercised or activated.
++
++| Check | Result and limit |
++| --- | --- |
++| Conversation + UTF-8/launcher regressions | 20 passed; includes the existing 17 contract/state/transport checks and 3 focused regressions. |
++| Auth/Firestore + consolidation | 15 passed on Java 21; quota concurrency, Vietnam calendar-month boundaries/in-flight completion, guest linking/signout/account switching, cross-user/authority rejection, replay/restart and unchanged IP limits. Google credentials are emulator substitutes. |
++| Original Controller integration | 3 passed: synthetic journey, child-process result loss/restart, four native rejection cases. |
++| Both builds and touched backend lint | Passed. Full backend lint still has 30 existing `functions/src/index.ts` errors; root config's missing `@eslint/js` is pre-existing. Baseline comparison is recorded separately. |
++| Actual browser | Desktop/mobile simulation, multi-turn correction, dropped HTTP response/replay, switching/reset, account flows, six counselling routes/export/share, retreat rendering; no booking submitted. Screenshots are real Chromium captures. OS print/share side effects are stubbed. |
++| Production preview / privacy | Sending/emulator auth stay closed. Generated public assets scanned for private/source/emulator canaries; finite scan, not proof against every transformed secret. |
++
++`utf8-before-after.json` shows the original text, actual old corruption and corrected
++middleware result. `integrated-journey.json` records invented Vietnamese initial
++message, follow-up, explicit correction, a confirmed technical failure/new attempt,
++and a dropped completed response replayed with the **same** operation ID and zero
++additional adapter calls. It includes retrieved fixture text/references and executed
++native checks. It is plumbing/control evidence, not language-quality evidence.
++
++`negative-controls.json` proves the original policy blocks denied/revoked mock
++eligibility, empty output fails validation, and changed post-validation bytes are
++rejected. These known no-delivery failures refund the reservation. In
++`controller-process-loss.json`, the child exits after mock receipt/commit but before
++Node sees it: the outcome stays unknown, quota stays reserved, replay cannot run
++again, and a server restart rejects the old epoch. No automatic reconciliation,
++completion claim or self-issued refund is fabricated.
++
++## Run locally
++
++This workspace has the private package and isolated Python dependencies prepared.
++The website is available at `http://127.0.0.1:5173/ai-inspire` while the local
++development server and Auth/Firestore emulators are running.
++
++For another checkout, install existing npm dependencies, provide Java 21+ and
++Python 3.12, and privately extract the **original, unchanged** supplied ZIP so
++`manifests/package_manifest.json` is at
++`.private.local/controller040-preview/INSPIRE_AI_040/manifests/package_manifest.json`.
++Keep the directory private; do not copy it into `public`, `src` or `dist`. The
++bridge expects the pinned received manifest SHA-256
++`7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a`.
++
++Install the preview's required libraries into an isolated Python environment:
++`pydantic==2.13.5 jsonschema==4.26.0 httpx==0.28.1`. No additional web framework
++is required. On this machine Python is `.tools.local/python312/python.exe`.
++For another location/platform set `INSPIRE_CONTROLLER_PYTHON` to the absolute
++interpreter path before starting Vite. A private package/dependency failure holds
++the request with a technical error; it never enables a model fallback.
++
++```powershell
++npm.cmd ci
++npm.cmd --prefix functions ci
++# Terminal 1, Java 21+ (JAVA_HOME if needed):
++npm.cmd run emulators
++# Terminal 2, Python path if not using this workspace's portable interpreter:
++# $env:INSPIRE_CONTROLLER_PYTHON = 'C:\path\venv\Scripts\python.exe'
++npm.cmd run dev -- --host 127.0.0.1
++# Terminal 3: all checks; also start preview on 5174 for its closure check:
++npm.cmd run preview -- --host 127.0.0.1 --port 5174
++# Separate terminal:
++node tests/verify-scope-a040.mjs
++```
++
++POSIX uses `npm` and `export INSPIRE_CONTROLLER_PYTHON=/absolute/path/to/python`.
++The read-only package audit currently also reads the original archive from this
++user's supplied Downloads path; adapt that audit-only path on another machine.
++Chat/Controller transcripts and caches are memory-only. Refresh clears UI history;
++server restart loses result state and fails replay clearly. Auth/preferences/quota
++records remain local emulator data under the existing prototype policy. No real
++data or database export belongs in a review ZIP.
++
++## Remaining dependencies
++
++- Actual-source runtime-use permission and reviewed source eligibility; provenance
++  alone does not supply approval. No canonical document repair is needed here.
++- A real permission registry/ActualPermissionRecord and authorized model/adapter
++  contract. None is supplied to this offline bridge; actual execution is held.
++- Reviewed passage-to-generative-input handling, independent semantic/clinical
++  validation, generative Vietnamese quality and real OAuth validation.
++- Authorized durable receipt/reconciliation and multi-instance session/result
++  contracts. The current bridge intentionally latches process loss; it never
++  recreates lost state and silently regenerates an unresolved attempt.
++- Production security/retention/deletion/deployment decisions. Scope A is local,
++  synthetic and single-process only. No activation switch or approval was added.
+diff --git a/functions/controller040_bridge.py b/functions/controller040_bridge.py
+new file mode 100644
+--- /dev/null
++++ b/functions/controller040_bridge.py
+@@ -0,0 +1,251 @@
++"""Scope A JSON-lines bridge to the unmodified private 0.4.0 Controller.
++
++No server/frontend from the package is started. No model/provider or permission
++record is created. All sockets are disabled before importing package modules.
++"""
++import sys
++sys.dont_write_bytecode = True
++import os
++import json
++import secrets
++import socket
++import hashlib
++from pathlib import Path
++from dataclasses import asdict
++
++
++def no_network(*args, **kwargs):
++    raise RuntimeError("NETWORK_DISABLED_SCOPE_A_BRIDGE")
++
++
++socket.socket.connect = no_network
++socket.socket.connect_ex = no_network
++socket.create_connection = no_network
++root = Path(sys.argv[1]).resolve()
++sys.path.insert(0, str(root))
++for record in json.loads((root / "manifests/package_manifest.json").read_text(encoding="utf-8"))["files"]:
++    file = (root / record["path"]).resolve()
++    if not file.is_relative_to(root):
++        raise RuntimeError("PACKAGE_PATH_HOLD")
++    data = file.read_bytes()
++    if len(data) != record["bytes"] or hashlib.sha256(data).hexdigest() != record["sha256"]:
++        raise RuntimeError("PACKAGE_INTEGRITY_HOLD")
++
++from studio import conversation as conversation
++from studio.adapters import SimulationAdapter, Generation, ModelError
++from integrity_eval.runtime import Session, MockSink
++from integrity_eval.permissions import PermissionInspector
++from integrity_eval.triage import ResearchSignalDetector
++from deep_eval.sources import canonical, digest
++
++events = []
++
++
++def event(stage, **detail):
++    events.append({"stage": stage, **detail})
++
++
++original_load = conversation.load_cards
++original_ledger = conversation.validate_ledger
++
++
++def traced_load():
++    cards = original_load()
++    event("Source Verification", result="HASH_AND_EXCERPT_CHECKS_EXECUTED", cards=len(cards))
++    return cards
++
++
++def traced_ledger(*args):
++    result = original_ledger(*args)
++    event("Ledger Validation", result="STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED", semantic_validation=False)
++    return result
++
++
++conversation.load_cards = traced_load
++conversation.validate_ledger = traced_ledger
++
++
++class Inspector(PermissionInspector):
++    def inspect(self, scope):
++        value = super().inspect(scope)
++        event("Permission Inspector", **value.as_dict())
++        return value
++
++
++class Policy(conversation.ConversationPolicy):
++    def eligible(self, decision):
++        result = super().eligible(decision)
++        event("Mock Policy", eligible=result, policy_epoch=self.epoch,
++              actual_execution_eligible=False, actual_permission_record_supplied=False)
++        return result
++
++
++class Guard(conversation.ScopeGuard):
++    def check(self, text, **kwargs):
++        super().check(text, **kwargs)
++        event("Scope Guard", result="FORMAT_CHECK_EXECUTED", origin=kwargs["origin"],
++              mock_branch_skips_semantic_rules=kwargs["origin"] == "MOCK", clinical_validation=False)
++
++
++class Validator(conversation.GeneratedValidator):
++    def validate(self, decision, body):
++        result = super().validate(decision, body)
++        event("Output Validation", result="EXACT_BYTES_ATTESTED", sha256=digest(body))
++        return result
++
++    def verify(self, decision, body, attestation):
++        try:
++            super().verify(decision, body, attestation)
++        except Exception:
++            event("Output Recheck", result="REJECTED_CHANGED_OR_EXPIRED_BYTES")
++            raise
++        event("Output Recheck", result="EXACT_ATTESTED_BYTES_VERIFIED", sha256=digest(body))
++
++
++class Triage(ResearchSignalDetector):
++    def evaluate(self, *args):
++        result = super().evaluate(*args)
++        event("Safety Triage", result="PACKAGE_HEURISTIC_EXECUTED", priority=result.priority,
++              clinical_validation=False)
++        return result
++
++
++class Sink(MockSink):
++    def submit(self, *args):
++        receipt = super().submit(*args)
++        event("Mock Sink", result="SOURCE_POLICY_REVISION_AND_RECEIPT_CHECKS_EXECUTED", receipt=asdict(receipt))
++        return receipt
++
++
++class Case(Session):
++    def commit(self, *args):
++        super().commit(*args)
++        event("State Commit", result="RECEIPT_LEDGER_AND_REVISION_CHECKS_EXECUTED", revision=self.revision)
++
++
++class Offline(SimulationAdapter):
++    def __init__(self):
++        self.context = None
++        self.fault = None
++
++    def generate(self, messages, profile):
++        # A structured input, not concatenated instructions. The original MOCK
++        # generator ignores supporting knowledge; no grounded answer is claimed.
++        constructed_input = {"controller_messages": messages, "website_context": self.context}
++        event("Offline Adapter Input", roles=[message["role"] for message in messages],
++              dialogue=[message for message in messages if message["role"] != "system"],
++              website_sources=[{k: section[k] for k in ("documentId", "version", "hash", "sectionId", "sourceStatus", "text")}
++                               for section in self.context["supportingKnowledge"]],
++              constructed_input_sha256=digest(canonical(constructed_input)),
++              website_context_sha256=digest(canonical(self.context)),
++              system_prompt_sha256=digest(messages[0]["content"].encode()),
++              working_sections_present={section: ("# " + section + ".") in messages[0]["content"]
++                                        for section in ("XCII", "XCIII", "CLVI", "CLVII", "CLIX", "CLXIII")},
++              working_parent_source_sha256="931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
++              working_parent_status="PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
++              uses_knowledge_for_generative_answer=False)
++        if self.fault == "technical_before_generate":
++            raise ModelError("OFFLINE_TECHNICAL_FAILURE")
++        if self.fault == "invalid_output":
++            return Generation("", "MOCK", "injected-invalid-offline-output")
++        # Original package implementation, not evaluation answers or fixtures.
++        return super().generate(messages, profile)
++
++
++sessions = {}
++operations = {}
++epoch = secrets.token_hex(16)
++
++
++def run(packet):
++    global events
++    events = []
++    request, context = packet["request"], packet["context"]
++    binding = digest(canonical({"request": request, "context": context}))
++    if binding != packet["binding"]:
++        raise ValueError("CONTEXT_BINDING_HOLD")
++    key = request["sessionId"] + ":" + request["conversationId"]
++    op_key = key + ":" + request["operationId"]
++    if op_key in operations:
++        old = operations[op_key]
++        if old["binding"] != binding:
++            raise ValueError("OPERATION_BINDING_HOLD")
++        return {**old["result"], "bridge_replay": True}
++    messages = request["messages"]
++    if key not in sessions:
++        if len(messages) != 1:
++            raise ValueError("CONTROLLER_STATE_LOST")
++        if len(sessions) >= 100:
++            raise ValueError("CONTROLLER_CAPACITY")
++        offline = Offline()
++        controller = conversation.ConversationController(
++            {"mock": offline}, secrets.token_bytes(32), guard=Guard(),
++            detector=Triage(), validator=Validator(secrets.token_bytes(32)),
++            policy=Policy(), sink=Sink())
++        controller.policy.permission_inspector = Inspector()
++        sessions[key] = {"case": Case(key), "controller": controller, "adapter": offline,
++                         "prior_input": [], "prior_output": None}
++    local = sessions[key]
++    if local["prior_input"]:
++        expected = local["prior_input"]
++        if (len(messages) != len(expected) + 2 or messages[:len(expected)] != expected
++                or messages[-2]["role"] != "assistant" or messages[-2]["text"] != local["prior_output"]):
++            raise ValueError("CONTROLLER_HISTORY_HOLD")
++    fault = packet.get("fault")
++    controller, case = local["controller"], local["case"]
++    offline = local["adapter"]
++    offline.context, offline.fault = context, fault
++    preferences = context["userStatedPreferences"]
++    styles = {"Bác – cháu": "bac_chau", "Bác – tôi": "bac_toi", "Anh – tôi": "anh_toi", "Chị – tôi": "chi_toi"}
++    profile = {"language": "en" if preferences["language"] == "en" else "vi-VN",
++               "addressing": styles.get(preferences["address"], "neutral"), "display_name": preferences["name"]}
++    dialogue = [{"role": item["role"], "text": item["text"],
++                 **({"correction_of": item["correctionOf"]} if "correctionOf" in item else {})} for item in messages]
++    prepared = None
++    try:
++        if fault == "deny_mock":
++            controller.policy.revoke("generated_foundational." + profile["language"])
++        prepared = controller.prepare(case, messages[-1]["text"], dialogue, profile, "mock",
++                                      action_id=request["operationId"], binding=binding)
++        if fault == "post_validation_swap":
++            prepared["body"] += " CHANGED_AFTER_VALIDATION"
++        if fault == "revoke_before_use":
++            controller.policy.revoke(prepared["decision"]["template_id"])
++        result = controller.finish(case, prepared)
++        if result["actual_execution_eligible"] is not False:
++            raise ValueError("ACTUAL_PERMISSION_HOLD")
++        if digest(result["text"].encode()) != result["response_sha256"]:
++            raise ValueError("FINAL_BYTES_HOLD")
++        local["prior_input"], local["prior_output"] = messages, result["text"]
++        status, text = "completed", result["text"]
++        receipt = result["receipt"]
++        if fault == "process_loss_after_receipt":
++            os._exit(72)  # Internal regression hook, never a browser field.
++    except Exception as error:
++        receipt = controller.sink.receipts.get(request["operationId"])
++        receipt = asdict(receipt) if receipt else None
++        status, text = ("unknown" if receipt else "confirmed-no-reply"), None
++        event("Technical Hold", error_type=type(error).__name__, code=getattr(error, "code", str(error))[:160],
++              no_inference_about_user=True)
++    output = {"status": status, "text": text, "binding": binding, "epoch": epoch,
++              "operationId": request["operationId"], "conversationId": request["conversationId"],
++              "response_sha256": digest(text.encode()) if text is not None else None,
++              "decision_fingerprint": receipt["decision_fingerprint"] if receipt else None,
++              "receipt": receipt, "checks": list(events), "bridge_replay": False,
++              "actual_execution_eligible": False, "deployment_permission": False,
++              "controller_revision": case.revision}
++    operations[op_key] = {"binding": binding, "result": output}
++    return output
++
++
++print(json.dumps({"ready": True, "epoch": epoch, "scope": "A_SYNTHETIC_ONLY", "network": "disabled"}), flush=True)
++for line in sys.stdin.buffer:
++    try:
++        if len(line) > 512000:
++            raise ValueError("RPC_SIZE_HOLD")
++        packet = json.loads(line.decode("utf-8", errors="strict"))
++        output = run(packet)
++        print(json.dumps({"id": packet["id"], **output}, ensure_ascii=False), flush=True)
++    except Exception as error:
++        print(json.dumps({"id": packet.get("id") if isinstance(locals().get("packet"), dict) else None,
++                          "status": "protocol-hold", "error_type": type(error).__name__}), flush=True)
+diff --git a/functions/package.json b/functions/package.json
+index bebdd35..d8c2ee0 100644
+--- a/functions/package.json
++++ b/functions/package.json
+@@ -2,7 +2,7 @@
+   "name": "functions",
+   "scripts": {
+     "lint": "node lint.cjs .",
+-    "lint:chat": "node lint.cjs lint.cjs src/inspireAI.ts src/inspireAccount.ts src/inspireChatContract.ts src/inspireChatSimulation.ts src/inspireKnowledge.ts src/inspireLocalService.ts",
++    "lint:chat": "node lint.cjs lint.cjs src/inspireAI.ts src/inspireAccount.ts src/inspireChatContract.ts src/inspireChatSimulation.ts src/inspireKnowledge.ts src/inspireLocalService.ts src/inspireHttp.ts src/inspireController040.ts",
+     "build": "tsc",
+     "build:watch": "tsc --watch",
+     "serve": "npm run build && firebase emulators:start --only functions",
+diff --git a/functions/src/inspireController040.ts b/functions/src/inspireController040.ts
+new file mode 100644
+--- /dev/null
++++ b/functions/src/inspireController040.ts
+@@ -0,0 +1,161 @@
++import {spawn, ChildProcessWithoutNullStreams} from "node:child_process";
++import {createHash} from "node:crypto";
++import {existsSync, readFileSync} from "node:fs";
++import {resolve} from "node:path";
++import {createInterface} from "node:readline";
++import {ConfirmedNoReply, UnknownReplyOutcome} from "./inspireKnowledge";
++import type {ModelAdapter, ModelContext} from "./inspireKnowledge";
++import type {ChatRequest} from "./inspireChatContract";
++
++type Packet = Record<string, unknown>;
++/**
++ * Serialize only fixed DTO keys in the same canonical form as the Controller.
++ * @param {unknown} value JSON DTO.
++ * @return {unknown} Recursively key-sorted value.
++ */
++function sorted(value: unknown): unknown {
++  if (Array.isArray(value)) return value.map(sorted);
++  if (value && typeof value === "object") {
++    return Object.fromEntries(Object.entries(value)
++      .sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)
++      .map(([key, item]) => [key, sorted(item)]));
++  }
++  return value;
++}
++/**
++ * Construct a lazy, network-disabled bridge to the original private Controller.
++ * @param {Map<string,string>} faults Test faults, never request fields.
++ * @return {object} Offline adapter with private evidence and lifecycle methods.
++ */
++export function createController040Adapter(faults = new Map<string, string>()) {
++  let child: ChildProcessWithoutNullStreams | undefined;
++  let ready: Promise<void> | undefined;
++  let epoch: string | undefined;
++  let lost = false;
++  let sequence = 0;
++  const pending = new Map<number, {
++    resolve:(packet: Packet) => void; reject: (error: Error) => void;
++  }>();
++  const evidence: Packet[] = [];
++  /**
++   * Start once; process loss is never healed by silently rebuilding state.
++   * @return {Promise<void>} Ready handshake.
++   */
++  function start(): Promise<void> {
++    if (ready) return ready;
++    const python = process.env.INSPIRE_CONTROLLER_PYTHON ||
++      resolve(".tools.local/python312/python.exe");
++    const root = resolve(".private.local/controller040-preview/INSPIRE_AI_040");
++    if (!existsSync(python) || !existsSync(root)) {
++      return Promise.reject(
++        new ConfirmedNoReply("CONTROLLER_DEPENDENCY_MISSING"));
++    }
++    const manifest = readFileSync(
++      resolve(root, "manifests/package_manifest.json"));
++    const expected =
++      "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a";
++    if (createHash("sha256").update(manifest).digest("hex") !== expected) {
++      return Promise.reject(new ConfirmedNoReply("CONTROLLER_MANIFEST_HOLD"));
++    }
++    ready = new Promise((resolveReady, rejectReady) => {
++      child = spawn(python, ["-X", "utf8",
++        resolve("functions/controller040_bridge.py"), root], {
++        windowsHide: true,
++        env: {SYSTEMROOT: process.env.SYSTEMROOT, WINDIR: process.env.WINDIR,
++          TEMP: process.env.TEMP, TMP: process.env.TMP,
++          PYTHONIOENCODING: "utf-8", PYTHONDONTWRITEBYTECODE: "1"},
++        stdio: "pipe",
++      });
++      const startup = setTimeout(() => {
++        lost = true; child?.kill();
++        rejectReady(new ConfirmedNoReply("CONTROLLER_STARTUP_HOLD"));
++      }, 20000);
++      createInterface({input: child.stdout}).on("line", (line) => {
++        try {
++          const packet = JSON.parse(line) as Packet;
++          if (packet.ready === true) {
++            epoch = String(packet.epoch); clearTimeout(startup); resolveReady();
++          } else {
++            const request = pending.get(Number(packet.id));
++            pending.delete(Number(packet.id)); request?.resolve(packet);
++          }
++        } catch {/* Never turn invalid subprocess text into a chat message. */}
++      });
++      child.stderr.resume();
++      child.on("error", () => {
++        clearTimeout(startup); lost = true;
++        rejectReady(new ConfirmedNoReply("CONTROLLER_STARTUP_HOLD"));
++      });
++      child.on("exit", () => {
++        clearTimeout(startup); lost = true;
++        rejectReady(new ConfirmedNoReply("CONTROLLER_PROCESS_LOST"));
++        for (const request of pending.values()) {
++          request.reject(new UnknownReplyOutcome("CONTROLLER_PROCESS_LOST"));
++        }
++        pending.clear();
++      });
++    });
++    return ready;
++  }
++  const adapter: ModelAdapter & {
++    evidence(): Packet[]; close(): void;
++  } = {
++    mode: "simulation",
++    async reply(context: ModelContext, request?: ChatRequest) {
++      if (process.env.NODE_ENV === "production" || !request || lost) {
++        throw new ConfirmedNoReply("CONTROLLER_SCOPE_OR_STATE_HOLD");
++      }
++      await start();
++      const frozen = {request: {...request, kind: "send"}, context};
++      const binding = createHash("sha256")
++        .update(JSON.stringify(sorted(frozen))).digest("hex");
++      const id = ++sequence;
++      const fault = faults.get(request.operationId);
++      faults.delete(request.operationId);
++      const packet = await new Promise<Packet>((resolvePacket, reject) => {
++        const timer = setTimeout(() => {
++          pending.delete(id); lost = true; child?.kill();
++          reject(new UnknownReplyOutcome("CONTROLLER_RESULT_UNKNOWN"));
++        }, 20000);
++        pending.set(id, {
++          resolve(value) {
++            clearTimeout(timer); resolvePacket(value);
++          },
++          reject(error) {
++            clearTimeout(timer); reject(error);
++          },
++        });
++        const payload = JSON.stringify({id, ...frozen, binding, fault});
++        child!.stdin.write(payload + "\n");
++      });
++      evidence.push(packet);
++      if (packet.binding !== binding || packet.epoch !== epoch ||
++          packet.operationId !== request.operationId ||
++          packet.conversationId !== request.conversationId ||
++          packet.actual_execution_eligible !== false ||
++          packet.deployment_permission !== false) {
++        throw new UnknownReplyOutcome("CONTROLLER_BINDING_HOLD");
++      }
++      if (packet.status === "confirmed-no-reply") {
++        throw new ConfirmedNoReply("CONTROLLER_VALIDATION_OR_TECHNICAL_HOLD");
++      }
++      if (packet.status !== "completed" || typeof packet.text !== "string") {
++        throw new UnknownReplyOutcome("CONTROLLER_OUTCOME_HOLD");
++      }
++      const digest = createHash("sha256").update(packet.text).digest("hex");
++      const receipt = packet.receipt as Packet | undefined;
++      if (digest !== packet.response_sha256 ||
++          receipt?.response_sha256 !== digest ||
++          receipt?.decision_fingerprint !== packet.decision_fingerprint ||
++          receipt?.action_id !== request.operationId) {
++        throw new UnknownReplyOutcome("CONTROLLER_FINAL_OUTPUT_HOLD");
++      }
++      return packet.text;
++    },
++    evidence: () => structuredClone(evidence),
++    close() {
++      lost = true; child?.kill();
++    },
++  };
++  return adapter;
++}
+diff --git a/functions/src/inspireHttp.ts b/functions/src/inspireHttp.ts
+new file mode 100644
+--- /dev/null
++++ b/functions/src/inspireHttp.ts
+@@ -0,0 +1,33 @@
++import {TextDecoder} from "node:util";
++import {ChatError} from "./inspireChatContract";
++
++/**
++ * Read original request bytes and decode once; never repair invalid UTF-8.
++ * @param {AsyncIterable<Uint8Array>} chunks Raw IncomingMessage byte chunks.
++ * @return {Promise<unknown>} Parsed JSON without text normalization.
++ */
++export async function readChatJson(
++  chunks: AsyncIterable<Uint8Array>,
++): Promise<unknown> {
++  const parts: Buffer[] = [];
++  let size = 0;
++  for await (const chunk of chunks) {
++    size += chunk.byteLength;
++    if (size > 128000) {
++      throw new ChatError("BODY_LIMIT", "Yêu cầu quá lớn.", "none", 413);
++    }
++    parts.push(Buffer.from(chunk));
++  }
++  let text: string;
++  try {
++    text = new TextDecoder("utf-8", {fatal: true, ignoreBOM: true})
++      .decode(Buffer.concat(parts, size));
++  } catch {
++    throw new ChatError("INVALID_UTF8", "Yêu cầu phải dùng UTF-8 hợp lệ.");
++  }
++  try {
++    return JSON.parse(text);
++  } catch {
++    throw new ChatError("INVALID_JSON", "Yêu cầu JSON không hợp lệ.");
++  }
++}
+diff --git a/functions/src/inspireKnowledge.ts b/functions/src/inspireKnowledge.ts
+index 4804739..6074447 100644
+--- a/functions/src/inspireKnowledge.ts
++++ b/functions/src/inspireKnowledge.ts
+@@ -1,6 +1,6 @@
+ import {getFirestore} from "firebase-admin/firestore";
+ import {createHash} from "node:crypto";
+-import type {ChatMessage} from "./inspireChatContract";
++import type {ChatMessage, ChatRequest} from "./inspireChatContract";
+ import type {Preferences} from "./inspireAccount";
+ 
+ export type SourceRecord = {
+@@ -35,7 +35,8 @@ export type ModelContext = {
+ };
+ export interface ModelAdapter {
+   mode: "simulation" | "model";
+-  reply(context: ModelContext): Promise<string>;
++  reply(context: ModelContext, request?: ChatRequest): Promise<string>;
++  close?(): void;
+ }
+ /** Explicit proof that the adapter did not produce a reply. */
+ export class ConfirmedNoReply extends Error {}
+diff --git a/functions/src/inspireLocalService.ts b/functions/src/inspireLocalService.ts
+index 9a984f7..8c2a0c9 100644
+--- a/functions/src/inspireLocalService.ts
++++ b/functions/src/inspireLocalService.ts
+@@ -1,9 +1,8 @@
+ import {getApps, initializeApp} from "firebase-admin/app";
+ import {AccountService, verifiedIdentity} from "./inspireAccount";
+ import type {Identity} from "./inspireAccount";
+-import {
+-  createSimulationServer, simulateConversation,
+-} from "./inspireChatSimulation";
++import {createSimulationServer} from "./inspireChatSimulation";
++import {createController040Adapter} from "./inspireController040";
+ import {ChatError, validateRequest} from "./inspireChatContract";
+ import type {ChatRequest} from "./inspireChatContract";
+ import {
+@@ -33,13 +32,6 @@ export function requireLocalEmulators() {
+   }
+   if (!existing) initializeApp({projectId: "demo-inspire"});
+ }
+-export const offlineAdapter: ModelAdapter = {
+-  mode: "simulation",
+-  async reply(context) {
+-    return simulateConversation(context.messages);
+-  },
+-};
+-
+ /**
+  * Construct only the local offline service; model adapters fail closed.
+  * @param {ModelAdapter} adapter Offline substitute; no model permission.
+@@ -48,14 +40,14 @@ export const offlineAdapter: ModelAdapter = {
+  * @return {object} Authenticated local service facade.
+  */
+ export function createLocalService(
+-  adapter: ModelAdapter = offlineAdapter,
++  adapter: ModelAdapter = createController040Adapter(),
+   now: () => number = Date.now,
+   rateCheck = async (ip: string) => checkRateLimit(getVisitorKey(ip), now()),
+ ) {
+   requireLocalEmulators();
+   if (adapter.mode !== "simulation") {
+-    throw new Error("Controller integration and model authorization " +
+-      "unavailable");
++    throw new Error(
++      "Controller model access is closed in this offline service.");
+   }
+   const accounts = new AccountService(now);
+   const identities = new WeakMap<ChatRequest, Identity>();
+@@ -68,10 +60,11 @@ export function createLocalService(
+       supportingKnowledge: await retrieveKnowledge(
+         messages[messages.length - 1].text),
+     };
+-    return adapter.reply(context);
++    return adapter.reply(context, request);
+   }, now);
+   return {
+     accounts, verify: verifiedIdentity,
++    close: () => adapter.close?.(),
+     session(identity: Identity) {
+       return engine.session(identity.uid);
+     },
+diff --git a/tests/inspire-browser.mjs b/tests/inspire-browser.mjs
+index 407e362..f8a8220 100644
+--- a/tests/inspire-browser.mjs
++++ b/tests/inspire-browser.mjs
+@@ -31,7 +31,7 @@ if (!process.argv.includes('--production')) {
+   await db.terminate(); await deleteApp(app)
+ }
+ const profile = mkdtempSync(join(tmpdir(), 'inspire-browser-'))
+-const evidence = resolve('docs/evidence/inspire-chat')
++const evidence = resolve(process.env.INSPIRE_EVIDENCE_DIR || 'docs/evidence/inspire-chat')
+ mkdirSync(evidence, { recursive: true })
+ const child = spawn(chrome, ['--headless=new', '--no-first-run', '--no-default-browser-check',
+   '--disable-background-networking', '--remote-debugging-port=9333', `--user-data-dir=${profile}`, 'about:blank'],
+@@ -61,6 +61,11 @@ async function navigate(path) {
+   await call('Page.navigate', { url: base + path })
+   await until(`location.pathname === ${JSON.stringify(path)} && document.querySelector('main') && document.readyState === 'complete'`)
+ }
++async function reload() {
++  const previous = await evaluate('performance.timeOrigin')
++  await call('Page.reload', { ignoreCache: true })
++  await until(`performance.timeOrigin !== ${previous} && document.readyState === 'complete' && !!document.querySelector('main')`)
++}
+ async function screenshot(name) {
+   await evaluate(`window.scrollTo({top:0, behavior:'instant'})`)
+   await evaluate('document.fonts.ready')
+@@ -203,7 +208,7 @@ try {
+   assert.equal(await evaluate(`document.querySelector('#inspire-message').value`), 'Bản nháp của cuộc trò chuyện thứ hai')
+   pass('390px mobile layout, 18px message text, 48px controls and conversation navigation', sizes)
+ 
+-  await call('Page.reload', { ignoreCache: true })
++  await reload()
+   await until(`!!document.querySelector('.ip-welcome') && document.querySelectorAll('.ip-conversations button').length === 1`)
+   assert.equal(await count('user'), 0)
+   assert.equal(await evaluate(`document.querySelector('#inspire-message').value`), '')
+@@ -233,7 +238,7 @@ try {
+   await screenshot('account-profile-mobile')
+   await evaluate(`[...document.querySelectorAll('.ip-account-actions button')].find(b => b.textContent === 'Đăng xuất').click()`)
+   await until(`document.querySelector('#inspire-message').disabled && !!document.querySelector('.ip-auth-form')`)
+-  await call('Page.reload', {ignoreCache:true})
++  await reload()
+   await until(`!!document.querySelector('.ip-auth-form')`)
+   assert.equal(await evaluate(`document.querySelector('#inspire-message').disabled`), true)
+   await evaluate(`(() => { for (const [name, value] of Object.entries({email:${JSON.stringify(email)}, password:'Synthetic-test-753!'})) {
+diff --git a/tests/inspire-build-audit.mjs b/tests/inspire-build-audit.mjs
+index 715f9d7..0e245d6 100644
+--- a/tests/inspire-build-audit.mjs
++++ b/tests/inspire-build-audit.mjs
+@@ -5,11 +5,14 @@ const walk=dir=>readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDir
+ const forbidden=['PRIVATE_KNOWLEDGE_REVIEW_CANARY','PRIVATE_PROFILE_REVIEW_CANARY',
+   'INSPIRE-CONTENT-PATCH-20261109-v0.1','mock_engine.pec_mock',
+   'Never infer P1/P2/P3, diagnoses or intervention permission',
+-  'demo-inspire-local-only','127.0.0.1:9099','inspire-known-account']
++  'demo-inspire-local-only','127.0.0.1:9099','inspire-known-account',
++  'Trích nguồn làm việc MOI-01 v1.0','NETWORK_DISABLED_SCOPE_A_BRIDGE',
++  '931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3']
+ const files=walk('dist'),hits=[]
+ for(const file of files){const data=readFileSync(file);for(const marker of forbidden)if(data.includes(Buffer.from(marker)))hits.push({file,marker})}
+-mkdirSync('docs/evidence/inspire-review',{recursive:true})
+-writeFileSync('docs/evidence/inspire-review/public-build-audit.json',JSON.stringify({executed:true,
++const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/inspire-review'
++mkdirSync(out,{recursive:true})
++writeFileSync(join(out,'public-build-audit.json'),JSON.stringify({executed:true,
+   scope:'All generated dist files, including static assets; synthetic private profile/knowledge canaries, restricted source identifiers and emulator-only auth markers.',
+   scannedFiles:files.length,forbiddenMarkers:forbidden,hits,
+   limitation:'Finite canary/identifier scan plus production browser/config checks. Not a proof against every possible transformed secret; no real user profile or private corpus is packaged.',
+diff --git a/tests/scope-a040-bugs.test.mjs b/tests/scope-a040-bugs.test.mjs
+new file mode 100644
+--- /dev/null
++++ b/tests/scope-a040-bugs.test.mjs
+@@ -0,0 +1,71 @@
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {spawnSync} from 'node:child_process'
++import {join} from 'node:path'
++import {mkdirSync,writeFileSync} from 'node:fs'
++import {inspirePrototype} from '../vite.config.ts'
++import {validateRequest} from '../functions/src/inspireChatContract.ts'
++import {launcherEnvironment} from './start-inspire-emulators.mjs'
++
++function middleware(){
++  let handler,verified=0
++  const plugin=inspirePrototype(()=>({verify:async()=>{verified++;return{uid:'synthetic'}},
++    accounts:{account:async()=>({}),savePreferences:async(_,value)=>value},
++    handle:async data=>{validateRequest(data);return{echo:data}}}))
++  plugin.configureServer({middlewares:{use:(_,fn)=>{handler=fn}}})
++  return {verified:()=>verified,async call(chunks){
++    let code=200,body
++    const req={method:'POST',headers:{'content-type':'application/json',host:'127.0.0.1:5173',authorization:'Bearer SYNTHETIC'},
++      socket:{remoteAddress:'127.0.0.1'},async *[Symbol.asyncIterator](){yield*chunks}}
++    const res={setHeader(){},set statusCode(value){code=value},end(value){body=JSON.parse(value)}}
++    await handler(req,res);return{code,body}
++  }}
++}
++const base={kind:'send',epoch:'epoch',sessionId:'session',operationId:'operation',conversationId:'conversation'}
++test('actual middleware preserves fragmented Vietnamese, emoji, multi-turn context and explicit correction byte-for-byte',async()=>{
++  const m=middleware()
++  const text='  Tôi muốn được lắng nghe. 🌿 Bác – cháu; a\u0306 vẫn giữ nguyên.  '
++  const original={...base,messages:[{id:'u1',role:'user',text},{id:'a1',role:'assistant',text:'Phản hồi giả định.'},
++    {id:'u2',role:'user',text:'Đính chính: ý tôi là chuyện công việc, không phải gia đình. 🙂',correctionOf:'u1'}]}
++  const raw=Buffer.from(JSON.stringify(original))
++  const chunks=Array.from(raw,byte=>Buffer.from([byte]))
++  const before=chunks.map(chunk=>chunk.toString()).join('')
++  assert.notEqual(before,raw.toString('utf8'))
++  const result=await m.call(chunks)
++  assert.equal(result.code,200);assert.deepEqual(result.body.echo,original)
++  const profile=await m.call(Array.from(Buffer.from(JSON.stringify({kind:'preferences',value:{name:'Bác Ánh 🌿',address:'Bác – cháu'}})),byte=>Buffer.from([byte])))
++  assert.deepEqual(profile.body,{name:'Bác Ánh 🌿',address:'Bác – cháu'})
++  mkdirSync('docs/evidence/scope-a040',{recursive:true})
++  writeFileSync('docs/evidence/scope-a040/utf8-before-after.json',JSON.stringify({executed:true,scope:'actual Vite middleware, synthetic Auth/account stub; not an emulator end-to-end probe',
++    originalText:text,priorPerChunkDecoding:JSON.parse(before).messages[0].text,
++    actualMiddlewareText:result.body.echo.messages[0].text,exactContextAndCorrectionPreserved:true},null,2))
++})
++test('actual middleware rejects malformed UTF-8 and caps original raw bytes before Auth or paid execution',async()=>{
++  const m=middleware()
++  assert.equal((await m.call([Buffer.from([0xc3,0x28])])).body.error.code,'INVALID_UTF8')
++  const oversized=Buffer.alloc(128001,0xff)
++  const result=await m.call([oversized.subarray(0,127999),oversized.subarray(127999)])
++  assert.equal(result.code,413);assert.equal(result.body.error.code,'BODY_LIMIT');assert.equal(m.verified(),0)
++  assert.equal((await m.call([Buffer.from('{')])).body.error.code,'INVALID_JSON')
++  // Exact boundary uses a syntactically valid JSON string; dispatch is irrelevant.
++  const padding=Buffer.concat([Buffer.from('{"kind":"preferences","value":""}'),Buffer.alloc(128000-33,0x20)])
++  assert.equal(padding.length,128000)
++  assert.notEqual((await m.call([padding])).body.error?.code,'BODY_LIMIT')
++})
++test('Windows/POSIX JAVA_HOME PATH and portable discovery use correct delimiters/executables without mutating parent',()=>{
++  const windows={JAVA_HOME:'C:\\JDK21',Path:'C:\\Windows;C:\\other',KEEP:'unchanged'},posix={JAVA_HOME:'/opt/jdk21',PATH:'/usr/bin:/bin'}
++  const w=launcherEnvironment(windows,{platform:'win32',exists:()=>false}),p=launcherEnvironment(posix,{platform:'linux',exists:()=>false})
++  assert.equal(w.Path,'C:\\JDK21\\bin;C:\\Windows;C:\\other');assert.equal(p.PATH,'/opt/jdk21/bin:/usr/bin:/bin')
++  assert.deepEqual(windows,{JAVA_HOME:'C:\\JDK21',Path:'C:\\Windows;C:\\other',KEEP:'unchanged'})
++  assert.deepEqual(posix,{JAVA_HOME:'/opt/jdk21',PATH:'/usr/bin:/bin'})
++  const discovered=launcherEnvironment({PATH:'/bin'},{platform:'darwin',tools:'/tools',list:()=>['jdk-21-fixture'],exists:path=>path==='/tools'||path==='/tools/jdk-21-fixture/bin/java'})
++  assert.equal(discovered.JAVA_HOME,'/tools/jdk-21-fixture');assert.equal(discovered.PATH,'/tools/jdk-21-fixture/bin:/bin')
++  const winPortable=launcherEnvironment({Path:'C:\\Windows'},{platform:'win32',tools:'C:\\tools',list:()=>['jdk-21-fixture'],exists:path=>path==='C:\\tools'||path==='C:\\tools\\jdk-21-fixture\\bin\\java.exe'})
++  assert.equal(winPortable.JAVA_HOME,'C:\\tools\\jdk-21-fixture')
++  const env=launcherEnvironment(process.env),java=join(env.JAVA_HOME,'bin',process.platform==='win32'?'java.exe':'java')
++  const executed=spawnSync(java,['-version'],{env,encoding:'utf8'})
++  assert.equal(executed.status,0);assert.match(executed.stderr,/21\./)
++  writeFileSync('docs/evidence/scope-a040/launcher-regression.json',JSON.stringify({executed:true,windowsConstruction:w.Path,posixConstruction:p.PATH,
++    portableExecutableDiscovery:'java.exe on Windows; java on POSIX',actualHostJavaVersion:executed.stderr,parentEnvironmentUnchanged:true,
++    limitation:'Windows runtime executed; POSIX environment/discovery simulated, not a Linux/macOS launcher run.'},null,2))
++})
+diff --git a/tests/scope-a040-diff.mjs b/tests/scope-a040-diff.mjs
+new file mode 100644
+--- /dev/null
++++ b/tests/scope-a040-diff.mjs
+@@ -0,0 +1,34 @@
++// Focused milestone diff against the pre-task dirty-tree source snapshot.
++// Does not stage, restore, commit or inspect secrets/runtime data.
++import {readdirSync,readFileSync,writeFileSync,existsSync} from 'node:fs'
++import {join,relative} from 'node:path'
++import {spawnSync} from 'node:child_process'
++const before='.private.local/scope-a-before',out='docs/evidence/scope-a040'
++const skip=new Set(['.git','.private.local','.tools.local','node_modules','dist','lib','evidence'])
++function walk(dir){return readdirSync(dir,{withFileTypes:true}).flatMap(e=>skip.has(e.name)?[]:e.isDirectory()?walk(join(dir,e.name)):[join(dir,e.name)])}
++const source=f=>/\.(ts|tsx|mjs|cjs|js|json|css|md|py|rules|html)$/.test(f)||['.gitignore','.firebaserc'].includes(f)
++const files=walk('.').map(f=>f.replaceAll('\\','/')).filter(source)
++const previous=walk(before).map(f=>relative(before,f).replaceAll('\\','/')).filter(source)
++let patch='',unchanged=0
++const changed=[]
++for(const file of [...new Set([...files,...previous])].sort()){
++  const oldPath=join(before,file),old=existsSync(oldPath)?readFileSync(oldPath):undefined
++  const current=existsSync(file)?readFileSync(file):undefined
++  if(old&&current&&old.equals(current)){unchanged++;continue}
++  changed.push(file)
++  if(old&&current){
++    const result=spawnSync('git',['diff','--no-ext-diff','--no-index','--',oldPath,file],{encoding:'utf8',maxBuffer:16*1024*1024})
++    if(result.status!==1)throw Error('Diff failed for '+file)
++    patch+=result.stdout.replace(/^diff --git .*$/m,`diff --git a/${file} b/${file}`)
++      .replace(/^--- .*$/m,`--- a/${file}`).replace(/^\+\+\+ .*$/m,`+++ b/${file}`)
++  }else{
++    const text=(current??old).toString('utf8').replaceAll('\r',''),lines=text.replace(/\n$/,'').split('\n')
++    patch+=`diff --git a/${file} b/${file}\n${current?'new':'deleted'} file mode 100644\n--- ${current?'/dev/null':'a/'+file}\n+++ ${current?'b/'+file:'/dev/null'}\n@@ ${current?'-0,0 +1,':'-1,'+lines.length+' +0,'}${current?lines.length:0} @@\n`
++    patch+=lines.map(line=>(current?'+':'-')+line+'\n').join('')
++  }
++}
++writeFileSync(join(out,'focused-working-tree.patch'),patch)
++writeFileSync(join(out,'preservation.json'),JSON.stringify({executed:true,baseline:'Private pre-task source snapshot, not Git HEAD',
++  unchangedSourceFiles:unchanged,changedFiles:changed,
++  scope:'Source/config/docs only. Prior dirty changes are retained; generated outputs, evidence, tools, private bundle and secrets excluded.'},null,2))
++console.log(JSON.stringify({changedFiles:changed,unchangedSourceFiles:unchanged}))
+diff --git a/tests/scope-a040-integration.test.mjs b/tests/scope-a040-integration.test.mjs
+new file mode 100644
+--- /dev/null
++++ b/tests/scope-a040-integration.test.mjs
+@@ -0,0 +1,139 @@
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {createRequire} from 'node:module'
++import {randomUUID,createHash} from 'node:crypto'
++import {mkdirSync,writeFileSync} from 'node:fs'
++import {createLocalService,requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {createController040Adapter} from '../functions/src/inspireController040.ts'
++import {importSource} from '../functions/src/inspireKnowledge.ts'
++import {ConversationStore} from '../src/services/inspireConversation.ts'
++
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099'
++process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080'
++requireLocalEmulators()
++const require=createRequire(new URL('../functions/package.json',import.meta.url))
++const db=require('firebase-admin/firestore').getFirestore()
++const auth=require('firebase-admin/auth').getAuth(),uids=[]
++const noRate=async()=>({allowed:true}) // IP limiter is separately exercised unchanged.
++async function guest(service){
++  const result=await fetch('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=synthetic-key',
++    {method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({returnSecureToken:true})}).then(r=>r.json())
++  assert.ok(result.idToken);const identity=await service.verify(result.idToken);uids.push(identity.uid);return identity
++}
++function report(name,value){mkdirSync('docs/evidence/scope-a040',{recursive:true});writeFileSync('docs/evidence/scope-a040/'+name+'.json',JSON.stringify(value,null,2))}
++function diagnosis(adapter){return adapter.evidence().at(-1)?.checks?.filter(c=>c.stage==='Technical Hold')}
++
++test('website store → verified account/quota → permitted retrieval → original Controller → exact mock receipt, correction, failure and replay',async(t)=>{
++  const faults=new Map(),adapter=createController040Adapter(faults)
++  t.after(()=>adapter.close())
++  const service=createLocalService(adapter,Date.now,noRate),identity=await guest(service)
++  const sourceId='scope-a-synthetic-'+randomUUID()
++  const passage='Cây mai ngoài hiên: đoạn tổng hợp chỉ dành cho kiểm thử offline. Người kể có thể sửa điều đã nói; không suy diễn từ bản nháp.'
++  const hash=createHash('sha256').update(passage).digest('hex')
++  await importSource({collection:'INSPIRE',documentId:sourceId,title:'SYNTHETIC PERMITTED TEST FIXTURE / cây mai',status:'published-supporting',permittedUse:'supporting-retrieval',rawFile:'synthetic-only'},Buffer.from(passage),passage)
++  t.after(()=>db.recursiveDelete(db.doc('inspireKnowledge/'+sourceId)))
++  let technical=false,drop=false
++  const requests=[]
++  const store=new ConversationStore({connect:async()=>service.session(identity),send:async(request)=>{
++    requests.push(structuredClone(request))
++    if(technical){technical=false;faults.set(request.operationId,'technical_before_generate')}
++    const response=await service.handle(request,identity,'scope-a-synthetic')
++    if(drop){drop=false;throw Error('Synthetic dropped response AFTER committed mock receipt')}
++    return response
++  }})
++  const active=()=>store.getSnapshot().conversations[0],id=active().id
++  async function send(text){store.draft(id,text);await store.send(id);assert.equal(active().status,'idle',JSON.stringify(diagnosis(adapter)))}
++  await send('Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿')
++  const original=structuredClone(active().messages[0])
++  await send('Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?')
++  store.correct(id,original.id)
++  await send('Tôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.')
++  assert.deepEqual(active().messages[0],original)
++  assert.equal(active().messages[4].correctionOf,original.id)
++  assert.deepEqual(requests[2].messages.map(m=>m.role),['user','assistant','user','assistant','user'])
++  technical=true;store.draft(id,'Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp.');await store.send(id)
++  assert.equal(active().error.code,'ATTEMPT_FAILED',JSON.stringify(diagnosis(adapter)))
++  assert.equal(active().messages.length,7);assert.equal(active().messages.at(-1).role,'user')
++  const failed=structuredClone(requests.at(-1))
++  assert.equal((await service.accounts.account(identity)).quota.completed,3)
++  await store.retry(id);assert.equal(active().status,'idle',JSON.stringify(diagnosis(adapter)))
++  assert.notEqual(requests.at(-1).operationId,failed.operationId)
++  assert.deepEqual(requests.at(-1).messages,failed.messages)
++  drop=true;store.draft(id,'Cây mai: tôi thử kiểm tra lại một phản hồi bị mất trên đường truyền.');await store.send(id)
++  assert.equal(active().error.code,'CONNECTION')
++  const lost=structuredClone(requests.at(-1)),calls=adapter.evidence().length
++  await store.retry(id);assert.equal(active().status,'idle')
++  assert.equal(requests.at(-1).kind,'replay');assert.equal(requests.at(-1).operationId,lost.operationId)
++  assert.equal(adapter.evidence().length,calls)
++  assert.equal((await service.accounts.account(identity)).quota.completed,5)
++  assert.equal((await service.accounts.account(identity)).quota.pending,0)
++  const packets=adapter.evidence(),completed=packets.filter(p=>p.status==='completed')
++  assert.equal(completed.length,5)
++  const correctedInput=completed[2].checks.find(c=>c.stage==='Offline Adapter Input')
++  assert.deepEqual(correctedInput.roles,['system','user','assistant','user','assistant','user'])
++  assert.equal(correctedInput.dialogue[0].content,original.text)
++  assert.ok(correctedInput.dialogue.at(-1).content.endsWith(requests[2].messages.at(-1).text))
++  let fixtureInputs=0
++  for(const packet of completed){
++    for(const stage of ['Source Verification','Ledger Validation','Permission Inspector','Mock Policy','Output Validation','Output Recheck','Mock Sink','State Commit'])assert.ok(packet.checks.some(c=>c.stage===stage),stage)
++    assert.equal(packet.actual_execution_eligible,false)
++    assert.equal(packet.deployment_permission,false)
++    assert.equal(packet.receipt.decision_fingerprint,packet.decision_fingerprint)
++    assert.equal(packet.response_sha256,createHash('sha256').update(packet.text).digest('hex'))
++    const input=packet.checks.find(c=>c.stage==='Offline Adapter Input')
++    if(input.website_sources.some(s=>s.documentId===sourceId&&s.hash===hash&&s.text===passage))fixtureInputs++
++    assert.equal(input.uses_knowledge_for_generative_answer,false)
++    assert.ok(Object.values(input.working_sections_present).every(Boolean))
++    assert.ok(packet.checks.some(c=>c.stage==='Permission Inspector'&&JSON.stringify(c).includes('HOLD_ACTUAL_EXECUTION')))
++  }
++  assert.ok(fixtureInputs>0,'Exact permitted synthetic passage and provenance must reach constructed adapter input')
++  report('integrated-journey',{executed:true,syntheticOnly:true,paidModelCalled:false,realRuntimePermissionEstablished:false,
++    limitations:['Original MOCK adapter does not use knowledge to generate grounded answers.','MOCK ScopeGuard branch skips semantic checks.','Permission registry unavailable; actual execution remains held.'],
++    requests,conversation:active().messages,quota:(await service.accounts.account(identity)).quota,controller:packets,replayAdapterCallsAdded:adapter.evidence().length-calls})
++})
++
++test('Controller process loss after receipt holds quota and replay cannot regenerate after losing its cache',async(t)=>{
++  const faults=new Map(),adapter=createController040Adapter(faults);t.after(()=>adapter.close())
++  const service=createLocalService(adapter,Date.now,noRate),identity=await guest(service)
++  const {epoch,sessionId}=service.session(identity)
++  const request={kind:'send',epoch,sessionId,conversationId:randomUUID(),operationId:randomUUID(),messages:[{id:randomUUID(),role:'user',text:'Nội dung tổng hợp để thử mất tiến trình sau biên nhận.'}]}
++  faults.set(request.operationId,'process_loss_after_receipt')
++  await assert.rejects(service.handle(request,identity,'scope-a-process-loss'),{code:'OUTCOME_UNKNOWN'})
++  await assert.rejects(service.handle({...request,kind:'replay'},identity,'scope-a-process-loss'),{code:'OUTCOME_UNKNOWN'})
++  assert.equal((await service.accounts.account(identity)).quota.pending,1)
++  const restarted=createLocalService(createController040Adapter(),Date.now,noRate)
++  await assert.rejects(restarted.handle({...request,kind:'replay'},identity,'scope-a-process-loss'),{code:'SESSION_LOST'})
++  assert.equal((await restarted.accounts.account(identity)).quota.pending,1)
++  assert.equal(adapter.evidence().length,0)
++  report('controller-process-loss',{executed:true,syntheticOnly:true,injectedFault:'process exits after mock receipt/state commit, before IPC response',
++    replay:'OUTCOME_UNKNOWN, no re-execution',serverRestartReplay:'SESSION_LOST, no re-execution',pendingQuota:1,
++    reconciliation:'BLOCKED: no durable authorized Controller receipt/reconciliation contract; no fabricated completion or refund'})
++})
++
++test('native Controller rejects mock-policy denial, invalid output, post-validation swap and revocation before use',async(t)=>{
++  const faults=new Map(),adapter=createController040Adapter(faults);t.after(()=>adapter.close())
++  const service=createLocalService(adapter,Date.now,noRate),identity=await guest(service)
++  for(const fault of ['deny_mock','invalid_output','post_validation_swap','revoke_before_use']){
++    const {epoch,sessionId}=service.session(identity)
++    const request={kind:'send',epoch,sessionId,conversationId:randomUUID(),operationId:randomUUID(),messages:[{id:randomUUID(),role:'user',text:'Cây mai: nội dung giả định để kiểm thử ranh giới.'}]}
++    faults.set(request.operationId,fault)
++    await assert.rejects(service.handle(request,identity,'scope-a-negative'),{code:'ATTEMPT_FAILED'})
++  }
++  const packets=adapter.evidence()
++  assert.equal(packets.length,4)
++  assert.ok(packets[0].checks.some(c=>c.stage==='Mock Policy'&&c.eligible===false))
++  assert.ok(packets[2].checks.some(c=>c.stage==='Output Recheck'&&c.result==='REJECTED_CHANGED_OR_EXPIRED_BYTES'))
++  assert.ok(packets[3].checks.some(c=>c.stage==='Mock Policy'&&c.eligible===false))
++  assert.equal((await service.accounts.account(identity)).quota.completed,0)
++  assert.equal((await service.accounts.account(identity)).quota.remaining,10)
++  report('negative-controls',{executed:true,syntheticOnly:true,faults:['deny_mock','invalid_output','post_validation_swap','revoke_before_use'],controller:packets})
++})
++
++test.after(async()=>{
++  for(const uid of uids){
++    await db.recursiveDelete(db.doc('inspireAccounts/'+uid));await db.doc('inspirePreferences/'+uid).delete()
++    const ops=await db.collection('inspireOperations').where('uid','==',uid).get();await Promise.all(ops.docs.map(d=>d.ref.delete()))
++    await auth.deleteUser(uid)
++  }
++  await db.terminate()
++})
+diff --git a/tests/scope-a040-lint-baseline.mjs b/tests/scope-a040-lint-baseline.mjs
+new file mode 100644
+--- /dev/null
++++ b/tests/scope-a040-lint-baseline.mjs
+@@ -0,0 +1,28 @@
++// Compare actual current failures to Git HEAD without changing the working tree.
++import assert from 'node:assert/strict'
++import {execFileSync,spawnSync} from 'node:child_process'
++import {createRequire} from 'node:module'
++import {readFileSync,writeFileSync} from 'node:fs'
++import {resolve,join} from 'node:path'
++const require=createRequire(new URL('../functions/package.json',import.meta.url))
++process.env.ESLINT_USE_FLAT_CONFIG='false'
++const {ESLint}=require('eslint'),cwd=resolve('functions'),file=join(cwd,'src/index.ts')
++const lint=new ESLint({cwd,overrideConfigFile:join(cwd,'.eslintrc.js'),useEslintrc:false})
++const head=execFileSync('git',['show','HEAD:functions/src/index.ts'],{encoding:'utf8'})
++const [baseline]=await lint.lintText(head,{filePath:file}),full=await lint.lintFiles(['.'])
++const current=full.find(result=>result.filePath===file)
++const simplify=messages=>messages.map(({ruleId,line,column,message,severity})=>({ruleId,line,column,message,severity}))
++const normalize=text=>text.replaceAll('\r','')
++const report={executed:true,unchangedBookingFile:normalize(head)===normalize(readFileSync(file,'utf8')),
++  baselineErrors:baseline.errorCount,currentErrors:current.errorCount,
++  exactRuleLineMessageMatch:JSON.stringify(simplify(baseline.messages))===JSON.stringify(simplify(current.messages)),
++  introducedErrorsInOtherBackendFiles:full.filter(r=>r.filePath!==file).reduce((n,r)=>n+r.errorCount,0)}
++const root=spawnSync(process.execPath,['--input-type=module','-e',"await import('./eslint.config.js')"],{encoding:'utf8'})
++report.rootConfig={unchanged:normalize(execFileSync('git',['show','HEAD:eslint.config.js'],{encoding:'utf8'}))===normalize(readFileSync('eslint.config.js','utf8')),
++  actualExitCode:root.status,missingDependency:root.stderr.includes('@eslint/js')}
++writeFileSync('docs/evidence/scope-a040/lint-baseline.json',JSON.stringify(report,null,2))
++writeFileSync('docs/evidence/scope-a040/root-lint.txt',root.stdout+root.stderr)
++assert.equal(report.unchangedBookingFile,true);assert.equal(report.exactRuleLineMessageMatch,true)
++assert.equal(report.introducedErrorsInOtherBackendFiles,0)
++assert.equal(report.rootConfig.unchanged,true);assert.equal(report.rootConfig.missingDependency,true)
++console.log('PASS: 30 unchanged booking lint errors; zero in other backend files; unchanged root config missing @eslint/js.')
+diff --git a/tests/start-inspire-emulators.mjs b/tests/start-inspire-emulators.mjs
+index ea6b096..0ade1fa 100644
+--- a/tests/start-inspire-emulators.mjs
++++ b/tests/start-inspire-emulators.mjs
+@@ -1,13 +1,28 @@
+ import {spawn} from 'node:child_process'
+ import {existsSync, readdirSync} from 'node:fs'
+-import {resolve, join} from 'node:path'
+-const env = {...process.env, XDG_CONFIG_HOME:resolve('.tools.local/firebase-config'), CI:'true', METADATA_SERVER_DETECTION:'none'}
+-// Prefer the portable local JDK when present; otherwise use installed Java 21+.
+-const tools = resolve('.tools.local')
+-const jdk = existsSync(tools) && readdirSync(tools).find((name) => name.startsWith('jdk-21') && existsSync(join(tools,name,'bin/java.exe')))
+-if (!env.JAVA_HOME && jdk) env.JAVA_HOME = join(tools,jdk)
+-if (env.JAVA_HOME) env.PATH = join(env.JAVA_HOME,'bin') + ';' + env.PATH
+-const child = spawn(process.execPath, [resolve('node_modules/firebase-tools/lib/bin/firebase.js'),
+-  'emulators:start', '--only', 'auth,firestore', '--project', 'demo-inspire'], {env, stdio:'inherit', windowsHide:true})
+-for (const signal of ['SIGINT','SIGTERM']) process.on(signal, () => child.kill(signal))
+-child.on('exit', (code) => process.exit(code ?? 0))
++import {resolve, join, delimiter, win32, posix} from 'node:path'
++import {pathToFileURL} from 'node:url'
++
++// Pure construction: platform/FS parameters permit meaningful POSIX tests here.
++export function launcherEnvironment(parent, {platform=process.platform, tools=resolve('.tools.local'),
++  exists=existsSync, list=readdirSync}={}) {
++  const paths=platform==='win32'?win32:posix
++  const separator=platform===process.platform?delimiter:paths.delimiter
++  const executable=platform==='win32'?'java.exe':'java'
++  const env={...parent,XDG_CONFIG_HOME:resolve('.tools.local/firebase-config'),CI:'true',METADATA_SERVER_DETECTION:'none'}
++  const jdk=exists(tools)&&list(tools).find(name=>name.startsWith('jdk-21')&&exists(paths.join(tools,name,'bin',executable)))
++  if(!env.JAVA_HOME&&jdk)env.JAVA_HOME=paths.join(tools,jdk)
++  if(env.JAVA_HOME){
++    const pathKey=platform==='win32'?Object.keys(parent).find(key=>key.toLowerCase()==='path')??'PATH':'PATH'
++    env[pathKey]=paths.join(env.JAVA_HOME,'bin')+separator+(parent[pathKey]??'')
++  }
++  return env
++}
++
++if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
++  const env=launcherEnvironment(process.env)
++  const child=spawn(process.execPath,[resolve('node_modules/firebase-tools/lib/bin/firebase.js'),
++    'emulators:start','--only','auth,firestore','--project','demo-inspire'],{env,stdio:'inherit',windowsHide:true})
++  for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>child.kill(signal))
++  child.on('exit',code=>process.exit(code??0))
++}
+diff --git a/tests/verify-controller040-package.mjs b/tests/verify-controller040-package.mjs
+new file mode 100644
+--- /dev/null
++++ b/tests/verify-controller040-package.mjs
+@@ -0,0 +1,41 @@
++// Read-only integrity/status audit. No source import, approval or code execution.
++import {readFileSync,readdirSync,writeFileSync,mkdirSync,statSync} from 'node:fs'
++import {createHash} from 'node:crypto'
++import {resolve,relative,join,sep} from 'node:path'
++const root=resolve('.private.local/controller040-preview/INSPIRE_AI_040')
++const read=path=>readFileSync(join(root,path))
++const hash=bytes=>createHash('sha256').update(bytes).digest('hex')
++const manifest=JSON.parse(read('manifests/package_manifest.json'))
++const mismatches=[]
++for(const file of manifest.files){
++  const path=resolve(root,file.path)
++  if(!path.startsWith(root+sep))throw Error('Manifest escaped private root')
++  try{const bytes=read(file.path);if(hash(bytes)!==file.sha256||bytes.length!==file.bytes)mismatches.push(file.path)}catch{mismatches.push(file.path)}
++}
++const corpus=JSON.parse(read('sources/verified_corpus_032.json'))
++const sourceRecords=corpus.source_records.map(record=>({...record,
++  byteVerified:hash(read(record.path))===record.sha256&&read(record.path).length===record.bytes}))
++const current=JSON.parse(read('manifests/SOURCE_VERSION_MANIFEST_040.json'))
++const drafts=JSON.parse(read('manifests/SOURCE_VERSION_MANIFEST_033.json'))
++const statuses={}
++for(const record of sourceRecords)statuses[record.approval_status]=(statuses[record.approval_status]??0)+1
++const mainIds=Array.from({length:24},(_,i)=>'INSPIRE-'+String(i+1).padStart(2,'0'))
++const report={executed:true,package:'INSPIRE_AI_0.4.0_PREVIEW.zip',
++  archiveSha256:hash(readFileSync('C:/Users/Admin/Downloads/INSPIRE_AI_0.4.0_PREVIEW.zip')),
++  manifestRole:manifest.role,payloadsChecked:manifest.files.length,mismatches,
++  sourceCount:sourceRecords.length,verifiedSources:sourceRecords.filter(record=>record.byteVerified).length,
++  all24MainIdsPresent:mainIds.every(id=>sourceRecords.some(record=>record.document_id===id)),
++  sourceRecords,approvalStatusCounts:statuses,
++  historical_MOI_A:current.historical_MOI_A,
++  educationalDrafts:current.educational_draft_source_manifest,
++  draftPayloadCount:drafts.new_draft_files_preserved?.length,
++  architectureApproval:current.architecture_approval,clinicalValidation:current.clinical_validation,
++  deploymentPermission:current.deployment_permission,
++  runtimeWorkingSource:current.runtime_source_context,
++  limitations:['Integrity is not approval. All original record statuses retained.','No package frontend, launcher, paid/local model, database or approval tool executed.'],
++}
++mkdirSync('docs/evidence/scope-a040',{recursive:true})
++writeFileSync('docs/evidence/scope-a040/package-audit.json',JSON.stringify(report,null,2))
++console.log(JSON.stringify({payloadsChecked:report.payloadsChecked,mismatches,verifiedSources:report.verifiedSources,all24MainIdsPresent:report.all24MainIdsPresent,statuses,
++  historical_MOI_A:report.historical_MOI_A,educationalDrafts:report.educationalDrafts,workingSourceStatus:report.runtimeWorkingSource.declared_status}))
++if(mismatches.length||sourceRecords.some(record=>!record.byteVerified))process.exitCode=1
+diff --git a/tests/verify-scope-a040.mjs b/tests/verify-scope-a040.mjs
+new file mode 100644
+--- /dev/null
++++ b/tests/verify-scope-a040.mjs
+@@ -0,0 +1,41 @@
++// Local evidence runner. No deployment, provider, approval or booking commands.
++import {spawnSync} from 'node:child_process'
++import {mkdirSync,writeFileSync,readFileSync,existsSync} from 'node:fs'
++import {join,dirname} from 'node:path'
++const out='docs/evidence/scope-a040'
++mkdirSync(out,{recursive:true})
++const npm=process.env.npm_execpath||join(dirname(process.execPath),'node_modules/npm/bin/npm-cli.js')
++const test=(...files)=>['--import','./tests/register-ts.mjs','--test',...files]
++const commands={
++  'lint-chat':[npm,'--prefix','functions','run','lint:chat'],
++  'lint-full':[npm,'--prefix','functions','run','lint'],
++  'lint-baseline':['tests/scope-a040-lint-baseline.mjs'],
++  'build-functions':[npm,'--prefix','functions','run','build'],
++  'build-web':[npm,'run','build'],
++  'core-and-regressions':test('tests/inspire-chat.test.mjs','tests/scope-a040-bugs.test.mjs'),
++  'emulator-tests':test('tests/inspire-emulator.test.mjs','tests/inspire-consolidation.test.mjs'),
++  'controller-tests':test('tests/scope-a040-integration.test.mjs'),
++  'package-check':['tests/verify-controller040-package.mjs'],
++  'public-build-audit':['tests/inspire-build-audit.mjs'],
++  'browser-checks':['tests/inspire-browser.mjs'],
++  'production-browser':['tests/inspire-browser.mjs','--production'],
++}
++const requested=process.argv.slice(2),names=requested.length?requested:Object.keys(commands)
++const path=join(out,'executed-checks.json')
++const records=existsSync(path)?JSON.parse(readFileSync(path,'utf8')): {}
++let failed=false
++for(const name of names){
++  if(!commands[name])throw Error('Unknown local check: '+name)
++  const result=spawnSync(process.execPath,commands[name],{encoding:'utf8',maxBuffer:32*1024*1024,
++    env:{...process.env,METADATA_SERVER_DETECTION:'none',INSPIRE_REVIEW_EVIDENCE_DIR:out,
++      INSPIRE_EVIDENCE_DIR:join(out,'browser'),
++      ...(name==='production-browser'?{INSPIRE_TEST_URL:'http://127.0.0.1:5174'}:{})}})
++  writeFileSync(join(out,name+'.txt'),`${result.stdout??''}${result.stderr??''}\nEXIT_CODE=${result.status}\n`)
++  const expected=name==='lint-full'?1:0
++  records[name]={executed:true,command:[process.execPath,...commands[name]],exitCode:result.status,expectedExitCode:expected,
++    passed:result.status===expected,scope:name==='lint-full'?'Known baseline errors; see baseline comparison.':'Local offline only'}
++  failed ||= result.status!==expected
++  writeFileSync(path,JSON.stringify(records,null,2))
++  console.log(`${records[name].passed?'PASS':'FAIL'} ${name}: exit ${result.status}`)
++}
++process.exitCode=failed?1:0
+diff --git a/vite.config.ts b/vite.config.ts
+index 6b61707..520d91d 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -2,15 +2,17 @@ import { defineConfig } from 'vite'
+ import react from '@vitejs/plugin-react'
+ import { createLocalService } from './functions/src/inspireLocalService'
+ import { ChatError, exactKeys, record } from './functions/src/inspireChatContract'
++import {readChatJson} from './functions/src/inspireHttp'
+ 
+ // Local development only. This middleware is absent from production builds.
+-function inspirePrototype() {
++export function inspirePrototype(serviceFactory = createLocalService) {
+   return {
+     name: 'inspire-offline-prototype',
+     configureServer(vite: import('vite').ViteDevServer) {
+       process.env.FIREBASE_AUTH_EMULATOR_HOST = '127.0.0.1:9099'
+       process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080'
+-      const server = createLocalService()
++      const server = serviceFactory()
++      vite.httpServer?.once('close', () => server.close())
+       vite.middlewares.use('/api/inspire-prototype', async (req, res) => {
+         res.setHeader('Content-Type', 'application/json; charset=utf-8')
+         res.setHeader('Cache-Control', 'no-store')
+@@ -21,13 +23,7 @@ function inspirePrototype() {
+           if (origin && origin !== `http://${req.headers.host}` && origin !== `https://${req.headers.host}`) {
+             throw new ChatError('ORIGIN', 'Nguồn yêu cầu không hợp lệ.', 'none', 403)
+           }
+-          let body = ''
+-          for await (const chunk of req) {
+-            body += chunk.toString()
+-            if (Buffer.byteLength(body) > 128000) throw new ChatError('BODY_LIMIT', 'Yêu cầu quá lớn.', 'none', 413)
+-          }
+-          let data: unknown
+-          try { data = JSON.parse(body) } catch { throw new ChatError('INVALID_JSON', 'Yêu cầu JSON không hợp lệ.') }
++          const data = await readChatJson(req)
+           const authorization = req.headers.authorization
+           if (!authorization?.startsWith('Bearer ')) throw new ChatError('UNAUTHENTICATED', 'Vui lòng kết nối danh tính khách hoặc đăng nhập.', 'none', 401)
+           const identity = await server.verify(authorization.slice(7))

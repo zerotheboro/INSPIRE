@@ -1,0 +1,7 @@
+{
+  "executed": true,
+  "exitCode": 0,
+  "passed": true,
+  "scope": "Read-only apply check against staged HEAD source; no workspace patch applied",
+  "stderr": ""
+}

@@ -1,0 +1,12 @@
+✔ verified registered synthetic identity is bound; forged fields, account switching and production fail before reservation (9435.1522ms)
+✔ actual protected runner → shared emulator Auth/IP/quota → native validation → research acceptance and replay (10418.3211ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22034.8047
+
+EXIT_CODE=0

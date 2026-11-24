@@ -1,0 +1,30 @@
+✔ multi-turn passes both ordered roles and corrections preserve exact original wording (14.1171ms)
+✔ duplicate clicks while pending create one user, one operation and one generation (11.5264ms)
+✔ dropped response uses explicit replay with same IDs; no error enters timeline (6.3557ms)
+✔ failure before dispatch never converts an unknown replay into a generation (0.6373ms)
+✔ definitive adapter failure offers a NEW attempt, preserving the same user message (1.415ms)
+✔ server restart with unresolved operation rejects old epoch, never generates again (5.1297ms)
+✔ expired session and missing operation fail closed (0.8712ms)
+✔ UI state keeps an unresolved user turn and closes retry after server restart (3.3745ms)
+✔ a different operation cannot overlap a pending turn in the same conversation (2.8714ms)
+✔ concurrent duplicate requests share the cached operation; changed content conflicts (2.5098ms)
+✔ validation rejects roles, authority/identity fields, invalid corrections and oversized context before adapter (2.8452ms)
+✔ server rejects forged or changed assistant history and invalid assistant correction references (1.1631ms)
+✔ response binding rejects wrong conversation, request, user, epoch, session, role and unsupported fields (1.837ms)
+✔ conversation switching isolates drafts, histories and late responses; fresh store resets memory (5.011ms)
+✔ HTTP transport handles network failure and callable-like errors without inventing assistant text (55.1882ms)
+✔ simulation responds from input and never imports test fixtures (0.8068ms)
+✔ Firebase callable validates then closes the live path without touching Firestore or a provider (1415.7754ms)
+✔ actual middleware preserves fragmented Vietnamese, emoji, multi-turn context and explicit correction byte-for-byte (675.2302ms)
+✔ actual middleware rejects malformed UTF-8 and caps original raw bytes before Auth or paid execution (2.3645ms)
+✔ Windows/POSIX JAVA_HOME PATH and portable discovery use correct delimiters/executables without mutating parent (119.2341ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4254.8477
+
+EXIT_CODE=0

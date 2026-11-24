@@ -1,0 +1,5 @@
+C:\Program Files\nodejs\node.exe tests/inspire-browser.mjs --production
+
+PASS Production preview keeps sending closed with no API requests 
+
+EXIT_CODE=0

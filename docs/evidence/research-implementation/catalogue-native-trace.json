@@ -1,0 +1,150 @@
+{
+  "executed": true,
+  "tests": 7,
+  "original_package_payloads_verified": 1234,
+  "original_manifest_sha256": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+  "paid_calls": 0,
+  "live_adapter_enabled": false,
+  "actual_source_export_permission": false,
+  "limitations": [
+    "Offline interface/control tests, not generative quality.",
+    "Original proposal system text hashed only, never copied into this evidence.",
+    "MockSink receipt is not permission for generated model output."
+  ],
+  "trace": [
+    {
+      "check": "prepared-input",
+      "executed": true,
+      "network": "disabled",
+      "operationId": "bce0a6b8-ff5f-485e-870e-8e85f4e8440d",
+      "binding": "9bbd82c163b09926ccf9ba47b1292e24b0e1e7e44bafaa6c72be2574a977e8cc",
+      "system_sha256_only_not_original_text": "fa67418da8d4715d8c2fc689b03fb47bd4af71eba9ea83ed3215b73b378ad910",
+      "dialogue": [
+        {
+          "content": "Tôi giận người bạn. 🌿",
+          "role": "user"
+        },
+        {
+          "content": "Bạn muốn kể thêm không?",
+          "role": "assistant"
+        },
+        {
+          "content": "Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi sửa lại: là đồng nghiệp, và tôi buồn hơn là giận.",
+          "role": "user"
+        }
+      ],
+      "separate_supporting_data": {
+        "correction_references": [
+          {
+            "correctionOf": "u1",
+            "messageId": "u2"
+          }
+        ],
+        "kind": "UNTRUSTED_SUPPORTING_DATA_NOT_RULES_OR_PERMISSION",
+        "source_references_and_passages": [
+          {
+            "documentId": "SYNTHETIC-PERMITTED-INTERFACE",
+            "hash": "022c134e8d1a6969037928db5bcff49fb317cb7974c22ddfc621882dae5456e8",
+            "sectionId": "fixture-1",
+            "sourceStatus": "published-supporting",
+            "text": "Đoạn tham chiếu tổng hợp cho kiểm thử: tên gọi cảm xúc có thể được người kể đính chính.",
+            "title": "SYNTHETIC TEST ONLY",
+            "version": 1
+          }
+        ],
+        "user_stated_preferences": {
+          "address": "Bác – cháu",
+          "ageRange": "",
+          "context": "Bối cảnh tổng hợp.",
+          "desiredSupport": "Ngắn gọn.",
+          "language": "vi",
+          "name": "Tên giả định"
+        }
+      },
+      "control_parameters": {
+        "background": false,
+        "max_output_tokens": 2048,
+        "model": "gpt-6.1-sol",
+        "reasoning": {
+          "effort": "low"
+        },
+        "service_tier": "default",
+        "store": false,
+        "stream": false,
+        "tools": [],
+        "truncation": "disabled"
+      }
+    },
+    {
+      "check": "original-generated-controller",
+      "executed": true,
+      "fresh_non_catalogue_candidate": "  Chiều chăm cây mai có vẻ là một khoảng nghỉ dễ chịu. Mã thử tổng hợp: 5aa8b9bc-f2ba-4488-83b0-7f7512361804.  ",
+      "origin": "OFFLINE_CANDIDATE_INTERFACE",
+      "semantic_scope_guard_branch": "non-MOCK",
+      "permission": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "1050e429ff066baa8221f8a7da138d3dc53cfe604fb0cfdb119f24f0ec975181",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "5263f0bd5939cbba3fd65b4b0c164e5bf3815bff4e1ef1f4883e52431feca4c5",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1794318696.3521097,
+        "actual_execution_eligible": false
+      },
+      "decision": {
+        "action_id": "a0566549-d2cb-473f-846a-b09813b22160",
+        "session_id": "synthetic-native-8d602c3c-23bb-4928-931a-30ff01c26eda",
+        "revision": 1,
+        "input_sha256": "c0548c3ef00528f387c8b60866919f19b683b5ab8804a2a4553c65878f62715b",
+        "prior_state_sha256": "e8d8de6e8c484d610960884d08d375ff78cd797261194ec08e165a63dc22ce31",
+        "ledger_sha256": "60bd3f2426991a4f2152e90fdcca5fe5fb704fddb43975365dd710cbddbe029a",
+        "triage_sha256": "5e80eb52ec44647b8612678cc8ae9cf7ee961024caa0c202494bc7dbd9f01745",
+        "source_bundle_sha256": "aeb031a915332065d62ba68b6667f0bfefcbaf9871d71d3282cf98eafe01088d",
+        "policy_epoch": 1,
+        "template_id": "generated_foundational.vi-VN",
+        "response_sha256": "5b129eeabd7a2c99977fe8e45e5e66b638236e50a4f1f6506a1d60e492a96eae",
+        "purpose": "scope_a_generated_conversation/synthetic-bound-context",
+        "actual_execution_eligible": false,
+        "actual_permission_record_supplied": false,
+        "external_delivery": false,
+        "permission_evaluation_sha256": "b5b507495cba02881e54616d0ad01e8ad899e1d619a529ca5c94fe3e7eb63d8d"
+      },
+      "validated_and_mock_delivered_text": "Chiều chăm cây mai có vẻ là một khoảng nghỉ dễ chịu. Mã thử tổng hợp: 5aa8b9bc-f2ba-4488-83b0-7f7512361804.",
+      "receipt": {
+        "action_id": "a0566549-d2cb-473f-846a-b09813b22160",
+        "decision_fingerprint": "9b927ba2b61a391b2c13e2604d73882e17c14482b35682a1b70e152445504b09",
+        "response_sha256": "5b129eeabd7a2c99977fe8e45e5e66b638236e50a4f1f6506a1d60e492a96eae",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "delivery_domain": "MockSink ONLY; no actual model/delivery permission",
+      "catalogue_validator_unchanged_and_rejected_candidate": true
+    },
+    {
+      "check": "scope",
+      "executed": true,
+      "result": "HELD_NO_MOCK_DELIVERY",
+      "actual_permission": false
+    },
+    {
+      "check": "swap",
+      "executed": true,
+      "result": "HELD_NO_MOCK_DELIVERY",
+      "actual_permission": false
+    },
+    {
+      "check": "revoke",
+      "executed": true,
+      "result": "HELD_NO_MOCK_DELIVERY",
+      "actual_permission": false
+    }
+  ]
+}

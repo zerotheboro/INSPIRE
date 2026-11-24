@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-22",
+  "executed": true,
+  "testsFile": "tests/inspire-luna.test.mjs",
+  "passed": 6,
+  "failed": 0,
+  "wholeSuiteRerun": false,
+  "initialWholeSuite": {
+    "passed": 48,
+    "total": 49,
+    "status": "FAILED; retained unchanged"
+  },
+  "isolatedNativeRerun": {
+    "passed": 1,
+    "total": 1,
+    "status": "PASS; does not supersede whole-suite failure"
+  },
+  "generationRequests": 0,
+  "dispatchControlInspection": "PASS as static inspection; actual dispatch guarantees remain blocked"
+}

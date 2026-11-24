@@ -7,6 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "test": "npm --prefix functions run build && node --import ./tests/register-ts.mjs --test tests/inspire-chat.test.mjs",
+    "test:browser": "node tests/inspire-browser.mjs",
+    "emulators": "node tests/start-inspire-emulators.mjs",
+    "test:emulators": "node --import ./tests/register-ts.mjs --test tests/inspire-emulator.test.mjs",
+    "knowledge:import": "node --import ./tests/register-ts.mjs tests/import-inspire-knowledge.mjs",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
@@ -23,6 +28,7 @@
   "devDependencies": {
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "firebase-tools": "^15.35.0",
     "gh-pages": "^6.3.0"
   }
 }

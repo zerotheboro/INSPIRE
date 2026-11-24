@@ -1,0 +1,157 @@
+{
+  "executedAt": "2026-11-10T13:51:34.270Z",
+  "steps": [
+    {
+      "command": "init-offline",
+      "trial": "cli-synthetic",
+      "exitCode": 0,
+      "status": "ACTIVE"
+    },
+    {
+      "command": "init-draft",
+      "trial": "cli-owner-draft",
+      "exitCode": 0,
+      "status": "DRAFT"
+    },
+    {
+      "command": "source-disclosure",
+      "trial": "cli-owner-draft",
+      "exitCode": 0,
+      "status": "OWNER_SOURCE_REVIEW_ONLY_NOT_PERMISSION"
+    },
+    {
+      "command": "approval-disclosure",
+      "trial": "cli-owner-draft",
+      "exitCode": 0,
+      "status": "OWNER_DISCLOSURE_ONLY_NOT_DISPATCHABLE"
+    },
+    {
+      "command": "execute",
+      "trial": "cli-owner-draft",
+      "exitCode": 2,
+      "status": "OWNER_AND_NINE_SOURCE_DECISIONS_REQUIRED_LIVE_CLOSED"
+    },
+    {
+      "command": "preview",
+      "trial": "cli-synthetic",
+      "exitCode": 0,
+      "status": null
+    },
+    {
+      "command": "execute",
+      "trial": "cli-synthetic",
+      "exitCode": 0,
+      "status": "QUARANTINED_PENDING_REVIEW"
+    },
+    {
+      "command": "replay",
+      "trial": "cli-synthetic",
+      "exitCode": 0,
+      "status": "QUARANTINED_PENDING_REVIEW"
+    },
+    {
+      "command": "review",
+      "trial": "cli-synthetic",
+      "exitCode": 0,
+      "status": "ACTIVE"
+    },
+    {
+      "command": "review",
+      "trial": "cli-synthetic",
+      "exitCode": 0,
+      "status": "ACTIVE"
+    },
+    {
+      "command": "status",
+      "trial": "cli-synthetic",
+      "exitCode": 0,
+      "status": "ACTIVE"
+    }
+  ],
+  "storageLeaf": "offline-demo-93c2e45e-430f-4503-8a57-cc0956d22ab3",
+  "storage": "DPAPI and owner-only Windows ACL under LocalAppData; no output data in workspace",
+  "ownerDisclosedSourceHashes": [
+    {
+      "id": "MOI-XCII",
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "1f2ee34f58ab059018746f894ae652fbb17eb196e5e597051e7e8221aaf959fb",
+      "internal": false,
+      "export": false
+    },
+    {
+      "id": "MOI-XCIII",
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "54710f01aa01e523ea99cb45bc65ffe47fd022c1b064fc399b76cdbcb13bb7b5",
+      "internal": false,
+      "export": false
+    },
+    {
+      "id": "MOI-CLVI",
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "6b2433e3a3ffe9e69420404d179c4c6c0eb9654a0308ae58c8c696fda328dc51",
+      "internal": false,
+      "export": false
+    },
+    {
+      "id": "MOI-CLVII",
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "d9e0089e35896970ba5f5d07a7139e20e43029efc2bbe3d1caaba370e9ed14c8",
+      "internal": false,
+      "export": false
+    },
+    {
+      "id": "MOI-CLIX",
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "5079ef6a6d2f7dbd57eb1df6e4442f0f042ae0cf88269c39eb11d8b0ca17ebd5",
+      "internal": false,
+      "export": false
+    },
+    {
+      "id": "MOI-CLXIII",
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "793043a399cc2b384b0d4bb12e46dbf2b35c2f193b714082ccdeaf9cc806ed68",
+      "internal": false,
+      "export": false
+    },
+    {
+      "id": "REF-02-4",
+      "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+      "section_sha256": "a7fc89e00ef9884711e4226347ca4d65afe6044217b9aa75b6dffab74a364a7e",
+      "internal": false,
+      "export": false
+    },
+    {
+      "id": "REF-02-6",
+      "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+      "section_sha256": "edd315b59be007a555c5807bbbffff0a80ba52dd5f3d2a6639fde2bddec2b760",
+      "internal": false,
+      "export": false
+    },
+    {
+      "id": "REF-02-93",
+      "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+      "section_sha256": "a4861a9ac2c1843a156571e17aef5c1251bb979668d8d5755fd72e898ca47128",
+      "internal": false,
+      "export": false
+    }
+  ],
+  "firstActualSourceDisclosureBodySHA": "06350da5873830a8f1d0cc1fc71880fc9c835d4cfca915c72b4e18c7d5f0f8f0",
+  "offlineRequestSHA": "bb070bb2436bb144ddccdf6ed16da8aee6dc78ceab23a2c8126def4d71dc3ddc",
+  "nativeChecks": [
+    "Source/excerpt integrity",
+    "Research triage",
+    "Quote-bound ledger",
+    "Non-MOCK ScopeGuard",
+    "PermissionInspector (actual execution held)",
+    "GeneratedValidator HMAC",
+    "MockSink exact bytes/source/policy recheck",
+    "Native receipt-bound Session.commit"
+  ],
+  "quarantineOutputSHA": "595956297fac3d1ae08a544d3782f64c9bdd880cb82ab193a9f5c1c2fc4f9d29",
+  "attempts": 1,
+  "reserved_microUSD": 160000,
+  "paidCalls": 0,
+  "websiteDelivery": false,
+  "actualSourcesExported": false,
+  "quality": "Fixture scores test workflow only; no language-quality evidence"
+}

@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-14T08:20:13.729Z",
+  "lunaAttemptRecordPresent": false,
+  "operatorAuthorizationPresent": false,
+  "serverKeyFilePresent": false,
+  "emulatorOperationStatusCounts": {
+    "completed": 296,
+    "unknown": 17,
+    "failed": 9
+  },
+  "ledgerLimitation": "Shared operation ledger includes simulation/offline test operations; no transport field, so these counts are not provider-call counts. The existing real API path must fsync its durable Luna marker before any dispatch.",
+  "action": "READ_ONLY; no authorization written; no provider call"
+}

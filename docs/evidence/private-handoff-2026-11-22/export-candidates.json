@@ -1,0 +1,628 @@
+{
+  "approval": "NOT_APPROVED",
+  "externalExport": false,
+  "collectionId": "website-counseling-first-test-v1",
+  "sourceHash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+  "maxSelectedPerTurn": 3,
+  "maxCharactersEach": 1400,
+  "passages": [
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-0",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# QUAN HỆ VỚI CHÍNH MÌNH\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "3a51753a5354584f8618ce3345cb045666230c1695eb78be2e9f63244fe2f305",
+      "headingPath": [
+        "QUAN HỆ VỚI CHÍNH MÌNH"
+      ],
+      "startOffset": 0,
+      "endOffset": 28,
+      "startLine": 1,
+      "endLine": 2
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-1",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# QUAN HỆ VỚI CHÍNH MÌNH  \r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "80cc62b652b0defbd2b116b70ac6196dfed7e160f6683a8c64ef1c3f291c570f",
+      "headingPath": [
+        "QUAN HỆ VỚI CHÍNH MÌNH"
+      ],
+      "startOffset": 28,
+      "endOffset": 56,
+      "startLine": 3,
+      "endLine": 3
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-2",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "### Có những lúc, người khiến ta mệt mỏi nhất lại chính là bản thân mình\r\n\r\nBạn có thể là một người có trách nhiệm, biết cố gắng và luôn muốn làm tốt.\r\n\r\nNhưng bên trong, bạn vẫn thường cảm thấy mình chưa đủ.\r\n\r\nChưa đủ tốt.  \r\nChưa đủ giỏi.  \r\nChưa đủ mạnh mẽ.  \r\nChưa đủ để được yêu thương hoặc công nhận.\r\n\r\nMột sai sót nhỏ có thể khiến bạn tự trách rất lâu. Một lời nhận xét của người khác có thể làm bạn nghi ngờ chính mình. Bạn có thể luôn cố gắng hoàn thiện bản thân, nhưng càng cố lại càng cảm thấy mình vẫn còn thiếu một điều gì đó.\r\n\r\nĐôi khi, vấn đề không nằm ở việc bạn chưa cố gắng đủ.\r\n\r\nMà nằm ở **mối quan hệ bạn đang có với chính mình**.\r\n\r\nCó thể bạn đã quen nhìn bản thân bằng ánh mắt phê phán.  \r\nQuen đo giá trị của mình bằng thành tích.  \r\nQuen sống theo kỳ vọng của người khác.  \r\nHoặc đã quá lâu không còn biết mình thật sự muốn gì, cần gì và cảm thấy gì.\r\n\r\nTham vấn về **quan hệ với chính mình** là một không gian để bạn dừng lại và nhìn sâu hơn vào cách mình đang sống với chính mình.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "78c26b45cf684782cf8fcf70490ef2ebd92f028a187e4dc38eb1c1e93abb9bfb",
+      "headingPath": [
+        "QUAN HỆ VỚI CHÍNH MÌNH",
+        "Có những lúc, người khiến ta mệt mỏi nhất lại chính là bản thân mình"
+      ],
+      "startOffset": 56,
+      "endOffset": 1071,
+      "startLine": 4,
+      "endLine": 27
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-3",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Dịch vụ này có thể phù hợp nếu bạn thường xuyên:\r\n\r\n- tự phê phán, tự trách hoặc khó tha thứ cho mình;\r\n- cảm thấy bản thân không đủ tốt hoặc không đủ giá trị;\r\n- phụ thuộc nhiều vào sự công nhận của người khác;\r\n- khó chấp nhận điểm yếu, sai sót hoặc những phần mình không thích;\r\n- thường xuyên so sánh mình với người khác;\r\n- không rõ mình thật sự là ai ngoài những vai trò và kỳ vọng;\r\n- cảm thấy xa lạ với chính mình dù cuộc sống bên ngoài vẫn đang tiếp tục.\r\n\r\nMục tiêu của tham vấn không phải là khiến bạn luôn yêu bản thân, luôn tự tin hay luôn suy nghĩ tích cực.\r\n\r\nMột mối quan hệ lành mạnh với chính mình thực tế hơn thế.\r\n\r\nĐó là khi bạn có thể nhìn thấy cả điểm mạnh lẫn giới hạn của mình mà không cần phủ nhận bên nào.\r\n\r\nCó thể thất bại mà không biến thất bại thành bằng chứng rằng mình vô giá trị.\r\n\r\nCó thể lắng nghe nhu cầu của mình mà không lập tức cảm thấy ích kỷ.\r\n\r\nCó thể thay đổi những điều cần thay đổi, nhưng không phải vì căm ghét con người hiện tại.\r\n\r\nVà dần dần, bạn không còn phải dành quá nhiều năng lượng để chống lại chính mình.\r\n\r\nBạn bắt đầu có thể đứng về phía mình.\r\n\r\nKhông phải để trở thành một phiên bản hoàn hảo hơn.\r\n\r\nMà để sống như một con người có thể **hiểu mình, chấp nhận mình và chịu trách nhiệm cho đời sống của chính mình**.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "2ee57e7dd8e790695f4b8c3d6cffefd123223993fd80858949b59c93220a09a2",
+      "headingPath": [
+        "QUAN HỆ VỚI CHÍNH MÌNH",
+        "Có những lúc, người khiến ta mệt mỏi nhất lại chính là bản thân mình"
+      ],
+      "startOffset": 1071,
+      "endOffset": 2351,
+      "startLine": 28,
+      "endLine": 57
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-4",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# ĐỜI SỐNG NỘI TÂM\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "c069991db742526d6fca6a55d889736745dfb0400b30fc7b600629fa9177e8c5",
+      "headingPath": [
+        "ĐỜI SỐNG NỘI TÂM"
+      ],
+      "startOffset": 2351,
+      "endOffset": 2373,
+      "startLine": 58,
+      "endLine": 59
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-5",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# ĐỜI SỐNG NỘI TÂM  \r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "eaafb2c1e7abee7f7577f45bde2d2379e4611f48ab3bc760da095173176ffeeb",
+      "headingPath": [
+        "ĐỜI SỐNG NỘI TÂM"
+      ],
+      "startOffset": 2373,
+      "endOffset": 2395,
+      "startLine": 60,
+      "endLine": 60
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-6",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "### Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày\r\n\r\nCó những lúc cuộc sống bên ngoài không có gì quá bất thường.\r\n\r\nBạn vẫn làm việc.  \r\nVẫn trò chuyện.  \r\nVẫn hoàn thành những điều cần làm.\r\n\r\nNhưng bên trong lại là một thế giới hoàn toàn khác.\r\n\r\nBạn có thể thức dậy với một cảm giác nặng nề mà không biết vì sao.\r\n\r\nMột câu nói nhỏ cũng đủ khiến tâm trí chạy đi rất xa.\r\n\r\nMột việc đã qua từ lâu vẫn trở lại trong đầu.\r\n\r\nCó lúc bạn lo lắng quá nhiều.  \r\nCó lúc bạn dễ cáu giận.  \r\nCó lúc bạn thấy buồn nhưng không biết mình đang buồn điều gì.\r\n\r\nVà cũng có những lúc bạn không cảm thấy gì rõ ràng cả.\r\n\r\nChỉ thấy mệt.\r\n\r\nTrống.\r\n\r\nHoặc như thể mình đang sống nhưng không thật sự có mặt trong chính đời sống của mình.\r\n\r\nNhiều người cố giải quyết những trải nghiệm ấy bằng cách **nghĩ nhiều hơn**.\r\n\r\nHọ phân tích.\r\n\r\nTìm nguyên nhân.\r\n\r\nTự nhắc mình phải tích cực.\r\n\r\nCố gắng kiểm soát cảm xúc.\r\n\r\nHoặc làm bản thân thật bận để không còn thời gian nghĩ tới chúng.\r\n\r\nNhưng có những điều bên trong không thể được giải quyết chỉ bằng việc hiểu chúng bằng lý trí.\r\n\r\nBởi đời sống nội tâm không chỉ có suy nghĩ.\r\n\r\nNó còn có cảm xúc.\r\n\r\nKý ức.\r\n\r\nCảm giác cơ thể.\r\n\r\nNhu cầu.\r\n\r\nNỗi sợ.\r\n\r\nNhững phản ứng rất nhanh mà đôi khi chính chúng ta cũng không hiểu tại sao mình lại phản ứng như vậy.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "013f4c64d1f8a39bc984905d9145b623872c851750d452c2914175bda70b5f6f",
+      "headingPath": [
+        "ĐỜI SỐNG NỘI TÂM",
+        "Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày"
+      ],
+      "startOffset": 2395,
+      "endOffset": 3735,
+      "startLine": 61,
+      "endLine": 116
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-7",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Tham vấn về **đời sống nội tâm** là một không gian để bạn bắt đầu nhìn thấy thế giới ấy rõ hơn.\r\n\r\nKhông phải để phán xét nó.\r\n\r\nKhông phải để loại bỏ mọi điều khó chịu.\r\n\r\nMà trước hết là để hiểu:\r\n\r\n**Điều gì đang thực sự diễn ra trong tôi?**\r\n\r\nCó thể bạn cần không gian này khi:\r\n\r\n- đầu óc luôn hoạt động và khó dừng lại;\r\n- thường xuyên lo âu, căng thẳng hoặc bất an;\r\n- có nhiều cảm xúc nhưng khó gọi tên;\r\n- dễ bị cảm xúc kéo đi rồi sau đó mới hối tiếc;\r\n- thường xuyên kìm nén vì sợ mình “quá nhạy cảm” hoặc “quá yếu”;\r\n- cảm thấy trống rỗng, tê lì hoặc xa lạ với chính mình;\r\n- cơ thể thường xuyên căng cứng, bồn chồn hoặc kiệt sức;\r\n- biết rất rõ mình “không nên nghĩ như vậy”, nhưng cảm xúc vẫn không thay đổi;\r\n- có những phản ứng mạnh mà bản thân cũng không hiểu nguồn gốc của chúng.\r\n\r\nTrong quá trình tham vấn, chúng ta có thể cùng chậm lại để quan sát một trải nghiệm từ nhiều phía.\r\n\r\nKhông chỉ:\r\n\r\n**“Tôi đang nghĩ gì?”**\r\n\r\nMà còn:\r\n\r\n**“Tôi đang cảm thấy gì?”**\r\n\r\n**“Cơ thể tôi đang phản ứng thế nào?”**\r\n\r\n**“Điều gì vừa chạm vào tôi?”**\r\n\r\n**“Tôi đang cố tránh điều gì?”**\r\n\r\n**“Cảm xúc này đang muốn nói với tôi điều gì?”**\r\n\r\nVà đôi khi, sâu hơn nữa:\r\n\r\n**“Tại sao tôi lại khó cho phép mình cảm thấy điều này?”**\r\n\r\nKhi đời sống nội tâm trở nên rõ ràng hơn, một thay đổi quan trọng bắt đầu xảy ra.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "ae5e2ba11d9b5a6297844659cc704c8f5599203af556745e747070739a54df4b",
+      "headingPath": [
+        "ĐỜI SỐNG NỘI TÂM",
+        "Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày"
+      ],
+      "startOffset": 3735,
+      "endOffset": 5062,
+      "startLine": 117,
+      "endLine": 162
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-8",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Bạn nhận ra rằng:\r\n\r\n**có một cảm xúc** không có nghĩa là **bạn phải hành động theo cảm xúc đó**.\r\n\r\n**có một suy nghĩ** không có nghĩa là **suy nghĩ ấy là sự thật**.\r\n\r\n**cơ thể đang báo động** không nhất thiết có nghĩa là **nguy hiểm đang thực sự xảy ra**.\r\n\r\nVà một trải nghiệm khó chịu không phải lúc nào cũng cần bị loại bỏ ngay lập tức.\r\n\r\nDần dần, khoảng cách xuất hiện giữa **điều đang xảy ra bên trong bạn** và **cách bạn lựa chọn đáp lại nó**.\r\n\r\nĐó là một khoảng cách rất nhỏ.\r\n\r\nNhưng chính trong khoảng cách ấy, tự do bắt đầu xuất hiện.\r\n\r\nMục tiêu của tham vấn không phải là khiến bạn luôn bình tĩnh.\r\n\r\nKhông phải làm cho tâm trí hoàn toàn im lặng.\r\n\r\nCũng không phải giúp bạn chỉ có những cảm xúc dễ chịu.\r\n\r\nMà là giúp bạn dần có khả năng **nhận biết, hiểu và ở cùng những gì đang diễn ra trong mình mà không lập tức bị chúng điều khiển**.\r\n\r\nĐể khi lo âu xuất hiện, bạn biết mình đang lo.\r\n\r\nKhi buồn xuất hiện, bạn có thể lắng nghe nỗi buồn.\r\n\r\nKhi cơ thể căng lên, bạn biết cách trở về với chính mình.\r\n\r\nVà khi bên trong có sóng, bạn không nhất thiết phải trở thành cơn sóng ấy.\r\n\r\nBạn vẫn có thể là người đang đứng đó —\r\n\r\n**nhìn thấy, cảm nhận và lựa chọn cách mình muốn sống tiếp.**\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "dcec7552687b5412342de35c89e7b1111ecd4a0c1b206827dd73f20ba54cef20",
+      "headingPath": [
+        "ĐỜI SỐNG NỘI TÂM",
+        "Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày"
+      ],
+      "startOffset": 5062,
+      "endOffset": 6272,
+      "startLine": 163,
+      "endLine": 198
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-9",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# QUAN HỆ VỚI NGƯỜI KHÁC\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "5eafb347b0df574a1cdbf9d982be75fe423a3398c434b850dd23bd4827d934b7",
+      "headingPath": [
+        "QUAN HỆ VỚI NGƯỜI KHÁC"
+      ],
+      "startOffset": 6272,
+      "endOffset": 6300,
+      "startLine": 199,
+      "endLine": 200
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-10",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# QUAN HỆ VỚI NGƯỜI KHÁC  \r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "e2ead138f9a82c386e3aa1c46c2218ae31abf9d507e5a0240340dcc842209c42",
+      "headingPath": [
+        "QUAN HỆ VỚI NGƯỜI KHÁC"
+      ],
+      "startOffset": 6300,
+      "endOffset": 6328,
+      "startLine": 201,
+      "endLine": 201
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-11",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "### Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình\r\n\r\nCon người không sống một mình.\r\n\r\nTa lớn lên trong quan hệ.  \r\nTìm kiếm sự công nhận trong quan hệ.  \r\nHọc cách yêu trong quan hệ.  \r\nVà rất nhiều vết thương sâu nhất cũng xuất hiện trong quan hệ.\r\n\r\nCó những người rất muốn được gần gũi, nhưng khi ai đó đến gần lại thấy bất an.\r\n\r\nCó người sợ bị bỏ rơi nên luôn cần được chắc chắn rằng mình vẫn được yêu.\r\n\r\nCó người mỗi khi tổn thương lại im lặng, rút lui hoặc biến mất.\r\n\r\nCó người không thể nói “không”, rồi âm thầm mệt mỏi vì đã cho đi quá nhiều.\r\n\r\nCó người liên tục gặp những mối quan hệ khác nhau, nhưng cuối cùng lại đi đến cùng một kết quả.\r\n\r\nVà đôi khi, sau rất nhiều lần thất vọng, ta bắt đầu tự hỏi:\r\n\r\n**Tại sao chuyện này cứ xảy ra với mình?**\r\n\r\nKhông phải mọi khó khăn trong quan hệ đều có nghĩa rằng một người đúng và người kia sai.\r\n\r\nĐằng sau một cuộc cãi vã có thể là nỗi sợ bị bỏ rơi.\r\n\r\nĐằng sau sự lạnh lùng có thể là nỗi sợ bị tổn thương.\r\n\r\nĐằng sau việc kiểm soát có thể là nhu cầu được an toàn.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "a2ada57933a62986517631fe8b32a5d464ab842359824a65ed9b5bc0ab7b1188",
+      "headingPath": [
+        "QUAN HỆ VỚI NGƯỜI KHÁC",
+        "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+      ],
+      "startOffset": 6328,
+      "endOffset": 7449,
+      "startLine": 202,
+      "endLine": 232
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-12",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Đằng sau sự chiều lòng người khác có thể là một niềm tin rất sâu rằng:\r\n\r\n**“Nếu tôi làm người khác thất vọng, họ sẽ không còn muốn ở bên tôi.”**\r\n\r\nTham vấn về **quan hệ với người khác** là nơi để nhìn sâu hơn vào những điều đang diễn ra giữa bạn và những người quan trọng trong cuộc đời mình.\r\n\r\nKhông chỉ hỏi:\r\n\r\n**“Người kia đã làm gì?”**\r\n\r\nMà còn hỏi:\r\n\r\n**“Điều gì xảy ra trong tôi khi người kia làm như vậy?”**\r\n\r\n**“Tôi thường làm gì khi cảm thấy mình có nguy cơ mất kết nối?”**\r\n\r\n**“Tôi đang thật sự cần điều gì nhưng chưa thể nói ra?”**\r\n\r\n**“Điều gì khiến tôi khó đến gần — hoặc khó rời đi?”**\r\n\r\nDịch vụ này có thể phù hợp nếu bạn:\r\n\r\n- thường xuyên gặp khó khăn trong tình yêu, hôn nhân hoặc gia đình;\r\n- rất nhạy cảm với khoảng cách, im lặng hoặc sự thay đổi của người khác;\r\n- dễ sợ bị bỏ rơi, bị từ chối hoặc không còn quan trọng;\r\n- thường xuyên nhường nhịn nhưng bên trong lại tích tụ tổn thương;\r\n- khó nói ra nhu cầu, mong muốn hoặc điều mình không chấp nhận;\r\n- khó thiết lập và giữ ranh giới;\r\n- dễ kiểm soát, ghen tuông hoặc cần được trấn an;\r\n- có xu hướng rút lui khi xảy ra xung đột;\r\n- cảm thấy mình luôn là người cho nhiều hơn trong một mối quan hệ;\r\n- nhận thấy cùng một kiểu khó khăn cứ lặp lại với những người khác nhau.\r\n\r\nTrong quá trình tham vấn, điều quan trọng không chỉ là giải quyết một cuộc xung đột cụ thể.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "cb98fb03d35079b0bb00659c763d61ddee41d3c66e1cdee14ecc814a2264a8f6",
+      "headingPath": [
+        "QUAN HỆ VỚI NGƯỜI KHÁC",
+        "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+      ],
+      "startOffset": 7449,
+      "endOffset": 8801,
+      "startLine": 233,
+      "endLine": 267
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-13",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Chúng ta còn có thể nhìn vào **cách bạn bước vào một mối quan hệ**.\r\n\r\nBạn mong đợi điều gì từ người khác?\r\n\r\nBạn tin điều gì về bản thân khi được yêu?\r\n\r\nBạn phản ứng thế nào khi cảm thấy kết nối bị đe dọa?\r\n\r\nBạn thường tiến lại gần, bám giữ, kiểm soát — hay rút lui và đóng lại?\r\n\r\nBạn có thể nói ra điều mình cần, hay thường chờ người kia tự hiểu?\r\n\r\nBạn có thể ở gần người khác mà vẫn giữ được tiếng nói của mình hay không?\r\n\r\nBởi một mối quan hệ lành mạnh không có nghĩa là không bao giờ xung đột.\r\n\r\nHai người vẫn có thể bất đồng.\r\n\r\nVẫn có thể làm nhau thất vọng.\r\n\r\nVẫn có lúc cần khoảng cách.\r\n\r\nĐiều quan trọng là họ có khả năng **nhìn thấy điều đang xảy ra giữa mình, nói về nó và tìm lại kết nối mà không phải đánh mất bản thân**.\r\n\r\nTrong một mối quan hệ trưởng thành, bạn có thể yêu một người mà không cần sở hữu họ.\r\n\r\nCó thể cần một người mà không biến họ thành toàn bộ nền tảng giá trị của mình.\r\n\r\nCó thể đặt giới hạn mà không phải ngừng yêu thương.\r\n\r\nCó thể nói “không” mà không thấy mình trở thành người xấu.\r\n\r\nCó thể ở gần mà vẫn có một khoảng riêng.\r\n\r\nVà cũng có thể rời khỏi một điều không còn phù hợp mà không phủ nhận rằng nó từng có ý nghĩa.\r\n\r\nMục tiêu của tham vấn không phải là dạy bạn cách trở thành một người “dễ chịu hơn” trong quan hệ.\r\n\r\nCũng không phải giúp bạn giữ mọi mối quan hệ bằng mọi giá.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "6719b683a9fa457b3f6cf52e918b7de3de738418fb858304613db8d9e7482805",
+      "headingPath": [
+        "QUAN HỆ VỚI NGƯỜI KHÁC",
+        "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+      ],
+      "startOffset": 8801,
+      "endOffset": 10139,
+      "startLine": 268,
+      "endLine": 307
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-14",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Mà là giúp bạn hiểu rõ hơn **cách mình yêu, cách mình cần, cách mình bảo vệ bản thân và cách mình phản ứng khi kết nối trở nên không chắc chắn**.\r\n\r\nĐể rồi dần dần, bạn có thể xây dựng một cách ở cùng người khác khác đi:\r\n\r\n**gần gũi mà không hòa tan,  \r\ncó ranh giới mà không đóng cửa,  \r\ncó nhu cầu mà không lệ thuộc,  \r\nvà có tình yêu mà vẫn còn chính mình.**\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "deed1a52c8f2bf4da64c67341020f82ec2c51dab947fc8e8b2e59716e56cc8f2",
+      "headingPath": [
+        "QUAN HỆ VỚI NGƯỜI KHÁC",
+        "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+      ],
+      "startOffset": 10139,
+      "endOffset": 10505,
+      "startLine": 308,
+      "endLine": 316
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-15",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# VẬN HÀNH VÀ HÀNH ĐỘNG\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "814b47d043319b39a90d5a50099772d25e35f5af708e4855be511d18dc2018a2",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG"
+      ],
+      "startOffset": 10505,
+      "endOffset": 10532,
+      "startLine": 317,
+      "endLine": 318
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-16",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# VẬN HÀNH VÀ HÀNH ĐỘNG  \r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "6130144265bf46f72b3fe63e0c9be118566b9b66134d5cee20c14a982c00717e",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG"
+      ],
+      "startOffset": 10532,
+      "endOffset": 10559,
+      "startLine": 319,
+      "endLine": 319
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-17",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "### Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động\r\n\r\nCó thể bạn đã suy nghĩ rất nhiều.\r\n\r\nBạn biết mình nên bắt đầu công việc đó.\r\n\r\nBiết mình cần thay đổi một thói quen.\r\n\r\nBiết mình phải hoàn thành điều đã trì hoãn quá lâu.\r\n\r\nBiết một quyết định nào đó không thể tiếp tục né tránh.\r\n\r\nThậm chí bạn đã lên kế hoạch.\r\n\r\nĐã tự nhắc mình.\r\n\r\nĐã hứa rằng lần này sẽ khác.\r\n\r\nNhưng rồi ngày qua ngày, bạn vẫn đứng ở gần như cùng một chỗ.\r\n\r\nVà lúc ấy, điều khiến bạn mệt không chỉ là việc chưa được làm.\r\n\r\nMà còn là cảm giác thất vọng về chính mình.\r\n\r\n**“Tại sao tôi biết rất rõ mà vẫn không làm được?”**\r\n\r\n---\r\n\r\nKhông phải mọi trì hoãn đều là lười biếng.\r\n\r\nKhông phải cứ thiếu hành động là thiếu ý chí.\r\n\r\nĐằng sau việc một người không thể bắt đầu có thể là rất nhiều điều khác nhau.\r\n\r\nCó thể nhiệm vụ quá lớn và bạn không biết bắt đầu từ đâu.\r\n\r\nCó thể bạn muốn làm thật tốt đến mức không dám làm khi chưa chắc mình sẽ làm tốt.\r\n\r\nCó thể mỗi lần nghĩ đến việc bắt đầu, một nỗi sợ thất bại lập tức xuất hiện.\r\n\r\nCó thể bạn đã sống trong áp lực quá lâu và cơ thể đơn giản là không còn đủ sức để tiếp tục chạy.\r\n\r\nCó thể mục tiêu ấy là điều bạn nghĩ rằng mình **nên muốn**, nhưng sâu bên trong, bạn chưa từng thật sự chọn nó.\r\n\r\nVà đôi khi, điều giữ một người lại không nằm ở việc họ **không biết phải làm gì**.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "f6f6cf67614db4c6a9beb5d6863c651d42cbd3ba4b086529eac859e3ca352895",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 10559,
+      "endOffset": 11929,
+      "startLine": 320,
+      "endLine": 365
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-18",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Mà nằm ở việc có điều gì đó bên trong khiến họ **không thể biến điều mình biết thành hành động**.\r\n\r\n---\r\n\r\nTham vấn về **vận hành và hành động** là nơi để nhìn vào khoảng cách đó.\r\n\r\nKhoảng cách giữa:\r\n\r\n**muốn và làm.**\r\n\r\n**ý định và thực hiện.**\r\n\r\n**kế hoạch và đời sống thực tế.**\r\n\r\nDịch vụ này có thể phù hợp nếu bạn:\r\n\r\n- thường xuyên trì hoãn những việc quan trọng;\r\n- có nhiều kế hoạch nhưng khó bắt đầu;\r\n- bắt đầu rất hăng hái rồi nhanh chóng bỏ cuộc;\r\n- khó duy trì thói quen hoặc nhịp sống ổn định;\r\n- thường xuyên cảm thấy quá tải vì có quá nhiều việc phải làm;\r\n- không biết ưu tiên điều gì trước;\r\n- dễ bị phân tán hoặc kéo khỏi việc mình đang làm;\r\n- cảm thấy mình có năng lực nhưng không sử dụng được năng lực ấy một cách ổn định;\r\n- đã hiểu vấn đề của mình khá rõ nhưng đời sống thực tế vẫn không thay đổi;\r\n- liên tục tự trách vì cho rằng mình thiếu kỷ luật hoặc thiếu quyết tâm.\r\n\r\n---\r\n\r\nTrong quá trình tham vấn, chúng ta không vội hỏi:\r\n\r\n**“Làm sao để bạn cố gắng hơn?”**\r\n\r\nMà có thể bắt đầu bằng một câu hỏi khác:\r\n\r\n**“Điều gì thực sự xảy ra ngay trước khi bạn không làm điều mình định làm?”**\r\n\r\nKhi bạn định bắt đầu, điều gì xuất hiện?\r\n\r\nMột suy nghĩ?\r\n\r\nMột cảm xúc?\r\n\r\nMột cảm giác trong cơ thể?\r\n\r\nMột nỗi sợ?\r\n\r\nMột sự thôi thúc chuyển sang việc khác?\r\n\r\nHay một cảm giác mơ hồ rằng nhiệm vụ trước mặt quá lớn?\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "1c440ec8aa67669694690ff3b6464554f05c30a3b20aced6ea461de4dad87afe",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 11929,
+      "endOffset": 13280,
+      "startLine": 366,
+      "endLine": 416
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-19",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Từ đó, chúng ta có thể nhìn rõ hơn:\r\n\r\nBạn đang mắc ở bước nào?\r\n\r\nĐiều gì đang làm hành động trở nên quá khó?\r\n\r\nBạn đang thiếu kỹ năng, thiếu cấu trúc, thiếu năng lượng — hay đang có một xung đột sâu hơn với chính điều mình muốn làm?\r\n\r\nBởi hai người cùng trì hoãn có thể cần hai hướng hoàn toàn khác nhau.\r\n\r\nMột người cần học cách chia nhỏ nhiệm vụ.\r\n\r\nMột người cần làm việc với nỗi sợ thất bại.\r\n\r\nMột người cần giảm tiêu chuẩn hoàn hảo.\r\n\r\nMột người cần phục hồi sau thời gian quá tải.\r\n\r\nVà một người khác có thể cần tự hỏi:\r\n\r\n**“Đây có thật sự là cuộc đời tôi muốn xây dựng không?”**\r\n\r\n---\r\n\r\nThay đổi vì thế không nhất thiết bắt đầu bằng một kế hoạch lớn.\r\n\r\nĐôi khi nó bắt đầu bằng việc tìm đúng **điểm đang làm hệ thống bị kẹt**.\r\n\r\nRồi từ đó tạo ra một bước đủ nhỏ để bạn thực sự có thể làm.\r\n\r\nLàm.\r\n\r\nQuan sát điều gì xảy ra.\r\n\r\nĐiều chỉnh.\r\n\r\nRồi đi thêm một bước nữa.\r\n\r\nDần dần, bạn không còn cần mỗi lần thay đổi đều phải chờ một đợt động lực mạnh.\r\n\r\nBạn bắt đầu xây dựng khả năng **đưa điều mình lựa chọn vào đời sống thật**.\r\n\r\n---\r\n\r\nMục tiêu của tham vấn không phải là biến bạn thành một cỗ máy năng suất.\r\n\r\nKhông phải lấp kín lịch trình.\r\n\r\nKhông phải làm càng nhiều càng tốt.\r\n\r\nMột người có thể làm rất nhiều nhưng vẫn đang chạy khỏi chính mình.\r\n\r\nĐiều quan trọng hơn là bạn có thể **vận hành đời sống của mình một cách có chủ đích**.\r\n\r\nBiết điều gì đáng làm.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "68e36a46ea9946db4e76fe212b634b39ad65a93021d60016d6e68005b54f544c",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 13280,
+      "endOffset": 14675,
+      "startLine": 417,
+      "endLine": 472
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-20",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Biết bước tiếp theo là gì.\r\n\r\nCó khả năng bắt đầu.\r\n\r\nCó khả năng duy trì.\r\n\r\nCó thể điều chỉnh khi thực tế thay đổi.\r\n\r\nVà khi vấp ngã, biết cách quay trở lại thay vì biến một lần gián đoạn thành lý do để từ bỏ tất cả.\r\n\r\nCuối cùng, điều ta tìm kiếm không chỉ là năng suất.\r\n\r\nMà là một năng lực sâu hơn:\r\n\r\n**khả năng biến điều mình hiểu thành điều mình làm,  \r\nbiến điều mình lựa chọn thành cách mình sống,  \r\nvà từng bước trở thành người có thể tham gia vào việc tạo nên chính cuộc đời mình.**\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "4945cac8935cd95d278275e5a3e3b918198539c9c7dc28626e32c9b3a45c8621",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 14675,
+      "endOffset": 15176,
+      "startLine": 473,
+      "endLine": 490
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-21",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "8969fd9ce5deeebed771cddf0bacdf04bd5e7fb01abb625e311ed694e95b5318",
+      "headingPath": [
+        "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN"
+      ],
+      "startOffset": 15176,
+      "endOffset": 15213,
+      "startLine": 491,
+      "endLine": 491
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-22",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN  \r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "f49cd864c03152cfc5d2acec43dd86e5beab6bbb51c64ed91649ce07f43c9b90",
+      "headingPath": [
+        "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN"
+      ],
+      "startOffset": 15213,
+      "endOffset": 15252,
+      "startLine": 492,
+      "endLine": 492
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-23",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "### Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình\r\n\r\nCó những giai đoạn, cuộc sống không hẳn đang có vấn đề.\r\n\r\nNhưng bạn vẫn cảm thấy mình đứng trước một ngã rẽ.\r\n\r\nMột công việc nên tiếp tục hay rời đi.\r\n\r\nMột mối quan hệ nên ở lại hay bước ra.\r\n\r\nMột cơ hội nên nắm lấy hay từ chối.\r\n\r\nMột cuộc sống ổn định nhưng ngày càng xa lạ.\r\n\r\nHoặc đơn giản là một cảm giác rất khó gọi tên:\r\n\r\n**“Tôi không chắc mình muốn tiếp tục sống như thế này.”**\r\n\r\nBạn có thể có nhiều lựa chọn.\r\n\r\nNhưng càng nhiều lựa chọn, đôi khi lại càng khó quyết định.\r\n\r\nBởi phía sau mỗi lựa chọn không chỉ là câu hỏi:\r\n\r\n**“Điều nào tốt hơn?”**\r\n\r\nMà còn là:\r\n\r\n**“Điều nào phù hợp với con người tôi muốn trở thành?”**\r\n\r\n---\r\n\r\nCó những quyết định không thể giải bằng cách lập bảng ưu và nhược điểm.\r\n\r\nBởi đôi khi cả hai con đường đều có lý.\r\n\r\nCả hai đều có cái được.\r\n\r\nCả hai đều có cái mất.\r\n\r\nVà không có lựa chọn nào hoàn toàn chắc chắn.\r\n\r\nBạn có thể muốn tự do nhưng cũng cần an toàn.\r\n\r\nMuốn theo đuổi điều mình yêu nhưng sợ làm gia đình thất vọng.\r\n\r\nMuốn rời khỏi một nơi không còn phù hợp nhưng sợ phải bắt đầu lại.\r\n\r\nMuốn thay đổi nhưng cũng sợ đánh mất những gì mình đã xây dựng.\r\n\r\nKhi ấy, điều làm ta mắc kẹt không nhất thiết là thiếu thông tin.\r\n\r\nMà có thể là **xung đột giữa những điều đều quan trọng đối với mình**.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "f0348863d88df1bdf67372ebf9eb769ecce54662a034ab7f88ab640bb424ff92",
+      "headingPath": [
+        "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+        "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+      ],
+      "startOffset": 15252,
+      "endOffset": 16632,
+      "startLine": 493,
+      "endLine": 546
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-24",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "---\r\n\r\nTham vấn về **phương hướng, giá trị và lựa chọn** là một không gian để bạn nhìn rõ hơn những xung đột ấy.\r\n\r\nKhông phải để người tham vấn nói cho bạn biết nên chọn gì.\r\n\r\nMà để bạn hiểu sâu hơn:\r\n\r\n**Mình đang lựa chọn từ đâu?**\r\n\r\nTừ mong muốn thật sự?\r\n\r\nTừ nỗi sợ?\r\n\r\nTừ nghĩa vụ?\r\n\r\nTừ kỳ vọng của người khác?\r\n\r\nTừ một hình ảnh mà mình nghĩ rằng mình phải trở thành?\r\n\r\nHay từ điều thực sự có giá trị đối với mình?\r\n\r\n---\r\n\r\nDịch vụ này có thể phù hợp nếu bạn:\r\n\r\n- đang đứng trước một quyết định quan trọng;\r\n- cảm thấy mất phương hướng trong công việc hoặc đời sống;\r\n- có nhiều lựa chọn nhưng khó biết điều gì thực sự phù hợp;\r\n- thường xuyên thay đổi hướng đi vì sợ chọn sai;\r\n- cảm thấy mình đang sống theo kỳ vọng của gia đình hoặc xã hội;\r\n- đã đạt được những điều từng mong muốn nhưng không còn chắc mình có muốn tiếp tục;\r\n- biết mình không hài lòng với hiện tại nhưng chưa rõ muốn đi đâu;\r\n- thường xuyên hỏi người khác nên làm gì vì khó tin vào lựa chọn của chính mình;\r\n- cảm thấy một phần muốn tiến lên, trong khi một phần khác luôn kéo mình trở lại.\r\n\r\n---\r\n\r\nTrong tham vấn, chúng ta có thể cùng nhìn sâu vào một lựa chọn từ nhiều phía.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "8369a14e45aa0fd1178fa0a938b1c028cde34ead8d692d865aa0f48dd6ba132d",
+      "headingPath": [
+        "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+        "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+      ],
+      "startOffset": 16632,
+      "endOffset": 17799,
+      "startLine": 547,
+      "endLine": 586
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-25",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Không chỉ:\r\n\r\n**“Tôi nên chọn phương án A hay B?”**\r\n\r\nMà còn:\r\n\r\n**“Điều gì khiến phương án này quan trọng với tôi?”**\r\n\r\n**“Tôi đang cố bảo vệ điều gì?”**\r\n\r\n**“Tôi sợ mất điều gì nếu chọn khác đi?”**\r\n\r\n**“Nếu không cần làm hài lòng bất kỳ ai, tôi sẽ nhìn lựa chọn này thế nào?”**\r\n\r\n**“Điều gì tôi sẵn sàng đánh đổi — và điều gì tôi không muốn tiếp tục đánh đổi?”**\r\n\r\nVà một câu hỏi khó hơn:\r\n\r\n**“Nếu tôi chọn điều này, tôi có sẵn sàng sống cùng hệ quả của nó không?”**\r\n\r\n---\r\n\r\nBởi lựa chọn trưởng thành không phải là tìm ra một con đường không có mất mát.\r\n\r\nHầu như mọi lựa chọn quan trọng đều đóng lại một số khả năng khác.\r\n\r\nChọn một nghề có nghĩa là không sống một số cuộc đời nghề nghiệp khác.\r\n\r\nChọn một người cũng có nghĩa là từ bỏ vô số khả năng khác của tình yêu.\r\n\r\nChọn ở lại có cái giá của ở lại.\r\n\r\nChọn rời đi cũng có cái giá của rời đi.\r\n\r\nSự trưởng thành không nằm ở việc tìm được một lựa chọn hoàn hảo.\r\n\r\nMà nằm ở khả năng **nhìn thấy cái giá, hiểu vì sao mình vẫn chọn, và nhận trách nhiệm cho lựa chọn ấy**.\r\n\r\n---\r\n\r\nĐôi khi, điều bạn cần không phải là thêm lời khuyên.\r\n\r\nMà là bớt đi tiếng ồn.\r\n\r\nTiếng nói của cha mẹ.\r\n\r\nTiếng nói của xã hội.\r\n\r\nTiếng nói của nỗi sợ thất bại.\r\n\r\nTiếng nói của việc phải chứng minh mình thành công.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "f31172808b223bd9cb93f5557d17507bdc64a99b6bcee66933a952f0466dbfb4",
+      "headingPath": [
+        "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+        "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+      ],
+      "startOffset": 17799,
+      "endOffset": 19069,
+      "startLine": 587,
+      "endLine": 638
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-26",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Để bạn có thể nghe rõ hơn một tiếng nói khác:\r\n\r\n**Điều gì thật sự quan trọng với tôi?**\r\n\r\nKhông phải điều khiến bạn thoải mái nhất ngay lúc này.\r\n\r\nKhông phải điều chắc chắn nhất.\r\n\r\nKhông phải điều khiến mọi người hài lòng nhất.\r\n\r\nMà là điều bạn thấy **đáng để dành thời gian, năng lượng và một phần đời của mình cho nó**.\r\n\r\n---\r\n\r\nMục tiêu của tham vấn không phải là làm bạn trở nên chắc chắn tuyệt đối.\r\n\r\nBởi trong nhiều quyết định của đời sống, sự chắc chắn tuyệt đối không tồn tại.\r\n\r\nĐiều quan trọng hơn là bạn có thể trở nên **rõ hơn**.\r\n\r\nRõ điều gì là của mình.\r\n\r\nRõ điều gì là nỗi sợ.\r\n\r\nRõ điều gì là kỳ vọng vay mượn.\r\n\r\nRõ điều gì mình muốn giữ.\r\n\r\nVà rõ điều gì mình sẵn sàng từ bỏ để có thể bước tiếp.\r\n\r\nKhi ấy, bạn không còn cần biết trước toàn bộ con đường.\r\n\r\nBạn chỉ cần đủ rõ để đặt bước chân tiếp theo.\r\n\r\nVà đủ trưởng thành để nói:\r\n\r\n**“Tôi biết mình không thể kiểm soát mọi điều sẽ xảy ra.  \r\nNhưng đây là điều tôi chọn.  \r\nVà tôi sẽ có mặt trong cuộc đời được tạo nên từ lựa chọn ấy.”**\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "f8f7c874a993a278c402e2715ca62370a8f7f6762c68c44213c85d7fa0c01a67",
+      "headingPath": [
+        "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+        "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+      ],
+      "startOffset": 19069,
+      "endOffset": 20091,
+      "startLine": 639,
+      "endLine": 678
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-27",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# Ý NGHĨA VÀ CÁCH SỐNG\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "2f86663b1e31d78a08a5bc90e36d05da1abdbe524f83d5bfe90eaef03099735d",
+      "headingPath": [
+        "Ý NGHĨA VÀ CÁCH SỐNG"
+      ],
+      "startOffset": 20091,
+      "endOffset": 20115,
+      "startLine": 679,
+      "endLine": 679
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-28",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "# Ý NGHĨA VÀ CÁCH SỐNG  \r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "e4b3a91b284717f865b676b01ba3349c8fcf4c9af2f60f116d064de4ad33f75e",
+      "headingPath": [
+        "Ý NGHĨA VÀ CÁCH SỐNG"
+      ],
+      "startOffset": 20115,
+      "endOffset": 20141,
+      "startLine": 680,
+      "endLine": 680
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-29",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "### Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới\r\n\r\nCó những giai đoạn, ta không hẳn gặp một vấn đề cụ thể.\r\n\r\nCông việc vẫn còn đó.  \r\nGia đình vẫn còn đó.  \r\nCuộc sống bên ngoài vẫn tiếp tục.\r\n\r\nNhưng bên trong, một câu hỏi bắt đầu xuất hiện:\r\n\r\n**“Rốt cuộc mình đang sống để làm gì?”**\r\n\r\nCó thể bạn đã đạt được những điều từng mong muốn nhưng cảm giác trọn vẹn vẫn không đến.\r\n\r\nCó thể bạn đã đi rất xa trên một con đường, rồi một ngày chợt nhận ra mình không còn biết tại sao phải tiếp tục.\r\n\r\nCó thể một mất mát, một thất bại, một cuộc chia tay, bệnh tật, tuổi tác hay một biến cố lớn làm những điều từng rất chắc chắn bỗng trở nên mong manh.\r\n\r\nHoặc cũng có thể chẳng có biến cố nào cả.\r\n\r\nChỉ là một ngày, bạn nhìn lại đời mình và thấy một cảm giác khó gọi tên:\r\n\r\n**“Có lẽ tôi đang sống, nhưng tôi không chắc mình đang thật sự sống đời của mình.”**\r\n\r\n---\r\n\r\nCó những câu hỏi không thể giải quyết bằng một kỹ thuật.\r\n\r\nKhông thể xử lý chỉ bằng cách suy nghĩ tích cực hơn.\r\n\r\nKhông thể biến mất chỉ vì ta bận rộn hơn.\r\n\r\nBởi đó không còn là những câu hỏi về hiệu suất hay lựa chọn.\r\n\r\nĐó là những câu hỏi về **thân phận con người**.\r\n\r\nTôi là ai khi những vai trò quen thuộc thay đổi?\r\n\r\nĐiều gì còn lại khi thành công không còn đủ để làm tôi thấy mình có giá trị?\r\n\r\nTôi sống thế nào trước những điều mình không thể kiểm soát?\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "76ca4d7383d10d3c2a8133c7b7575dc19b88ae203712618e747bbcab8e21610c",
+      "headingPath": [
+        "Ý NGHĨA VÀ CÁCH SỐNG",
+        "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+      ],
+      "startOffset": 20141,
+      "endOffset": 21517,
+      "startLine": 681,
+      "endLine": 722
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-30",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Tôi làm gì với những điều đã mất?\r\n\r\nTôi muốn dành phần đời còn lại cho điều gì?\r\n\r\nVà khi không thể có mọi thứ, điều gì là đủ đáng để tôi chọn?\r\n\r\n---\r\n\r\nTham vấn về **ý nghĩa và cách sống** tạo ra một không gian để những câu hỏi ấy được nhìn thẳng vào.\r\n\r\nKhông phải để đưa cho bạn một triết lý sống có sẵn.\r\n\r\nKhông phải để nói rằng bạn nên lạc quan hơn.\r\n\r\nCũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "1ae4fd383bec98597806d130ab091b9e0c1978ca6824a673ded7979de9e592e8",
+      "headingPath": [
+        "Ý NGHĨA VÀ CÁCH SỐNG",
+        "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+      ],
+      "startOffset": 21517,
+      "endOffset": 21968,
+      "startLine": 723,
+      "endLine": 738
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-31",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Mà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\r\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\r\nVà sâu hơn:\r\n\r\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\r\n---\r\n\r\nDịch vụ này có thể phù hợp nếu bạn:\r\n\r\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\r\n---\r\n\r\nCó một sự thật không dễ chịu của đời sống:\r\n\r\nKhông phải mọi thứ đều có thể sửa.\r\n\r\nCó những người sẽ rời đi.\r\n\r\nCó những cơ hội sẽ qua.\r\n\r\nCó những lựa chọn không thể làm lại.\r\n\r\nCơ thể sẽ thay đổi.\r\n\r\nNhững người ta yêu thương không thể ở lại mãi.\r\n\r\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "785267a95eb4caa9edec604cecc79724c2d5bafba5125f62357bf5f83bee8e67",
+      "headingPath": [
+        "Ý NGHĨA VÀ CÁCH SỐNG",
+        "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+      ],
+      "startOffset": 21968,
+      "endOffset": 23296,
+      "startLine": 739,
+      "endLine": 779
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-32",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Một phần trưởng thành rất sâu của con người bắt đầu khi ta không còn chỉ hỏi:\r\n\r\n**“Làm thế nào để tôi tránh được tất cả những điều này?”**\r\n\r\nMà bắt đầu hỏi:\r\n\r\n**“Nếu đây là một phần của đời sống, tôi muốn sống như thế nào trước nó?”**\r\n\r\n---\r\n\r\nTrong quá trình tham vấn, chúng ta có thể cùng nhìn vào những điều bạn đang xây dựng đời mình quanh đó.\r\n\r\nBạn đang dành những năm tháng của mình cho điều gì?\r\n\r\nĐiều gì trong đời bạn là do chính bạn lựa chọn?\r\n\r\nĐiều gì bạn đang tiếp tục chỉ vì đã quen?\r\n\r\nCó điều gì bạn biết là quan trọng nhưng luôn trì hoãn?\r\n\r\nCó điều gì bạn đang nắm giữ vì sợ mất, dù chính nó đang làm cuộc sống nhỏ lại?\r\n\r\nNếu một ngày nhìn lại quãng đời này, điều gì bạn sẽ mong mình đã can đảm hơn để sống?\r\n\r\nVà điều gì, ngay cả khi khó khăn, vẫn khiến bạn cảm thấy:\r\n\r\n**“Điều này đáng.”**\r\n\r\n---\r\n\r\nÝ nghĩa không nhất thiết phải là một sứ mệnh lớn.\r\n\r\nNó có thể nằm trong cách bạn nuôi một đứa trẻ.\r\n\r\nCách bạn chăm sóc một người đang yếu đi.\r\n\r\nCách bạn làm một công việc tử tế.\r\n\r\nCách bạn giữ một lời hứa.\r\n\r\nCách bạn yêu một người.\r\n\r\nCách bạn đứng lên sau thất bại.\r\n\r\nCách bạn không tiếp tục truyền một tổn thương của mình cho người khác.\r\n\r\nHay đơn giản là cách bạn hiện diện trọn vẹn hơn trong một ngày rất bình thường.\r\n\r\nMột đời sống có ý nghĩa không nhất thiết là một đời sống đặc biệt.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "9d359685d78ea5b98c1f3120bcc23f7755054c887f5a46d465e5b6495c7f0ce3",
+      "headingPath": [
+        "Ý NGHĨA VÀ CÁCH SỐNG",
+        "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+      ],
+      "startOffset": 23296,
+      "endOffset": 24625,
+      "startLine": 780,
+      "endLine": 829
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-33",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Đó có thể chỉ là một đời sống mà khi sống nó, bạn ngày càng ít cảm thấy mình đang phản bội những điều sâu sắc nhất bên trong mình.\r\n\r\n---\r\n\r\nMục tiêu của tham vấn không phải là giúp bạn tìm ra một câu trả lời cuối cùng cho cuộc đời.\r\n\r\nCó thể sẽ không bao giờ có một câu trả lời cuối cùng như vậy.\r\n\r\nCon người thay đổi.\r\n\r\nHoàn cảnh thay đổi.\r\n\r\nĐiều có ý nghĩa ở tuổi hai mươi có thể khác ở tuổi bốn mươi.\r\n\r\nMột điều từng là trung tâm của đời sống có thể một ngày không còn như thế nữa.\r\n\r\nVì vậy, sống có ý nghĩa không phải là tìm được một công thức rồi giữ nguyên nó mãi.\r\n\r\nĐó là khả năng **liên tục trở lại với đời mình và hỏi xem điều gì đang thực sự đáng sống lúc này**.\r\n\r\n---\r\n\r\nVà có lẽ ở tầng sâu nhất, câu hỏi không còn là:\r\n\r\n**“Làm sao để cuộc đời xảy ra đúng như tôi muốn?”**\r\n\r\nMà là:\r\n\r\n**“Với cuộc đời đang thực sự được trao cho tôi — với cả những điều tôi chọn và những điều tôi không thể chọn — tôi muốn sống nó như thế nào?”**\r\n\r\nBạn không thể quyết định mọi điều sẽ xảy đến.\r\n\r\nNhưng bạn vẫn có thể lựa chọn cách mình hiện diện.\r\n\r\nBạn không thể giữ lại tất cả.\r\n\r\nNhưng bạn có thể lựa chọn điều gì đáng để mình trao thời gian.\r\n\r\nBạn không thể khiến cuộc đời trở nên vô hạn.\r\n\r\nNhưng chính vì nó hữu hạn, cách bạn sống từng phần của nó lại trở nên quan trọng.\r\n\r\nCuối cùng, một đời sống có ý nghĩa có thể không phải là một đời sống mà mọi câu hỏi đều đã được trả lời.\r\n\r\n",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "f78e736fb8c1f82094c8cb121e3cb4b52ed244b76e8e855413973f9489f06770",
+      "headingPath": [
+        "Ý NGHĨA VÀ CÁCH SỐNG",
+        "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+      ],
+      "startOffset": 24625,
+      "endOffset": 26021,
+      "startLine": 830,
+      "endLine": 873
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-34",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "text": "Mà là một đời sống mà bạn có thể nhìn vào và nói:\r\n\r\n**“Tôi không kiểm soát được tất cả những gì cuộc đời đã trao cho mình.  \r\nNhưng trong phần thuộc về tôi, tôi đã cố gắng sống một cách có mặt, có lựa chọn và có trách nhiệm.  \r\nVà tôi biết điều gì mình muốn dành đời mình cho.”**",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "0d8dbcb55551b29afe6861a46b04a140e3bde6d70b838407a447847e22e90eda",
+      "headingPath": [
+        "Ý NGHĨA VÀ CÁCH SỐNG",
+        "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+      ],
+      "startOffset": 26021,
+      "endOffset": 26301,
+      "startLine": 874,
+      "endLine": 878
+    }
+  ]
+}

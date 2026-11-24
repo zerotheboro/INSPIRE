@@ -1,0 +1,61 @@
+✔ permitted synthetic passages and exact provenance reach the constructed adapter input (480.9704ms)
+✔ registered concurrent requests at 28/30 reserve only the final two slots (6843.1214ms)
+✔ actual in-flight adapter spans Vietnam midnight and replay does not charge the new month twice (493.9212ms)
+✔ unknown outcome stays reserved across restart until independent synthetic completion evidence is reconciled once (359.9606ms)
+✔ production config does not initialize a demo service or enable emulator middleware, even with emulator variables set (2.6137ms)
+✔ verified anonymous + email registration links same UID, login and signout do not mint another identity (837.3804ms)
+✔ Google emulator credentials create verified Google account (synthetic OAuth substitute) (83.7707ms)
+✔ guest 10 total, completion once, durable duplicate rejected, no periodic reset (1664.8837ms)
+✔ registered 30 replies, Vietnam midnight boundary, mid-month allowance and no rollover (4789.1855ms)
+✔ atomic reservations prevent overspending; midnight completion charges the completion month (11650.2427ms)
+✔ confirmed failure refunds; unknown adapter or completion outcome remains reserved after restart (579.2875ms)
+✔ account linking blocks old anonymous identity, adds no guest balance, and sessions reject another user (221.4192ms)
+[2026-11-09T13:27:35.890Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2076ed2a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T13:27:35.922Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2076ed2b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T13:27:35.951Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2076ed2c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T13:27:35.969Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2076ed2d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T13:27:36.000Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2076ed2e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+✔ client quota manipulation, cross-user records and private sources are rejected (381.0585ms)
+✖ incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction (335.8092ms)
+✔ existing shared IP request-rate limits remain separate and reject before quota reservation or adapter (1299.9671ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24880.1035
+
+✖ failing tests:
+
+test at tests\inspire-emulator.test.mjs:196:1
+✖ incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction (335.8092ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Controller/. Input:
+  
+  'Error: Model access is closed in this Scope A offline service.'
+  
+      at TestContext.<anonymous> (file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/tests/inspire-emulator.test.mjs:224:10)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Model access is closed in this Scope A offline service.
+        at createLocalService (file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/functions/src/inspireLocalService.ts:37:15)
+        at file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/tests/inspire-emulator.test.mjs:224:23
+        at getActual (node:assert:586:5)
+        at strict.throws (node:assert:734:24)
+        at TestContext.<anonymous> (file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/tests/inspire-emulator.test.mjs:224:10)
+        at async Test.run (node:internal/test_runner/test:1113:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:788:7),
+    expected: /Controller/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+EXIT_CODE=1

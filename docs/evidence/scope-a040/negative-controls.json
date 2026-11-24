@@ -1,0 +1,552 @@
+{
+  "executed": true,
+  "syntheticOnly": true,
+  "faults": [
+    "deny_mock",
+    "invalid_output",
+    "post_validation_swap",
+    "revoke_before_use"
+  ],
+  "controller": [
+    {
+      "id": 1,
+      "status": "confirmed-no-reply",
+      "text": null,
+      "binding": "92b7d16a9d3927f3f8571c3267e2e29b61044e35c45fc371b5576f2d8ead506e",
+      "epoch": "1457069170d8a8f2f2a978c350ec49b2",
+      "operationId": "f9a274f5-18f6-496f-81c7-7fe7cf97492f",
+      "conversationId": "ae1c8824-524b-4d85-9738-fd8b12e2a837",
+      "response_sha256": null,
+      "decision_fingerprint": null,
+      "receipt": null,
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Cây mai: nội dung giả định để kiểm thử ranh giới."
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-16",
+              "sourceStatus": "published-supporting",
+              "text": "Cũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\nMà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\nVà sâu hơn:\r\n\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\n---\r\n\nDịch vụ này có thể phù hợp nếu bạn:\r\n\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\n---\r\n\nCó một sự thật không dễ chịu của đời sống:\r\n\nKhông phải mọi thứ đều có thể sửa.\r\n\nCó những người sẽ rời đi.\r\n\nCó những cơ hội sẽ qua.\r\n\nCó những lựa chọn không thể làm lại.\r\n\nCơ thể sẽ thay đổi.\r\n\nNhững người ta yêu thương không thể ở lại mãi.\r\n\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-6",
+              "sourceStatus": "published-supporting",
+              "text": "Dịch vụ này có thể phù hợp nếu bạn:\r\n\n- thường xuyên gặp khó khăn trong tình yêu, hôn nhân hoặc gia đình;\r\n- rất nhạy cảm với khoảng cách, im lặng hoặc sự thay đổi của người khác;\r\n- dễ sợ bị bỏ rơi, bị từ chối hoặc không còn quan trọng;\r\n- thường xuyên nhường nhịn nhưng bên trong lại tích tụ tổn thương;\r\n- khó nói ra nhu cầu, mong muốn hoặc điều mình không chấp nhận;\r\n- khó thiết lập và giữ ranh giới;\r\n- dễ kiểm soát, ghen tuông hoặc cần được trấn an;\r\n- có xu hướng rút lui khi xảy ra xung đột;\r\n- cảm thấy mình luôn là người cho nhiều hơn trong một mối quan hệ;\r\n- nhận thấy cùng một kiểu khó khăn cứ lặp lại với những người khác nhau.\r\n\nTrong quá trình tham vấn, điều quan trọng không chỉ là giải quyết một cuộc xung đột cụ thể.\r\n\nChúng ta còn có thể nhìn vào **cách bạn bước vào một mối quan hệ**.\r\n\nBạn mong đợi điều gì từ người khác?\r\n\nBạn tin điều gì về bản thân khi được yêu?\r\n\nBạn phản ứng thế nào khi cảm thấy kết nối bị đe dọa?\r\n\nBạn thường tiến lại gần, bám giữ, kiểm soát — hay rút lui và đóng lại?\r\n\nBạn có thể nói ra điều mình cần, hay thường chờ người kia tự hiểu?\r\n\nBạn có thể ở gần người khác mà vẫn giữ được tiếng nói của mình hay không?\r\n\nBởi một mối quan hệ lành mạnh không có nghĩa là không bao giờ xung đột.\r\n\nHai người vẫn có thể bất đồng.\r\n\nVẫn có thể làm nhau thất vọng.\r\n\nVẫn có lúc cần khoảng cách.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-1",
+              "sourceStatus": "published-supporting",
+              "text": "- tự phê phán, tự trách hoặc khó tha thứ cho mình;\r\n- cảm thấy bản thân không đủ tốt hoặc không đủ giá trị;\r\n- phụ thuộc nhiều vào sự công nhận của người khác;\r\n- khó chấp nhận điểm yếu, sai sót hoặc những phần mình không thích;\r\n- thường xuyên so sánh mình với người khác;\r\n- không rõ mình thật sự là ai ngoài những vai trò và kỳ vọng;\r\n- cảm thấy xa lạ với chính mình dù cuộc sống bên ngoài vẫn đang tiếp tục.\r\n\nMục tiêu của tham vấn không phải là khiến bạn luôn yêu bản thân, luôn tự tin hay luôn suy nghĩ tích cực.\r\n\nMột mối quan hệ lành mạnh với chính mình thực tế hơn thế.\r\n\nĐó là khi bạn có thể nhìn thấy cả điểm mạnh lẫn giới hạn của mình mà không cần phủ nhận bên nào.\r\n\nCó thể thất bại mà không biến thất bại thành bằng chứng rằng mình vô giá trị.\r\n\nCó thể lắng nghe nhu cầu của mình mà không lập tức cảm thấy ích kỷ.\r\n\nCó thể thay đổi những điều cần thay đổi, nhưng không phải vì căm ghét con người hiện tại.\r\n\nVà dần dần, bạn không còn phải dành quá nhiều năng lượng để chống lại chính mình.\r\n\nBạn bắt đầu có thể đứng về phía mình.\r\n\nKhông phải để trở thành một phiên bản hoàn hảo hơn.\r\n\nMà để sống như một con người có thể **hiểu mình, chấp nhận mình và chịu trách nhiệm cho đời sống của chính mình**.\r\n\n# ĐỜI SỐNG NỘI TÂM\r\n\n# ĐỜI SỐNG NỘI TÂM  \r\n### Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày\r"
+            }
+          ],
+          "constructed_input_sha256": "079147147749160ef2047acad12da274230ff3f08bb71579dfac872cb53d8937",
+          "website_context_sha256": "f0ffa67197f04f7ad7b115e7a03a7afd7cf9e7189aa3a78c417c518dbdeab2c0",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Scope Guard",
+          "result": "FORMAT_CHECK_EXECUTED",
+          "origin": "MOCK",
+          "mock_branch_skips_semantic_rules": true,
+          "clinical_validation": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "f95f2528fa1b4bfa63a71dfbbc207f4a989d0844b87afb763db6d6eb4b1716b1",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "fef5d9047eed1632bf29d7389c869c5fa70e703a48ec1f708bdbeff63d6b8309",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231127.885391,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": false,
+          "policy_epoch": 2,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Technical Hold",
+          "error_type": "ModelError",
+          "code": "MOCK_POLICY_HOLD",
+          "no_inference_about_user": true
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 0
+    },
+    {
+      "id": 2,
+      "status": "confirmed-no-reply",
+      "text": null,
+      "binding": "2de23e6f4769429108f981386cba304a0185fad8d6c7039d9e3bde926e49f092",
+      "epoch": "1457069170d8a8f2f2a978c350ec49b2",
+      "operationId": "8a77f700-c219-4be5-bb87-fea0a8fe185f",
+      "conversationId": "c2ee2b17-0327-4a15-88b1-dcb67f3c2229",
+      "response_sha256": null,
+      "decision_fingerprint": null,
+      "receipt": null,
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Cây mai: nội dung giả định để kiểm thử ranh giới."
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-16",
+              "sourceStatus": "published-supporting",
+              "text": "Cũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\nMà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\nVà sâu hơn:\r\n\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\n---\r\n\nDịch vụ này có thể phù hợp nếu bạn:\r\n\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\n---\r\n\nCó một sự thật không dễ chịu của đời sống:\r\n\nKhông phải mọi thứ đều có thể sửa.\r\n\nCó những người sẽ rời đi.\r\n\nCó những cơ hội sẽ qua.\r\n\nCó những lựa chọn không thể làm lại.\r\n\nCơ thể sẽ thay đổi.\r\n\nNhững người ta yêu thương không thể ở lại mãi.\r\n\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-6",
+              "sourceStatus": "published-supporting",
+              "text": "Dịch vụ này có thể phù hợp nếu bạn:\r\n\n- thường xuyên gặp khó khăn trong tình yêu, hôn nhân hoặc gia đình;\r\n- rất nhạy cảm với khoảng cách, im lặng hoặc sự thay đổi của người khác;\r\n- dễ sợ bị bỏ rơi, bị từ chối hoặc không còn quan trọng;\r\n- thường xuyên nhường nhịn nhưng bên trong lại tích tụ tổn thương;\r\n- khó nói ra nhu cầu, mong muốn hoặc điều mình không chấp nhận;\r\n- khó thiết lập và giữ ranh giới;\r\n- dễ kiểm soát, ghen tuông hoặc cần được trấn an;\r\n- có xu hướng rút lui khi xảy ra xung đột;\r\n- cảm thấy mình luôn là người cho nhiều hơn trong một mối quan hệ;\r\n- nhận thấy cùng một kiểu khó khăn cứ lặp lại với những người khác nhau.\r\n\nTrong quá trình tham vấn, điều quan trọng không chỉ là giải quyết một cuộc xung đột cụ thể.\r\n\nChúng ta còn có thể nhìn vào **cách bạn bước vào một mối quan hệ**.\r\n\nBạn mong đợi điều gì từ người khác?\r\n\nBạn tin điều gì về bản thân khi được yêu?\r\n\nBạn phản ứng thế nào khi cảm thấy kết nối bị đe dọa?\r\n\nBạn thường tiến lại gần, bám giữ, kiểm soát — hay rút lui và đóng lại?\r\n\nBạn có thể nói ra điều mình cần, hay thường chờ người kia tự hiểu?\r\n\nBạn có thể ở gần người khác mà vẫn giữ được tiếng nói của mình hay không?\r\n\nBởi một mối quan hệ lành mạnh không có nghĩa là không bao giờ xung đột.\r\n\nHai người vẫn có thể bất đồng.\r\n\nVẫn có thể làm nhau thất vọng.\r\n\nVẫn có lúc cần khoảng cách.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-1",
+              "sourceStatus": "published-supporting",
+              "text": "- tự phê phán, tự trách hoặc khó tha thứ cho mình;\r\n- cảm thấy bản thân không đủ tốt hoặc không đủ giá trị;\r\n- phụ thuộc nhiều vào sự công nhận của người khác;\r\n- khó chấp nhận điểm yếu, sai sót hoặc những phần mình không thích;\r\n- thường xuyên so sánh mình với người khác;\r\n- không rõ mình thật sự là ai ngoài những vai trò và kỳ vọng;\r\n- cảm thấy xa lạ với chính mình dù cuộc sống bên ngoài vẫn đang tiếp tục.\r\n\nMục tiêu của tham vấn không phải là khiến bạn luôn yêu bản thân, luôn tự tin hay luôn suy nghĩ tích cực.\r\n\nMột mối quan hệ lành mạnh với chính mình thực tế hơn thế.\r\n\nĐó là khi bạn có thể nhìn thấy cả điểm mạnh lẫn giới hạn của mình mà không cần phủ nhận bên nào.\r\n\nCó thể thất bại mà không biến thất bại thành bằng chứng rằng mình vô giá trị.\r\n\nCó thể lắng nghe nhu cầu của mình mà không lập tức cảm thấy ích kỷ.\r\n\nCó thể thay đổi những điều cần thay đổi, nhưng không phải vì căm ghét con người hiện tại.\r\n\nVà dần dần, bạn không còn phải dành quá nhiều năng lượng để chống lại chính mình.\r\n\nBạn bắt đầu có thể đứng về phía mình.\r\n\nKhông phải để trở thành một phiên bản hoàn hảo hơn.\r\n\nMà để sống như một con người có thể **hiểu mình, chấp nhận mình và chịu trách nhiệm cho đời sống của chính mình**.\r\n\n# ĐỜI SỐNG NỘI TÂM\r\n\n# ĐỜI SỐNG NỘI TÂM  \r\n### Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày\r"
+            }
+          ],
+          "constructed_input_sha256": "d9446bf30d0faf671bd58e92acf253732f53ee5eaabc55d9912fa780fb381738",
+          "website_context_sha256": "234c3f9f926db6db020c6b72479438e280d6ffbbd5aa060071e656da365ce266",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Technical Hold",
+          "error_type": "ModelError",
+          "code": "OUTPUT_INVALID",
+          "no_inference_about_user": true
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 0
+    },
+    {
+      "id": 3,
+      "status": "confirmed-no-reply",
+      "text": null,
+      "binding": "94bc392625046e07d6e00af35c563893d05cf4f0bac5dd076b395bdedb8b97a7",
+      "epoch": "1457069170d8a8f2f2a978c350ec49b2",
+      "operationId": "2d7aa11b-7956-4265-9b88-b033ace40268",
+      "conversationId": "c6506fd8-d009-4a30-bb85-ae2598ffcf0f",
+      "response_sha256": null,
+      "decision_fingerprint": null,
+      "receipt": null,
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Cây mai: nội dung giả định để kiểm thử ranh giới."
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-16",
+              "sourceStatus": "published-supporting",
+              "text": "Cũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\nMà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\nVà sâu hơn:\r\n\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\n---\r\n\nDịch vụ này có thể phù hợp nếu bạn:\r\n\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\n---\r\n\nCó một sự thật không dễ chịu của đời sống:\r\n\nKhông phải mọi thứ đều có thể sửa.\r\n\nCó những người sẽ rời đi.\r\n\nCó những cơ hội sẽ qua.\r\n\nCó những lựa chọn không thể làm lại.\r\n\nCơ thể sẽ thay đổi.\r\n\nNhững người ta yêu thương không thể ở lại mãi.\r\n\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-6",
+              "sourceStatus": "published-supporting",
+              "text": "Dịch vụ này có thể phù hợp nếu bạn:\r\n\n- thường xuyên gặp khó khăn trong tình yêu, hôn nhân hoặc gia đình;\r\n- rất nhạy cảm với khoảng cách, im lặng hoặc sự thay đổi của người khác;\r\n- dễ sợ bị bỏ rơi, bị từ chối hoặc không còn quan trọng;\r\n- thường xuyên nhường nhịn nhưng bên trong lại tích tụ tổn thương;\r\n- khó nói ra nhu cầu, mong muốn hoặc điều mình không chấp nhận;\r\n- khó thiết lập và giữ ranh giới;\r\n- dễ kiểm soát, ghen tuông hoặc cần được trấn an;\r\n- có xu hướng rút lui khi xảy ra xung đột;\r\n- cảm thấy mình luôn là người cho nhiều hơn trong một mối quan hệ;\r\n- nhận thấy cùng một kiểu khó khăn cứ lặp lại với những người khác nhau.\r\n\nTrong quá trình tham vấn, điều quan trọng không chỉ là giải quyết một cuộc xung đột cụ thể.\r\n\nChúng ta còn có thể nhìn vào **cách bạn bước vào một mối quan hệ**.\r\n\nBạn mong đợi điều gì từ người khác?\r\n\nBạn tin điều gì về bản thân khi được yêu?\r\n\nBạn phản ứng thế nào khi cảm thấy kết nối bị đe dọa?\r\n\nBạn thường tiến lại gần, bám giữ, kiểm soát — hay rút lui và đóng lại?\r\n\nBạn có thể nói ra điều mình cần, hay thường chờ người kia tự hiểu?\r\n\nBạn có thể ở gần người khác mà vẫn giữ được tiếng nói của mình hay không?\r\n\nBởi một mối quan hệ lành mạnh không có nghĩa là không bao giờ xung đột.\r\n\nHai người vẫn có thể bất đồng.\r\n\nVẫn có thể làm nhau thất vọng.\r\n\nVẫn có lúc cần khoảng cách.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-1",
+              "sourceStatus": "published-supporting",
+              "text": "- tự phê phán, tự trách hoặc khó tha thứ cho mình;\r\n- cảm thấy bản thân không đủ tốt hoặc không đủ giá trị;\r\n- phụ thuộc nhiều vào sự công nhận của người khác;\r\n- khó chấp nhận điểm yếu, sai sót hoặc những phần mình không thích;\r\n- thường xuyên so sánh mình với người khác;\r\n- không rõ mình thật sự là ai ngoài những vai trò và kỳ vọng;\r\n- cảm thấy xa lạ với chính mình dù cuộc sống bên ngoài vẫn đang tiếp tục.\r\n\nMục tiêu của tham vấn không phải là khiến bạn luôn yêu bản thân, luôn tự tin hay luôn suy nghĩ tích cực.\r\n\nMột mối quan hệ lành mạnh với chính mình thực tế hơn thế.\r\n\nĐó là khi bạn có thể nhìn thấy cả điểm mạnh lẫn giới hạn của mình mà không cần phủ nhận bên nào.\r\n\nCó thể thất bại mà không biến thất bại thành bằng chứng rằng mình vô giá trị.\r\n\nCó thể lắng nghe nhu cầu của mình mà không lập tức cảm thấy ích kỷ.\r\n\nCó thể thay đổi những điều cần thay đổi, nhưng không phải vì căm ghét con người hiện tại.\r\n\nVà dần dần, bạn không còn phải dành quá nhiều năng lượng để chống lại chính mình.\r\n\nBạn bắt đầu có thể đứng về phía mình.\r\n\nKhông phải để trở thành một phiên bản hoàn hảo hơn.\r\n\nMà để sống như một con người có thể **hiểu mình, chấp nhận mình và chịu trách nhiệm cho đời sống của chính mình**.\r\n\n# ĐỜI SỐNG NỘI TÂM\r\n\n# ĐỜI SỐNG NỘI TÂM  \r\n### Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày\r"
+            }
+          ],
+          "constructed_input_sha256": "9145c627f0075122e2b0e64e8c01a0de0357c191139a2904ccd7e6c8f8552fc6",
+          "website_context_sha256": "3c61aabe6f3184befaa2ebc92aea9e5d9e375c073c473a9a318750cc99f3b1e4",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Scope Guard",
+          "result": "FORMAT_CHECK_EXECUTED",
+          "origin": "MOCK",
+          "mock_branch_skips_semantic_rules": true,
+          "clinical_validation": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "b401a09cde1cb19a18b484c3d23ab9c2cf3d3dee6b4a8befd3ebd600af2e6ac5",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "b4217f95404e2d009043486724959bc7eeecce87b24ec2c9eff53e35f2058a74",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231129.263606,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "b401a09cde1cb19a18b484c3d23ab9c2cf3d3dee6b4a8befd3ebd600af2e6ac5",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "b4217f95404e2d009043486724959bc7eeecce87b24ec2c9eff53e35f2058a74",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231129.263606,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Output Validation",
+          "result": "EXACT_BYTES_ATTESTED",
+          "sha256": "92d1dff0c8d003b0fc3356caa11c6b9f9feb414be70fd97d0c7bbc06edf776de"
+        },
+        {
+          "stage": "Output Recheck",
+          "result": "REJECTED_CHANGED_OR_EXPIRED_BYTES"
+        },
+        {
+          "stage": "Technical Hold",
+          "error_type": "ModelError",
+          "code": "OUTPUT_BINDING_OR_EXPIRY_HOLD",
+          "no_inference_about_user": true
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 0
+    },
+    {
+      "id": 4,
+      "status": "confirmed-no-reply",
+      "text": null,
+      "binding": "75840a5b199a438ca63a29adb4a3436bbef6453d0bcca737a92207f8b0affb7d",
+      "epoch": "1457069170d8a8f2f2a978c350ec49b2",
+      "operationId": "37ae9594-8fa9-40e9-a71e-41a7fb319696",
+      "conversationId": "ef1f99d5-e8bd-4971-aa97-962fc5c37bfe",
+      "response_sha256": null,
+      "decision_fingerprint": null,
+      "receipt": null,
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Cây mai: nội dung giả định để kiểm thử ranh giới."
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-16",
+              "sourceStatus": "published-supporting",
+              "text": "Cũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\nMà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\nVà sâu hơn:\r\n\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\n---\r\n\nDịch vụ này có thể phù hợp nếu bạn:\r\n\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\n---\r\n\nCó một sự thật không dễ chịu của đời sống:\r\n\nKhông phải mọi thứ đều có thể sửa.\r\n\nCó những người sẽ rời đi.\r\n\nCó những cơ hội sẽ qua.\r\n\nCó những lựa chọn không thể làm lại.\r\n\nCơ thể sẽ thay đổi.\r\n\nNhững người ta yêu thương không thể ở lại mãi.\r\n\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-6",
+              "sourceStatus": "published-supporting",
+              "text": "Dịch vụ này có thể phù hợp nếu bạn:\r\n\n- thường xuyên gặp khó khăn trong tình yêu, hôn nhân hoặc gia đình;\r\n- rất nhạy cảm với khoảng cách, im lặng hoặc sự thay đổi của người khác;\r\n- dễ sợ bị bỏ rơi, bị từ chối hoặc không còn quan trọng;\r\n- thường xuyên nhường nhịn nhưng bên trong lại tích tụ tổn thương;\r\n- khó nói ra nhu cầu, mong muốn hoặc điều mình không chấp nhận;\r\n- khó thiết lập và giữ ranh giới;\r\n- dễ kiểm soát, ghen tuông hoặc cần được trấn an;\r\n- có xu hướng rút lui khi xảy ra xung đột;\r\n- cảm thấy mình luôn là người cho nhiều hơn trong một mối quan hệ;\r\n- nhận thấy cùng một kiểu khó khăn cứ lặp lại với những người khác nhau.\r\n\nTrong quá trình tham vấn, điều quan trọng không chỉ là giải quyết một cuộc xung đột cụ thể.\r\n\nChúng ta còn có thể nhìn vào **cách bạn bước vào một mối quan hệ**.\r\n\nBạn mong đợi điều gì từ người khác?\r\n\nBạn tin điều gì về bản thân khi được yêu?\r\n\nBạn phản ứng thế nào khi cảm thấy kết nối bị đe dọa?\r\n\nBạn thường tiến lại gần, bám giữ, kiểm soát — hay rút lui và đóng lại?\r\n\nBạn có thể nói ra điều mình cần, hay thường chờ người kia tự hiểu?\r\n\nBạn có thể ở gần người khác mà vẫn giữ được tiếng nói của mình hay không?\r\n\nBởi một mối quan hệ lành mạnh không có nghĩa là không bao giờ xung đột.\r\n\nHai người vẫn có thể bất đồng.\r\n\nVẫn có thể làm nhau thất vọng.\r\n\nVẫn có lúc cần khoảng cách.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-1",
+              "sourceStatus": "published-supporting",
+              "text": "- tự phê phán, tự trách hoặc khó tha thứ cho mình;\r\n- cảm thấy bản thân không đủ tốt hoặc không đủ giá trị;\r\n- phụ thuộc nhiều vào sự công nhận của người khác;\r\n- khó chấp nhận điểm yếu, sai sót hoặc những phần mình không thích;\r\n- thường xuyên so sánh mình với người khác;\r\n- không rõ mình thật sự là ai ngoài những vai trò và kỳ vọng;\r\n- cảm thấy xa lạ với chính mình dù cuộc sống bên ngoài vẫn đang tiếp tục.\r\n\nMục tiêu của tham vấn không phải là khiến bạn luôn yêu bản thân, luôn tự tin hay luôn suy nghĩ tích cực.\r\n\nMột mối quan hệ lành mạnh với chính mình thực tế hơn thế.\r\n\nĐó là khi bạn có thể nhìn thấy cả điểm mạnh lẫn giới hạn của mình mà không cần phủ nhận bên nào.\r\n\nCó thể thất bại mà không biến thất bại thành bằng chứng rằng mình vô giá trị.\r\n\nCó thể lắng nghe nhu cầu của mình mà không lập tức cảm thấy ích kỷ.\r\n\nCó thể thay đổi những điều cần thay đổi, nhưng không phải vì căm ghét con người hiện tại.\r\n\nVà dần dần, bạn không còn phải dành quá nhiều năng lượng để chống lại chính mình.\r\n\nBạn bắt đầu có thể đứng về phía mình.\r\n\nKhông phải để trở thành một phiên bản hoàn hảo hơn.\r\n\nMà để sống như một con người có thể **hiểu mình, chấp nhận mình và chịu trách nhiệm cho đời sống của chính mình**.\r\n\n# ĐỜI SỐNG NỘI TÂM\r\n\n# ĐỜI SỐNG NỘI TÂM  \r\n### Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày\r"
+            }
+          ],
+          "constructed_input_sha256": "cd9f6fccd74749175d9a8364f2c7bc1834dcb6738dd767b811dcde39c7e3cce3",
+          "website_context_sha256": "c46d2b07e987178c3ca3c5d4f66cd25e7f18a2ad46e4906c073095ffd2255b54",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Scope Guard",
+          "result": "FORMAT_CHECK_EXECUTED",
+          "origin": "MOCK",
+          "mock_branch_skips_semantic_rules": true,
+          "clinical_validation": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "d2eeec0fd81f3b263084fd5142c9ee08f22e13a0e46f5f36a7f289b992867657",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "ebfb8be516abeb72fd1a679bc6f0b3c650820aa30aa563750463d668d1cf4853",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231130.0113835,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "d2eeec0fd81f3b263084fd5142c9ee08f22e13a0e46f5f36a7f289b992867657",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "ebfb8be516abeb72fd1a679bc6f0b3c650820aa30aa563750463d668d1cf4853",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231130.0113835,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Output Validation",
+          "result": "EXACT_BYTES_ATTESTED",
+          "sha256": "92d1dff0c8d003b0fc3356caa11c6b9f9feb414be70fd97d0c7bbc06edf776de"
+        },
+        {
+          "stage": "Output Recheck",
+          "result": "EXACT_ATTESTED_BYTES_VERIFIED",
+          "sha256": "92d1dff0c8d003b0fc3356caa11c6b9f9feb414be70fd97d0c7bbc06edf776de"
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": false,
+          "policy_epoch": 2,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Technical Hold",
+          "error_type": "ValueError",
+          "code": "Mock policy revoked or scope/version changed",
+          "no_inference_about_user": true
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 0
+    }
+  ]
+}

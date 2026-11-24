@@ -1,0 +1,110 @@
+{
+  "executed": true,
+  "results": [
+    {
+      "name": "backend-lint-touched",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 26687
+    },
+    {
+      "name": "backend-lint-full",
+      "executed": true,
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "passed": true,
+      "durationMs": 15780
+    },
+    {
+      "name": "root-lint-config-preexisting",
+      "executed": true,
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "passed": true,
+      "durationMs": 168
+    },
+    {
+      "name": "source-integrity-audit",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 2999
+    },
+    {
+      "name": "functions-build",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 12732
+    },
+    {
+      "name": "conversation-tests",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 3596
+    },
+    {
+      "name": "emulator-tests",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 35489
+    },
+    {
+      "name": "targeted-consolidation-tests",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 13003
+    },
+    {
+      "name": "production-build",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 18359
+    },
+    {
+      "name": "public-build-audit",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 234
+    },
+    {
+      "name": "development-browser",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 35102
+    },
+    {
+      "name": "production-browser",
+      "executed": true,
+      "exitCode": 0,
+      "expectedExitCode": 0,
+      "passed": true,
+      "durationMs": 5805
+    }
+  ],
+  "expectedFailures": "Full backend lint contains only unchanged index.ts failures; root flat config is unchanged and missing existing dependencies.",
+  "notVerified": [
+    "Controller integration",
+    "real OAuth",
+    "model quality",
+    "clinical validity",
+    "production authorization",
+    "actual-source runtime approvals"
+  ]
+}

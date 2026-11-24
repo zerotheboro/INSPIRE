@@ -1,0 +1,20 @@
+{
+  "verifiedAt": "2026-11-09",
+  "method": "Official OpenAI model and pricing pages opened and inspected; no API request or account access",
+  "model": "gpt-6.1-sol",
+  "endpoint": "https://api.openai.com/v1/responses",
+  "processing": "Standard / default, short context",
+  "usdPerMillionTokens": {"input": 2, "cachedInput": 0.1, "output": 10, "cacheWrite30m": 2.5, "cacheWrite12h": 5},
+  "sources": [
+    "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "https://developers.openai.com/api/docs/pricing",
+    "https://developers.openai.com/api/docs/guides/your-data",
+    "https://developers.openai.com/api/docs/guides/text?api-mode=responses"
+  ],
+  "proposedLimitsNotApproval": {"calls": 12, "totalUSD": 2, "wireBytesPerCall": 24000, "maxOutputTokens": 2048, "reasoningEffort": "low"},
+  "existingPrivateApiBudget": {"modelAllowlist": ["gpt-6.1-sol"], "inputReservationUSDPerMillion": 5, "framingTokens": 2048, "outputReservationUSDPerMillion": 10, "maxOutputTokens": 2048},
+  "reservationMath": {"maxPerCallUSD": 0.15072, "maxFor12CallsUSD": 1.80864, "proposedHardCeilingUSD": 2},
+  "notEstablished": ["Account/model access", "Source-export approval", "Trial approval", "Live permission contract", "Availability of a dated snapshot", "Generative Vietnamese quality"],
+  "authorizationCreated": false,
+  "paidCalls": 0
+}

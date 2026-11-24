@@ -1,0 +1,129 @@
+INSPIRE private ChatGPT connection — 23 November 2026
+
+READY for local simulation and held ChatGPT input previews.
+NOT READY for a real three-attempt session. No generation, spending, source-use
+approval, API fallback, deployment, commit or push occurred. Z-PROJECT untouched.
+
+RUN (existing INSPIRE dependencies and original local Controller installation)
+Terminal 1, from INSPIRE:
+  node tests/start-inspire-emulators.mjs
+Terminal 2:
+  $env:INSPIRE_PRIVATE_TEST = '1'
+  $env:INSPIRE_LUNA_API_PREVIEW = '0'
+  $env:INSPIRE_BILLING_ROUTE = 'chatgpt'
+  npm.cmd run dev -- --host 127.0.0.1 --port 5173 --strictPort
+Open http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+If these processes are already running, use the existing page.
+For an empty emulator, restore the existing private index with the unchanged
+importer: node --import ./tests/register-ts.mjs tests/import-inspire-knowledge.mjs --discover
+This imports receipts incrementally; it grants no new permissions.
+
+Bố có thể hỏi, hỏi tiếp và đính chính bằng tiếng Việt với tình huống giả định.
+Mặc định là Mô phỏng, chưa phải phản hồi AI. Trong “Dành cho con”, chọn
+“ChatGPT · Xem trước” để chuẩn bị đầu vào chính xác; gửi ở chế độ này chỉ tạo
+bản xem trước và thông báo đang khóa. Không có nút tự duyệt hay gọi mô hình.
+Tải lại trang xóa nội dung trò chuyện. Mã lượt, dấu kiểm tra và số lần thử nằm
+riêng trong %LOCALAPPDATA%\INSPIRE-ChatGPT, không lưu câu hỏi/đoạn nguồn/phản hồi.
+Không xóa hồ sơ này để thử lại một lượt chưa rõ kết quả.
+
+IMPLEMENTED AND EXECUTED OFFLINE
+- Existing private interface -> /api/inspire-chatgpt -> existing authenticated
+  local service -> permission-filtered retrieval -> exact held model input.
+  No replacement UI/retriever and no API-key fallback. Existing API service is
+  preserved but not selected by this interface or the launch commands above.
+- SHA-256 binds the complete validated request (including message IDs/history/
+  corrections) and exact input bytes. Preview fingerprints persist before any
+  approval. Original wording is retained; retrieval alone excludes superseded
+  wording. Existing allowed addressing preferences remain separate.
+- Three-attempt ledger: exclusive file allocation, fsync, conservative unknown
+  reservation before preflight/send, no automatic retry or refund, same-operation
+  replay cannot generate again, and unresolved attempts stop the entire session.
+  Validated success permits the next distinct attempt, up to three. First attempt
+  binds the owner; other previews cannot prematurely claim an unused session.
+  Conversation/account switching cannot create a new attempt allowance. Pending
+  process restart is held; no automatic reconciliation/reset/regeneration exists.
+  Persistence was tested across a real child-process exit, not machine power loss.
+- Native Controller preflight -> latest exact-hash source export recheck -> one
+  injected sender -> response/input binding -> native exact-byte validation ->
+  durable receipt -> returned text. No unvalidated response enters delivery.
+  Controller proof retains actual_execution_eligible=false and user_delivery=false.
+- Pure installed-protocol conversion uses stable clientUserMessageId. Offline
+  completion decoder accepts only the narrow full single-final-message shape;
+  rejects mismatched thread/turn IDs, partials, tools, retry/error notifications,
+  unsupported moderation/display data and malformed candidates. This is not a
+  claim that arbitrary live event streams are supported or tested. No app-server
+  thread/start or turn/start transport is enabled; runtime runner has no sender.
+- Quotas and original catalogue simulation remain in their existing services.
+  New preview is quota-neutral; account quota exhaustion still denies preview.
+  Existing quota/identity tests pass. Live reservation-to-app-server behavior is
+  not verified while generation is blocked.
+
+EVIDENCE: docs/evidence/chatgpt-connection-2026-11-23/
+  session.txt: 12/12 runner, identity, correction, concurrency at third attempt,
+    crash, unknown outcome, permission ordering, protocol and Controller checks.
+  private-service.txt: 3/3 emulator integration/retrieval/revocation/restart checks.
+  boundary.txt: 6/6 private boundary and conversation input checks.
+  retrieval.txt: 4/4 automatic context/correction/cache invalidation/recovery checks.
+  quotas.txt: 10/10 existing account/quota/emulator checks.
+  Both builds, touched-backend lint and public-build canary scan: exit 0.
+  http-verification.json: actual local HTTP preview and repeat have same hashes;
+    execute 403; old API route 503; forged field 400; cross-origin 403; private
+    original asset 403; public-build chat endpoints 404; quota unchanged.
+  retrieval-controller-trace.json: actual synthetic permitted passage and exact
+    source references in adapter input, native checks and validated output hash.
+  adapter-input-trace.json: follow-up/correction retrieval using synthetic fixtures.
+  Current desktop/mobile visual checks: NOT VERIFIED. Browser access host was
+    unavailable; selected native Chrome window was minimized and could not be
+    inspected. No historical screenshot is represented as current evidence.
+  Historical broad suite remains 48/49 plus a separate isolated 1/1 rerun. These
+    focused passes do not relabel that complete suite as passed.
+Reproduce focused checks: node tests/verify-inspire-chatgpt.mjs
+Local HTTP check additionally requires Vite preview on port 4173:
+  npm.cmd run preview -- --host 127.0.0.1 --port 4173 --strictPort
+  node tests/inspire-chatgpt-http.mjs
+
+AUTHENTICATION AND EXACT TECHNICAL LIMITATIONS
+Read-only metadata on November 23: Codex 0.171.0-alpha.13, account type chatgpt,
+planType team, gpt-6-luna listed. No API key was read. account/rateLimits/read was
+unavailable. Metadata availability does not prove a future generation entitlement
+or that the workspace cannot consume purchased credits/top-ups/extra charges.
+Route: local private website -> server-side Codex app-server stdio -> managed
+ChatGPT sign-in, never an automatic OpenAI API-key route.
+
+Fresh installed schemas have no typed output-token cap or retry-disable field on
+turn/start. Generic configuration is not verified enforcement. Official provider
+configuration documents HTTP request_max_retries and SSE stream_max_retries, but
+their coverage of this managed route and all retry layers is not established:
+https://learn.chatgpt.com/docs/config-file/config-reference
+Prompt instructions, 2,000-character output validation, cancellation and output
+schemas cannot enforce a hard 512 generated-token cap or prevent managed retries.
+The local three-attempt ledger caps application attempts; it cannot yet guarantee
+three provider inferences underneath managed transport. Dispatch stays blocked.
+Live event correlation/tool isolation and actual account entitlement also remain
+unverified. Current narrow offline decoder is fail-closed, not a full live client.
+
+EXACT PROPOSED COLLECTION — UNCHANGED, NOT ACTIVATED
+website-counseling-first-test-v1
+Document: docs/counseling-topics-source.md; ID website-counseling; version 1
+SHA-256: 043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4
+One file contains the six website counseling topics. Existing status remains
+published-supporting / supporting-retrieval for local use; external permission
+is unresolved. Current receipt inventory: 71, with zero externally eligible
+real sources. Drafts, MOI, operating rules and reconstructed material stay out.
+Source permission is separate from intervention or public-delivery permission.
+
+REMAINING OWNER/ACCOUNT DECISION (ONE COLLECTION, NOT A FORM PER MESSAGE)
+Sau khi xử lý được các chỗ thiếu kỹ thuật, cần xác nhận điều kiện tài khoản không
+dùng tín dụng mua thêm, không tự nạp và không phát sinh phí. Nếu cho phép bộ nguồn
+đúng phiên bản trên, mỗi lượt chỉ gửi tối đa ba đoạn tham khảo liên quan (mỗi đoạn
+tối đa 1.400 ký tự), kèm tên/phiên bản/dấu kiểm tra/vị trí đoạn, câu hỏi và lịch sử
+giả định cùng cách xưng hô và chỉ dẫn tiếng Việt của phần mềm sang OpenAI qua
+đăng nhập ChatGPT. Không gửi cả thư viện, hồ sơ cá nhân, dữ liệu khách, đặt lịch,
+bản nháp hoặc quy tắc chưa được duyệt. Đồng ý dùng nguồn không cấp quyền can thiệp.
+Sau đó mới có quyết định cho chạy riêng một phiên giả định tối đa ba lần thử;
+lần lỗi/chưa rõ kết quả vẫn tính lượt, không tự thử lại. Hiện chưa có quyết định
+nào được ghi nhận. Quyền chi US$0.0016065 cũ không được tăng hoặc tái sử dụng.
+
+Recommendation: keep simulation/preview usable now. Do not release the real
+three-attempt session until hard token/retry controls and no-extra-charge evidence
+are established. Owner approval cannot make an unsupported technical cap exist.

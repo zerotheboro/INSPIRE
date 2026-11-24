@@ -1,0 +1,1563 @@
+{
+  "executed": true,
+  "syntheticOnly": true,
+  "paidModelCalled": false,
+  "realRuntimePermissionEstablished": false,
+  "limitations": [
+    "Original MOCK adapter does not use knowledge to generate grounded answers.",
+    "MOCK ScopeGuard branch skips semantic checks.",
+    "Permission registry unavailable; actual execution remains held."
+  ],
+  "requests": [
+    {
+      "kind": "send",
+      "epoch": "7b364e89-ad5c-4e54-81b5-13f9553a0d42",
+      "sessionId": "0ef1f354-faac-49ab-b7e9-a931f9aebb49",
+      "operationId": "b679f533-f60a-49d5-9896-46fea1f587df",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "messages": [
+        {
+          "id": "16796e30-c04b-4296-ae87-58dc15edaa2d",
+          "role": "user",
+          "text": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+        }
+      ]
+    },
+    {
+      "kind": "send",
+      "epoch": "7b364e89-ad5c-4e54-81b5-13f9553a0d42",
+      "sessionId": "0ef1f354-faac-49ab-b7e9-a931f9aebb49",
+      "operationId": "aa26106a-dd2b-46e2-b82f-b44c88dcf356",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "messages": [
+        {
+          "id": "16796e30-c04b-4296-ae87-58dc15edaa2d",
+          "role": "user",
+          "text": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+        },
+        {
+          "id": "6dc11615-cd15-4f65-91f3-a6a99e9d7b25",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "87f2268c-db2f-42a0-b946-bc52da87d426",
+          "role": "user",
+          "text": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+        }
+      ]
+    },
+    {
+      "kind": "send",
+      "epoch": "7b364e89-ad5c-4e54-81b5-13f9553a0d42",
+      "sessionId": "0ef1f354-faac-49ab-b7e9-a931f9aebb49",
+      "operationId": "e21b2658-2d64-4deb-a237-b3b16d986666",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "messages": [
+        {
+          "id": "16796e30-c04b-4296-ae87-58dc15edaa2d",
+          "role": "user",
+          "text": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+        },
+        {
+          "id": "6dc11615-cd15-4f65-91f3-a6a99e9d7b25",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "87f2268c-db2f-42a0-b946-bc52da87d426",
+          "role": "user",
+          "text": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+        },
+        {
+          "id": "4720e855-594e-433c-9185-fad9fe88b2fd",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "d9000435-2bf9-45af-b79b-c1d41567eb6f",
+          "role": "user",
+          "text": "Tôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.",
+          "correctionOf": "16796e30-c04b-4296-ae87-58dc15edaa2d"
+        }
+      ]
+    },
+    {
+      "kind": "send",
+      "epoch": "7b364e89-ad5c-4e54-81b5-13f9553a0d42",
+      "sessionId": "0ef1f354-faac-49ab-b7e9-a931f9aebb49",
+      "operationId": "7c7e7121-02ef-49cc-8de0-fe4dcb92e78b",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "messages": [
+        {
+          "id": "16796e30-c04b-4296-ae87-58dc15edaa2d",
+          "role": "user",
+          "text": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+        },
+        {
+          "id": "6dc11615-cd15-4f65-91f3-a6a99e9d7b25",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "87f2268c-db2f-42a0-b946-bc52da87d426",
+          "role": "user",
+          "text": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+        },
+        {
+          "id": "4720e855-594e-433c-9185-fad9fe88b2fd",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "d9000435-2bf9-45af-b79b-c1d41567eb6f",
+          "role": "user",
+          "text": "Tôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.",
+          "correctionOf": "16796e30-c04b-4296-ae87-58dc15edaa2d"
+        },
+        {
+          "id": "aabe68da-ebfd-429f-a32c-b5c90e343db5",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "fffadac8-5502-4c46-8174-13bc894e1225",
+          "role": "user",
+          "text": "Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp."
+        }
+      ]
+    },
+    {
+      "kind": "send",
+      "epoch": "7b364e89-ad5c-4e54-81b5-13f9553a0d42",
+      "sessionId": "0ef1f354-faac-49ab-b7e9-a931f9aebb49",
+      "operationId": "6cb7b30a-548b-4a8e-8044-11ff1241ce82",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "messages": [
+        {
+          "id": "16796e30-c04b-4296-ae87-58dc15edaa2d",
+          "role": "user",
+          "text": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+        },
+        {
+          "id": "6dc11615-cd15-4f65-91f3-a6a99e9d7b25",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "87f2268c-db2f-42a0-b946-bc52da87d426",
+          "role": "user",
+          "text": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+        },
+        {
+          "id": "4720e855-594e-433c-9185-fad9fe88b2fd",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "d9000435-2bf9-45af-b79b-c1d41567eb6f",
+          "role": "user",
+          "text": "Tôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.",
+          "correctionOf": "16796e30-c04b-4296-ae87-58dc15edaa2d"
+        },
+        {
+          "id": "aabe68da-ebfd-429f-a32c-b5c90e343db5",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "fffadac8-5502-4c46-8174-13bc894e1225",
+          "role": "user",
+          "text": "Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp."
+        }
+      ]
+    },
+    {
+      "kind": "send",
+      "epoch": "7b364e89-ad5c-4e54-81b5-13f9553a0d42",
+      "sessionId": "0ef1f354-faac-49ab-b7e9-a931f9aebb49",
+      "operationId": "6c5367ab-2ef7-4706-8292-067679fad5ef",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "messages": [
+        {
+          "id": "16796e30-c04b-4296-ae87-58dc15edaa2d",
+          "role": "user",
+          "text": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+        },
+        {
+          "id": "6dc11615-cd15-4f65-91f3-a6a99e9d7b25",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "87f2268c-db2f-42a0-b946-bc52da87d426",
+          "role": "user",
+          "text": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+        },
+        {
+          "id": "4720e855-594e-433c-9185-fad9fe88b2fd",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "d9000435-2bf9-45af-b79b-c1d41567eb6f",
+          "role": "user",
+          "text": "Tôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.",
+          "correctionOf": "16796e30-c04b-4296-ae87-58dc15edaa2d"
+        },
+        {
+          "id": "aabe68da-ebfd-429f-a32c-b5c90e343db5",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "fffadac8-5502-4c46-8174-13bc894e1225",
+          "role": "user",
+          "text": "Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp."
+        },
+        {
+          "id": "de6f3237-2abf-4079-b6f2-7d5b591d4d06",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "cd702383-b8a5-414b-b239-da26acadb9f3",
+          "role": "user",
+          "text": "Cây mai: tôi thử kiểm tra lại một phản hồi bị mất trên đường truyền."
+        }
+      ]
+    },
+    {
+      "kind": "replay",
+      "epoch": "7b364e89-ad5c-4e54-81b5-13f9553a0d42",
+      "sessionId": "0ef1f354-faac-49ab-b7e9-a931f9aebb49",
+      "operationId": "6c5367ab-2ef7-4706-8292-067679fad5ef",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "messages": [
+        {
+          "id": "16796e30-c04b-4296-ae87-58dc15edaa2d",
+          "role": "user",
+          "text": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+        },
+        {
+          "id": "6dc11615-cd15-4f65-91f3-a6a99e9d7b25",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "87f2268c-db2f-42a0-b946-bc52da87d426",
+          "role": "user",
+          "text": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+        },
+        {
+          "id": "4720e855-594e-433c-9185-fad9fe88b2fd",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "d9000435-2bf9-45af-b79b-c1d41567eb6f",
+          "role": "user",
+          "text": "Tôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.",
+          "correctionOf": "16796e30-c04b-4296-ae87-58dc15edaa2d"
+        },
+        {
+          "id": "aabe68da-ebfd-429f-a32c-b5c90e343db5",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "fffadac8-5502-4c46-8174-13bc894e1225",
+          "role": "user",
+          "text": "Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp."
+        },
+        {
+          "id": "de6f3237-2abf-4079-b6f2-7d5b591d4d06",
+          "role": "assistant",
+          "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+        },
+        {
+          "id": "cd702383-b8a5-414b-b239-da26acadb9f3",
+          "role": "user",
+          "text": "Cây mai: tôi thử kiểm tra lại một phản hồi bị mất trên đường truyền."
+        }
+      ]
+    }
+  ],
+  "conversation": [
+    {
+      "id": "16796e30-c04b-4296-ae87-58dc15edaa2d",
+      "role": "user",
+      "text": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+    },
+    {
+      "id": "6dc11615-cd15-4f65-91f3-a6a99e9d7b25",
+      "role": "assistant",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+    },
+    {
+      "id": "87f2268c-db2f-42a0-b946-bc52da87d426",
+      "role": "user",
+      "text": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+    },
+    {
+      "id": "4720e855-594e-433c-9185-fad9fe88b2fd",
+      "role": "assistant",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+    },
+    {
+      "id": "d9000435-2bf9-45af-b79b-c1d41567eb6f",
+      "role": "user",
+      "text": "Tôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.",
+      "correctionOf": "16796e30-c04b-4296-ae87-58dc15edaa2d"
+    },
+    {
+      "id": "aabe68da-ebfd-429f-a32c-b5c90e343db5",
+      "role": "assistant",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+    },
+    {
+      "id": "fffadac8-5502-4c46-8174-13bc894e1225",
+      "role": "user",
+      "text": "Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp."
+    },
+    {
+      "id": "de6f3237-2abf-4079-b6f2-7d5b591d4d06",
+      "role": "assistant",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+    },
+    {
+      "id": "cd702383-b8a5-414b-b239-da26acadb9f3",
+      "role": "user",
+      "text": "Cây mai: tôi thử kiểm tra lại một phản hồi bị mất trên đường truyền."
+    },
+    {
+      "id": "72d336d6-bc90-4d95-a836-fcb20c279859",
+      "role": "assistant",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai: tôi thử kiểm tra lại một phản hồi bị mất trên đường truyền.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+    }
+  ],
+  "quota": {
+    "limit": 10,
+    "completed": 5,
+    "pending": 0,
+    "remaining": 5,
+    "period": "guest",
+    "nextReset": null
+  },
+  "controller": [
+    {
+      "id": 1,
+      "status": "completed",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này.",
+      "binding": "fd6e41336d7f4bb1f0d9f9f89e54e0fc942b211522a5e4f17a8fad716933d773",
+      "epoch": "652c15eeddf088686824e47bbb1f0afd",
+      "operationId": "b679f533-f60a-49d5-9896-46fea1f587df",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "response_sha256": "5b24e5f8a1468d3f02eb0414e75bfd22cd3b78c2b0c5d32660af936a16cb3c9f",
+      "decision_fingerprint": "a223e4d8a459d1aac56620e2426a255cfd29b605bc717c5f6171e98592c20a80",
+      "receipt": {
+        "action_id": "b679f533-f60a-49d5-9896-46fea1f587df",
+        "decision_fingerprint": "a223e4d8a459d1aac56620e2426a255cfd29b605bc717c5f6171e98592c20a80",
+        "response_sha256": "5b24e5f8a1468d3f02eb0414e75bfd22cd3b78c2b0c5d32660af936a16cb3c9f",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-14",
+              "sourceStatus": "published-supporting",
+              "text": "**Điều gì thật sự quan trọng với tôi?**\r\n\nKhông phải điều khiến bạn thoải mái nhất ngay lúc này.\r\n\nKhông phải điều chắc chắn nhất.\r\n\nKhông phải điều khiến mọi người hài lòng nhất.\r\n\nMà là điều bạn thấy **đáng để dành thời gian, năng lượng và một phần đời của mình cho nó**.\r\n\n---\r\n\nMục tiêu của tham vấn không phải là làm bạn trở nên chắc chắn tuyệt đối.\r\n\nBởi trong nhiều quyết định của đời sống, sự chắc chắn tuyệt đối không tồn tại.\r\n\nĐiều quan trọng hơn là bạn có thể trở nên **rõ hơn**.\r\n\nRõ điều gì là của mình.\r\n\nRõ điều gì là nỗi sợ.\r\n\nRõ điều gì là kỳ vọng vay mượn.\r\n\nRõ điều gì mình muốn giữ.\r\n\nVà rõ điều gì mình sẵn sàng từ bỏ để có thể bước tiếp.\r\n\nKhi ấy, bạn không còn cần biết trước toàn bộ con đường.\r\n\nBạn chỉ cần đủ rõ để đặt bước chân tiếp theo.\r\n\nVà đủ trưởng thành để nói:\r\n\n**“Tôi biết mình không thể kiểm soát mọi điều sẽ xảy ra.  \r\nNhưng đây là điều tôi chọn.  \r\nVà tôi sẽ có mặt trong cuộc đời được tạo nên từ lựa chọn ấy.”**\r\n\n# Ý NGHĨA VÀ CÁCH SỐNG\r\n# Ý NGHĨA VÀ CÁCH SỐNG  \r\n### Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới\r\n\nCó những giai đoạn, ta không hẳn gặp một vấn đề cụ thể.\r\n\nCông việc vẫn còn đó.  \r\nGia đình vẫn còn đó.  \r\nCuộc sống bên ngoài vẫn tiếp tục.\r\n\nNhưng bên trong, một câu hỏi bắt đầu xuất hiện:\r\n\n**“Rốt cuộc mình đang sống để làm gì?”**\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-16",
+              "sourceStatus": "published-supporting",
+              "text": "Cũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\nMà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\nVà sâu hơn:\r\n\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\n---\r\n\nDịch vụ này có thể phù hợp nếu bạn:\r\n\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\n---\r\n\nCó một sự thật không dễ chịu của đời sống:\r\n\nKhông phải mọi thứ đều có thể sửa.\r\n\nCó những người sẽ rời đi.\r\n\nCó những cơ hội sẽ qua.\r\n\nCó những lựa chọn không thể làm lại.\r\n\nCơ thể sẽ thay đổi.\r\n\nNhững người ta yêu thương không thể ở lại mãi.\r\n\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-17",
+              "sourceStatus": "published-supporting",
+              "text": "Một phần trưởng thành rất sâu của con người bắt đầu khi ta không còn chỉ hỏi:\r\n\n**“Làm thế nào để tôi tránh được tất cả những điều này?”**\r\n\nMà bắt đầu hỏi:\r\n\n**“Nếu đây là một phần của đời sống, tôi muốn sống như thế nào trước nó?”**\r\n\n---\r\n\nTrong quá trình tham vấn, chúng ta có thể cùng nhìn vào những điều bạn đang xây dựng đời mình quanh đó.\r\n\nBạn đang dành những năm tháng của mình cho điều gì?\r\n\nĐiều gì trong đời bạn là do chính bạn lựa chọn?\r\n\nĐiều gì bạn đang tiếp tục chỉ vì đã quen?\r\n\nCó điều gì bạn biết là quan trọng nhưng luôn trì hoãn?\r\n\nCó điều gì bạn đang nắm giữ vì sợ mất, dù chính nó đang làm cuộc sống nhỏ lại?\r\n\nNếu một ngày nhìn lại quãng đời này, điều gì bạn sẽ mong mình đã can đảm hơn để sống?\r\n\nVà điều gì, ngay cả khi khó khăn, vẫn khiến bạn cảm thấy:\r\n\n**“Điều này đáng.”**\r\n\n---\r\n\nÝ nghĩa không nhất thiết phải là một sứ mệnh lớn.\r\n\nNó có thể nằm trong cách bạn nuôi một đứa trẻ.\r\n\nCách bạn chăm sóc một người đang yếu đi.\r\n\nCách bạn làm một công việc tử tế.\r\n\nCách bạn giữ một lời hứa.\r\n\nCách bạn yêu một người.\r\n\nCách bạn đứng lên sau thất bại.\r\n\nCách bạn không tiếp tục truyền một tổn thương của mình cho người khác.\r\n\nHay đơn giản là cách bạn hiện diện trọn vẹn hơn trong một ngày rất bình thường.\r\n\nMột đời sống có ý nghĩa không nhất thiết là một đời sống đặc biệt.\r"
+            }
+          ],
+          "constructed_input_sha256": "5a6dd1c08aef471690817abf656dd7deef47235350673914a52883665746a7a2",
+          "website_context_sha256": "fa3e31c2efce49d5ea643e639b06865e26cc2b831e0e0f7680c9d7c5f26dd2cf",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Scope Guard",
+          "result": "FORMAT_CHECK_EXECUTED",
+          "origin": "MOCK",
+          "mock_branch_skips_semantic_rules": true,
+          "clinical_validation": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "fb1fb033312d56584822ff7c5ebacbd84f915b5ccefd90b51dc79e91569566f7",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "4074ebfc50371f476c3f598fb328761d595f3d22503ac101689ebce0661368e4",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231118.0353801,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "fb1fb033312d56584822ff7c5ebacbd84f915b5ccefd90b51dc79e91569566f7",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "4074ebfc50371f476c3f598fb328761d595f3d22503ac101689ebce0661368e4",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231118.0353801,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Output Validation",
+          "result": "EXACT_BYTES_ATTESTED",
+          "sha256": "5b24e5f8a1468d3f02eb0414e75bfd22cd3b78c2b0c5d32660af936a16cb3c9f"
+        },
+        {
+          "stage": "Output Recheck",
+          "result": "EXACT_ATTESTED_BYTES_VERIFIED",
+          "sha256": "5b24e5f8a1468d3f02eb0414e75bfd22cd3b78c2b0c5d32660af936a16cb3c9f"
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "fb1fb033312d56584822ff7c5ebacbd84f915b5ccefd90b51dc79e91569566f7",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "4074ebfc50371f476c3f598fb328761d595f3d22503ac101689ebce0661368e4",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231118.197415,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Mock Sink",
+          "result": "SOURCE_POLICY_REVISION_AND_RECEIPT_CHECKS_EXECUTED",
+          "receipt": {
+            "action_id": "b679f533-f60a-49d5-9896-46fea1f587df",
+            "decision_fingerprint": "a223e4d8a459d1aac56620e2426a255cfd29b605bc717c5f6171e98592c20a80",
+            "response_sha256": "5b24e5f8a1468d3f02eb0414e75bfd22cd3b78c2b0c5d32660af936a16cb3c9f",
+            "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+          }
+        },
+        {
+          "stage": "State Commit",
+          "result": "RECEIPT_LEDGER_AND_REVISION_CHECKS_EXECUTED",
+          "revision": 1
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 1
+    },
+    {
+      "id": 2,
+      "status": "completed",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này.",
+      "binding": "ddfab681e5e21227c8fc48e926b104d8bc94202c6f6aa13612c0f9eeb1bc41a8",
+      "epoch": "652c15eeddf088686824e47bbb1f0afd",
+      "operationId": "aa26106a-dd2b-46e2-b82f-b44c88dcf356",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "response_sha256": "9807c3a8e1524551d8d0493d1d18cad32bd8e325edf7162a13c174300468a5ab",
+      "decision_fingerprint": "63f2dd8e6d8718174947f52e2c149180310cfeeabafffd02be8c310fbad68b8c",
+      "receipt": {
+        "action_id": "aa26106a-dd2b-46e2-b82f-b44c88dcf356",
+        "decision_fingerprint": "63f2dd8e6d8718174947f52e2c149180310cfeeabafffd02be8c310fbad68b8c",
+        "response_sha256": "9807c3a8e1524551d8d0493d1d18cad32bd8e325edf7162a13c174300468a5ab",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user",
+            "assistant",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-14",
+              "sourceStatus": "published-supporting",
+              "text": "**Điều gì thật sự quan trọng với tôi?**\r\n\nKhông phải điều khiến bạn thoải mái nhất ngay lúc này.\r\n\nKhông phải điều chắc chắn nhất.\r\n\nKhông phải điều khiến mọi người hài lòng nhất.\r\n\nMà là điều bạn thấy **đáng để dành thời gian, năng lượng và một phần đời của mình cho nó**.\r\n\n---\r\n\nMục tiêu của tham vấn không phải là làm bạn trở nên chắc chắn tuyệt đối.\r\n\nBởi trong nhiều quyết định của đời sống, sự chắc chắn tuyệt đối không tồn tại.\r\n\nĐiều quan trọng hơn là bạn có thể trở nên **rõ hơn**.\r\n\nRõ điều gì là của mình.\r\n\nRõ điều gì là nỗi sợ.\r\n\nRõ điều gì là kỳ vọng vay mượn.\r\n\nRõ điều gì mình muốn giữ.\r\n\nVà rõ điều gì mình sẵn sàng từ bỏ để có thể bước tiếp.\r\n\nKhi ấy, bạn không còn cần biết trước toàn bộ con đường.\r\n\nBạn chỉ cần đủ rõ để đặt bước chân tiếp theo.\r\n\nVà đủ trưởng thành để nói:\r\n\n**“Tôi biết mình không thể kiểm soát mọi điều sẽ xảy ra.  \r\nNhưng đây là điều tôi chọn.  \r\nVà tôi sẽ có mặt trong cuộc đời được tạo nên từ lựa chọn ấy.”**\r\n\n# Ý NGHĨA VÀ CÁCH SỐNG\r\n# Ý NGHĨA VÀ CÁCH SỐNG  \r\n### Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới\r\n\nCó những giai đoạn, ta không hẳn gặp một vấn đề cụ thể.\r\n\nCông việc vẫn còn đó.  \r\nGia đình vẫn còn đó.  \r\nCuộc sống bên ngoài vẫn tiếp tục.\r\n\nNhưng bên trong, một câu hỏi bắt đầu xuất hiện:\r\n\n**“Rốt cuộc mình đang sống để làm gì?”**\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-17",
+              "sourceStatus": "published-supporting",
+              "text": "Một phần trưởng thành rất sâu của con người bắt đầu khi ta không còn chỉ hỏi:\r\n\n**“Làm thế nào để tôi tránh được tất cả những điều này?”**\r\n\nMà bắt đầu hỏi:\r\n\n**“Nếu đây là một phần của đời sống, tôi muốn sống như thế nào trước nó?”**\r\n\n---\r\n\nTrong quá trình tham vấn, chúng ta có thể cùng nhìn vào những điều bạn đang xây dựng đời mình quanh đó.\r\n\nBạn đang dành những năm tháng của mình cho điều gì?\r\n\nĐiều gì trong đời bạn là do chính bạn lựa chọn?\r\n\nĐiều gì bạn đang tiếp tục chỉ vì đã quen?\r\n\nCó điều gì bạn biết là quan trọng nhưng luôn trì hoãn?\r\n\nCó điều gì bạn đang nắm giữ vì sợ mất, dù chính nó đang làm cuộc sống nhỏ lại?\r\n\nNếu một ngày nhìn lại quãng đời này, điều gì bạn sẽ mong mình đã can đảm hơn để sống?\r\n\nVà điều gì, ngay cả khi khó khăn, vẫn khiến bạn cảm thấy:\r\n\n**“Điều này đáng.”**\r\n\n---\r\n\nÝ nghĩa không nhất thiết phải là một sứ mệnh lớn.\r\n\nNó có thể nằm trong cách bạn nuôi một đứa trẻ.\r\n\nCách bạn chăm sóc một người đang yếu đi.\r\n\nCách bạn làm một công việc tử tế.\r\n\nCách bạn giữ một lời hứa.\r\n\nCách bạn yêu một người.\r\n\nCách bạn đứng lên sau thất bại.\r\n\nCách bạn không tiếp tục truyền một tổn thương của mình cho người khác.\r\n\nHay đơn giản là cách bạn hiện diện trọn vẹn hơn trong một ngày rất bình thường.\r\n\nMột đời sống có ý nghĩa không nhất thiết là một đời sống đặc biệt.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-10",
+              "sourceStatus": "published-supporting",
+              "text": "Một người cần học cách chia nhỏ nhiệm vụ.\r\n\nMột người cần làm việc với nỗi sợ thất bại.\r\n\nMột người cần giảm tiêu chuẩn hoàn hảo.\r\n\nMột người cần phục hồi sau thời gian quá tải.\r\n\nVà một người khác có thể cần tự hỏi:\r\n\n**“Đây có thật sự là cuộc đời tôi muốn xây dựng không?”**\r\n\n---\r\n\nThay đổi vì thế không nhất thiết bắt đầu bằng một kế hoạch lớn.\r\n\nĐôi khi nó bắt đầu bằng việc tìm đúng **điểm đang làm hệ thống bị kẹt**.\r\n\nRồi từ đó tạo ra một bước đủ nhỏ để bạn thực sự có thể làm.\r\n\nLàm.\r\n\nQuan sát điều gì xảy ra.\r\n\nĐiều chỉnh.\r\n\nRồi đi thêm một bước nữa.\r\n\nDần dần, bạn không còn cần mỗi lần thay đổi đều phải chờ một đợt động lực mạnh.\r\n\nBạn bắt đầu xây dựng khả năng **đưa điều mình lựa chọn vào đời sống thật**.\r\n\n---\r\n\nMục tiêu của tham vấn không phải là biến bạn thành một cỗ máy năng suất.\r\n\nKhông phải lấp kín lịch trình.\r\n\nKhông phải làm càng nhiều càng tốt.\r\n\nMột người có thể làm rất nhiều nhưng vẫn đang chạy khỏi chính mình.\r\n\nĐiều quan trọng hơn là bạn có thể **vận hành đời sống của mình một cách có chủ đích**.\r\n\nBiết điều gì đáng làm.\r\n\nBiết bước tiếp theo là gì.\r\n\nCó khả năng bắt đầu.\r\n\nCó khả năng duy trì.\r\n\nCó thể điều chỉnh khi thực tế thay đổi.\r\n\nVà khi vấp ngã, biết cách quay trở lại thay vì biến một lần gián đoạn thành lý do để từ bỏ tất cả.\r\n\nCuối cùng, điều ta tìm kiếm không chỉ là năng suất.\r\n\nMà là một năng lực sâu hơn:\r"
+            }
+          ],
+          "constructed_input_sha256": "18ab9ec517c47d44a6fe625f9f886578c725a9afe8d2403c4eef0c6434f5c871",
+          "website_context_sha256": "5f3119fc4d920c66457c6293d3c9dd1086411678596286ede42e9d14d5e7d3ec",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Scope Guard",
+          "result": "FORMAT_CHECK_EXECUTED",
+          "origin": "MOCK",
+          "mock_branch_skips_semantic_rules": true,
+          "clinical_validation": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "2c5d2ea12b7ba9c9adfba697a9e3cf4567d612b2f8eecce4f252b968a4d2c8d3",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "868e4609a42c83cf8a17af1626257c47c17392b38c58701a7dad4e6cf06ee675",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231118.812186,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "2c5d2ea12b7ba9c9adfba697a9e3cf4567d612b2f8eecce4f252b968a4d2c8d3",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "868e4609a42c83cf8a17af1626257c47c17392b38c58701a7dad4e6cf06ee675",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231118.8131864,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Output Validation",
+          "result": "EXACT_BYTES_ATTESTED",
+          "sha256": "9807c3a8e1524551d8d0493d1d18cad32bd8e325edf7162a13c174300468a5ab"
+        },
+        {
+          "stage": "Output Recheck",
+          "result": "EXACT_ATTESTED_BYTES_VERIFIED",
+          "sha256": "9807c3a8e1524551d8d0493d1d18cad32bd8e325edf7162a13c174300468a5ab"
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "2c5d2ea12b7ba9c9adfba697a9e3cf4567d612b2f8eecce4f252b968a4d2c8d3",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "868e4609a42c83cf8a17af1626257c47c17392b38c58701a7dad4e6cf06ee675",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231118.9994903,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Mock Sink",
+          "result": "SOURCE_POLICY_REVISION_AND_RECEIPT_CHECKS_EXECUTED",
+          "receipt": {
+            "action_id": "aa26106a-dd2b-46e2-b82f-b44c88dcf356",
+            "decision_fingerprint": "63f2dd8e6d8718174947f52e2c149180310cfeeabafffd02be8c310fbad68b8c",
+            "response_sha256": "9807c3a8e1524551d8d0493d1d18cad32bd8e325edf7162a13c174300468a5ab",
+            "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+          }
+        },
+        {
+          "stage": "State Commit",
+          "result": "RECEIPT_LEDGER_AND_REVISION_CHECKS_EXECUTED",
+          "revision": 2
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 2
+    },
+    {
+      "id": 3,
+      "status": "completed",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này.",
+      "binding": "632e184c6e9819677ad6feb515408e211a760ed842eed8c7bf2ad6394d177468",
+      "epoch": "652c15eeddf088686824e47bbb1f0afd",
+      "operationId": "e21b2658-2d64-4deb-a237-b3b16d986666",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "response_sha256": "ab39f25c32f8c9868f06bfb4922fe46a5d6e74cf2273b87b28d010b3646db75b",
+      "decision_fingerprint": "e66c8675eface3eac44b530cb0e00e56578d5d0dac9d1c4ef63892e390e8314a",
+      "receipt": {
+        "action_id": "e21b2658-2d64-4deb-a237-b3b16d986666",
+        "decision_fingerprint": "e66c8675eface3eac44b530cb0e00e56578d5d0dac9d1c4ef63892e390e8314a",
+        "response_sha256": "ab39f25c32f8c9868f06bfb4922fe46a5d6e74cf2273b87b28d010b3646db75b",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user",
+            "assistant",
+            "user",
+            "assistant",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi."
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-18",
+              "sourceStatus": "published-supporting",
+              "text": "Đó có thể chỉ là một đời sống mà khi sống nó, bạn ngày càng ít cảm thấy mình đang phản bội những điều sâu sắc nhất bên trong mình.\r\n\n---\r\n\nMục tiêu của tham vấn không phải là giúp bạn tìm ra một câu trả lời cuối cùng cho cuộc đời.\r\n\nCó thể sẽ không bao giờ có một câu trả lời cuối cùng như vậy.\r\n\nCon người thay đổi.\r\n\nHoàn cảnh thay đổi.\r\n\nĐiều có ý nghĩa ở tuổi hai mươi có thể khác ở tuổi bốn mươi.\r\n\nMột điều từng là trung tâm của đời sống có thể một ngày không còn như thế nữa.\r\n\nVì vậy, sống có ý nghĩa không phải là tìm được một công thức rồi giữ nguyên nó mãi.\r\n\nĐó là khả năng **liên tục trở lại với đời mình và hỏi xem điều gì đang thực sự đáng sống lúc này**.\r\n\n---\r\n\nVà có lẽ ở tầng sâu nhất, câu hỏi không còn là:\r\n\n**“Làm sao để cuộc đời xảy ra đúng như tôi muốn?”**\r\n\nMà là:\r\n\n**“Với cuộc đời đang thực sự được trao cho tôi — với cả những điều tôi chọn và những điều tôi không thể chọn — tôi muốn sống nó như thế nào?”**\r\n\nBạn không thể quyết định mọi điều sẽ xảy đến.\r\n\nNhưng bạn vẫn có thể lựa chọn cách mình hiện diện.\r\n\nBạn không thể giữ lại tất cả.\r\n\nNhưng bạn có thể lựa chọn điều gì đáng để mình trao thời gian.\r\n\nBạn không thể khiến cuộc đời trở nên vô hạn.\r\n\nNhưng chính vì nó hữu hạn, cách bạn sống từng phần của nó lại trở nên quan trọng.\r\n\nCuối cùng, một đời sống có ý nghĩa có thể không phải là một đời sống mà mọi câu hỏi đều đã được trả lời.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-11",
+              "sourceStatus": "published-supporting",
+              "text": "**khả năng biến điều mình hiểu thành điều mình làm,  \r\nbiến điều mình lựa chọn thành cách mình sống,  \r\nvà từng bước trở thành người có thể tham gia vào việc tạo nên chính cuộc đời mình.**\r\n\n# PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN\r\n# PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN  \r\n### Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình\r\n\nCó những giai đoạn, cuộc sống không hẳn đang có vấn đề.\r\n\nNhưng bạn vẫn cảm thấy mình đứng trước một ngã rẽ.\r\n\nMột công việc nên tiếp tục hay rời đi.\r\n\nMột mối quan hệ nên ở lại hay bước ra.\r\n\nMột cơ hội nên nắm lấy hay từ chối.\r\n\nMột cuộc sống ổn định nhưng ngày càng xa lạ.\r\n\nHoặc đơn giản là một cảm giác rất khó gọi tên:\r\n\n**“Tôi không chắc mình muốn tiếp tục sống như thế này.”**\r\n\nBạn có thể có nhiều lựa chọn.\r\n\nNhưng càng nhiều lựa chọn, đôi khi lại càng khó quyết định.\r\n\nBởi phía sau mỗi lựa chọn không chỉ là câu hỏi:\r\n\n**“Điều nào tốt hơn?”**\r\n\nMà còn là:\r\n\n**“Điều nào phù hợp với con người tôi muốn trở thành?”**\r\n\n---\r\n\nCó những quyết định không thể giải bằng cách lập bảng ưu và nhược điểm.\r\n\nBởi đôi khi cả hai con đường đều có lý.\r\n\nCả hai đều có cái được.\r\n\nCả hai đều có cái mất.\r\n\nVà không có lựa chọn nào hoàn toàn chắc chắn.\r\n\nBạn có thể muốn tự do nhưng cũng cần an toàn.\r\n\nMuốn theo đuổi điều mình yêu nhưng sợ làm gia đình thất vọng.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-14",
+              "sourceStatus": "published-supporting",
+              "text": "**Điều gì thật sự quan trọng với tôi?**\r\n\nKhông phải điều khiến bạn thoải mái nhất ngay lúc này.\r\n\nKhông phải điều chắc chắn nhất.\r\n\nKhông phải điều khiến mọi người hài lòng nhất.\r\n\nMà là điều bạn thấy **đáng để dành thời gian, năng lượng và một phần đời của mình cho nó**.\r\n\n---\r\n\nMục tiêu của tham vấn không phải là làm bạn trở nên chắc chắn tuyệt đối.\r\n\nBởi trong nhiều quyết định của đời sống, sự chắc chắn tuyệt đối không tồn tại.\r\n\nĐiều quan trọng hơn là bạn có thể trở nên **rõ hơn**.\r\n\nRõ điều gì là của mình.\r\n\nRõ điều gì là nỗi sợ.\r\n\nRõ điều gì là kỳ vọng vay mượn.\r\n\nRõ điều gì mình muốn giữ.\r\n\nVà rõ điều gì mình sẵn sàng từ bỏ để có thể bước tiếp.\r\n\nKhi ấy, bạn không còn cần biết trước toàn bộ con đường.\r\n\nBạn chỉ cần đủ rõ để đặt bước chân tiếp theo.\r\n\nVà đủ trưởng thành để nói:\r\n\n**“Tôi biết mình không thể kiểm soát mọi điều sẽ xảy ra.  \r\nNhưng đây là điều tôi chọn.  \r\nVà tôi sẽ có mặt trong cuộc đời được tạo nên từ lựa chọn ấy.”**\r\n\n# Ý NGHĨA VÀ CÁCH SỐNG\r\n# Ý NGHĨA VÀ CÁCH SỐNG  \r\n### Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới\r\n\nCó những giai đoạn, ta không hẳn gặp một vấn đề cụ thể.\r\n\nCông việc vẫn còn đó.  \r\nGia đình vẫn còn đó.  \r\nCuộc sống bên ngoài vẫn tiếp tục.\r\n\nNhưng bên trong, một câu hỏi bắt đầu xuất hiện:\r\n\n**“Rốt cuộc mình đang sống để làm gì?”**\r"
+            }
+          ],
+          "constructed_input_sha256": "db7dd26ff7fa30cc98ba4890baa815a9de1b304a6f43e483fe8cc0eeb94753dc",
+          "website_context_sha256": "04d1a63129eb9bfdcaf42e333937a07a6900c5bf8c72e1376b4f1ad3daa8af91",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Scope Guard",
+          "result": "FORMAT_CHECK_EXECUTED",
+          "origin": "MOCK",
+          "mock_branch_skips_semantic_rules": true,
+          "clinical_validation": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "77f641505801643c2b1a5e27380ec7ac5868d49a0b3e90c44033bd2f11f64978",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "d51332115465b3499aca770e78929cf3ef7981b48115ff2b6dc4560956b2be2e",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231119.7555487,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "77f641505801643c2b1a5e27380ec7ac5868d49a0b3e90c44033bd2f11f64978",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "d51332115465b3499aca770e78929cf3ef7981b48115ff2b6dc4560956b2be2e",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231119.7565482,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Output Validation",
+          "result": "EXACT_BYTES_ATTESTED",
+          "sha256": "ab39f25c32f8c9868f06bfb4922fe46a5d6e74cf2273b87b28d010b3646db75b"
+        },
+        {
+          "stage": "Output Recheck",
+          "result": "EXACT_ATTESTED_BYTES_VERIFIED",
+          "sha256": "ab39f25c32f8c9868f06bfb4922fe46a5d6e74cf2273b87b28d010b3646db75b"
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "77f641505801643c2b1a5e27380ec7ac5868d49a0b3e90c44033bd2f11f64978",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "d51332115465b3499aca770e78929cf3ef7981b48115ff2b6dc4560956b2be2e",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231119.9825165,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Mock Sink",
+          "result": "SOURCE_POLICY_REVISION_AND_RECEIPT_CHECKS_EXECUTED",
+          "receipt": {
+            "action_id": "e21b2658-2d64-4deb-a237-b3b16d986666",
+            "decision_fingerprint": "e66c8675eface3eac44b530cb0e00e56578d5d0dac9d1c4ef63892e390e8314a",
+            "response_sha256": "ab39f25c32f8c9868f06bfb4922fe46a5d6e74cf2273b87b28d010b3646db75b",
+            "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+          }
+        },
+        {
+          "stage": "State Commit",
+          "result": "RECEIPT_LEDGER_AND_REVISION_CHECKS_EXECUTED",
+          "revision": 3
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 3
+    },
+    {
+      "id": 4,
+      "status": "confirmed-no-reply",
+      "text": null,
+      "binding": "a900e9daea56245bce124d1c532b468c2ac5e8a81ecb47dbb6fdfa67d01e1c66",
+      "epoch": "652c15eeddf088686824e47bbb1f0afd",
+      "operationId": "7c7e7121-02ef-49cc-8de0-fe4dcb92e78b",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "response_sha256": null,
+      "decision_fingerprint": null,
+      "receipt": null,
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user",
+            "assistant",
+            "user",
+            "assistant",
+            "user",
+            "assistant",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi."
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp."
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "scope-a-synthetic-6439092c-d6c5-44cb-b2a7-82429374315f",
+              "version": 1,
+              "hash": "885ad0ca6baf1a278aeecca88ac6edf4c621ca55891dd23a7ae8f232f06522fe",
+              "sectionId": "scope-a-synthetic-6439092c-d6c5-44cb-b2a7-82429374315f-0",
+              "sourceStatus": "published-supporting",
+              "text": "Cây mai ngoài hiên: đoạn tổng hợp chỉ dành cho kiểm thử offline. Người kể có thể sửa điều đã nói; không suy diễn từ bản nháp."
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-16",
+              "sourceStatus": "published-supporting",
+              "text": "Cũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\nMà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\nVà sâu hơn:\r\n\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\n---\r\n\nDịch vụ này có thể phù hợp nếu bạn:\r\n\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\n---\r\n\nCó một sự thật không dễ chịu của đời sống:\r\n\nKhông phải mọi thứ đều có thể sửa.\r\n\nCó những người sẽ rời đi.\r\n\nCó những cơ hội sẽ qua.\r\n\nCó những lựa chọn không thể làm lại.\r\n\nCơ thể sẽ thay đổi.\r\n\nNhững người ta yêu thương không thể ở lại mãi.\r\n\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-0",
+              "sourceStatus": "published-supporting",
+              "text": "# QUAN HỆ VỚI CHÍNH MÌNH\r\n\n# QUAN HỆ VỚI CHÍNH MÌNH  \r\n### Có những lúc, người khiến ta mệt mỏi nhất lại chính là bản thân mình\r\n\nBạn có thể là một người có trách nhiệm, biết cố gắng và luôn muốn làm tốt.\r\n\nNhưng bên trong, bạn vẫn thường cảm thấy mình chưa đủ.\r\n\nChưa đủ tốt.  \r\nChưa đủ giỏi.  \r\nChưa đủ mạnh mẽ.  \r\nChưa đủ để được yêu thương hoặc công nhận.\r\n\nMột sai sót nhỏ có thể khiến bạn tự trách rất lâu. Một lời nhận xét của người khác có thể làm bạn nghi ngờ chính mình. Bạn có thể luôn cố gắng hoàn thiện bản thân, nhưng càng cố lại càng cảm thấy mình vẫn còn thiếu một điều gì đó.\r\n\nĐôi khi, vấn đề không nằm ở việc bạn chưa cố gắng đủ.\r\n\nMà nằm ở **mối quan hệ bạn đang có với chính mình**.\r\n\nCó thể bạn đã quen nhìn bản thân bằng ánh mắt phê phán.  \r\nQuen đo giá trị của mình bằng thành tích.  \r\nQuen sống theo kỳ vọng của người khác.  \r\nHoặc đã quá lâu không còn biết mình thật sự muốn gì, cần gì và cảm thấy gì.\r\n\nTham vấn về **quan hệ với chính mình** là một không gian để bạn dừng lại và nhìn sâu hơn vào cách mình đang sống với chính mình.\r\n\nDịch vụ này có thể phù hợp nếu bạn thường xuyên:\r"
+            }
+          ],
+          "constructed_input_sha256": "f79f51ebb9a5409ad512460927213f99feb2519fcc51d128a0feaa863194549f",
+          "website_context_sha256": "762f56b336f98282c20982fb965119e65f8f5e59173495b818085656fcd20eb1",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Technical Hold",
+          "error_type": "ModelError",
+          "code": "OFFLINE_TECHNICAL_FAILURE",
+          "no_inference_about_user": true
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 3
+    },
+    {
+      "id": 5,
+      "status": "completed",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này.",
+      "binding": "7430b8d8a0e5c380dfce4874105e2e9d35aba911f1d67c68f6d41a14c6c83178",
+      "epoch": "652c15eeddf088686824e47bbb1f0afd",
+      "operationId": "6cb7b30a-548b-4a8e-8044-11ff1241ce82",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "response_sha256": "bb087c484264657f4a27b73f74eab959b62fe4988f7324f036fa76255cc5ac11",
+      "decision_fingerprint": "904037613911e1ed0a6c8455326be72c65de23c98182fd5dc81a4fc33eed9a5f",
+      "receipt": {
+        "action_id": "6cb7b30a-548b-4a8e-8044-11ff1241ce82",
+        "decision_fingerprint": "904037613911e1ed0a6c8455326be72c65de23c98182fd5dc81a4fc33eed9a5f",
+        "response_sha256": "bb087c484264657f4a27b73f74eab959b62fe4988f7324f036fa76255cc5ac11",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user",
+            "assistant",
+            "user",
+            "assistant",
+            "user",
+            "assistant",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi."
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp."
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "scope-a-synthetic-6439092c-d6c5-44cb-b2a7-82429374315f",
+              "version": 1,
+              "hash": "885ad0ca6baf1a278aeecca88ac6edf4c621ca55891dd23a7ae8f232f06522fe",
+              "sectionId": "scope-a-synthetic-6439092c-d6c5-44cb-b2a7-82429374315f-0",
+              "sourceStatus": "published-supporting",
+              "text": "Cây mai ngoài hiên: đoạn tổng hợp chỉ dành cho kiểm thử offline. Người kể có thể sửa điều đã nói; không suy diễn từ bản nháp."
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-16",
+              "sourceStatus": "published-supporting",
+              "text": "Cũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\nMà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\nVà sâu hơn:\r\n\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\n---\r\n\nDịch vụ này có thể phù hợp nếu bạn:\r\n\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\n---\r\n\nCó một sự thật không dễ chịu của đời sống:\r\n\nKhông phải mọi thứ đều có thể sửa.\r\n\nCó những người sẽ rời đi.\r\n\nCó những cơ hội sẽ qua.\r\n\nCó những lựa chọn không thể làm lại.\r\n\nCơ thể sẽ thay đổi.\r\n\nNhững người ta yêu thương không thể ở lại mãi.\r\n\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-0",
+              "sourceStatus": "published-supporting",
+              "text": "# QUAN HỆ VỚI CHÍNH MÌNH\r\n\n# QUAN HỆ VỚI CHÍNH MÌNH  \r\n### Có những lúc, người khiến ta mệt mỏi nhất lại chính là bản thân mình\r\n\nBạn có thể là một người có trách nhiệm, biết cố gắng và luôn muốn làm tốt.\r\n\nNhưng bên trong, bạn vẫn thường cảm thấy mình chưa đủ.\r\n\nChưa đủ tốt.  \r\nChưa đủ giỏi.  \r\nChưa đủ mạnh mẽ.  \r\nChưa đủ để được yêu thương hoặc công nhận.\r\n\nMột sai sót nhỏ có thể khiến bạn tự trách rất lâu. Một lời nhận xét của người khác có thể làm bạn nghi ngờ chính mình. Bạn có thể luôn cố gắng hoàn thiện bản thân, nhưng càng cố lại càng cảm thấy mình vẫn còn thiếu một điều gì đó.\r\n\nĐôi khi, vấn đề không nằm ở việc bạn chưa cố gắng đủ.\r\n\nMà nằm ở **mối quan hệ bạn đang có với chính mình**.\r\n\nCó thể bạn đã quen nhìn bản thân bằng ánh mắt phê phán.  \r\nQuen đo giá trị của mình bằng thành tích.  \r\nQuen sống theo kỳ vọng của người khác.  \r\nHoặc đã quá lâu không còn biết mình thật sự muốn gì, cần gì và cảm thấy gì.\r\n\nTham vấn về **quan hệ với chính mình** là một không gian để bạn dừng lại và nhìn sâu hơn vào cách mình đang sống với chính mình.\r\n\nDịch vụ này có thể phù hợp nếu bạn thường xuyên:\r"
+            }
+          ],
+          "constructed_input_sha256": "f79f51ebb9a5409ad512460927213f99feb2519fcc51d128a0feaa863194549f",
+          "website_context_sha256": "762f56b336f98282c20982fb965119e65f8f5e59173495b818085656fcd20eb1",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Scope Guard",
+          "result": "FORMAT_CHECK_EXECUTED",
+          "origin": "MOCK",
+          "mock_branch_skips_semantic_rules": true,
+          "clinical_validation": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "b1f610629747aae49f42734f18610de14b706d5ed4e18f764b0710a964b3b8ae",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "64c133e1430d8981c87fe0917e51a093fa87779e08f1f44166128956f675b257",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231121.533741,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "b1f610629747aae49f42734f18610de14b706d5ed4e18f764b0710a964b3b8ae",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "64c133e1430d8981c87fe0917e51a093fa87779e08f1f44166128956f675b257",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231121.533741,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Output Validation",
+          "result": "EXACT_BYTES_ATTESTED",
+          "sha256": "bb087c484264657f4a27b73f74eab959b62fe4988f7324f036fa76255cc5ac11"
+        },
+        {
+          "stage": "Output Recheck",
+          "result": "EXACT_ATTESTED_BYTES_VERIFIED",
+          "sha256": "bb087c484264657f4a27b73f74eab959b62fe4988f7324f036fa76255cc5ac11"
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "b1f610629747aae49f42734f18610de14b706d5ed4e18f764b0710a964b3b8ae",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "64c133e1430d8981c87fe0917e51a093fa87779e08f1f44166128956f675b257",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231121.7287908,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Mock Sink",
+          "result": "SOURCE_POLICY_REVISION_AND_RECEIPT_CHECKS_EXECUTED",
+          "receipt": {
+            "action_id": "6cb7b30a-548b-4a8e-8044-11ff1241ce82",
+            "decision_fingerprint": "904037613911e1ed0a6c8455326be72c65de23c98182fd5dc81a4fc33eed9a5f",
+            "response_sha256": "bb087c484264657f4a27b73f74eab959b62fe4988f7324f036fa76255cc5ac11",
+            "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+          }
+        },
+        {
+          "stage": "State Commit",
+          "result": "RECEIPT_LEDGER_AND_REVISION_CHECKS_EXECUTED",
+          "revision": 4
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 4
+    },
+    {
+      "id": 6,
+      "status": "completed",
+      "text": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai: tôi thử kiểm tra lại một phản hồi bị mất trên đường truyền.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này.",
+      "binding": "db2f1c94e4d44153c8b8faa73b74a7a29038795c2afa4598fabb57d11ae22c1d",
+      "epoch": "652c15eeddf088686824e47bbb1f0afd",
+      "operationId": "6c5367ab-2ef7-4706-8292-067679fad5ef",
+      "conversationId": "2030b42c-2100-40cb-88c6-aea736fdc591",
+      "response_sha256": "fc9117fd88197203e7189c1de4d33eed384de86306b9abb73962782d76e31db1",
+      "decision_fingerprint": "d364a9f5f9c6d65cbd34dbc139290d742c884d183b6c03be861bad8174326e82",
+      "receipt": {
+        "action_id": "6c5367ab-2ef7-4706-8292-067679fad5ef",
+        "decision_fingerprint": "d364a9f5f9c6d65cbd34dbc139290d742c884d183b6c03be861bad8174326e82",
+        "response_sha256": "fc9117fd88197203e7189c1de4d33eed384de86306b9abb73962782d76e31db1",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "checks": [
+        {
+          "stage": "Source Verification",
+          "result": "HASH_AND_EXCERPT_CHECKS_EXECUTED",
+          "cards": 150
+        },
+        {
+          "stage": "Safety Triage",
+          "result": "PACKAGE_HEURISTIC_EXECUTED",
+          "priority": "NO_POSITIVE_SIGNAL_IDENTIFIED",
+          "clinical_validation": false
+        },
+        {
+          "stage": "Ledger Validation",
+          "result": "STRUCTURAL_AND_QUOTE_CHECKS_EXECUTED",
+          "semantic_validation": false
+        },
+        {
+          "stage": "Offline Adapter Input",
+          "roles": [
+            "system",
+            "user",
+            "assistant",
+            "user",
+            "assistant",
+            "user",
+            "assistant",
+            "user",
+            "assistant",
+            "user"
+          ],
+          "dialogue": [
+            {
+              "role": "user",
+              "content": "Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Chiều nay tôi chăm cây mai ngoài hiên, thấy đầu óc nhẹ hơn. 🌿”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?"
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai ấy làm tôi nhớ những buổi sáng trước đây. Bạn còn nhớ tôi vừa kể gì không?”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi."
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Người dùng chủ động đính chính thông tin đã kể trước đó:\nTôi đính chính: đó là cây mai của nhà hàng xóm, không phải của tôi.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp."
+            },
+            {
+              "role": "assistant",
+              "content": "Chế độ mô phỏng đã nhận lời kể:\n\n“Cây mai: đây là lượt thử lỗi kỹ thuật tổng hợp.”\n\nĐây là phản hồi kiểm tra luồng sử dụng. Chưa có mô hình AI tạo câu trả lời cho nội dung này."
+            },
+            {
+              "role": "user",
+              "content": "Cây mai: tôi thử kiểm tra lại một phản hồi bị mất trên đường truyền."
+            }
+          ],
+          "website_sources": [
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-16",
+              "sourceStatus": "published-supporting",
+              "text": "Cũng không phải để người khác quyết định thay bạn rằng cuộc đời bạn nên có ý nghĩa gì.\r\n\nMà để bạn có thể chậm lại đủ lâu và hỏi:\r\n\n**“Tôi thực sự đang sống cuộc đời nào?”**\r\n\nVà sâu hơn:\r\n\n**“Tôi muốn trở thành người như thế nào trong cuộc đời mà tôi không thể hoàn toàn lựa chọn?”**\r\n\n---\r\n\nDịch vụ này có thể phù hợp nếu bạn:\r\n\n- cảm thấy cuộc sống trống rỗng dù bên ngoài vẫn tương đối ổn;\r\n- không còn thấy những mục tiêu từng theo đuổi có ý nghĩa;\r\n- thường xuyên tự hỏi mình sống để làm gì;\r\n- đang đi qua mất mát, chia tay, thất bại hoặc một thay đổi lớn của cuộc đời;\r\n- cảm thấy thời gian đang trôi nhưng mình chưa thực sự sống;\r\n- trải qua khủng hoảng về bản sắc, tuổi tác, nghề nghiệp hoặc giai đoạn sống;\r\n- thấy thành công bên ngoài không còn trả lời được những câu hỏi bên trong;\r\n- muốn nhìn lại những giá trị, niềm tin và cách sống mình đã mang theo từ trước đến nay;\r\n- đang đối diện với những điều không thể sửa chữa, kiểm soát hoặc quay lại như cũ;\r\n- muốn xây dựng một đời sống chân thực hơn thay vì chỉ tiếp tục theo quán tính.\r\n\n---\r\n\nCó một sự thật không dễ chịu của đời sống:\r\n\nKhông phải mọi thứ đều có thể sửa.\r\n\nCó những người sẽ rời đi.\r\n\nCó những cơ hội sẽ qua.\r\n\nCó những lựa chọn không thể làm lại.\r\n\nCơ thể sẽ thay đổi.\r\n\nNhững người ta yêu thương không thể ở lại mãi.\r\n\nVà dù chuẩn bị đến đâu, đời sống vẫn luôn giữ lại một phần bất định mà ta không thể kiểm soát.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-15",
+              "sourceStatus": "published-supporting",
+              "text": "Có thể bạn đã đạt được những điều từng mong muốn nhưng cảm giác trọn vẹn vẫn không đến.\r\n\nCó thể bạn đã đi rất xa trên một con đường, rồi một ngày chợt nhận ra mình không còn biết tại sao phải tiếp tục.\r\n\nCó thể một mất mát, một thất bại, một cuộc chia tay, bệnh tật, tuổi tác hay một biến cố lớn làm những điều từng rất chắc chắn bỗng trở nên mong manh.\r\n\nHoặc cũng có thể chẳng có biến cố nào cả.\r\n\nChỉ là một ngày, bạn nhìn lại đời mình và thấy một cảm giác khó gọi tên:\r\n\n**“Có lẽ tôi đang sống, nhưng tôi không chắc mình đang thật sự sống đời của mình.”**\r\n\n---\r\n\nCó những câu hỏi không thể giải quyết bằng một kỹ thuật.\r\n\nKhông thể xử lý chỉ bằng cách suy nghĩ tích cực hơn.\r\n\nKhông thể biến mất chỉ vì ta bận rộn hơn.\r\n\nBởi đó không còn là những câu hỏi về hiệu suất hay lựa chọn.\r\n\nĐó là những câu hỏi về **thân phận con người**.\r\n\nTôi là ai khi những vai trò quen thuộc thay đổi?\r\n\nĐiều gì còn lại khi thành công không còn đủ để làm tôi thấy mình có giá trị?\r\n\nTôi sống thế nào trước những điều mình không thể kiểm soát?\r\n\nTôi làm gì với những điều đã mất?\r\n\nTôi muốn dành phần đời còn lại cho điều gì?\r\n\nVà khi không thể có mọi thứ, điều gì là đủ đáng để tôi chọn?\r\n\n---\r\n\nTham vấn về **ý nghĩa và cách sống** tạo ra một không gian để những câu hỏi ấy được nhìn thẳng vào.\r\n\nKhông phải để đưa cho bạn một triết lý sống có sẵn.\r\n\nKhông phải để nói rằng bạn nên lạc quan hơn.\r"
+            },
+            {
+              "documentId": "website-counseling",
+              "version": 1,
+              "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+              "sectionId": "website-counseling-14",
+              "sourceStatus": "published-supporting",
+              "text": "**Điều gì thật sự quan trọng với tôi?**\r\n\nKhông phải điều khiến bạn thoải mái nhất ngay lúc này.\r\n\nKhông phải điều chắc chắn nhất.\r\n\nKhông phải điều khiến mọi người hài lòng nhất.\r\n\nMà là điều bạn thấy **đáng để dành thời gian, năng lượng và một phần đời của mình cho nó**.\r\n\n---\r\n\nMục tiêu của tham vấn không phải là làm bạn trở nên chắc chắn tuyệt đối.\r\n\nBởi trong nhiều quyết định của đời sống, sự chắc chắn tuyệt đối không tồn tại.\r\n\nĐiều quan trọng hơn là bạn có thể trở nên **rõ hơn**.\r\n\nRõ điều gì là của mình.\r\n\nRõ điều gì là nỗi sợ.\r\n\nRõ điều gì là kỳ vọng vay mượn.\r\n\nRõ điều gì mình muốn giữ.\r\n\nVà rõ điều gì mình sẵn sàng từ bỏ để có thể bước tiếp.\r\n\nKhi ấy, bạn không còn cần biết trước toàn bộ con đường.\r\n\nBạn chỉ cần đủ rõ để đặt bước chân tiếp theo.\r\n\nVà đủ trưởng thành để nói:\r\n\n**“Tôi biết mình không thể kiểm soát mọi điều sẽ xảy ra.  \r\nNhưng đây là điều tôi chọn.  \r\nVà tôi sẽ có mặt trong cuộc đời được tạo nên từ lựa chọn ấy.”**\r\n\n# Ý NGHĨA VÀ CÁCH SỐNG\r\n# Ý NGHĨA VÀ CÁCH SỐNG  \r\n### Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới\r\n\nCó những giai đoạn, ta không hẳn gặp một vấn đề cụ thể.\r\n\nCông việc vẫn còn đó.  \r\nGia đình vẫn còn đó.  \r\nCuộc sống bên ngoài vẫn tiếp tục.\r\n\nNhưng bên trong, một câu hỏi bắt đầu xuất hiện:\r\n\n**“Rốt cuộc mình đang sống để làm gì?”**\r"
+            }
+          ],
+          "constructed_input_sha256": "4cffcb31f62cedf0a8858dfa7b8c10142f78f76dbcbd3179d83d02da419dba11",
+          "website_context_sha256": "855aeb06bc255c75348f561d86ee50c05c734cfd317658487427aa69102fbbd3",
+          "system_prompt_sha256": "d641276c055a15778515e700c749a4cdec4b7c73973325d9105729b347631a3d",
+          "working_sections_present": {
+            "XCII": true,
+            "XCIII": true,
+            "CLVI": true,
+            "CLVII": true,
+            "CLIX": true,
+            "CLXIII": true
+          },
+          "working_parent_source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+          "working_parent_status": "PROPOSAL_PENDING_REVIEW_NOT_PERMISSION",
+          "uses_knowledge_for_generative_answer": false
+        },
+        {
+          "stage": "Scope Guard",
+          "result": "FORMAT_CHECK_EXECUTED",
+          "origin": "MOCK",
+          "mock_branch_skips_semantic_rules": true,
+          "clinical_validation": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "fdfa5c0baad9268057352fa923e44afb995dc0a097fa883db55ef3c684d2977f",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "341604f1f480a85322661dedf2eb0df0da8bd243e29096a820670f1e68a004c4",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231122.4723623,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "fdfa5c0baad9268057352fa923e44afb995dc0a097fa883db55ef3c684d2977f",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "341604f1f480a85322661dedf2eb0df0da8bd243e29096a820670f1e68a004c4",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231122.4723623,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Output Validation",
+          "result": "EXACT_BYTES_ATTESTED",
+          "sha256": "fc9117fd88197203e7189c1de4d33eed384de86306b9abb73962782d76e31db1"
+        },
+        {
+          "stage": "Output Recheck",
+          "result": "EXACT_ATTESTED_BYTES_VERIFIED",
+          "sha256": "fc9117fd88197203e7189c1de4d33eed384de86306b9abb73962782d76e31db1"
+        },
+        {
+          "stage": "Permission Inspector",
+          "lookup_status": "REGISTRY_UNAVAILABLE",
+          "source_state": null,
+          "classification": "SOURCE_UNAVAILABLE",
+          "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+          "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+          "action_scope": {
+            "identity_sha256": "fdfa5c0baad9268057352fa923e44afb995dc0a097fa883db55ef3c684d2977f",
+            "capability_id": "draft.generated_foundational_conversation",
+            "runtime_role": "SYNTHETIC_CONTROLLER",
+            "activity": "FOUNDATIONAL_SUPPORT",
+            "context_sha256": "341604f1f480a85322661dedf2eb0df0da8bd243e29096a820670f1e68a004c4",
+            "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+          },
+          "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+          "evidence_domain": "NOT_VERIFIED",
+          "evaluated_at": 1794231122.6764114,
+          "actual_execution_eligible": false
+        },
+        {
+          "stage": "Mock Policy",
+          "eligible": true,
+          "policy_epoch": 1,
+          "actual_execution_eligible": false,
+          "actual_permission_record_supplied": false
+        },
+        {
+          "stage": "Mock Sink",
+          "result": "SOURCE_POLICY_REVISION_AND_RECEIPT_CHECKS_EXECUTED",
+          "receipt": {
+            "action_id": "6c5367ab-2ef7-4706-8292-067679fad5ef",
+            "decision_fingerprint": "d364a9f5f9c6d65cbd34dbc139290d742c884d183b6c03be861bad8174326e82",
+            "response_sha256": "fc9117fd88197203e7189c1de4d33eed384de86306b9abb73962782d76e31db1",
+            "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+          }
+        },
+        {
+          "stage": "State Commit",
+          "result": "RECEIPT_LEDGER_AND_REVISION_CHECKS_EXECUTED",
+          "revision": 5
+        }
+      ],
+      "bridge_replay": false,
+      "actual_execution_eligible": false,
+      "deployment_permission": false,
+      "controller_revision": 5
+    }
+  ],
+  "replayAdapterCallsAdded": 0
+}

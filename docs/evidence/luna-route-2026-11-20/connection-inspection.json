@@ -1,0 +1,20 @@
+{
+  "inspectedAt": "2026-11-20T10:27:16.330Z",
+  "connection": "official Codex app-server over local stdio",
+  "requestedMethods": [
+    "initialize"
+  ],
+  "generationRequests": 0,
+  "apiKeyRead": false,
+  "privateExcerptsSent": false,
+  "account": null,
+  "lunaModels": [],
+  "usage": null,
+  "errors": [
+    {
+      "method": "initialize",
+      "status": "UNVERIFIED_METADATA_UNAVAILABLE"
+    }
+  ],
+  "paidOverageVerifiedDisabled": false
+}

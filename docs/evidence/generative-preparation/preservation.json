@@ -1,0 +1,17 @@
+{
+  "executed": true,
+  "baseline": "Private pre-task source snapshot, not Git HEAD",
+  "unchangedSourceFiles": 75,
+  "changedFiles": [
+    "REVIEW.md",
+    "UNRESOLVED.md",
+    "docs/model-trial-preparation.md",
+    "functions/inspire_generative_adapter.py",
+    "tests/inspire-generative.test.py",
+    "tests/inspire-trial-source-audit.py",
+    "tests/package-inspire-preparation.mjs",
+    "tests/scope-a040-diff.mjs",
+    "tests/verify-inspire-preparation.mjs"
+  ],
+  "scope": "Source/config/docs only. Prior dirty changes are retained; generated outputs, evidence, tools, private bundle and secrets excluded."
+}

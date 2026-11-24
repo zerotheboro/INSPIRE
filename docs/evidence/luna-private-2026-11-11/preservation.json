@@ -1,0 +1,76 @@
+{
+  "executed": true,
+  "controllerPayloadsUnchanged": 1234,
+  "otherHandoffFilesUnchanged": 151,
+  "unexpectedChanges": [],
+  "allNineSourcePermissionsStillPending": true,
+  "proposedBudgetWithdrawn": true,
+  "twoReviewerAndPerTurnProcedure": "historical proposal, not canonical; not imposed on father UI",
+  "changes": [
+    {
+      "file": "REVIEW.md",
+      "before": "0082ef85637129ea81a41cd3a9765b213eb703ed17ff3e017cb611aa8077df23",
+      "after": "1afa8a3381bb01f603fc8290d11e45f4be34034cee40472ba81018d6f3806587"
+    },
+    {
+      "file": "functions/inspire_research.py",
+      "before": "f677e618b9feb40e3aacc175e5334969d38dc0ab8e90050e248cc89ecd5a0645",
+      "after": "12cd80435a4daf436007c6cd61588b0555deeea95c0f92fb7cfca633c0b69457"
+    },
+    {
+      "file": "functions/package.json",
+      "before": "8c41a79919c17383337836791ffcf966da9b8257ee5a4ff92805eae3cba57baf",
+      "after": "7783cbe63bbfc8451dd0e486c48c3a442e2a539e8bab4d9bfb9e5c2a2e3b37d8"
+    },
+    {
+      "file": "functions/src/inspireLuna.ts",
+      "before": null,
+      "after": "f7dd3b7545ea9ce05e9820ac9413f275c7ca08caac85299c821be08cd396ec39"
+    },
+    {
+      "file": "functions/src/inspirePrivateTest.ts",
+      "before": null,
+      "after": "d60cabbd6f1e8caddfcb93beda0eba7846fcc5e04e4a03c1a849e363bff47f3c"
+    },
+    {
+      "file": "src/pages/AIInspire.tsx",
+      "before": "0c4ff980fea3a76e7aaa093087a45beb57ce8b81812a66ffd459c7ff286ef107",
+      "after": "466dcd9d9b62a1447c21e844f9b88a2e56a4e872c001ef9812c0f678a26af03b"
+    },
+    {
+      "file": "src/styles.css",
+      "before": "ddce12afcc8d62dcb67e84d34875954ae5945920c393f388c9b3840c5870ba70",
+      "after": "1327f15a2a0e51077e3bc77d93337093297ff700fea2c9f996abf84b2eba853d"
+    },
+    {
+      "file": "tests/inspect-inspire-luna.mjs",
+      "before": null,
+      "after": "fb0fd70bacd54db69a614c5cf16234dc0e63fa17a991fd7abd2c8a590d2c3e1a"
+    },
+    {
+      "file": "tests/inspire-browser.mjs",
+      "before": "094f3bf29c3584925f21699ae716b8ab3ea0a820c299c98fc74cf260e7e5e18a",
+      "after": "3235650a20804d5754900b50d75f385e1bb203f9014d3c3a9f3a84af44128013"
+    },
+    {
+      "file": "tests/inspire-luna.test.mjs",
+      "before": null,
+      "after": "bd65b9eedfcea81087e8e434ef250d2c676780729bfac6c3aa4db1096f691da0"
+    },
+    {
+      "file": "tests/inspire-research.test.py",
+      "before": "67f3dd2dc04886f03aa05a53d5fa7d54d707fad89b2a204716bce682562c6f0a",
+      "after": "7858e9b676b5010aa4a231ffbaf02b0de895a84e6e1359e79fbe4018441e16fe"
+    },
+    {
+      "file": "tests/verify-inspire-luna.mjs",
+      "before": null,
+      "after": "061a08d40f6ea7b9bd6b6a8dec63ba641884502ad463796283c9bd550faaef28"
+    },
+    {
+      "file": "vite.config.ts",
+      "before": "c607c7b0dc1df64da5e7cf59ffbb3d56002dd6f85d5f6fb459244f38cc380768",
+      "after": "52947f841dd64df9c0c79348eec5f6d3fed37397ff5a5e58cf90a918e8340262"
+    }
+  ]
+}

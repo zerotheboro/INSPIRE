@@ -1,0 +1,221 @@
+{
+  "executed": true,
+  "unchangedBaselineFile": "functions/src/index.ts",
+  "unchanged": true,
+  "baselineErrors": 30,
+  "currentErrors": 30,
+  "exactRuleLineMessageMatch": true,
+  "introducedErrorsInOtherBackendFiles": 0,
+  "messages": [
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 1,
+      "column": 9,
+      "message": "There should be no space after '{'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 1,
+      "column": 28,
+      "message": "There should be no space before '}'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 2,
+      "column": 9,
+      "message": "There should be no space after '{'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 2,
+      "column": 22,
+      "message": "There should be no space before '}'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 3,
+      "column": 9,
+      "message": "There should be no space after '{'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 3,
+      "column": 23,
+      "message": "There should be no space before '}'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 4,
+      "column": 9,
+      "message": "There should be no space after '{'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 4,
+      "column": 34,
+      "message": "There should be no space before '}'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 6,
+      "column": 9,
+      "message": "There should be no space after '{'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "object-curly-spacing",
+      "line": 6,
+      "column": 19,
+      "message": "There should be no space before '}'.",
+      "severity": 2
+    },
+    {
+      "ruleId": "operator-linebreak",
+      "line": 45,
+      "column": 11,
+      "message": "'?' should be placed at the end of the line.",
+      "severity": 2
+    },
+    {
+      "ruleId": "operator-linebreak",
+      "line": 46,
+      "column": 11,
+      "message": "':' should be placed at the end of the line.",
+      "severity": 2
+    },
+    {
+      "ruleId": "operator-linebreak",
+      "line": 52,
+      "column": 11,
+      "message": "'?' should be placed at the end of the line.",
+      "severity": 2
+    },
+    {
+      "ruleId": "operator-linebreak",
+      "line": 53,
+      "column": 11,
+      "message": "':' should be placed at the end of the line.",
+      "severity": 2
+    },
+    {
+      "ruleId": "operator-linebreak",
+      "line": 57,
+      "column": 11,
+      "message": "'?' should be placed at the end of the line.",
+      "severity": 2
+    },
+    {
+      "ruleId": "operator-linebreak",
+      "line": 58,
+      "column": 11,
+      "message": "':' should be placed at the end of the line.",
+      "severity": 2
+    },
+    {
+      "ruleId": "operator-linebreak",
+      "line": 62,
+      "column": 11,
+      "message": "'?' should be placed at the end of the line.",
+      "severity": 2
+    },
+    {
+      "ruleId": "operator-linebreak",
+      "line": 63,
+      "column": 11,
+      "message": "':' should be placed at the end of the line.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 83,
+      "column": 1,
+      "message": "Expected indentation of 4 spaces but found 3.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 84,
+      "column": 1,
+      "message": "Expected indentation of 6 spaces but found 2.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 85,
+      "column": 1,
+      "message": "Expected indentation of 8 spaces but found 4.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 86,
+      "column": 1,
+      "message": "Expected indentation of 8 spaces but found 4.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 87,
+      "column": 1,
+      "message": "Expected indentation of 10 spaces but found 6.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 88,
+      "column": 1,
+      "message": "Expected indentation of 10 spaces but found 6.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 89,
+      "column": 1,
+      "message": "Expected indentation of 8 spaces but found 4.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 90,
+      "column": 1,
+      "message": "Expected indentation of 8 spaces but found 4.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 91,
+      "column": 1,
+      "message": "Expected indentation of 8 spaces but found 4.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 112,
+      "column": 1,
+      "message": "Expected indentation of 6 spaces but found 4.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 114,
+      "column": 1,
+      "message": "Expected indentation of 6 spaces but found 4.",
+      "severity": 2
+    },
+    {
+      "ruleId": "indent",
+      "line": 116,
+      "column": 1,
+      "message": "Expected indentation of 6 spaces but found 4.",
+      "severity": 2
+    }
+  ]
+}

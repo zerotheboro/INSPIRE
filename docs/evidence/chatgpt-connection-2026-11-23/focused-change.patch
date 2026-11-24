@@ -1,0 +1,954 @@
+--- a/functions/src/inspireLuna.ts
++++ b/functions/src/inspireLuna.ts
+@@ -160,7 +160,8 @@
+  * @return {object} Exact candidate bytes held for Controller validation.
+  */
+ export function inspectLunaCandidate(
+-  prepared: ReturnType<typeof prepareLunaInput>, value: unknown,
++  prepared: Pick<ReturnType<typeof prepareLunaInput>,
++    "operationId" | "binding" | "payloadSHA" | "model">, value: unknown,
+ ) {
+   if (!record(value)) throw new Error("LUNA_CANDIDATE_HOLD");
+   exactKeys(value, ["operationId", "binding", "payloadSHA", "model", "text"]);
+--- a/functions/src/inspireLunaController.ts
++++ b/functions/src/inspireLunaController.ts
+@@ -5,6 +5,7 @@
+ import {ConfirmedNoReply, UnknownReplyOutcome} from "./inspireKnowledge";
+ import {lunaHash} from "./inspireLunaApi";
+ import type {LunaPrepared} from "./inspireLunaApi";
++type ControllerInput = Pick<LunaPrepared, "request" | "binding" | "payloadSHA">;
+ 
+ /** Original native generated checks, distinct from catalogue mock eligibility.
+  * @return {object} Preflight/candidate validation and process-local state.
+@@ -13,11 +14,11 @@
+   const states = new Map<string, unknown>();
+   const receipts: Record<string, unknown>[] = [];
+   /** Check original native controls with no credential in the child process.
+-   * @param {LunaPrepared} prepared Exact proposal.
++   * @param {ControllerInput} prepared Exact proposal.
+    * @param {string} text Candidate, absent for the disposable preflight probe.
+    * @return {Promise<object>} Receipt-bound private evidence.
+    */
+-  async function check(prepared: LunaPrepared, text?: string) {
++  async function check(prepared: ControllerInput, text?: string) {
+     const preflight = text === undefined;
+     const key = prepared.request.sessionId + ":" +
+       prepared.request.conversationId;
+@@ -79,7 +80,7 @@
+     if (!preflight) states.set(key, packet.state);
+     return packet.proof;
+   }
+-  return {preflight: (p: LunaPrepared) => check(p),
+-    validate: (p: LunaPrepared, text: string) => check(p, text),
++  return {preflight: (p: ControllerInput) => check(p),
++    validate: (p: ControllerInput, text: string) => check(p, text),
+     evidence: () => structuredClone(receipts)};
+ }
+--- a/functions/src/inspireLunaService.ts
++++ b/functions/src/inspireLunaService.ts
+@@ -4,12 +4,94 @@
+ import type {Identity} from "./inspireAccount";
+ import {emptyPreferences} from "./inspireAccount";
+ import {createLocalService} from "./inspireLocalService";
+-import {retrieveKnowledge, ConfirmedNoReply, UnknownReplyOutcome} from
+-  "./inspireKnowledge";
++import {retrieveKnowledge, ConfirmedNoReply, UnknownReplyOutcome,
++  assertKnowledgeExport} from "./inspireKnowledge";
+ import {createLunaController} from "./inspireLunaController";
+ import {decodeLunaApi, lunaOneShot, prepareLunaApi, recheckLunaSources,
+   sendLunaApi} from "./inspireLunaApi";
+ import type {LunaPrepared} from "./inspireLunaApi";
++import {prepareLunaKnowledgeInput} from "./inspireLuna";
++import {chatgptLedger, chatgptControls, createChatgptRunner} from
++  "./inspireChatgptSession";
++
++/** Preferred ChatGPT route. Preparation is connected; dispatch stays closed.
++ * @param {object} dependencies Offline storage override, never client input.
++ * @return {object} Existing identity/quota facade with a durable bound preview.
++ */
++export function createPrivateChatgptService(dependencies: {
++  ledger?: ReturnType<typeof chatgptLedger>;
++} = {}) {
++  const ledger = dependencies.ledger ?? chatgptLedger();
++  const runner = createChatgptRunner({ledger}); // Deliberately no live sender.
++  const plans = new Map<string, {owner: string; request: ChatRequest;
++    prepared: Awaited<ReturnType<typeof prepareLunaKnowledgeInput>>}>();
++  const sessions = new Map<string, {owner: string; epoch: string}>();
++  const facade = createLocalService({mode: "model", async reply(_ctx, request) {
++    const plan = request && plans.get(request.operationId);
++    if (!plan) throw new UnknownReplyOutcome("CHATGPT_PLAN_LOST");
++    return runner.execute(plan.owner, plan.request, plan.prepared);
++  }}, Date.now, undefined, true);
++  return {...facade, controller: runner.controller,
++    async handlePrivate(data: unknown, identity: Identity) {
++      if (!record(data)) throw new ChatError("INVALID_REQUEST", "Yêu cầu sai.");
++      if (data.kind === "session") {
++        exactKeys(data, ["kind"]);
++        await facade.accounts.account(identity);
++        const session = facade.session(identity);
++        sessions.set(session.sessionId, {owner: identity.uid,
++          epoch: session.epoch});
++        return session;
++      }
++      exactKeys(data, ["kind", "request"]);
++      validateRequest(data.request);
++      if (data.kind !== "preview" || data.request.kind !== "send") {
++        throw new ChatError("CHATGPT_DISPATCH_BLOCKED",
++          "Chưa mở gửi tới ChatGPT. Không tự gửi lại hoặc tạo lại phản hồi.",
++          "none", 403);
++      }
++      const request = data.request;
++      const session = sessions.get(request.sessionId);
++      if (!session || session.owner !== identity.uid ||
++          session.epoch !== request.epoch) {
++        throw new ChatError("SESSION_LOST",
++          "Phiên trước không còn xác minh được. Không tự tạo lại phản hồi.",
++          "none", 409);
++      }
++      const account = await facade.accounts.account(identity);
++      if (account.quota.remaining <= 0) {
++        throw new ChatError("QUOTA", "Tài khoản đã hết lượt.", "none", 429);
++      }
++      const previous = plans.get(request.operationId);
++      if (previous && (previous.owner !== identity.uid ||
++          JSON.stringify(previous.request) !== JSON.stringify(request))) {
++        throw new ChatError("OPERATION_CONFLICT", "Lượt gửi không khớp.");
++      }
++      if (!previous && plans.size >= 100) {
++        throw new ChatError("CAPACITY", "Phòng thử đã đầy.", "none", 503);
++      }
++      const prepared = previous?.prepared ?? await prepareLunaKnowledgeInput({
++        messages: request.messages, operatingInstructions: [],
++        userStatedPreferences: account.preferences, supportingKnowledge: [],
++      }, request);
++      await assertKnowledgeExport(
++        JSON.parse(prepared.text).supportingKnowledge);
++      ledger.prepare(identity.uid, request, prepared);
++      if (!previous) {
++        plans.set(request.operationId, {
++          owner: identity.uid, request: structuredClone(request), prepared,
++        });
++      }
++      return {mode: "private-model", previewOnly: true,
++        operationId: request.operationId,
++        conversationId: request.conversationId,
++        payload: JSON.parse(prepared.text), payloadSHA: prepared.payloadSHA,
++        binding: prepared.binding, sourceCount: prepared.sourceCount,
++        controls: chatgptControls, accounting: ledger.status(),
++        automaticRetries: false, actualExecutionEligible: false,
++        publicDelivery: false};
++    },
++  };
++}
+ 
+ /** Local evaluation service. Neither startup, preview nor replay generates.
+  * @param {object} dependencies Offline substitutes, supplied only by tests.
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -5,7 +5,7 @@
+ import {readChatJson} from './functions/src/inspireHttp'
+ import {requirePrivateTest} from './functions/src/inspirePrivateTest'
+ import {createKnowledgePreviewAdapter} from './functions/src/inspireLuna'
+-import {createPrivateLunaService} from './functions/src/inspireLunaService'
++import {createPrivateLunaService, createPrivateChatgptService} from './functions/src/inspireLunaService'
+ 
+ // Local development only. This middleware is absent from production builds.
+ export function inspirePrototype(serviceFactory = createLocalService, lunaFactory = createPrivateLunaService) {
+@@ -18,19 +18,39 @@
+       const knowledge = privateEnabled ? createKnowledgePreviewAdapter() : undefined
+       const server = knowledge ? serviceFactory(knowledge) : serviceFactory()
+       const luna = privateEnabled && process.env.INSPIRE_LUNA_API_PREVIEW === '1' && process.env.INSPIRE_BILLING_ROUTE === 'api-key' ? lunaFactory() : undefined
++      const chatgpt = privateEnabled ? createPrivateChatgptService() : undefined
+       vite.httpServer?.once('close', () => server.close())
+       vite.httpServer?.once('close', () => luna?.close())
++      vite.httpServer?.once('close', () => chatgpt?.close())
+       vite.middlewares.use('/api/inspire-private-status', (req, res) => {
+         res.setHeader('Content-Type', 'application/json; charset=utf-8')
+         res.setHeader('Cache-Control', 'no-store')
+         try {
+           requirePrivateTest(privateEnabled, req.socket.remoteAddress || '', req.headers.host || '', req.headers.origin)
+           if (req.method !== 'GET') throw new ChatError('METHOD', 'Chỉ hỗ trợ GET.', 'none', 405)
+-          res.end(JSON.stringify({mode: 'simulation', modelAvailable: false, ...(luna ? {lunaApiPreview: true} : {})}))
++          res.end(JSON.stringify({mode: 'simulation', modelAvailable: false, chatgptPreview: !!chatgpt, ...(luna ? {lunaApiPreview: true} : {})}))
+         } catch (error) {
+           const safe = error instanceof ChatError ? error : new ChatError('PRIVATE_CLOSED', 'Phòng thử riêng chưa sẵn sàng.', 'none', 503)
+           res.statusCode = safe.status
+           res.end(JSON.stringify({error: {message: safe.message}}))
++        }
++      })
++      vite.middlewares.use('/api/inspire-chatgpt', async (req, res) => {
++        res.setHeader('Content-Type', 'application/json; charset=utf-8')
++        res.setHeader('Cache-Control', 'no-store')
++        try {
++          requirePrivateTest(privateEnabled, req.socket.remoteAddress || '', req.headers.host || '', req.headers.origin)
++          if (!chatgpt) throw new ChatError('PRIVATE_CLOSED', 'Phòng thử riêng chưa mở.', 'none', 403)
++          if (req.method !== 'POST' || !req.headers['content-type']?.startsWith('application/json')) throw new ChatError('METHOD', 'Chỉ nhận JSON qua POST.')
++          const data = await readChatJson(req)
++          const authorization = req.headers.authorization
++          if (!authorization?.startsWith('Bearer ')) throw new ChatError('UNAUTHENTICATED', 'Cần kết nối tài khoản thử.', 'none', 401)
++          const identity = await chatgpt.verify(authorization.slice(7))
++          res.end(JSON.stringify(await chatgpt.handlePrivate(data, identity)))
++        } catch (error) {
++          const safe = error instanceof ChatError ? error : new ChatError('CHATGPT_HOLD', 'Chưa xác minh được lượt gửi hoặc kho lưu cục bộ. Không gửi tới ChatGPT.', 'none', 503)
++          res.statusCode = safe.status
++          res.end(JSON.stringify({error: {code: safe.code, message: safe.message, retry: safe.retry}}))
+         }
+       })
+       vite.middlewares.use('/api/inspire-luna', async (req, res) => {
+--- a/src/pages/AIInspire.tsx
++++ b/src/pages/AIInspire.tsx
+@@ -6,7 +6,7 @@
+ import Icon from "../components/Icon"
+ import InspireAccountPanel from "../components/InspireAccountPanel"
+ import {chatToken} from "../services/inspireIdentity"
+-import { createSimulationTransport, createPrivateLunaTransport } from "../services/InspireAIconnect"
++import { createSimulationTransport, createPrivateChatgptTransport } from "../services/InspireAIconnect"
+ import type {LunaPreview} from "../services/InspireAIconnect"
+ import { CHAT_LIMITS, ConversationStore } from "../services/inspireConversation"
+ 
+@@ -30,12 +30,12 @@
+         const value = await response.json()
+         if (!response.ok || value.mode !== "simulation" || value.modelAvailable !== false) throw Error()
+         setPrivateReady(true)
+-        setApiReady(value.lunaApiPreview === true)
++        setApiReady(value.chatgptPreview === true)
+       }).catch(() => { if (!abort.signal.aborted) setPrivateError("Phòng thử riêng chưa mở. Nhờ con kiểm tra giúp bố.") })
+     return () => abort.abort()
+   }, [privateTest])
+   const makeStore = () => new ConversationStore(apiMode && privateTest ?
+-    createPrivateLunaTransport(setApiPreview, fetch, chatToken, () => window.dispatchEvent(new Event("inspire-account-refresh"))) :
++    createPrivateChatgptTransport(setApiPreview, fetch, chatToken, () => window.dispatchEvent(new Event("inspire-account-refresh"))) :
+     createSimulationTransport(fetch, chatToken, () => window.dispatchEvent(new Event("inspire-account-refresh")), setKnowledgeTrace))
+   const [store, setStore] = useState(makeStore)
+   const identityKey = useRef<string | null>(null)
+@@ -88,22 +88,23 @@
+       <main className="ip-main">
+         <div className="ip-page-heading">
+           <div><span className="ip-kicker">{privateTest ? "INSPIRE · CHỈ TRÊN MÁY NÀY" : "MỘT KHOẢNG DỪNG CHO BẠN"}</span><h1>{privateTest ? "Phòng thử riêng của bố" : "Trò chuyện cùng INSPIRE"}</h1></div>
+-          <span className="ip-mode"><span /> {apiMode ? "Luna API · Thử riêng có duyệt" : privateTest ? "Mô phỏng · Chưa dùng AI" : "Bản thử nghiệm · Mô phỏng"}</span>
++          <span className="ip-mode"><span /> {apiMode ? "ChatGPT · Chưa gửi tới AI" : privateTest ? "Mô phỏng · Chưa dùng AI" : "Bản thử nghiệm · Mô phỏng"}</span>
+         </div>
+         {privateTest && !current.messages.length && <div className="ip-private-intro">
+           <p>Bố cứ hỏi bằng tiếng Việt, hỏi tiếp hoặc đính chính điều vừa nói. Chỉ dùng tình huống giả định.</p>
+-          <p>{apiMode ? "Gửi câu hỏi để xem trước. Chỉ con mới duyệt được một lượt thử; chưa tự gọi AI." : "Mô phỏng chỉ để thử giao diện, chưa đánh giá nội dung AI."}</p>
++          <p>{apiMode ? "Bố có thể nhập câu hỏi giả định để chuẩn bị. Chưa mở phản hồi từ AI." : "Mô phỏng chỉ để thử giao diện, chưa đánh giá nội dung AI."}</p>
+           {privateError && <p role="alert">{privateError}</p>}
+         </div>}
+         {prototypeEnabled && (!privateTest || privateReady) && (privateTest ?
+           <details className="ip-private-setup"><summary>Dành cho con · Thiết lập và tài khoản</summary><InspireAccountPanel onIdentity={onIdentity} />
+-            <div className="ip-private-modes" aria-label="Chế độ thử"><button aria-pressed={!apiMode} onClick={() => setApiMode(false)}>Mô phỏng</button><button disabled={!apiReady} aria-pressed={apiMode} onClick={() => setApiMode(true)} title="Chỉ chuẩn bị nội dung; chưa gọi mô hình.">{apiReady ? "Luna API · Xem trước" : "Luna · Chưa bật"}</button></div>
++            <div className="ip-private-modes" aria-label="Chế độ thử"><button aria-pressed={!apiMode} onClick={() => setApiMode(false)}>Mô phỏng</button><button disabled={!apiReady} aria-pressed={apiMode} onClick={() => setApiMode(true)} title="Chỉ chuẩn bị nội dung; chưa gọi mô hình.">{apiReady ? "ChatGPT · Xem trước" : "Luna · Chưa bật"}</button></div>
+             <p>Đường ưu tiên: đăng nhập ChatGPT. Chưa gửi tới mô hình; chưa xác minh chi phí. Mô phỏng vẫn dùng Controller hiện có.</p>
+             {knowledgeTrace != null && (knowledgeTrace as {conversationId?: string}).conversationId === current.id && <details><summary>Nguồn được chọn và đầu vào mô hình (chưa gửi)</summary><pre>{JSON.stringify(knowledgeTrace, null, 2)}</pre></details>}
+             {apiMode && apiPreview && apiPreview.operationId === current.pending?.request?.operationId && apiPreview.conversationId === current.id && <div className="ip-api-preview">
+               <h2>Nội dung chính xác dự kiến gửi OpenAI</h2>
+-              <p>Chưa gửi. Tối đa một lần, không tự thử lại. Dự phòng chi phí: US${(apiPreview.reservedNanoUSD / 1e9).toFixed(6)}; tối đa 512 token đầu ra. {apiPreview.sourceCount} đoạn nguồn đủ quyền xuất.</p>
+-              <p>{apiPreview.keyConfigured ? "Đã có tệp khóa cục bộ; chưa dùng khóa." : "Chưa cấu hình khóa API cục bộ."} Khóa không nhập trong trang hoặc chat.</p>
++              <p>Chưa gửi. Đề xuất tối đa ba lần thử; lần lỗi hoặc chưa rõ kết quả vẫn tính lượt. Chưa xác minh được giới hạn cứng 512 token và việc tắt thử lại của ChatGPT. {apiPreview.sourceCount} đoạn nguồn đủ quyền xuất.</p>
++              <p>Chỉ dùng đường đăng nhập ChatGPT, không chuyển sang khóa API. Chưa xác minh điều kiện không phát sinh phí. Mã lượt và mã nội dung được lưu riêng trên máy; nội dung trò chuyện chỉ ở bộ nhớ.</p>
++              <pre>{JSON.stringify({controls: apiPreview.controls, accounting: apiPreview.accounting}, null, 2)}</pre>
+               <pre>{JSON.stringify(apiPreview.payload, null, 2)}</pre>
+               <p>Mã nội dung: <code>{apiPreview.payloadSHA}</code></p>
+               <p>Mã lượt duyệt: <code>{apiPreview.binding}</code></p>
+@@ -132,7 +133,7 @@
+               <div><strong>INSPIRE</strong><span>Chậm lại một chút. Bắt đầu từ điều bạn muốn.</span></div>
+               <button className="ip-mobile-toggle" aria-expanded={showConversations} onClick={() => setShowConversations(!showConversations)} aria-label="Danh sách cuộc trò chuyện"><Icon name="message" /></button>
+             </header>
+-            <div className="ip-disclosure"><Icon name="spark" size={20} /><p>{apiMode ? "Luna API · Bản nháp chỉ để đánh giá riêng, chưa được kiểm định. Chưa tự gửi hoặc tự thử lại." : privateTest ? "Mô phỏng · Chưa dùng AI. Nhận xét chỉ giữ trong phiên này." : available ? "Bạn đang trải nghiệm mô phỏng cục bộ có xác thực và hạn mức, chưa kết nối mô hình AI. Chỉ dùng nội dung giả định." : prototypeEnabled ? "Đang chờ kết nối danh tính khách hoặc tài khoản với trình mô phỏng cục bộ. Mô hình AI chưa được bật." : "Bản xem trước đang đóng kết nối. Chạy ứng dụng cục bộ để trải nghiệm mô phỏng; mô hình AI chưa được bật."}</p></div>
++            <div className="ip-disclosure"><Icon name="spark" size={20} /><p>{apiMode ? "ChatGPT · Bản nháp chỉ để đánh giá riêng, chưa được kiểm định. Chưa tự gửi hoặc tự thử lại." : privateTest ? "Mô phỏng · Chưa dùng AI. Nhận xét chỉ giữ trong phiên này." : available ? "Bạn đang trải nghiệm mô phỏng cục bộ có xác thực và hạn mức, chưa kết nối mô hình AI. Chỉ dùng nội dung giả định." : prototypeEnabled ? "Đang chờ kết nối danh tính khách hoặc tài khoản với trình mô phỏng cục bộ. Mô hình AI chưa được bật." : "Bản xem trước đang đóng kết nối. Chạy ứng dụng cục bộ để trải nghiệm mô phỏng; mô hình AI chưa được bật."}</p></div>
+             <div ref={timeline} className="ip-timeline" role="log" aria-label="Nội dung trò chuyện" aria-live="polite" aria-relevant="additions">
+               {!current.messages.length && <div className="ip-welcome">
+                 <div className="ip-welcome-leaf"><Icon name="garden" size={44} /></div>
+@@ -142,7 +143,7 @@
+                 {!privateTest && <div className="ip-starters">{starters.map((text) => <button key={text} disabled={!available} onClick={() => { store.draft(current.id, text); composer.current?.focus() }}>{text}<Icon name="arrow" size={19} /></button>)}</div>}
+               </div>}
+               {current.messages.map((m) => <article key={m.id} className={`ip-message ip-message-${m.role}`} data-message-role={m.role}>
+-                <div className="ip-message-label">{m.role === "user" ? "Bạn" : <><Icon name="leaf" size={18} /> INSPIRE <span>· {apiMode ? "Luna API · Đánh giá riêng" : "Mô phỏng"}</span></>}</div>
++                <div className="ip-message-label">{m.role === "user" ? "Bạn" : <><Icon name="leaf" size={18} /> INSPIRE <span>· {apiMode ? "ChatGPT · Đánh giá riêng" : "Mô phỏng"}</span></>}</div>
+                 <div className="ip-message-body">
+                   {m.correctionOf && <div className="ip-correction-reference">Đính chính tin nhắn: “{current.messages.find((original) => original.id === m.correctionOf)?.text}”</div>}
+                   <p>{m.text}</p>
+--- a/src/services/InspireAIconnect.ts
++++ b/src/services/InspireAIconnect.ts
+@@ -7,15 +7,15 @@
+   send(request: ChatRequest): Promise<ChatResponse>
+ }
+ 
+-export type LunaPreview = {payload: unknown; payloadSHA: string; binding: string; operationId: string; conversationId: string; reservedNanoUSD: number; inputTokenBound: number; sourceCount: number; keyConfigured: boolean}
++export type LunaPreview = {payload: unknown; payloadSHA: string; binding: string; operationId: string; conversationId: string; reservedNanoUSD?: number; inputTokenBound?: number; sourceCount: number; keyConfigured?: boolean; controls?: unknown; accounting?: unknown}
+ // Sending first prepares a preview. Only a later manual action can request the
+ // already-reviewed operation; authorization is checked on the server.
+ export function createPrivateLunaTransport(preview: (value: LunaPreview) => void,
+-  fetcher: typeof fetch = fetch, token: () => Promise<string>, changed?: () => void): ChatTransport {
++  fetcher: typeof fetch = fetch, token: () => Promise<string>, changed?: () => void, route: 'api' | 'chatgpt' = 'api'): ChatTransport {
+   async function call(body: unknown): Promise<unknown> {
+     const abort = new AbortController(), timer = setTimeout(() => abort.abort(), 95000)
+     try {
+-      const response = await fetcher('/api/inspire-luna', {method: 'POST', cache: 'no-store', signal: abort.signal,
++      const response = await fetcher(route === 'chatgpt' ? '/api/inspire-chatgpt' : '/api/inspire-luna', {method: 'POST', cache: 'no-store', signal: abort.signal,
+         headers: {'Content-Type': 'application/json', Authorization: `Bearer ${await token()}`}, body: JSON.stringify(body)})
+       const data: unknown = await response.json()
+       if (!response.ok) {
+@@ -39,8 +39,9 @@
+     async send(request) {
+       if (request.kind === 'send') {
+         const data = await call({kind:'preview',request})
+-        if (!record(data) || data.previewOnly !== true || typeof data.payloadSHA !== 'string' || typeof data.binding !== 'string' || typeof data.reservedNanoUSD !== 'number' || data.operationId !== request.operationId || data.conversationId !== request.conversationId) throw new ChatError('PREVIEW_INVALID','Chưa xác minh được bản xem trước.')
++        if (!record(data) || data.previewOnly !== true || typeof data.payloadSHA !== 'string' || typeof data.binding !== 'string' || (route === 'api' && typeof data.reservedNanoUSD !== 'number') || data.operationId !== request.operationId || data.conversationId !== request.conversationId) throw new ChatError('PREVIEW_INVALID','Chưa xác minh được bản xem trước.')
+         preview(data as unknown as LunaPreview)
++        if (route === 'chatgpt') throw new ChatError('CHATGPT_DISPATCH_BLOCKED','Đã chuẩn bị nội dung, chưa gửi tới ChatGPT. Con cần kiểm tra giới hạn và chi phí trước khi mở phiên thử.', 'none', 403)
+         throw new ChatError('AUTHORIZATION_REQUIRED','Đã chuẩn bị nội dung. Chưa gửi tới mô hình; chờ con duyệt chi phí và nội dung.', 'replay', 403)
+       }
+       const data = await call({kind:'execute',request})
+@@ -48,6 +49,16 @@
+       return data
+     },
+   }
++}
++
++// Preferred connection has no API fallback, execute action or billing switch.
++export function createPrivateChatgptTransport(preview: (value: LunaPreview) => void,
++  fetcher: typeof fetch = fetch, token: () => Promise<string>, changed?: () => void): ChatTransport {
++  const transport = createPrivateLunaTransport(preview, fetcher, token, changed, 'chatgpt')
++  return {...transport, async send(request) {
++    // A network retry may only recover the same held preview, never dispatch.
++    return transport.send({...request, kind: 'send'})
++  }}
+ }
+ 
+ // Only the local Vite simulation endpoint is connected. No Firebase/model fallback.
+--- a/tests/inspire-luna.test.mjs
++++ b/tests/inspire-luna.test.mjs
+@@ -59,8 +59,8 @@
+       return value
+     }
+     const ready=await result('/api/inspire-private-status','127.0.0.1','127.0.0.1:5173','http://127.0.0.1:5173')
+-    assert.equal(ready.status,200);assert.deepEqual(JSON.parse(ready.body),{mode:'simulation',modelAvailable:false});assert.equal(ready.headers['Cache-Control'],'no-store')
+-    for(const path of ['/api/inspire-private-status','/api/inspire-prototype']){
++    assert.equal(ready.status,200);assert.deepEqual(JSON.parse(ready.body),{mode:'simulation',modelAvailable:false,chatgptPreview:true});assert.equal(ready.headers['Cache-Control'],'no-store')
++    for(const path of ['/api/inspire-private-status','/api/inspire-prototype','/api/inspire-chatgpt']){
+       const denied=await result(path,'192.168.1.20','127.0.0.1:5173')
+       assert.equal(denied.status,403)
+     }
+--- a/tests/inspire-knowledge-conversation.test.mjs
++++ b/tests/inspire-knowledge-conversation.test.mjs
+@@ -86,8 +86,9 @@
+  assert.equal((await db.doc('inspireKnowledge/'+id+'/versions/7').get()).exists,true)
+ })
+ test.after(async()=>{
+- mkdirSync('docs/evidence/knowledge-conversation-2026-11-21',{recursive:true})
+- writeFileSync('docs/evidence/knowledge-conversation-2026-11-21/adapter-input-trace.json',JSON.stringify({syntheticFixturesOnly:true,liveDispatches:0,trace},null,2))
++ const evidence=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/knowledge-conversation-2026-11-21'
++ mkdirSync(evidence,{recursive:true})
++ writeFileSync(evidence+'/adapter-input-trace.json',JSON.stringify({syntheticFixturesOnly:true,liveDispatches:0,trace},null,2))
+  for(const id of ids)await db.recursiveDelete(db.doc('inspireKnowledge/'+id))
+  await db.terminate()
+ })
+--- /dev/null
++++ b/functions/src/inspireChatgptSession.ts
+@@ -0,0 +1,229 @@
++/** Local hash-only ledger. No prompts, source passages or outputs on disk. */
++import {createHash} from "node:crypto";
++import {mkdirSync, realpathSync, existsSync, readFileSync, openSync,
++  writeSync, fsyncSync, closeSync, unlinkSync, readdirSync} from "node:fs";
++import {join, resolve} from "node:path";
++import type {ChatRequest} from "./inspireChatContract";
++import {validateRequest, record} from "./inspireChatContract";
++import {inspectLunaCandidate} from "./inspireLuna";
++import type {prepareLunaKnowledgeInput} from "./inspireLuna";
++import {assertKnowledgeExport} from "./inspireKnowledge";
++import {createLunaController} from "./inspireLunaController";
++
++type Prepared = Awaited<ReturnType<typeof prepareLunaKnowledgeInput>>;
++const sha = (v: string) => createHash("sha256").update(v).digest("hex");
++export const chatgptControls = Object.freeze({
++  route: "codex-app-server", authentication: "chatgpt-managed",
++  model: "gpt-6-luna", maxAttempts: 3, requestedOutputTokens: 512,
++  hardOutputCapVerified: false, managedRetriesDisabledVerified: false,
++  noAdditionalChargeVerified: false, ownerSessionReleased: false,
++  liveDispatchEnabled: false,
++});
++
++/** Offline protocol conversion, not a network sender or token guarantee.
++ * @param {Prepared} prepared Exact held payload.
++ * @param {string} threadId Server-observed thread identity.
++ * @return {object} Typed turn/start fields supported by the installed schema.
++ */
++export function chatgptTurnInput(prepared: Prepared, threadId: string) {
++  return {threadId, model: "gpt-6-luna",
++    clientUserMessageId: prepared.operationId,
++    input: [{type: "text", text: prepared.text, text_elements: []}]};
++}
++
++/** Consume only a complete bound turn; partials/tools/retry events fail closed.
++ * @param {Prepared} prepared Exact held input.
++ * @param {string} threadId Thread from the trusted server-side RPC correlation.
++ * @param {string} turnId Turn from the same RPC correlation.
++ * @param {unknown[]} events Recorded notifications, injected offline only.
++ * @return {object} Bound candidate for the native Controller.
++ */
++export function decodeChatgptTurn(prepared: Prepared, threadId: string,
++  turnId: string, events: unknown[]) {
++  if (!threadId || !turnId || events.length !== 1) {
++    throw Error("CHATGPT_PROTOCOL_HOLD");
++  }
++  const event = events[0];
++  if (!record(event) || event.method !== "turn/completed" ||
++      !record(event.params) || event.params.threadId !== threadId ||
++      !record(event.params.turn)) throw Error("CHATGPT_PROTOCOL_HOLD");
++  const turn = event.params.turn;
++  if (turn.id !== turnId || turn.status !== "completed" || turn.error ||
++      (turn.itemsView !== undefined && turn.itemsView !== "full") ||
++      !Array.isArray(turn.items) || turn.items.length !== 1) {
++    throw Error("CHATGPT_PROTOCOL_HOLD");
++  }
++  const item = turn.items[0];
++  if (!record(item) || item.type !== "agentMessage" ||
++      typeof item.id !== "string" || item.moderation || item.memoryCitation ||
++      item.delivery || item.questions ||
++      (item.phase !== undefined && item.phase !== null &&
++        item.phase !== "final_answer")) throw Error("CHATGPT_PROTOCOL_HOLD");
++  const packet = {operationId: prepared.operationId, binding: prepared.binding,
++    payloadSHA: prepared.payloadSHA, model: prepared.model, text: item.text};
++  inspectLunaCandidate(prepared, packet);
++  return packet;
++}
++
++/** Private persistent identity and conservative attempt allocation.
++ * @param {string} directory Local nonsynced directory, temp directory in tests.
++ * @return {object} Hash-only ledger. Corrupt/partial records fail closed.
++ */
++export function chatgptLedger(directory = join(
++  process.env.LOCALAPPDATA ?? "", "INSPIRE-ChatGPT")) {
++  const root = resolve(directory);
++  const ensure = () => {
++    if (process.env.NODE_ENV === "production" ||
++        /onedrive|dropbox|google drive|^\\\\/i.test(root) ||
++        root.toLowerCase().startsWith(resolve(".").toLowerCase())) {
++      throw Error("CHATGPT_STORAGE_HOLD");
++    }
++    mkdirSync(root, {recursive: true, mode: 0o700});
++    if (realpathSync(root).toLowerCase() !== root.toLowerCase()) {
++      throw Error("CHATGPT_STORAGE_HOLD");
++    }
++  };
++  const read = (name: string) => {
++    const file = join(root, name);
++    if (realpathSync(file).toLowerCase() !== file.toLowerCase()) throw Error();
++    return JSON.parse(readFileSync(file, "utf8"));
++  };
++  const write = (name: string, value: unknown) => {
++    const fd = openSync(join(root, name), "wx", 0o600);
++    try {
++      writeSync(fd, JSON.stringify(value)); fsyncSync(fd);
++    } finally {
++      closeSync(fd);
++    }
++  };
++  const identify = (owner: string, request: ChatRequest, p: Prepared) => {
++    ensure(); validateRequest(request);
++    if (request.kind !== "send" || sha(p.text) !== p.payloadSHA ||
++        sha(JSON.stringify([request, p.payloadSHA])) !== p.binding ||
++        p.operationId !== request.operationId || p.model !== "gpt-6-luna" ||
++        JSON.stringify(JSON.parse(p.text).messages) !==
++        JSON.stringify(request.messages)) {
++      throw Error("CHATGPT_BINDING_HOLD");
++    }
++    const fingerprint = {owner: sha(owner),
++      requestHash: sha(JSON.stringify(request)),
++      payloadSHA: p.payloadSHA, binding: p.binding,
++      operationId: request.operationId, sessionId: request.sessionId,
++      conversationId: request.conversationId};
++    const name = "request-" + sha(owner + ":" + request.operationId) + ".json";
++    return {fingerprint, name};
++  };
++  return {
++    prepare(owner: string, request: ChatRequest, p: Prepared) {
++      const {fingerprint, name} = identify(owner, request, p);
++      if (existsSync(join(root, "owner.json")) &&
++          read("owner.json").owner !== fingerprint.owner) {
++        throw Error("CHATGPT_SESSION_OWNER_HOLD");
++      }
++      if (!existsSync(join(root, name))) {
++        if (readdirSync(root).filter((s) =>
++          s.startsWith("request-")).length >= 1000) {
++          throw Error("CHATGPT_PREVIEW_CAPACITY_HOLD");
++        }
++        try {
++          write(name, fingerprint);
++        } catch {
++          if (!existsSync(join(root, name))) throw Error();
++        }
++      }
++      if (JSON.stringify(read(name)) !== JSON.stringify(fingerprint)) {
++        throw Error("CHATGPT_BINDING_HOLD");
++      }
++      return fingerprint;
++    },
++    consume(owner: string, request: ChatRequest, p: Prepared) {
++      const fingerprint = this.prepare(owner, request, p);
++      // Exclusive lock is intentionally retained after a process crash.
++      // It cannot silently restart an unresolved dispatch.
++      write("allocation.lock", {binding: p.binding});
++      try {
++        // Previewing never claims the session. First attempted dispatch does.
++        if (!existsSync(join(root, "owner.json"))) {
++          write("owner.json", {owner: fingerprint.owner});
++        }
++        if (read("owner.json").owner !== fingerprint.owner) {
++          throw Error("CHATGPT_SESSION_OWNER_HOLD");
++        }
++        const slots = [1, 2, 3].filter((i) =>
++          existsSync(join(root, "attempt-" + i + ".json")));
++        for (const i of slots) {
++          const attempt = read("attempt-" + i + ".json");
++          if (attempt.binding === p.binding) throw Error("OUTCOME_UNRESOLVED");
++          if (!existsSync(join(root, "receipt-" + i + ".json"))) {
++            throw Error("OUTCOME_UNRESOLVED");
++          }
++          const receipt = read("receipt-" + i + ".json");
++          if (receipt.binding !== attempt.binding ||
++              receipt.outcome !== "validated") {
++            throw Error("OUTCOME_UNRESOLVED");
++          }
++        }
++        if (slots.length >= 3) throw Error("CHATGPT_SESSION_EXHAUSTED");
++        const slot = slots.length + 1;
++        write("attempt-" + slot + ".json", {...fingerprint,
++          outcome: "unknown", slot});
++        return slot;
++      } finally {
++        unlinkSync(join(root, "allocation.lock"));
++      }
++    },
++    receipt(slot: number, p: Prepared, outputHash: string) {
++      const attempt = read("attempt-" + slot + ".json");
++      if (attempt.binding !== p.binding || !/^[a-f0-9]{64}$/.test(outputHash)) {
++        throw Error("CHATGPT_RECEIPT_HOLD");
++      }
++      write("receipt-" + slot + ".json", {binding: p.binding,
++        outcome: "validated", outputHash});
++    },
++    status() {
++      ensure();
++      const attempts = readdirSync(root)
++        .filter((s) => /^attempt-[123]\.json$/.test(s));
++      const unresolved = attempts.filter((s) => !existsSync(
++        join(root, s.replace("attempt-", "receipt-")))).length;
++      return {maxAttempts: 3, used: attempts.length, unresolved,
++        recoveryHold: unresolved > 0 ||
++          existsSync(join(root, "allocation.lock")),
++        persisted: "identity-and-hashes-only"};
++    },
++  };
++}
++
++/** Offline-injectable dispatch seam; production default has no sender.
++ * @param {object} options Explicit test dependencies; never HTTP/client fields.
++ * @return {object} Bound, non-retrying execution with held live dispatch.
++ */
++export function createChatgptRunner(options: {
++  ledger: ReturnType<typeof chatgptLedger>;
++  controller?: ReturnType<typeof createLunaController>;
++  recheck?: typeof assertKnowledgeExport;
++  offlineSender?: (p: Prepared) => Promise<unknown>;
++}) {
++  const controller = options.controller ?? createLunaController();
++  const recheck = options.recheck ?? assertKnowledgeExport;
++  return {controller,
++    async execute(owner: string, requestInput: ChatRequest, input: Prepared) {
++      const request = structuredClone(requestInput);
++      const p = structuredClone(input);
++      options.ledger.prepare(owner, request, p);
++      if (!options.offlineSender || process.env.NODE_ENV === "production") {
++        throw Error("CHATGPT_DISPATCH_BLOCKED");
++      }
++      const slot = options.ledger.consume(owner, request, p);
++      const bound = {request, binding: p.binding, payloadSHA: p.payloadSHA};
++      await controller.preflight(bound);
++      // Last asynchronous permission check before the single injected send.
++      await recheck(JSON.parse(p.text).supportingKnowledge);
++      const packet = await options.offlineSender(structuredClone(p));
++      const candidate = inspectLunaCandidate(p, packet);
++      await controller.validate(bound, candidate.text);
++      options.ledger.receipt(slot, p, candidate.sha256);
++      return candidate.text;
++    },
++  };
++}
+--- /dev/null
++++ b/tests/inspire-chatgpt-session.test.mjs
+@@ -0,0 +1,126 @@
++// Offline only: no app-server process, credentials or model network transport.
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {mkdtempSync,readFileSync,readdirSync,writeFileSync,mkdirSync} from 'node:fs'
++import {tmpdir} from 'node:os'
++import {join} from 'node:path'
++import {createHash} from 'node:crypto'
++import {spawnSync} from 'node:child_process'
++import {chatgptLedger,createChatgptRunner,chatgptTurnInput,decodeChatgptTurn,chatgptControls} from '../functions/src/inspireChatgptSession.ts'
++import {prepareLunaInput} from '../functions/src/inspireLuna.ts'
++import {emptyPreferences} from '../functions/src/inspireAccount.ts'
++import {createPrivateChatgptTransport} from '../src/services/InspireAIconnect.ts'
++import {ConversationStore} from '../src/services/inspireConversation.ts'
++const hash=s=>createHash('sha256').update(s).digest('hex')
++const roots=[]
++function ledger(){const root=mkdtempSync(join(tmpdir(),'inspire-chatgpt-offline-'));roots.push(root);return {root,store:chatgptLedger(root)}}
++function proposal(i=1,messages=[{id:'u'+i,role:'user',text:'Tình huống giả định: hôm nay tôi có nhiều việc.'}]){
++ const request={kind:'send',epoch:'epoch',sessionId:'session',operationId:'op'+i,conversationId:'conversation',messages}
++ const p=prepareLunaInput({messages,operatingInstructions:[],supportingKnowledge:[],userStatedPreferences:emptyPreferences},request)
++ return {request,p:{...p,binding:hash(JSON.stringify([request,p.payloadSHA])),sourceCount:0,conversationId:request.conversationId}}
++}
++const text='Bạn có thể kể những việc đang cần làm, rồi chọn một việc nhỏ để bắt đầu.'
++function event(p){return {method:'turn/completed',params:{threadId:'thread',turn:{id:p.operationId,status:'completed',items:[{type:'agentMessage',id:'answer',phase:'final_answer',text}]}}}}
++function sender(p){return Promise.resolve(decodeChatgptTurn(p,'thread',p.operationId,[event(p)]))}
++const fakeController={preflight:async()=>{},validate:async()=>{},evidence:()=>[]}
++function runner(store,extra={}){return createChatgptRunner({ledger:store,controller:fakeController,recheck:async()=>{},offlineSender:sender,...extra})}
++
++test('exact identity survives disk reopen; changed content, user and client authority are rejected; no raw text persisted',()=>{
++ const {root,store}=ledger(),{request,p}=proposal();store.prepare('owner',request,p)
++ assert.deepEqual(chatgptLedger(root).prepare('owner',request,p),store.prepare('owner',request,p))
++ // Another preview cannot lock out the father before any session is attempted.
++ store.prepare('other',request,p)
++ assert.throws(()=>store.prepare('owner',{...request,quota:999},p))
++ assert.throws(()=>store.prepare('owner',request,{...p,text:p.text+' '}),/BINDING/)
++ const changed=proposal(1,[{id:'u1',role:'user',text:'Nội dung khác'}]);assert.throws(()=>store.prepare('owner',changed.request,changed.p),/BINDING/)
++ const files=readdirSync(root).map(f=>readFileSync(join(root,f),'utf8')).join('')
++ assert.ok(!files.includes(request.messages[0].text));assert.ok(!files.includes('instructions'))
++ store.consume('owner',request,p)
++ assert.throws(()=>store.prepare('other',request,p),/OWNER_HOLD/)
++})
++test('three successful injected attempts survive runner restarts; fourth cannot send',async()=>{
++ const {root}=ledger();let calls=0
++ for(let i=1;i<=3;i++){const {request,p}=proposal(i);assert.equal(await runner(chatgptLedger(root),{offlineSender:async p=>{calls++;return sender(p)}}).execute('owner',request,p),text)}
++ const fourth=proposal(4);await assert.rejects(runner(chatgptLedger(root)).execute('owner',fourth.request,fourth.p),/EXHAUSTED/)
++ assert.equal(calls,3);assert.equal(chatgptLedger(root).status().used,3)
++})
++test('concurrent duplicate and concurrent new operations cannot bypass an unresolved reservation',async()=>{
++ const {root,store}=ledger(),{request,p}=proposal(3);let calls=0
++ for(const i of [1,2]){const q=proposal(i);await runner(store).execute('owner',q.request,q.p)}
++ const active=runner(store,{offlineSender:async p=>{calls++;await new Promise(r=>setTimeout(r,20));return sender(p)}})
++ const next=proposal(4)
++ const result=await Promise.allSettled([active.execute('owner',request,p),runner(chatgptLedger(root)).execute('owner',request,p),runner(chatgptLedger(root)).execute('owner',next.request,next.p)])
++ assert.equal(result.filter(r=>r.status==='fulfilled').length,1);assert.equal(calls,1);assert.equal(store.status().used,3)
++})
++test('network failure counts once; same request or replacement after restart never regenerates',async()=>{
++ const {root,store}=ledger(),{request,p}=proposal();let calls=0
++ await assert.rejects(runner(store,{offlineSender:async()=>{calls++;throw Error('lost transport')}}).execute('owner',request,p),/lost transport/)
++ for(const q of [{request,p},proposal(2)])await assert.rejects(runner(chatgptLedger(root),{offlineSender:async p=>{calls++;return sender(p)}}).execute('owner',q.request,q.p),/UNRESOLVED/)
++ assert.equal(calls,1);assert.equal(store.status().used,1);assert.equal(store.status().recoveryHold,true)
++})
++test('actual child-process termination after reservation leaves a durable unknown outcome',async()=>{
++ const {root}=ledger(),{request,p}=proposal()
++ const code=`import {chatgptLedger} from './functions/src/inspireChatgptSession.ts';chatgptLedger(${JSON.stringify(root)}).consume('owner',${JSON.stringify(request)},${JSON.stringify(p)});process.exit(17)`
++ const child=spawnSync(process.execPath,['--import','./tests/register-ts.mjs','--input-type=module','-e',code],{encoding:'utf8',windowsHide:true})
++ assert.equal(child.status,17,child.stderr)
++ await assert.rejects(runner(chatgptLedger(root)).execute('owner',request,p),/UNRESOLVED/)
++ assert.equal(chatgptLedger(root).status().used,1)
++})
++test('preflight and last permission recheck precede send; revoked source and rejected output hold conservatively',async()=>{
++ for(const failure of ['preflight','permission','validation']){
++  const {store}=ledger(),{request,p}=proposal(),steps=[]
++  const run=runner(store,{controller:{...fakeController,preflight:async()=>{steps.push('preflight');if(failure==='preflight')throw Error(failure)},validate:async()=>{steps.push('validation');throw Error(failure)}},recheck:async()=>{steps.push('permission');if(failure==='permission')throw Error(failure)},offlineSender:async p=>{steps.push('send');return sender(p)}})
++  await assert.rejects(run.execute('owner',request,p))
++  assert.deepEqual(steps,failure==='preflight'?['preflight']:failure==='permission'?['preflight','permission']:['preflight','permission','send','validation'])
++  assert.equal(store.status().used,1)
++  await assert.rejects(run.execute('owner',request,p),/UNRESOLVED/)
++ }
++})
++test('protocol conversion preserves exact ordered history and correction; rejects cross-turn, partial, tool and managed-retry events',()=>{
++ const {p}=proposal(1,[{id:'u1',role:'user',text:'Tôi lo về việc nhà.'},{id:'a1',role:'assistant',text:'Bạn muốn nói rõ hơn không?'},{id:'u2',role:'user',text:'Đính chính: việc ở cơ quan.',correctionOf:'u1'}])
++ assert.equal(chatgptTurnInput(p,'thread').input[0].text,p.text)
++ assert.equal(chatgptTurnInput(p,'thread').clientUserMessageId,p.operationId)
++ assert.equal(decodeChatgptTurn(p,'thread',p.operationId,[event(p)]).binding,p.binding)
++ for(const change of [e=>{e.params.threadId='other'},e=>{e.params.turn.id='other'},e=>{e.params.turn.status='failed'},e=>{e.params.turn.itemsView='summary'},e=>{e.params.turn.items[0].type='commandExecution'},e=>{e.params.turn.items[0].moderation={moderated:true}},e=>{e.params.turn.items[0].text='x'.repeat(2001)}]){const e=event(p);change(e);assert.throws(()=>decodeChatgptTurn(p,'thread',p.operationId,[e]))}
++ assert.throws(()=>decodeChatgptTurn(p,'thread',p.operationId,[{method:'error',params:{willRetry:true}},event(p)]))
++ assert.throws(()=>decodeChatgptTurn(p,'thread',p.operationId,[]))
++})
++test('output must bind to the exact input before Controller validation or receipt',async()=>{
++ const {root,store}=ledger(),{request,p}=proposal();let validations=0
++ await assert.rejects(runner(store,{controller:{...fakeController,validate:async()=>{validations++}},offlineSender:async p=>({...await sender(p),binding:'wrong'})}).execute('owner',request,p),/BINDING/)
++ assert.equal(validations,0);assert.ok(!readdirSync(root).some(f=>f.startsWith('receipt-')))
++})
++test('corrupt record, crash lock and synced storage cannot silently reset counters',()=>{
++ for(const [file,data] of [['owner.json','{'],['allocation.lock','{}'],['attempt-1.json','{']]){
++  const {root,store}=ledger(),{request,p}=proposal();if(file!=='owner.json')store.prepare('owner',request,p)
++  writeFileSync(join(root,file),data);assert.throws(()=>chatgptLedger(root).consume('owner',request,p))
++ }
++ assert.throws(()=>chatgptLedger(join(tmpdir(),'OneDrive','inspire')).status(),/STORAGE_HOLD/)
++})
++test('default runner has no sender and ignores any prior grant; browser preview uses ChatGPT only without execute or automatic retry',async()=>{
++ const {store}=ledger(),{request,p}=proposal();await assert.rejects(createChatgptRunner({ledger:store}).execute('owner',request,p),/DISPATCH_BLOCKED/);assert.equal(store.status().used,0)
++ assert.equal(chatgptControls.liveDispatchEnabled,false);assert.equal(chatgptControls.ownerSessionReleased,false)
++ const calls=[];let preview;const transport=createPrivateChatgptTransport(v=>preview=v,async(url,options)=>{calls.push({url,body:JSON.parse(options.body)});return new Response(JSON.stringify({mode:'private-model',previewOnly:true,payload:JSON.parse(p.text),payloadSHA:p.payloadSHA,binding:p.binding,operationId:request.operationId,conversationId:request.conversationId}))},async()=>'synthetic')
++ await assert.rejects(transport.send(request),e=>e.code==='CHATGPT_DISPATCH_BLOCKED'&&e.retry==='none')
++ assert.equal(calls.length,1);assert.equal(calls[0].url,'/api/inspire-chatgpt');assert.equal(calls[0].body.kind,'preview');assert.equal(preview.binding,p.binding)
++})
++test('lost preview response retries only same stable identity; ConversationStore prevents duplicate submission',async()=>{
++ let fail=true;const requests=[]
++ const transport=createPrivateChatgptTransport(()=>{},async(url,options)=>{
++  assert.equal(url,'/api/inspire-chatgpt');const body=JSON.parse(options.body)
++  if(body.kind==='session')return new Response(JSON.stringify({mode:'private-model',epoch:'epoch',sessionId:'session'}))
++  requests.push(body);if(fail){fail=false;throw Error('lost preview')}
++  const {request}=body;return new Response(JSON.stringify({previewOnly:true,payloadSHA:'hash',binding:'binding',operationId:request.operationId,conversationId:request.conversationId}))
++ },async()=>'synthetic')
++ const store=new ConversationStore(transport),id=store.getSnapshot().activeId;store.draft(id,'Câu hỏi giả định')
++ await Promise.all([store.send(id),store.send(id)]);assert.equal(requests.length,1)
++ await store.retry(id);assert.deepEqual(requests[1],requests[0]);assert.equal(store.getSnapshot().conversations[0].error.retry,'none')
++ await store.retry(id);assert.equal(requests.length,2)
++})
++test('native Controller validates injected ChatGPT-shaped final event and exact returned bytes',async()=>{
++ const {store}=ledger(),{request,p}=proposal();const run=createChatgptRunner({ledger:store,recheck:async()=>{},offlineSender:sender})
++ const result=await run.execute('owner',request,p);assert.equal(result,text)
++ const proof=run.controller.evidence();assert.equal(proof.length,2)
++ assert.equal(proof[1].validated_sha256,hash(result));assert.equal(proof[1].actual_execution_eligible,false);assert.equal(proof[1].user_delivery,false)
++ const out='docs/evidence/chatgpt-connection-2026-11-23';mkdirSync(out,{recursive:true});writeFileSync(out+'/synthetic-controller-trace.json',JSON.stringify({syntheticOnly:true,liveCalls:0,input:JSON.parse(p.text),payloadSHA:p.payloadSHA,binding:p.binding,protocolPreview:chatgptTurnInput(p,'thread'),event:event(p),controller:proof,validatedText:result,accounting:store.status()},null,2))
++})
+--- /dev/null
++++ b/tests/inspire-chatgpt-emulator.test.mjs
+@@ -0,0 +1,59 @@
++// Demo emulator only; dispatch is closed even when the caller asks to execute.
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {mkdtempSync,writeFileSync,mkdirSync} from 'node:fs'
++import {tmpdir} from 'node:os'
++import {join} from 'node:path'
++import {randomUUID,createHash} from 'node:crypto'
++import {createRequire} from 'node:module'
++import {createPrivateChatgptService} from '../functions/src/inspireLunaService.ts'
++import {chatgptLedger,createChatgptRunner,decodeChatgptTurn} from '../functions/src/inspireChatgptSession.ts'
++import {importSource} from '../functions/src/inspireKnowledge.ts'
++import {prepareLunaKnowledgeInput} from '../functions/src/inspireLuna.ts'
++import {emptyPreferences} from '../functions/src/inspireAccount.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099'
++process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080'
++const uid='chatgpt-fixture-'+randomUUID(),identity={uid,providers:[],email:null,registered:false,createdAt:new Date().toISOString()}
++const root=mkdtempSync(join(tmpdir(),'inspire-chatgpt-emulator-')),ledger=chatgptLedger(root),service=createPrivateChatgptService({ledger})
++const require=createRequire(new URL('../functions/package.json',import.meta.url)),db=require('firebase-admin/firestore').getFirestore()
++const sourceId=uid+'-source',text='# Kiểm thử\nzzchatgptfixture Một đoạn giả định về việc ưu tiên công việc.'
++const hash=createHash('sha256').update(text).digest('hex')
++async function source(allowed){await importSource({collection:'INSPIRE',documentId:sourceId,title:'Synthetic only',status:allowed?'published-supporting':'review-required',permittedUse:allowed?'supporting-retrieval':'receipt-only',rawFile:hash,kind:'reference',permissions:{sourceHash:hash,internalResearch:allowed,externalExport:allowed,evidence:'SYNTHETIC FIXTURE ONLY'}},Buffer.from(text),text)}
++let request
++test('private service connects existing retrieval to stable preview, ignores no controls, and refuses any dispatch',async()=>{
++ await source(true)
++ const session=await service.handlePrivate({kind:'session'},identity)
++ request={kind:'send',epoch:session.epoch,sessionId:session.sessionId,conversationId:'conversation',operationId:'operation',messages:[{id:'u1',role:'user',text:'Tình huống giả định zzchatgptfixture, tôi nên làm gì trước?'}]}
++ const preview=await service.handlePrivate({kind:'preview',request},identity)
++ assert.equal(preview.sourceCount,1);assert.equal(preview.payload.supportingKnowledge[0].documentId,sourceId)
++ assert.equal(preview.controls.liveDispatchEnabled,false);assert.equal(preview.accounting.used,0)
++ assert.deepEqual(await service.handlePrivate({kind:'preview',request},identity),preview)
++ await assert.rejects(service.handlePrivate({kind:'execute',request},identity),e=>e.code==='CHATGPT_DISPATCH_BLOCKED'&&e.retry==='none')
++ for(const extra of [{maxAttempts:999},{approved:true},{billing:'api-key'}])await assert.rejects(service.handlePrivate({kind:'preview',request,...extra},identity))
++ await assert.rejects(service.handlePrivate({kind:'preview',request:{...request,messages:[{...request.messages[0],text:'Changed'}]}},identity),e=>e.code==='OPERATION_CONFLICT')
++ await assert.rejects(service.handlePrivate({kind:'preview',request},{...identity,uid:uid+'-other'}),e=>e.code==='SESSION_LOST')
++ assert.equal(ledger.status().used,0)
++})
++test('permitted synthetic passage reaches native Controller-bound adapter input; exact output is validated before return',async()=>{
++ const prepared=await prepareLunaKnowledgeInput({messages:request.messages,operatingInstructions:[],supportingKnowledge:[],userStatedPreferences:emptyPreferences},request)
++ let adapterInput
++ const run=createChatgptRunner({ledger,offlineSender:async p=>{
++  adapterInput=JSON.parse(p.text)
++  return decodeChatgptTurn(p,'thread','turn',[{method:'turn/completed',params:{threadId:'thread',turn:{id:'turn',status:'completed',items:[{id:'answer',type:'agentMessage',text:'Bạn muốn bắt đầu từ việc nào trong tình huống giả định này?'}]}}}])
++ }})
++ const output=await run.execute(uid,request,prepared)
++ assert.equal(adapterInput.supportingKnowledge[0].documentId,sourceId)
++ const evidence=run.controller.evidence();assert.equal(evidence.length,2)
++ assert.equal(evidence[1].validated_sha256,createHash('sha256').update(output).digest('hex'))
++ const out='docs/evidence/chatgpt-connection-2026-11-23';mkdirSync(out,{recursive:true})
++ writeFileSync(out+'/retrieval-controller-trace.json',JSON.stringify({syntheticOnly:true,liveCalls:0,adapterInput,payloadSHA:prepared.payloadSHA,binding:prepared.binding,controller:evidence,validatedOutput:output},null,2))
++})
++test('revoked permission invalidates a held preview; restart cannot recreate pending session or multiply owner attempts',async()=>{
++ await source(false)
++ await assert.rejects(service.handlePrivate({kind:'preview',request},identity))
++ const restarted=createPrivateChatgptService({ledger:chatgptLedger(root)})
++ await assert.rejects(restarted.handlePrivate({kind:'preview',request},identity),e=>e.code==='SESSION_LOST'&&e.retry==='none')
++ await assert.rejects(restarted.handlePrivate({kind:'execute',request},identity),e=>e.code==='CHATGPT_DISPATCH_BLOCKED')
++ assert.equal(ledger.status().used,1);restarted.close()
++})
++test.after(async()=>{service.close();await db.recursiveDelete(db.doc('inspireKnowledge/'+sourceId));await db.terminate()})
+--- /dev/null
++++ b/tests/inspire-chatgpt-http.mjs
+@@ -0,0 +1,24 @@
++// Local HTTP only. The execute probe must be rejected; never releases dispatch.
++import assert from 'node:assert/strict'
++import {writeFileSync,readFileSync} from 'node:fs'
++const base='http://127.0.0.1:5173',checks={}
++const status=await fetch(base+'/api/inspire-private-status').then(r=>r.json())
++assert.equal(status.chatgptPreview,true);assert.equal(status.modelAvailable,false);assert.equal(status.lunaApiPreview,undefined)
++const auth=await fetch('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-only',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({returnSecureToken:true})}).then(r=>r.json())
++assert.equal(typeof auth.idToken,'string')
++async function post(path,body,origin=base){const response=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+auth.idToken,Origin:origin},body:JSON.stringify(body)});return {status:response.status,data:await response.json()}}
++const session=await post('/api/inspire-chatgpt',{kind:'session'});assert.equal(session.status,200)
++const request={kind:'send',epoch:session.data.epoch,sessionId:session.data.sessionId,operationId:crypto.randomUUID(),conversationId:crypto.randomUUID(),messages:[{id:'synthetic',role:'user',text:'Tình huống giả định: hôm nay tôi có nhiều việc.'}]}
++const before=await post('/api/inspire-prototype',{kind:'account'})
++const preview=await post('/api/inspire-chatgpt',{kind:'preview',request});assert.equal(preview.status,200,JSON.stringify(preview));assert.equal(preview.data.sourceCount,0);assert.equal(preview.data.accounting.used,0)
++const repeated=await post('/api/inspire-chatgpt',{kind:'preview',request});assert.deepEqual(repeated,preview)
++const held=await post('/api/inspire-chatgpt',{kind:'execute',request});assert.equal(held.status,403);assert.equal(held.data.error.code,'CHATGPT_DISPATCH_BLOCKED');assert.equal(held.data.error.retry,'none')
++const bad=await post('/api/inspire-chatgpt',{kind:'preview',request:{...request,quota:999}});assert.equal(bad.status,400)
++const cross=await post('/api/inspire-chatgpt',{kind:'session'},'https://untrusted.invalid');assert.equal(cross.status,403)
++const old=await post('/api/inspire-luna',{kind:'session'});assert.equal(old.status,503)
++assert.deepEqual((await post('/api/inspire-prototype',{kind:'account'})).data.quota,before.data.quota)
++const receipts=JSON.parse(readFileSync('.private.local/knowledge/receipts.json'));const raw=await fetch(base+'/.private.local/knowledge/raw/'+receipts.find(r=>r.hash).hash);assert.equal(raw.status,403)
++for(const route of ['/ai-inspire?thu-rieng=1','/tham-van-tam-ly','/nghi-duong-duong-sinh']){const r=await fetch(base+route);assert.equal(r.status,200);checks[route]=r.status}
++for(const path of ['/api/inspire-chatgpt','/api/inspire-luna','/api/inspire-prototype']){const r=await fetch('http://127.0.0.1:4173'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:'{"kind":"session"}'});assert.equal(r.status,404);checks['production'+path]=r.status}
++writeFileSync('docs/evidence/chatgpt-connection-2026-11-23/http-verification.json',JSON.stringify({executed:true,liveCalls:0,preview:preview.data,checks:{...checks,repeatedPreviewIdentical:true,quotaUnchanged:true,execute:held.status,apiRoute:old.status,authorityField:bad.status,crossOrigin:cross.status,privateFile:raw.status},visual:'NOT VERIFIED: browser host unavailable; minimized native Chrome window could not be inspected'},null,2))
++console.log('PASS: actual local HTTP preview and identity binding, dispatch closed, API route closed, public endpoints absent, restricted asset denied, quota unchanged. No generation.')
+--- /dev/null
++++ b/tests/verify-inspire-chatgpt.mjs
+@@ -0,0 +1,23 @@
++// Offline only. Allowlisted local checks; no app-server generation or API SDK.
++import {spawnSync} from 'node:child_process'
++import {mkdirSync,readFileSync,writeFileSync} from 'node:fs'
++import {join,dirname} from 'node:path'
++const out='docs/evidence/chatgpt-connection-2026-11-23'
++mkdirSync(out,{recursive:true})
++const npm=join(dirname(process.execPath),'node_modules/npm/bin/npm-cli.js')
++const test=file=>['--import','./tests/register-ts.mjs','--test',file]
++const tasks={session:test('tests/inspire-chatgpt-session.test.mjs'),boundary:test('tests/inspire-luna.test.mjs'),
++ 'private-service':test('tests/inspire-chatgpt-emulator.test.mjs'),retrieval:test('tests/inspire-knowledge-conversation.test.mjs'),quotas:test('tests/inspire-emulator.test.mjs'),
++ 'functions-build':[npm,'--prefix','functions','run','build'],'website-build':[npm,'run','build'],
++ lint:['functions/lint.cjs','src/inspireChatgptSession.ts','src/inspireLunaService.ts','src/inspireLunaController.ts','src/inspireLuna.ts'],privacy:['tests/inspire-build-audit.mjs']}
++let results={};try{results=JSON.parse(readFileSync(out+'/executed-checks.json')).results}catch{}
++const names=process.argv.slice(2).length?process.argv.slice(2):Object.keys(tasks)
++for(const name of names){
++ if(!tasks[name])throw Error('OFFLINE_ALLOWLIST_ONLY')
++ const start=Date.now(),r=spawnSync(process.execPath,tasks[name],{windowsHide:true,encoding:'utf8',maxBuffer:16*1024*1024,timeout:180000,env:{...process.env,INSPIRE_REVIEW_EVIDENCE_DIR:out,PYTHONDONTWRITEBYTECODE:'1',METADATA_SERVER_DETECTION:'none'}})
++ writeFileSync(out+'/'+name+'.txt',(r.stdout??'')+(r.stderr??'')+'\nEXIT_CODE='+r.status+'\n')
++ results[name]={executed:true,exitCode:r.status,error:r.error?.code??null,durationMs:Date.now()-start,command:[process.execPath,...tasks[name]]}
++ writeFileSync(out+'/executed-checks.json',JSON.stringify({results,liveCalls:0,scope:'Focused offline checks; not a rerun or replacement of the historical 48/49 suite'},null,2))
++ console.log(name+': '+r.status)
++}
++process.exitCode=names.every(n=>results[n].exitCode===0)?0:1
+--- /dev/null
++++ b/docs/private-chatgpt-readiness-2026-11-23.txt
+@@ -0,0 +1,129 @@
++INSPIRE private ChatGPT connection — 23 November 2026
++
++READY for local simulation and held ChatGPT input previews.
++NOT READY for a real three-attempt session. No generation, spending, source-use
++approval, API fallback, deployment, commit or push occurred. Z-PROJECT untouched.
++
++RUN (existing INSPIRE dependencies and original local Controller installation)
++Terminal 1, from INSPIRE:
++  node tests/start-inspire-emulators.mjs
++Terminal 2:
++  $env:INSPIRE_PRIVATE_TEST = '1'
++  $env:INSPIRE_LUNA_API_PREVIEW = '0'
++  $env:INSPIRE_BILLING_ROUTE = 'chatgpt'
++  npm.cmd run dev -- --host 127.0.0.1 --port 5173 --strictPort
++Open http://127.0.0.1:5173/ai-inspire?thu-rieng=1
++If these processes are already running, use the existing page.
++For an empty emulator, restore the existing private index with the unchanged
++importer: node --import ./tests/register-ts.mjs tests/import-inspire-knowledge.mjs --discover
++This imports receipts incrementally; it grants no new permissions.
++
++Bố có thể hỏi, hỏi tiếp và đính chính bằng tiếng Việt với tình huống giả định.
++Mặc định là Mô phỏng, chưa phải phản hồi AI. Trong “Dành cho con”, chọn
++“ChatGPT · Xem trước” để chuẩn bị đầu vào chính xác; gửi ở chế độ này chỉ tạo
++bản xem trước và thông báo đang khóa. Không có nút tự duyệt hay gọi mô hình.
++Tải lại trang xóa nội dung trò chuyện. Mã lượt, dấu kiểm tra và số lần thử nằm
++riêng trong %LOCALAPPDATA%\INSPIRE-ChatGPT, không lưu câu hỏi/đoạn nguồn/phản hồi.
++Không xóa hồ sơ này để thử lại một lượt chưa rõ kết quả.
++
++IMPLEMENTED AND EXECUTED OFFLINE
++- Existing private interface -> /api/inspire-chatgpt -> existing authenticated
++  local service -> permission-filtered retrieval -> exact held model input.
++  No replacement UI/retriever and no API-key fallback. Existing API service is
++  preserved but not selected by this interface or the launch commands above.
++- SHA-256 binds the complete validated request (including message IDs/history/
++  corrections) and exact input bytes. Preview fingerprints persist before any
++  approval. Original wording is retained; retrieval alone excludes superseded
++  wording. Existing allowed addressing preferences remain separate.
++- Three-attempt ledger: exclusive file allocation, fsync, conservative unknown
++  reservation before preflight/send, no automatic retry or refund, same-operation
++  replay cannot generate again, and unresolved attempts stop the entire session.
++  Validated success permits the next distinct attempt, up to three. First attempt
++  binds the owner; other previews cannot prematurely claim an unused session.
++  Conversation/account switching cannot create a new attempt allowance. Pending
++  process restart is held; no automatic reconciliation/reset/regeneration exists.
++  Persistence was tested across a real child-process exit, not machine power loss.
++- Native Controller preflight -> latest exact-hash source export recheck -> one
++  injected sender -> response/input binding -> native exact-byte validation ->
++  durable receipt -> returned text. No unvalidated response enters delivery.
++  Controller proof retains actual_execution_eligible=false and user_delivery=false.
++- Pure installed-protocol conversion uses stable clientUserMessageId. Offline
++  completion decoder accepts only the narrow full single-final-message shape;
++  rejects mismatched thread/turn IDs, partials, tools, retry/error notifications,
++  unsupported moderation/display data and malformed candidates. This is not a
++  claim that arbitrary live event streams are supported or tested. No app-server
++  thread/start or turn/start transport is enabled; runtime runner has no sender.
++- Quotas and original catalogue simulation remain in their existing services.
++  New preview is quota-neutral; account quota exhaustion still denies preview.
++  Existing quota/identity tests pass. Live reservation-to-app-server behavior is
++  not verified while generation is blocked.
++
++EVIDENCE: docs/evidence/chatgpt-connection-2026-11-23/
++  session.txt: 12/12 runner, identity, correction, concurrency at third attempt,
++    crash, unknown outcome, permission ordering, protocol and Controller checks.
++  private-service.txt: 3/3 emulator integration/retrieval/revocation/restart checks.
++  boundary.txt: 6/6 private boundary and conversation input checks.
++  retrieval.txt: 4/4 automatic context/correction/cache invalidation/recovery checks.
++  quotas.txt: 10/10 existing account/quota/emulator checks.
++  Both builds, touched-backend lint and public-build canary scan: exit 0.
++  http-verification.json: actual local HTTP preview and repeat have same hashes;
++    execute 403; old API route 503; forged field 400; cross-origin 403; private
++    original asset 403; public-build chat endpoints 404; quota unchanged.
++  retrieval-controller-trace.json: actual synthetic permitted passage and exact
++    source references in adapter input, native checks and validated output hash.
++  adapter-input-trace.json: follow-up/correction retrieval using synthetic fixtures.
++  Current desktop/mobile visual checks: NOT VERIFIED. Browser access host was
++    unavailable; selected native Chrome window was minimized and could not be
++    inspected. No historical screenshot is represented as current evidence.
++  Historical broad suite remains 48/49 plus a separate isolated 1/1 rerun. These
++    focused passes do not relabel that complete suite as passed.
++Reproduce focused checks: node tests/verify-inspire-chatgpt.mjs
++Local HTTP check additionally requires Vite preview on port 4173:
++  npm.cmd run preview -- --host 127.0.0.1 --port 4173 --strictPort
++  node tests/inspire-chatgpt-http.mjs
++
++AUTHENTICATION AND EXACT TECHNICAL LIMITATIONS
++Read-only metadata on November 23: Codex 0.171.0-alpha.13, account type chatgpt,
++planType team, gpt-6-luna listed. No API key was read. account/rateLimits/read was
++unavailable. Metadata availability does not prove a future generation entitlement
++or that the workspace cannot consume purchased credits/top-ups/extra charges.
++Route: local private website -> server-side Codex app-server stdio -> managed
++ChatGPT sign-in, never an automatic OpenAI API-key route.
++
++Fresh installed schemas have no typed output-token cap or retry-disable field on
++turn/start. Generic configuration is not verified enforcement. Official provider
++configuration documents HTTP request_max_retries and SSE stream_max_retries, but
++their coverage of this managed route and all retry layers is not established:
++https://learn.chatgpt.com/docs/config-file/config-reference
++Prompt instructions, 2,000-character output validation, cancellation and output
++schemas cannot enforce a hard 512 generated-token cap or prevent managed retries.
++The local three-attempt ledger caps application attempts; it cannot yet guarantee
++three provider inferences underneath managed transport. Dispatch stays blocked.
++Live event correlation/tool isolation and actual account entitlement also remain
++unverified. Current narrow offline decoder is fail-closed, not a full live client.
++
++EXACT PROPOSED COLLECTION — UNCHANGED, NOT ACTIVATED
++website-counseling-first-test-v1
++Document: docs/counseling-topics-source.md; ID website-counseling; version 1
++SHA-256: 043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4
++One file contains the six website counseling topics. Existing status remains
++published-supporting / supporting-retrieval for local use; external permission
++is unresolved. Current receipt inventory: 71, with zero externally eligible
++real sources. Drafts, MOI, operating rules and reconstructed material stay out.
++Source permission is separate from intervention or public-delivery permission.
++
++REMAINING OWNER/ACCOUNT DECISION (ONE COLLECTION, NOT A FORM PER MESSAGE)
++Sau khi xử lý được các chỗ thiếu kỹ thuật, cần xác nhận điều kiện tài khoản không
++dùng tín dụng mua thêm, không tự nạp và không phát sinh phí. Nếu cho phép bộ nguồn
++đúng phiên bản trên, mỗi lượt chỉ gửi tối đa ba đoạn tham khảo liên quan (mỗi đoạn
++tối đa 1.400 ký tự), kèm tên/phiên bản/dấu kiểm tra/vị trí đoạn, câu hỏi và lịch sử
++giả định cùng cách xưng hô và chỉ dẫn tiếng Việt của phần mềm sang OpenAI qua
++đăng nhập ChatGPT. Không gửi cả thư viện, hồ sơ cá nhân, dữ liệu khách, đặt lịch,
++bản nháp hoặc quy tắc chưa được duyệt. Đồng ý dùng nguồn không cấp quyền can thiệp.
++Sau đó mới có quyết định cho chạy riêng một phiên giả định tối đa ba lần thử;
++lần lỗi/chưa rõ kết quả vẫn tính lượt, không tự thử lại. Hiện chưa có quyết định
++nào được ghi nhận. Quyền chi US$0.0016065 cũ không được tăng hoặc tái sử dụng.
++
++Recommendation: keep simulation/preview usable now. Do not release the real
++three-attempt session until hard token/retry controls and no-extra-charge evidence
++are established. Owner approval cannot make an unsupported technical cap exist.

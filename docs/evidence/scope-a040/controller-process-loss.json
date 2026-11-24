@@ -1,0 +1,9 @@
+{
+  "executed": true,
+  "syntheticOnly": true,
+  "injectedFault": "process exits after mock receipt/state commit, before IPC response",
+  "replay": "OUTCOME_UNKNOWN, no re-execution",
+  "serverRestartReplay": "SESSION_LOST, no re-execution",
+  "pendingQuota": 1,
+  "reconciliation": "BLOCKED: no durable authorized Controller receipt/reconciliation contract; no fabricated completion or refund"
+}

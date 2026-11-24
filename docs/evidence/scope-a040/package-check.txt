@@ -1,0 +1,3 @@
+{"payloadsChecked":1234,"mismatches":[],"verifiedSources":55,"all24MainIdsPresent":true,"statuses":{"UNCHANGED_NOT_GRANTED_BY_INTAKE":54,"PROPOSAL_PENDING_REVIEW":1},"historical_MOI_A":"SOURCE_VERIFICATION_PENDING","educationalDrafts":{"path":"manifests/SOURCE_VERSION_MANIFEST_033.json","sha256":"d54e6e643c0fc6c099728b61de9c9fc6979dc370244f066883247be8174fd719","payloads":43,"lessons":458,"status":"DRAFT_NOT_MODEL_PROMPT_NOT_AUTHORITY"},"workingSourceStatus":"PROPOSAL_PENDING_REVIEW"}
+
+EXIT_CODE=0

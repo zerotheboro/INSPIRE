@@ -1,0 +1,27 @@
+✔ multi-turn passes both ordered roles and corrections preserve exact original wording (15.9137ms)
+✔ duplicate clicks while pending create one user, one operation and one generation (8.1199ms)
+✔ dropped response uses explicit replay with same IDs; no error enters timeline (2.2698ms)
+✔ failure before dispatch never converts an unknown replay into a generation (0.8419ms)
+✔ definitive adapter failure offers a NEW attempt, preserving the same user message (1.5004ms)
+✔ server restart with unresolved operation rejects old epoch, never generates again (4.0021ms)
+✔ expired session and missing operation fail closed (1.002ms)
+✔ UI state keeps an unresolved user turn and closes retry after server restart (2.5927ms)
+✔ a different operation cannot overlap a pending turn in the same conversation (1.8459ms)
+✔ concurrent duplicate requests share the cached operation; changed content conflicts (1.2148ms)
+✔ validation rejects roles, authority/identity fields, invalid corrections and oversized context before adapter (2.5189ms)
+✔ server rejects forged or changed assistant history and invalid assistant correction references (1.0155ms)
+✔ response binding rejects wrong conversation, request, user, epoch, session, role and unsupported fields (1.553ms)
+✔ conversation switching isolates drafts, histories and late responses; fresh store resets memory (4.2373ms)
+✔ HTTP transport handles network failure and callable-like errors without inventing assistant text (28.9706ms)
+✔ simulation responds from input and never imports test fixtures (0.5761ms)
+✔ Firebase callable validates then closes the live path without touching Firestore or a provider (975.0619ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1682.5118
+
+EXIT_CODE=0

@@ -1,0 +1,16 @@
+✔ frozen source-free content, identity and pending authorization survive reopen byte-for-byte (37.0161ms)
+✔ pending grant, changed request/payload/limits or source injection cannot reach transport (43.9684ms)
+✔ even a test grant cannot enable the default live path; production refuses preparation (27.0918ms)
+✔ one attempt under concurrent execution, success replay and process reopen; native Controller binds exact output (16393.518ms)
+✔ transport failure and process crash consume the sole attempt without replacement (4351.0812ms)
+✔ corrupt persisted proposal is never repaired or silently regenerated (15.8969ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24858.2367
+
+EXIT_CODE=0

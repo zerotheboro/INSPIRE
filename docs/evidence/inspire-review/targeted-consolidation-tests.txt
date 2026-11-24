@@ -1,0 +1,17 @@
+C:\Program Files\nodejs\node.exe --import ./tests/register-ts.mjs --test tests/inspire-consolidation.test.mjs
+
+✔ permitted synthetic passages and exact provenance reach the constructed adapter input (666.727ms)
+✔ registered concurrent requests at 28/30 reserve only the final two slots (6372.4298ms)
+✔ actual in-flight adapter spans Vietnam midnight and replay does not charge the new month twice (488.6761ms)
+✔ unknown outcome stays reserved across restart until independent synthetic completion evidence is reconciled once (382.7715ms)
+✔ production config does not initialize a demo service or enable emulator middleware, even with emulator variables set (8.7805ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12795.144
+
+EXIT_CODE=0

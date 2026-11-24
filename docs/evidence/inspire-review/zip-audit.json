@@ -1,0 +1,9 @@
+{
+  "sha256": "4546491fc938a5beb96d33dc5c8d1b3b1faf4c66d0bfe9f5d75839c0df417aac",
+  "independentReader": ".NET ZipArchive",
+  "bytes": 4747837,
+  "executed": true,
+  "allPayloadHashesMatch": true,
+  "entriesVerified": 112,
+  "archive": "INSPIRE-review-2026-11-09.zip"
+}

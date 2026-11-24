@@ -1,0 +1,18 @@
+{
+  "executed": true,
+  "passed": true,
+  "exitCode": 0,
+  "durationMs": 105482,
+  "at": "2026-11-14T06:28:49.210Z",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "--import",
+    "./tests/register-ts.mjs",
+    "--test",
+    "--test-concurrency=1",
+    "tests/inspire-luna-api.test.mjs",
+    "tests/inspire-chat.test.mjs",
+    "tests/inspire-luna.test.mjs",
+    "tests/inspire-emulator.test.mjs"
+  ]
+}

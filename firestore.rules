@@ -1,0 +1,8 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // These new service records are server-only. Production rules are NOT
+    // deployed by this task; reconcile existing production rules before use.
+    match /{document=**} { allow read, write: if false; }
+  }
+}

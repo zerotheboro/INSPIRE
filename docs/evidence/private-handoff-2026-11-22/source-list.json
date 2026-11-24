@@ -1,0 +1,229 @@
+{
+  "collectionId": "website-counseling-first-test-v1",
+  "approval": "NOT_APPROVED",
+  "proposed": [
+    {
+      "collection": "INSPIRE",
+      "documentId": "website-counseling",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "status": "published-supporting",
+      "permittedUse": "supporting-retrieval",
+      "rawFile": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "changed": false,
+      "version": 1,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4"
+    }
+  ],
+  "draftOrReviewOnlyExcluded": [
+    {
+      "collection": "INSPIRE",
+      "documentId": "content-patch-20261109",
+      "title": "WORKING CONTENT PATCH / REVIEW REQUIRED",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "9ed92f1bd789f1591662971f15f4e396fbd350dc0fc2d5f160bd65950453a378",
+      "changed": false,
+      "version": 1,
+      "hash": "9ed92f1bd789f1591662971f15f4e396fbd350dc0fc2d5f160bd65950453a378"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-8e9a8623b864c4282dc3d68c",
+      "title": "sources/recovered/INSPIRE-07-A.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-07-A.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-fb80fc08eb9d7e07fb89e503",
+      "title": "sources/recovered/INSPIRE-07.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "b12c3c31e089b8512052b5fce365addf882c3be987b7b213c18827a469aa027f",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-07.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "b12c3c31e089b8512052b5fce365addf882c3be987b7b213c18827a469aa027f"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-4fd489f3f89a3d3d45d181e0",
+      "title": "sources/recovered/INSPIRE-08-A.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "4a185ba03737dfedcb9bda00fbc639be3ef86687f52f80585cff1d4f87f97e8c",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-08-A.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "4a185ba03737dfedcb9bda00fbc639be3ef86687f52f80585cff1d4f87f97e8c"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-75f25d7843039e680d6e3dbc",
+      "title": "sources/recovered/INSPIRE-08.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "23fe05cabd11c8ac95c9ac443f7345c0c793afb1420ed283b9698f0dd501e8fa",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-08.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "23fe05cabd11c8ac95c9ac443f7345c0c793afb1420ed283b9698f0dd501e8fa"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-b2da184b4a0a43a9be48b5d5",
+      "title": "sources/recovered/INSPIRE-09-A.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "6312ace90cee24b173e8ab350b0612e5a3e6d1b299313e099c44137b8694c822",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-09-A.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "6312ace90cee24b173e8ab350b0612e5a3e6d1b299313e099c44137b8694c822"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-791a3933fa528e77cdf2b9e3",
+      "title": "sources/recovered/INSPIRE-09.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "fc981006e2f443cc50d1178b165e9cf8ab56bfe3ab08b4c264e1d8c824878ac8",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-09.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "fc981006e2f443cc50d1178b165e9cf8ab56bfe3ab08b4c264e1d8c824878ac8"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-1ccbfed3e937733b14712c1a",
+      "title": "sources/recovered/INSPIRE-10-A.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "258c660bfee3a9077749794d47d33535bd61732f1e8d17912f30fcdb38313324",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-10-A.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "258c660bfee3a9077749794d47d33535bd61732f1e8d17912f30fcdb38313324"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-11d4a49158dd050dba3baac7",
+      "title": "sources/recovered/INSPIRE-10.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "bfc1cedd7f8f799eae914a5f056272c3a2857127ba4d0a5c9a4533339b48b49e",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-10.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "bfc1cedd7f8f799eae914a5f056272c3a2857127ba4d0a5c9a4533339b48b49e"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-4c3b435623e488695cefeb4b",
+      "title": "sources/recovered/INSPIRE-11_v2.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "5eda9958f6247f0de3f1161b10e5df5985dedb2c73159181c3ec51aeaf08dc60",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-11_v2.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "5eda9958f6247f0de3f1161b10e5df5985dedb2c73159181c3ec51aeaf08dc60"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "original-26330e6d1e0fa0d5cc2b2f12",
+      "title": "sources/recovered/INSPIRE-12.txt",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "1819bdcd39cfed6ee62c1f803c6fb296f6a36dbdaf57adfa919d836d799871e9",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a",
+        "relativePath": "sources/recovered/INSPIRE-12.txt",
+        "declaredVersion": "Preserved in original filename/header; not normalized or superseded",
+        "authority": "Received original; unresolved runtime/export permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "1819bdcd39cfed6ee62c1f803c6fb296f6a36dbdaf57adfa919d836d799871e9"
+    },
+    {
+      "collection": "INSPIRE",
+      "documentId": "discovered-566f2bdfce74e534612db148",
+      "title": "BAN_DO_TONG_THE_14_DINH_HUONG_INSPIRE_20261117.md",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "rawFile": "75b2c6452128d98db79de1343a9c283841bba927268646272403774cac59985f",
+      "kind": "reference",
+      "provenance": {
+        "packageHash": "unbundled",
+        "relativePath": "C:\\Users\\Admin\\Downloads\\BAN_DO_TONG_THE_14_DINH_HUONG_INSPIRE_20261117.md",
+        "declaredVersion": "Original filename and bytes retained; amendments are separate receipts",
+        "authority": "Received; discovery grants no permission"
+      },
+      "changed": false,
+      "version": 1,
+      "hash": "75b2c6452128d98db79de1343a9c283841bba927268646272403774cac59985f"
+    }
+  ],
+  "selectionNote": "Content-only first-test shortlist; amendments linked, older INSPIRE-11 omitted from shortlist only. No library status or permission changed."
+}

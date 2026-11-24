@@ -1,0 +1,457 @@
+{
+  "executed": true,
+  "tests": 28,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "paid_calls": 0,
+  "real_source_grants_created": 0,
+  "live_enabled": false,
+  "scope": "Actual Windows ACL/DPAPI/SQLite plus synthetic transports; not model quality or actual research permission",
+  "evidence": [
+    {
+      "test": "timeout",
+      "state": {
+        "trial": "trial-a617a3d3c4d8461d8d022b0c59bf1309",
+        "mode": "offline",
+        "status": "HALTED",
+        "attempts": 1,
+        "reserved_microUSD": 160000,
+        "remaining_attempts": 11,
+        "admission_domain": "offline-ledger-test-fixture",
+        "inflight": "0cf70701-1a82-46a5-83f4-05da8b0073ab",
+        "real_source_permissions": {
+          "MOI-CLIX": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "5079ef6a6d2f7dbd57eb1df6e4442f0f042ae0cf88269c39eb11d8b0ca17ebd5",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-CLVI": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "6b2433e3a3ffe9e69420404d179c4c6c0eb9654a0308ae58c8c696fda328dc51",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-CLVII": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "d9e0089e35896970ba5f5d07a7139e20e43029efc2bbe3d1caaba370e9ed14c8",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-CLXIII": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "793043a399cc2b384b0d4bb12e46dbf2b35c2f193b714082ccdeaf9cc806ed68",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-XCII": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "1f2ee34f58ab059018746f894ae652fbb17eb196e5e597051e7e8221aaf959fb",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-XCIII": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "54710f01aa01e523ea99cb45bc65ffe47fd022c1b064fc399b76cdbcb13bb7b5",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "REF-02-4": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "a7fc89e00ef9884711e4226347ca4d65afe6044217b9aa75b6dffab74a364a7e",
+            "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+          },
+          "REF-02-6": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "edd315b59be007a555c5807bbbffff0a80ba52dd5f3d2a6639fde2bddec2b760",
+            "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+          },
+          "REF-02-93": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "a4861a9ac2c1843a156571e17aef5c1251bb979668d8d5755fd72e898ca47128",
+            "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+          }
+        },
+        "evaluation": {
+          "means": {},
+          "rubric_fixture_pass": false,
+          "rubric_pass": null,
+          "genuine_conversation_quality_established": false,
+          "review_domain": "OFFLINE_TEST_INPUTS_ONLY"
+        },
+        "live_enabled": false,
+        "ledger_id": "988cc8f99e451ccb9fa5a1c0c5fbc6ce84c9423a922bd8fb",
+        "manifest_hash": "054380ba28d2ca3c4452ce47f14e96630bca0a92df9c26b5b3d810ce3039e694",
+        "actual_execution_eligible": false,
+        "website_delivery": false
+      }
+    },
+    {
+      "test": "12-slot-offline-journey",
+      "trace": [
+        {
+          "conversation": "C1",
+          "turn": 1,
+          "body_sha256": "bb070bb2436bb144ddccdf6ed16da8aee6dc78ceab23a2c8126def4d71dc3ddc",
+          "validated_sha256": "595956297fac3d1ae08a544d3782f64c9bdd880cb82ab193a9f5c1c2fc4f9d29",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C1",
+          "turn": 2,
+          "body_sha256": "c13da10a4ea08a69ba6f45b04dbe7a590ad87e634209037a4eb35e5d474c0ebc",
+          "validated_sha256": "825978a2a110be580cf13e1301247fa912aeaec148c3ee832f44c2ac76cb4f78",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C1",
+          "turn": 3,
+          "body_sha256": "85f4364966c3f788b98f350dfff947609c3da0601e755dd83335a90ce9866cb0",
+          "validated_sha256": "bb83e4fe0ebbc8869387b3e64be3290d33088c922fcd940f0cb3549c971aaaa0",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C2",
+          "turn": 1,
+          "body_sha256": "211271c73a9482926b1dd8ff9816d6aeb4e61bfa5d65c0af1bdec8e3d5dfb02b",
+          "validated_sha256": "de927feb6b389984eac004dad4c7e8d75f896d4985877e627c55960e9f93f63c",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C2",
+          "turn": 2,
+          "body_sha256": "83083dfcd253e2981382c5663daaba418c0907c4dd7087ffd45d3a62f1fa9ed4",
+          "validated_sha256": "021df696613a1a8344522c77adf5e963857ae37fb73a2b2c84c453616ea2c2fd",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C2",
+          "turn": 3,
+          "body_sha256": "03505fd01a577edc9ceb6b48f3324d0aaffe472ee65841e6550429f09f985f95",
+          "validated_sha256": "b4b03fff942186d1f8574339aa82cbc6b93e38d8d37382821b7f3b48da82a5cc",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C3",
+          "turn": 1,
+          "body_sha256": "49129175da96fea9fb45db574ebdc02a5cf92cd7fd1257d50947f5718eb880d8",
+          "validated_sha256": "768c28511d1e725e9e47e28e3ae6a3d4d3791b8e2d4ab7a28fb55ea744861f6c",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C3",
+          "turn": 2,
+          "body_sha256": "7716ae0d38e158ad6f09da1794acb0eea9c4f7fc80a5409dac110387d137c8ed",
+          "validated_sha256": "e8ebc01417a9189e1f4fe42e85348dc578aea905a1f20e77bb0eee8c405c83e0",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C3",
+          "turn": 3,
+          "body_sha256": "36333f9a41a8a9ff759d0107800bab2dfcf6758b2e0c7c72d00f069d0054d3a9",
+          "validated_sha256": "68474c23df38fe481c74c586a2983c6dc9936327f5031f2722f00ecd0284ad1b",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C4",
+          "turn": 1,
+          "body_sha256": "66eaeba103c5dc943fd0861958cb93991f199a6e6f81f60ce601894311e4cbf3",
+          "validated_sha256": "cc783b784a887a88fd4abe2da3358ca76ad226ce098f7561162d58e4e1425cb4",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C4",
+          "turn": 2,
+          "body_sha256": "34c23bd2403ebb5915802d6d696f742b1150d3c8e6911d3dc78ae7780aa0d51e",
+          "validated_sha256": "bec5dc4e1c63f697d7cd07b8aa51dcad032818471e1575dc3e71ab84041d4979",
+          "reserved_micro": 160000
+        },
+        {
+          "conversation": "C4",
+          "turn": 3,
+          "body_sha256": "c01dce4518d2dc774409c684a12c114488a798e135cd0d95e570b46d6f1506bf",
+          "validated_sha256": "5a05e0c56da9a3f1e0d8b83f6726b4a6d3d1a928b4c6437f89e364d82edd1064",
+          "reserved_micro": 160000
+        }
+      ],
+      "state": {
+        "trial": "trial-05cd17f60788456c804ef1b8692288b2",
+        "mode": "offline",
+        "status": "FINISHED",
+        "attempts": 12,
+        "reserved_microUSD": 1920000,
+        "remaining_attempts": 0,
+        "admission_domain": "offline-ledger-test-fixture",
+        "inflight": null,
+        "real_source_permissions": {
+          "MOI-CLIX": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "5079ef6a6d2f7dbd57eb1df6e4442f0f042ae0cf88269c39eb11d8b0ca17ebd5",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-CLVI": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "6b2433e3a3ffe9e69420404d179c4c6c0eb9654a0308ae58c8c696fda328dc51",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-CLVII": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "d9e0089e35896970ba5f5d07a7139e20e43029efc2bbe3d1caaba370e9ed14c8",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-CLXIII": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "793043a399cc2b384b0d4bb12e46dbf2b35c2f193b714082ccdeaf9cc806ed68",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-XCII": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "1f2ee34f58ab059018746f894ae652fbb17eb196e5e597051e7e8221aaf959fb",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "MOI-XCIII": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "54710f01aa01e523ea99cb45bc65ffe47fd022c1b064fc399b76cdbcb13bb7b5",
+            "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+          },
+          "REF-02-4": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "a7fc89e00ef9884711e4226347ca4d65afe6044217b9aa75b6dffab74a364a7e",
+            "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+          },
+          "REF-02-6": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "edd315b59be007a555c5807bbbffff0a80ba52dd5f3d2a6639fde2bddec2b760",
+            "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+          },
+          "REF-02-93": {
+            "export": false,
+            "internal": false,
+            "section_sha256": "a4861a9ac2c1843a156571e17aef5c1251bb979668d8d5755fd72e898ca47128",
+            "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+          }
+        },
+        "evaluation": {
+          "means": {
+            "naturalness": 4.0,
+            "relevance": 4.0,
+            "continuity": 4.0,
+            "preferences": 4.0
+          },
+          "rubric_fixture_pass": true,
+          "rubric_pass": null,
+          "genuine_conversation_quality_established": false,
+          "review_domain": "OFFLINE_TEST_INPUTS_ONLY"
+        },
+        "live_enabled": false,
+        "ledger_id": "28208ed0c3e39a6db71b0ce0b2332accb9fcddca31c3a222",
+        "manifest_hash": "054380ba28d2ca3c4452ce47f14e96630bca0a92df9c26b5b3d810ce3039e694",
+        "actual_execution_eligible": false,
+        "website_delivery": false
+      }
+    },
+    {
+      "test": "native-control-and-correction",
+      "results": [
+        {
+          "operation": "8ff2f45b-fe3a-4e60-8a2b-b00b38395abf",
+          "status": "QUARANTINED_PENDING_REVIEW",
+          "text": "Phản hồi giả lập chỉ để kiểm tra kỹ thuật: “Tôi tưởng mình giận người bạn vì họ chưa trả lời.”. Không có mô hình được gọi.",
+          "sha256": "de927feb6b389984eac004dad4c7e8d75f896d4985877e627c55960e9f93f63c",
+          "usage": {
+            "conservative_upper_micro": 24070,
+            "estimated_model_nanoUSD": 10228000,
+            "not_an_invoice": true,
+            "reported_input_tokens": 4614,
+            "reported_output_tokens": 100
+          },
+          "proof": {
+            "actual_execution_eligible": false,
+            "candidate_sha256_before_native_strip": "de927feb6b389984eac004dad4c7e8d75f896d4985877e627c55960e9f93f63c",
+            "checks_executed": [
+              "Source/excerpt integrity",
+              "Research triage",
+              "Quote-bound ledger",
+              "Non-MOCK ScopeGuard",
+              "PermissionInspector (actual execution held)",
+              "GeneratedValidator HMAC",
+              "MockSink exact bytes/source/policy recheck",
+              "Native receipt-bound Session.commit"
+            ],
+            "decision_fingerprint": "7c63b2be8ed537450509a2ee6ba5884f9dc6940313b25cf6d169b0ed8b7caccc",
+            "mock_control_receipt": {
+              "action_id": "8ff2f45b-fe3a-4e60-8a2b-b00b38395abf",
+              "decision_fingerprint": "7c63b2be8ed537450509a2ee6ba5884f9dc6940313b25cf6d169b0ed8b7caccc",
+              "event": "MOCK_DELIVERY_ACKNOWLEDGED",
+              "response_sha256": "de927feb6b389984eac004dad4c7e8d75f896d4985877e627c55960e9f93f63c"
+            },
+            "not_established": [
+              "Clinical validation",
+              "Actual model or user-delivery permission"
+            ],
+            "origin": "RESEARCH_OFFLINE_CANDIDATE",
+            "permission_observation": {
+              "action_scope": {
+                "activity": "FOUNDATIONAL_SUPPORT",
+                "capability_id": "draft.generated_foundational_conversation",
+                "context_sha256": "3f907202025b13c36b063fa5bb244e0956cb7b2ff9f3b0e05ce4a69e5488533b",
+                "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE",
+                "identity_sha256": "4ef5ab0909116152b474916dcded88430f8ea4476465b89fe482b2ab01984515",
+                "runtime_role": "SYNTHETIC_CONTROLLER"
+              },
+              "actual_execution_eligible": false,
+              "classification": "SOURCE_UNAVAILABLE",
+              "evaluated_at": 1794637381.789565,
+              "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+              "evidence_domain": "NOT_VERIFIED",
+              "lookup_status": "REGISTRY_UNAVAILABLE",
+              "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+              "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+              "source_state": null
+            },
+            "user_delivery": false,
+            "validated_sha256": "de927feb6b389984eac004dad4c7e8d75f896d4985877e627c55960e9f93f63c"
+          },
+          "domain": "OFFLINE_QUARANTINED_RESEARCH_ONLY",
+          "user_delivery": false
+        },
+        {
+          "operation": "ec8126c0-79f4-4299-8f4e-dff83a68ac1c",
+          "status": "QUARANTINED_PENDING_REVIEW",
+          "text": "Phản hồi giả lập chỉ để kiểm tra kỹ thuật: “Tôi đính chính: là đồng nghiệp, và tôi buồn hơn là giận.”. Không có mô hình được gọi.",
+          "sha256": "021df696613a1a8344522c77adf5e963857ae37fb73a2b2c84c453616ea2c2fd",
+          "usage": {
+            "conservative_upper_micro": 27280,
+            "estimated_model_nanoUSD": 11512000,
+            "not_an_invoice": true,
+            "reported_input_tokens": 5256,
+            "reported_output_tokens": 100
+          },
+          "proof": {
+            "actual_execution_eligible": false,
+            "candidate_sha256_before_native_strip": "021df696613a1a8344522c77adf5e963857ae37fb73a2b2c84c453616ea2c2fd",
+            "checks_executed": [
+              "Source/excerpt integrity",
+              "Research triage",
+              "Quote-bound ledger",
+              "Non-MOCK ScopeGuard",
+              "PermissionInspector (actual execution held)",
+              "GeneratedValidator HMAC",
+              "MockSink exact bytes/source/policy recheck",
+              "Native receipt-bound Session.commit"
+            ],
+            "decision_fingerprint": "247b3e346402d6db29fad741905bdaf3eb1109e8b0e6844d139d95f4bd87d859",
+            "mock_control_receipt": {
+              "action_id": "ec8126c0-79f4-4299-8f4e-dff83a68ac1c",
+              "decision_fingerprint": "247b3e346402d6db29fad741905bdaf3eb1109e8b0e6844d139d95f4bd87d859",
+              "event": "MOCK_DELIVERY_ACKNOWLEDGED",
+              "response_sha256": "021df696613a1a8344522c77adf5e963857ae37fb73a2b2c84c453616ea2c2fd"
+            },
+            "not_established": [
+              "Clinical validation",
+              "Actual model or user-delivery permission"
+            ],
+            "origin": "RESEARCH_OFFLINE_CANDIDATE",
+            "permission_observation": {
+              "action_scope": {
+                "activity": "FOUNDATIONAL_SUPPORT",
+                "capability_id": "draft.generated_foundational_conversation",
+                "context_sha256": "df8497cdd5819961d19bf6f2101388416e28dd62ea32f415788b007f0ceb1f17",
+                "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE",
+                "identity_sha256": "92458e63086c18b18f787c356348fabe89cefbd662f9b4e95ab5447c3f371b05",
+                "runtime_role": "SYNTHETIC_CONTROLLER"
+              },
+              "actual_execution_eligible": false,
+              "classification": "SOURCE_UNAVAILABLE",
+              "evaluated_at": 1794637385.724208,
+              "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+              "evidence_domain": "NOT_VERIFIED",
+              "lookup_status": "REGISTRY_UNAVAILABLE",
+              "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+              "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+              "source_state": null
+            },
+            "user_delivery": false,
+            "validated_sha256": "021df696613a1a8344522c77adf5e963857ae37fb73a2b2c84c453616ea2c2fd"
+          },
+          "domain": "OFFLINE_QUARANTINED_RESEARCH_ONLY",
+          "user_delivery": false
+        },
+        {
+          "operation": "8739d9ce-1aab-4b33-86b7-804e5cc0b9dd",
+          "status": "QUARANTINED_PENDING_REVIEW",
+          "text": "Phản hồi giả lập chỉ để kiểm tra kỹ thuật: “Đừng đoán lý do của họ; giúp tôi nghĩ một câu hỏi nhẹ nhàng.”. Không có mô hình được gọi.",
+          "sha256": "b4b03fff942186d1f8574339aa82cbc6b93e38d8d37382821b7f3b48da82a5cc",
+          "usage": {
+            "conservative_upper_micro": 28900,
+            "estimated_model_nanoUSD": 12160000,
+            "not_an_invoice": true,
+            "reported_input_tokens": 5580,
+            "reported_output_tokens": 100
+          },
+          "proof": {
+            "actual_execution_eligible": false,
+            "candidate_sha256_before_native_strip": "b4b03fff942186d1f8574339aa82cbc6b93e38d8d37382821b7f3b48da82a5cc",
+            "checks_executed": [
+              "Source/excerpt integrity",
+              "Research triage",
+              "Quote-bound ledger",
+              "Non-MOCK ScopeGuard",
+              "PermissionInspector (actual execution held)",
+              "GeneratedValidator HMAC",
+              "MockSink exact bytes/source/policy recheck",
+              "Native receipt-bound Session.commit"
+            ],
+            "decision_fingerprint": "5dbc615dda781cb671a7d9476c52c1e36c977d7012119a43dcb755bb512d6922",
+            "mock_control_receipt": {
+              "action_id": "8739d9ce-1aab-4b33-86b7-804e5cc0b9dd",
+              "decision_fingerprint": "5dbc615dda781cb671a7d9476c52c1e36c977d7012119a43dcb755bb512d6922",
+              "event": "MOCK_DELIVERY_ACKNOWLEDGED",
+              "response_sha256": "b4b03fff942186d1f8574339aa82cbc6b93e38d8d37382821b7f3b48da82a5cc"
+            },
+            "not_established": [
+              "Clinical validation",
+              "Actual model or user-delivery permission"
+            ],
+            "origin": "RESEARCH_OFFLINE_CANDIDATE",
+            "permission_observation": {
+              "action_scope": {
+                "activity": "FOUNDATIONAL_SUPPORT",
+                "capability_id": "draft.generated_foundational_conversation",
+                "context_sha256": "32d2f90f9bb9e4d7208c4fe1652d323487cccf1c9601fb46959804abfa3f9bd0",
+                "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE",
+                "identity_sha256": "bcc8d5e1e038b8b46ec5fe7d5f237f1a9f84a8f941c5fb73c4ae608195b59783",
+                "runtime_role": "SYNTHETIC_CONTROLLER"
+              },
+              "actual_execution_eligible": false,
+              "classification": "SOURCE_UNAVAILABLE",
+              "evaluated_at": 1794637389.5781274,
+              "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+              "evidence_domain": "NOT_VERIFIED",
+              "lookup_status": "REGISTRY_UNAVAILABLE",
+              "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+              "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+              "source_state": null
+            },
+            "user_delivery": false,
+            "validated_sha256": "b4b03fff942186d1f8574339aa82cbc6b93e38d8d37382821b7f3b48da82a5cc"
+          },
+          "domain": "OFFLINE_QUARANTINED_RESEARCH_ONLY",
+          "user_delivery": false
+        }
+      ]
+    }
+  ]
+}

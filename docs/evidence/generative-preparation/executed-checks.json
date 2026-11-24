@@ -1,0 +1,105 @@
+{
+  "executedAt": "2026-11-09T14:17:24.184Z",
+  "liveModelEnabled": false,
+  "paidCalls": 0,
+  "results": {
+    "candidate-interface": {
+      "executed": true,
+      "executedAt": "2026-11-09T14:17:24.064Z",
+      "command": [
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\web_develope\\INSPIRE\\.tools.local\\python312\\python.exe",
+        "-X",
+        "utf8",
+        "tests/inspire-generative.test.py"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 4369
+    },
+    "source-candidates": {
+      "executed": true,
+      "executedAt": "2026-11-09T14:17:24.184Z",
+      "command": [
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\web_develope\\INSPIRE\\.tools.local\\python312\\python.exe",
+        "-X",
+        "utf8",
+        "tests/inspire-trial-source-audit.py"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 115
+    },
+    "backend-lint": {
+      "executed": true,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "--prefix",
+        "functions",
+        "run",
+        "lint:chat"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 12238
+    },
+    "functions-build": {
+      "executed": true,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "--prefix",
+        "functions",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 9147
+    },
+    "website-build": {
+      "executed": true,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "run",
+        "build"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 12828
+    },
+    "public-build-audit": {
+      "executed": true,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-build-audit.mjs"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 131
+    },
+    "website-browser": {
+      "executed": true,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-browser.mjs"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 31823
+    },
+    "production-browser": {
+      "executed": true,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-browser.mjs",
+        "--production"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 5537
+    }
+  },
+  "priorMilestoneEvidence": "../scope-a040/ (executed in preceding milestone, retained separately)"
+}

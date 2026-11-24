@@ -1,0 +1,16 @@
+{
+  "executed": true,
+  "realProviderRequests": 0,
+  "mode": "private API preview; generation held",
+  "checks": {
+    "session": 200,
+    "preview": 200,
+    "unauthorizedExecute": 403,
+    "forgedQuota": 400,
+    "crossOrigin": 403,
+    "privateRawAsset": 403,
+    "quotaUnchanged": true,
+    "routesReturnHTML": true
+  },
+  "browserRendering": "NOT_VERIFIED_BY_THIS_HTTP_TEST"
+}

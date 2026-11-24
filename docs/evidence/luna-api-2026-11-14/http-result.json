@@ -1,0 +1,11 @@
+{
+  "executed": true,
+  "passed": true,
+  "exitCode": 0,
+  "durationMs": 1214,
+  "at": "2026-11-14T06:24:57.233Z",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "tests/inspire-luna-http.mjs"
+  ]
+}

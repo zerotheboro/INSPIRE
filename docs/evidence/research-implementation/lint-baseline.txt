@@ -1,0 +1,3 @@
+PASS: 30 unchanged booking lint errors; zero in other backend files; unchanged root config missing @eslint/js.
+
+EXIT_CODE=0

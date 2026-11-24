@@ -1,0 +1,42 @@
+
+> lint
+> node lint.cjs .
+
+
+C:\Users\Admin\OneDrive\Desktop\web_develope\INSPIRE\functions\src\index.ts
+    1:9   error  There should be no space after '{'             object-curly-spacing
+    1:28  error  There should be no space before '}'            object-curly-spacing
+    2:9   error  There should be no space after '{'             object-curly-spacing
+    2:22  error  There should be no space before '}'            object-curly-spacing
+    3:9   error  There should be no space after '{'             object-curly-spacing
+    3:23  error  There should be no space before '}'            object-curly-spacing
+    4:9   error  There should be no space after '{'             object-curly-spacing
+    4:34  error  There should be no space before '}'            object-curly-spacing
+    6:9   error  There should be no space after '{'             object-curly-spacing
+    6:19  error  There should be no space before '}'            object-curly-spacing
+   45:11  error  '?' should be placed at the end of the line    operator-linebreak
+   46:11  error  ':' should be placed at the end of the line    operator-linebreak
+   52:11  error  '?' should be placed at the end of the line    operator-linebreak
+   53:11  error  ':' should be placed at the end of the line    operator-linebreak
+   57:11  error  '?' should be placed at the end of the line    operator-linebreak
+   58:11  error  ':' should be placed at the end of the line    operator-linebreak
+   62:11  error  '?' should be placed at the end of the line    operator-linebreak
+   63:11  error  ':' should be placed at the end of the line    operator-linebreak
+   83:1   error  Expected indentation of 4 spaces but found 3   indent
+   84:1   error  Expected indentation of 6 spaces but found 2   indent
+   85:1   error  Expected indentation of 8 spaces but found 4   indent
+   86:1   error  Expected indentation of 8 spaces but found 4   indent
+   87:1   error  Expected indentation of 10 spaces but found 6  indent
+   88:1   error  Expected indentation of 10 spaces but found 6  indent
+   89:1   error  Expected indentation of 8 spaces but found 4   indent
+   90:1   error  Expected indentation of 8 spaces but found 4   indent
+   91:1   error  Expected indentation of 8 spaces but found 4   indent
+  112:1   error  Expected indentation of 6 spaces but found 4   indent
+  114:1   error  Expected indentation of 6 spaces but found 4   indent
+  116:1   error  Expected indentation of 6 spaces but found 4   indent
+
+✖ 30 problems (30 errors, 0 warnings)
+  30 errors and 0 warnings potentially fixable with the `--fix` option.
+
+
+EXIT_CODE=1

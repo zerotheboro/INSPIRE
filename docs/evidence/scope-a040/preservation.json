@@ -1,0 +1,27 @@
+{
+  "executed": true,
+  "baseline": "Private pre-task source snapshot, not Git HEAD",
+  "unchangedSourceFiles": 59,
+  "changedFiles": [
+    "REVIEW.md",
+    "UNRESOLVED.md",
+    "docs/scope-a040.md",
+    "functions/controller040_bridge.py",
+    "functions/package.json",
+    "functions/src/inspireController040.ts",
+    "functions/src/inspireHttp.ts",
+    "functions/src/inspireKnowledge.ts",
+    "functions/src/inspireLocalService.ts",
+    "tests/inspire-browser.mjs",
+    "tests/inspire-build-audit.mjs",
+    "tests/scope-a040-bugs.test.mjs",
+    "tests/scope-a040-diff.mjs",
+    "tests/scope-a040-integration.test.mjs",
+    "tests/scope-a040-lint-baseline.mjs",
+    "tests/start-inspire-emulators.mjs",
+    "tests/verify-controller040-package.mjs",
+    "tests/verify-scope-a040.mjs",
+    "vite.config.ts"
+  ],
+  "scope": "Source/config/docs only. Prior dirty changes are retained; generated outputs, evidence, tools, private bundle and secrets excluded."
+}

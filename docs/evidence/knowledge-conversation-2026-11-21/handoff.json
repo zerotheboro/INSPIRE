@@ -1,0 +1,81 @@
+{
+  "liveGenerationRequests": 0,
+  "preferredRoute": "ChatGPT sign-in / Codex app-server; dispatch remains unimplemented and blocked",
+  "sourceReceipts": 71,
+  "externallyEligibleRealSources": 0,
+  "incrementalReimport": {
+    "processed": 71,
+    "changed": 0
+  },
+  "tests": {
+    "broadSuite": {
+      "total": 49,
+      "passed": 48,
+      "failed": 1,
+      "failure": "native Controller held before injected response during interrupted tool execution",
+      "note": "Retained initial failure; only the failed test rerun, with injected offline response and fake credential. Follow-up native check passed."
+    },
+    "nativeControllerRecheck": {
+      "passed": 1,
+      "liveCalls": 0
+    },
+    "newKnowledgeTestsFinal": {
+      "passed": 4,
+      "includes": [
+        "real selected passage bytes in held adapter input",
+        "followup and correction preservation",
+        "conflicting sources preserved without adjudication",
+        "content/permission invalidation",
+        "lost response, duplicate prevention and stable replay",
+        "session-isolated diagnostics",
+        "emulator index version recovery"
+      ]
+    },
+    "accountEmulatorRecheck": {
+      "passed": 10
+    },
+    "httpThreeTurnNativeSimulation": {
+      "turns": 3,
+      "statuses": [
+        200,
+        200,
+        200
+      ],
+      "followup": true,
+      "correction": true
+    }
+  },
+  "builds": {
+    "website": "PASS; existing large-chunk warning",
+    "functions": "PASS",
+    "touchedBackendLint": "PASS",
+    "publicBuildScan": "17 assets, 11 forbidden markers, zero hits"
+  },
+  "browser": "NOT VERIFIED: Computer Use stopped because Chrome URL could not be determined reliably",
+  "remaining": [
+    "App-server generation dispatch and provider token/retry controls not connected/tested",
+    "No-additional-charge billing condition unresolved",
+    "No real library source has external-use permission",
+    "Binary PDF/DOCX/ZIP sources retained as receipts, not extracted for retrieval",
+    "Conflict instruction and preserved contradictory passages tested offline; generated honesty/quality unverified"
+  ],
+  "proposedSessionNotAuthorized": {
+    "conversations": 1,
+    "maxAttempts": 3,
+    "maxOutputTokensEach": 512,
+    "additionalSpendUSD": 0,
+    "automaticRetries": false,
+    "oldAuthorizationReused": false
+  },
+  "modifiedSourceFiles": [
+    "functions/src/inspireLuna.ts",
+    "functions/src/inspireKnowledge.ts",
+    "vite.config.ts",
+    "src/services/InspireAIconnect.ts",
+    "src/pages/AIInspire.tsx",
+    "tests/import-inspire-knowledge.mjs",
+    "docs/inspire-luna-api.md",
+    "tests/inspire-knowledge-conversation.test.mjs"
+  ],
+  "sourceHistory": "Immutable private raw copies, Firestore versions and local receipt history; index version recovery floor from private receipts"
+}

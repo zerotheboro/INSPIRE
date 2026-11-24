@@ -1,0 +1,146 @@
+{
+  "executed": true,
+  "mock_transport_calls": 1,
+  "replay_added_calls": 0,
+  "state": {
+    "trial": "emulator-b193510c86b34fceb60b8ccd6fdf4ca1",
+    "mode": "offline",
+    "status": "ACTIVE",
+    "attempts": 1,
+    "reserved_microUSD": 160000,
+    "remaining_attempts": 11,
+    "admission_domain": "firebase-demo-emulator",
+    "inflight": null,
+    "real_source_permissions": {
+      "MOI-CLIX": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "5079ef6a6d2f7dbd57eb1df6e4442f0f042ae0cf88269c39eb11d8b0ca17ebd5",
+        "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+      },
+      "MOI-CLVI": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "6b2433e3a3ffe9e69420404d179c4c6c0eb9654a0308ae58c8c696fda328dc51",
+        "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+      },
+      "MOI-CLVII": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "d9e0089e35896970ba5f5d07a7139e20e43029efc2bbe3d1caaba370e9ed14c8",
+        "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+      },
+      "MOI-CLXIII": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "793043a399cc2b384b0d4bb12e46dbf2b35c2f193b714082ccdeaf9cc806ed68",
+        "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+      },
+      "MOI-XCII": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "1f2ee34f58ab059018746f894ae652fbb17eb196e5e597051e7e8221aaf959fb",
+        "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+      },
+      "MOI-XCIII": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "54710f01aa01e523ea99cb45bc65ffe47fd022c1b064fc399b76cdbcb13bb7b5",
+        "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+      },
+      "REF-02-4": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "a7fc89e00ef9884711e4226347ca4d65afe6044217b9aa75b6dffab74a364a7e",
+        "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+      },
+      "REF-02-6": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "edd315b59be007a555c5807bbbffff0a80ba52dd5f3d2a6639fde2bddec2b760",
+        "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+      },
+      "REF-02-93": {
+        "export": false,
+        "internal": false,
+        "section_sha256": "a4861a9ac2c1843a156571e17aef5c1251bb979668d8d5755fd72e898ca47128",
+        "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19"
+      }
+    },
+    "evaluation": {
+      "means": {
+        "naturalness": 4,
+        "relevance": 4,
+        "continuity": 4,
+        "preferences": 4
+      },
+      "rubric_fixture_pass": false,
+      "rubric_pass": null,
+      "genuine_conversation_quality_established": false,
+      "review_domain": "OFFLINE_TEST_INPUTS_ONLY"
+    },
+    "live_enabled": false,
+    "ledger_id": "c6d47a27c5da98c457f7a794ab70e7cd56647717031ba96e",
+    "manifest_hash": "181afd86ed674d2c92cfd7468a2332e04711d929bd1df40158cb72a6d5128f77",
+    "actual_execution_eligible": false,
+    "website_delivery": false
+  },
+  "proof": {
+    "actual_execution_eligible": false,
+    "candidate_sha256_before_native_strip": "595956297fac3d1ae08a544d3782f64c9bdd880cb82ab193a9f5c1c2fc4f9d29",
+    "checks_executed": [
+      "Source/excerpt integrity",
+      "Research triage",
+      "Quote-bound ledger",
+      "Non-MOCK ScopeGuard",
+      "PermissionInspector (actual execution held)",
+      "GeneratedValidator HMAC",
+      "MockSink exact bytes/source/policy recheck",
+      "Native receipt-bound Session.commit"
+    ],
+    "decision_fingerprint": "92c6519f04d0179c94c16bbf0e24472c4e805dbd768ff2c4790bb4b955e10729",
+    "mock_control_receipt": {
+      "action_id": "8df26de3-4e67-4b26-a923-1f2c37ab77ed",
+      "decision_fingerprint": "92c6519f04d0179c94c16bbf0e24472c4e805dbd768ff2c4790bb4b955e10729",
+      "event": "MOCK_DELIVERY_ACKNOWLEDGED",
+      "response_sha256": "595956297fac3d1ae08a544d3782f64c9bdd880cb82ab193a9f5c1c2fc4f9d29"
+    },
+    "not_established": [
+      "Clinical validation",
+      "Actual model or user-delivery permission"
+    ],
+    "origin": "RESEARCH_OFFLINE_CANDIDATE",
+    "permission_observation": {
+      "action_scope": {
+        "activity": "FOUNDATIONAL_SUPPORT",
+        "capability_id": "draft.generated_foundational_conversation",
+        "context_sha256": "fa6cb883ac81ea0c6663bd994f2854b06d68bcc5be5329a6fed0660c530887bf",
+        "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE",
+        "identity_sha256": "ee604afbdf5a65c0c5e531be6251211530f8a28b1f28246e463716f520d50e3e",
+        "runtime_role": "SYNTHETIC_CONTROLLER"
+      },
+      "actual_execution_eligible": false,
+      "classification": "SOURCE_UNAVAILABLE",
+      "evaluated_at": 1794318680.762651,
+      "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+      "evidence_domain": "NOT_VERIFIED",
+      "lookup_status": "REGISTRY_UNAVAILABLE",
+      "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+      "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+      "source_state": null
+    },
+    "user_delivery": false,
+    "validated_sha256": "595956297fac3d1ae08a544d3782f64c9bdd880cb82ab193a9f5c1c2fc4f9d29"
+  },
+  "quota": {
+    "limit": 30,
+    "completed": 1,
+    "pending": 0,
+    "remaining": 29,
+    "period": "2026-11",
+    "nextReset": "2026-11-30T17:00:00.000Z"
+  },
+  "paidCalls": 0,
+  "realOAuth": false,
+  "domain": "Synthetic Firebase emulators only; token never persisted"
+}

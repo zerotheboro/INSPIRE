@@ -1,0 +1,73 @@
+{
+  "results": [
+    {
+      "check": "Desktop welcome and simulation disclosure",
+      "status": "PASS"
+    },
+    {
+      "check": "Multi-turn context, loading and duplicate submission prevention",
+      "status": "PASS"
+    },
+    {
+      "check": "Explicit correction preserves original message",
+      "status": "PASS"
+    },
+    {
+      "check": "Actual lost HTTP response and explicit replay",
+      "status": "PASS",
+      "detail": "Same user and operation; error outside timeline"
+    },
+    {
+      "check": "Conversation switching and independent drafts",
+      "status": "PASS"
+    },
+    {
+      "check": "390px mobile layout, 18px message text, 48px controls and conversation navigation",
+      "status": "PASS",
+      "detail": {
+        "body": "18px",
+        "send": 48,
+        "menu": 48
+      }
+    },
+    {
+      "check": "Refresh resets prototype conversations and drafts",
+      "status": "PASS"
+    },
+    {
+      "check": "Browser email registration/link, optional profile, signout/reload and sign-in",
+      "status": "PASS",
+      "detail": "No replacement guest allowance; registered allowance 30"
+    },
+    {
+      "check": "Six counselling topics; PDF, share handler and real PNG export",
+      "status": "PASS",
+      "detail": [
+        "Quan hệ với chính mình",
+        "Đời sống nội tâm",
+        "Quan hệ với người khác",
+        "Vận hành và hành động",
+        "Phương hướng, giá trị và lựa chọn",
+        "Ý nghĩa và cách sống"
+      ]
+    },
+    {
+      "check": "Retreat page and booking form render",
+      "status": "PASS",
+      "detail": "No booking submitted"
+    },
+    {
+      "check": "No provider/booking calls or unhandled browser exceptions",
+      "status": "PASS"
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "welcome-desktop.png",
+    "conversation-desktop.png",
+    "retry-desktop.png",
+    "conversation-mobile.png",
+    "account-profile-desktop.png",
+    "account-profile-mobile.png"
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "executed": true,
+  "scope": [
+    "repository",
+    "known original Downloads files",
+    "private receipts/raw copies",
+    "attached filenames",
+    "accessible Pages titles (no relevant sources found)"
+  ],
+  "originalSources": [
+    {
+      "documentId": "website-counseling",
+      "originalFile": "counseling-topics-source.md",
+      "originalPresent": true,
+      "originalBytes": 35014,
+      "sha256": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "storedRawSha256": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "receiptSha256": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "byteVerified": true,
+      "configuredStatus": "published-supporting",
+      "configuredUse": "supporting-retrieval",
+      "establishedUserFacingRuntimePermission": false,
+      "permissionEvidence": "No separate approval evidence found in inspected materials; receipt and configured use do not establish approval."
+    },
+    {
+      "documentId": "content-patch-20261109",
+      "originalFile": "01_CONTENT_PATCH_FULL.md",
+      "originalPresent": true,
+      "originalBytes": 31538,
+      "sha256": "9ed92f1bd789f1591662971f15f4e396fbd350dc0fc2d5f160bd65950453a378",
+      "storedRawSha256": "9ed92f1bd789f1591662971f15f4e396fbd350dc0fc2d5f160bd65950453a378",
+      "receiptSha256": "9ed92f1bd789f1591662971f15f4e396fbd350dc0fc2d5f160bd65950453a378",
+      "byteVerified": true,
+      "configuredStatus": "review-required",
+      "configuredUse": "receipt-only",
+      "establishedUserFacingRuntimePermission": false,
+      "permissionEvidence": "No separate approval evidence found in inspected materials; receipt and configured use do not establish approval."
+    },
+    {
+      "documentId": "devamicus-inspire-original",
+      "originalFile": "Devamicus_INSPIRE.pdf",
+      "originalPresent": true,
+      "originalBytes": 839157,
+      "sha256": "67a0e479419d605abc26f5ae4311e12f7e7fd33e557cee7fe377509f9f5d71a6",
+      "storedRawSha256": "67a0e479419d605abc26f5ae4311e12f7e7fd33e557cee7fe377509f9f5d71a6",
+      "receiptSha256": "67a0e479419d605abc26f5ae4311e12f7e7fd33e557cee7fe377509f9f5d71a6",
+      "byteVerified": true,
+      "configuredStatus": "unverified",
+      "configuredUse": "receipt-only",
+      "establishedUserFacingRuntimePermission": false,
+      "permissionEvidence": "No separate approval evidence found in inspected materials; receipt and configured use do not establish approval."
+    },
+    {
+      "documentId": "pec-stage1-5-receipt",
+      "originalFile": "INSPIRE_PEC_STAGE1_5_DURABLE_ENGINE.py",
+      "originalPresent": true,
+      "originalBytes": 21670,
+      "sha256": "3120e01a4061e3e0b53fe5f16f0910ff2761862d0dda836fd8054211cdb4bb33",
+      "storedRawSha256": "3120e01a4061e3e0b53fe5f16f0910ff2761862d0dda836fd8054211cdb4bb33",
+      "receiptSha256": "3120e01a4061e3e0b53fe5f16f0910ff2761862d0dda836fd8054211cdb4bb33",
+      "byteVerified": true,
+      "configuredStatus": "unverified",
+      "configuredUse": "receipt-only",
+      "establishedUserFacingRuntimePermission": false,
+      "permissionEvidence": "No separate approval evidence found in inspected materials; receipt and configured use do not establish approval."
+    },
+    {
+      "documentId": "website-source-bundle",
+      "originalFile": "INSPIRE-main.zip",
+      "originalPresent": true,
+      "originalBytes": 3156323,
+      "sha256": "25aa0f775ff2b04f27309876f670a053dd9afb1870cd1b3db6732de7cc76ee12",
+      "storedRawSha256": "25aa0f775ff2b04f27309876f670a053dd9afb1870cd1b3db6732de7cc76ee12",
+      "receiptSha256": "25aa0f775ff2b04f27309876f670a053dd9afb1870cd1b3db6732de7cc76ee12",
+      "byteVerified": true,
+      "configuredStatus": "unverified",
+      "configuredUse": "receipt-only",
+      "establishedUserFacingRuntimePermission": false,
+      "permissionEvidence": "No separate approval evidence found in inspected materials; receipt and configured use do not establish approval."
+    }
+  ],
+  "establishedRuntimePermissions": [],
+  "configuredSupportingSources": [
+    {
+      "documentId": "website-counseling",
+      "note": "Previously configured website supporting text. Publication/configuration alone is not a separate permission receipt; not certified as authoritative."
+    }
+  ],
+  "reviewOnlyDraftOrUnverified": [
+    {
+      "documentId": "content-patch-20261109",
+      "status": "review-required"
+    },
+    {
+      "documentId": "devamicus-inspire-original",
+      "status": "unverified"
+    },
+    {
+      "documentId": "pec-stage1-5-receipt",
+      "status": "unverified"
+    },
+    {
+      "documentId": "website-source-bundle",
+      "status": "unverified"
+    }
+  ],
+  "archiveCheck": "executed-central-directory-only",
+  "archiveDocuments": [
+    "INSPIRE-main/README.md",
+    "INSPIRE-main/ads.txt",
+    "INSPIRE-main/docs/counseling-topics-source.md"
+  ],
+  "missingDependencies": [
+    "24-document original INSPIRE bundle is not byte-accessible in the checked locations; no request to resend documents individually was made.",
+    "Controller 0.4.0 contract/package and authoritative Knowledge Core not available in checked sources.",
+    "Available PEC stage 1.5 Python file requires missing mock_engine.pec_mock and explicitly declares test-only use.",
+    "458 original lessons and direct historical MOI-01-A verification evidence not available; draft/pending status retained.",
+    "Separate user-facing runtime permission evidence for actual sources remains unresolved."
+  ],
+  "approvalChangesMade": false,
+  "paidModelCalled": false
+}

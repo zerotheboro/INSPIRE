@@ -1,0 +1,53 @@
+{
+  "inspectedAt": "2026-11-20T10:27:43.320Z",
+  "connection": "official Codex app-server over local stdio",
+  "requestedMethods": [
+    "initialize",
+    "account/read",
+    "model/list",
+    "account/rateLimits/read"
+  ],
+  "generationRequests": 0,
+  "apiKeyRead": false,
+  "privateExcerptsSent": false,
+  "account": {
+    "type": "chatgpt",
+    "planType": "team",
+    "requiresOpenaiAuth": true
+  },
+  "lunaModels": [
+    {
+      "model": "gpt-6-luna",
+      "id": "gpt-6-luna",
+      "displayName": "GPT-6-Luna",
+      "hidden": false,
+      "defaultReasoningEffort": "medium"
+    },
+    {
+      "model": "gpt-5.6-luna",
+      "id": "gpt-5.6-luna",
+      "displayName": "GPT-5.6-Luna",
+      "hidden": false,
+      "defaultReasoningEffort": "medium"
+    }
+  ],
+  "usage": {
+    "planType": "team",
+    "primary": {
+      "usedPercent": 71,
+      "windowDurationMins": 300,
+      "resetsAt": 1795170929
+    },
+    "secondary": {
+      "usedPercent": 11,
+      "windowDurationMins": 10080,
+      "resetsAt": 1795757729
+    },
+    "rateLimitReachedType": null,
+    "creditDetailsPresent": true,
+    "hasCredits": false,
+    "unlimited": false
+  },
+  "errors": [],
+  "paidOverageVerifiedDisabled": false
+}

@@ -1,0 +1,10 @@
+{
+  "executed": true,
+  "previewOnly": true,
+  "realProviderRequests": 0,
+  "checks": {
+    "/api/inspire-luna": 404,
+    "/api/inspire-prototype": 404
+  },
+  "renderedBrowser": "NOT_VERIFIED"
+}

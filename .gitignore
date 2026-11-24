@@ -1,5 +1,9 @@
 # Logs
 logs
+.tools.local/
+.private.local/
+INSPIRE-review-*.zip
+*-debug.log
 *.log
 npm-debug.log*
 yarn-debug.log*

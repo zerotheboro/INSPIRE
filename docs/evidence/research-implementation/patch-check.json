@@ -1,0 +1,7 @@
+{
+  "executed": true,
+  "command": "git apply --check ../../docs/evidence/research-implementation/focused-implementation.patch",
+  "exitCode": 0,
+  "against": "Exact pre-task REVIEW.md and functions/package.json in isolated workspace scratch directory; no staging or apply",
+  "newSourceFilesAlsoChecked": true
+}

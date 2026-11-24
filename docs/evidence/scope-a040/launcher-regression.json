@@ -1,0 +1,9 @@
+{
+  "executed": true,
+  "windowsConstruction": "C:\\JDK21\\bin;C:\\Windows;C:\\other",
+  "posixConstruction": "/opt/jdk21/bin:/usr/bin:/bin",
+  "portableExecutableDiscovery": "java.exe on Windows; java on POSIX",
+  "actualHostJavaVersion": "openjdk version \"21.0.13.0.2\" 2026-10-22 LTS\r\nOpenJDK Runtime Environment Microsoft-15780113 (build 21.0.13.0.2+1-LTS)\r\nOpenJDK 64-Bit Server VM Microsoft-15780113 (build 21.0.13.0.2+1-LTS, mixed mode, sharing)\r\n",
+  "parentEnvironmentUnchanged": true,
+  "limitation": "Windows runtime executed; POSIX environment/discovery simulated, not a Linux/macOS launcher run."
+}

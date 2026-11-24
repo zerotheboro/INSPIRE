@@ -1,0 +1,14 @@
+test_disabled_adapter_has_no_activation_or_model_path (__main__.GenerativeInterfaceTests.test_disabled_adapter_has_no_activation_or_model_path) ... ok
+test_exact_order_corrections_preferences_and_references_in_separate_data (__main__.GenerativeInterfaceTests.test_exact_order_corrections_preferences_and_references_in_separate_data) ... ok
+test_native_generated_validator_accepts_arbitrary_text_catalogue_validator_stays_exact (__main__.GenerativeInterfaceTests.test_native_generated_validator_accepts_arbitrary_text_catalogue_validator_stays_exact) ... ok
+test_native_semantic_rule_and_changed_bytes_and_revocation_are_enforced (__main__.GenerativeInterfaceTests.test_native_semantic_rule_and_changed_bytes_and_revocation_are_enforced) ... ok
+test_rejects_authority_roles_invalid_corrections_replay_and_oversized_wire (__main__.GenerativeInterfaceTests.test_rejects_authority_roles_invalid_corrections_replay_and_oversized_wire) ... ok
+test_response_binding_incomplete_refusal_and_tool_outputs_fail_closed (__main__.GenerativeInterfaceTests.test_response_binding_incomplete_refusal_and_tool_outputs_fail_closed) ... ok
+test_technical_failure_does_not_retry_or_manufacture_delivery (__main__.GenerativeInterfaceTests.test_technical_failure_does_not_retry_or_manufacture_delivery) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 2.455s
+
+OK
+
+EXIT_CODE=0

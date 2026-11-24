@@ -1,0 +1,2494 @@
+diff --git a/REVIEW.md b/REVIEW.md
+--- a/REVIEW.md
++++ b/REVIEW.md
+@@ -1,3 +1,12 @@
++# Local research safeguards — 10 November 2026
++
++Start with [the implemented research runner](docs/inspire-research-implementation.md).
++It records the isolated CLI, durable call/cost limits, protected quarantine,
++offline verification and exact pending source-disclosure commands. All nine
++actual-source grants remain unapproved. No paid model or public AI was activated.
++New evidence is in `docs/evidence/research-implementation/`; older handoff evidence
++and the existing website are preserved below.
++
+ # Current review ZIP and generative-trial preparation
+ 
+ Start with [docs/model-trial-preparation.md](docs/model-trial-preparation.md).
+diff --git a/docs/inspire-research-implementation.md b/docs/inspire-research-implementation.md
+--- /dev/null
++++ b/docs/inspire-research-implementation.md
+@@ -0,0 +1,229 @@
++# Controlled research runner — implemented 10 November 2026
++
++The local research runner is implemented and tested offline. It is separate from
++the website and Firebase exports. **No real trial is released, no source grant
++has been imported, no API credential has been read and no paid request has run.**
++The existing public simulation and disabled website generative adapter remain
++unchanged. This document describes the implementation, not a new trial proposal.
++
++## What runs
++
++`functions/inspire_research_cli.py` drives `inspire_research.py`. Presentation is
++the operator CLI; the runner owns state; `inspire_research_live.py` owns the
++optional one-request HTTPS boundary; `inspire_research_controller.py` reuses the
++original 0.4.0 checks on a sealed candidate. Nothing is exported through
++`functions/src/index.ts` or imported by the website.
++
++* The default transport mechanically echoes the last synthetic user turn. It is
++  labelled offline and is neither an answer catalogue nor a generative model.
++* Exactly the existing four frozen three-turn cases are available. Ordered
++  user/assistant history, explicit correction references, separate addressing
++  preferences and reference provenance reach the constructed input. No silent
++  truncation, custom participant text, tools or additional cases are accepted.
++* The opt-in HTTPS sender uses only `api.openai.com:443/v1/responses`. It has no
++  retry, redirect, proxy inheritance or automatic replacement. Its request bytes
++  and HTTP behavior were tested with a fake connection, not the real endpoint.
++* Before real dispatch: frozen code/source/scenario hashes; externally supplied
++  owner decision pinned by SHA and reference; nine separate internal/export
++  decisions; two named reviewers; expiry/revocation; synthetic registered local
++  identity; existing account/IP admission; exact recent preview acknowledgment;
++  payload-bound verified token-count receipt; durable call and money reservation.
++  An API key or `--real-model` alone cannot open these gates.
++
++## Durable limits and unknown outcomes
++
++The cap is 12 attempts and 2,000,000 micro-USD (US$2), only reducible. Each attempt
++irrevocably reserves 160,000 micro-USD before transport: twelve attempts reserve
++US$1.92. The reserve is never recycled for an error or cheaper response. A unique
++conversation/turn slot and globally unique operation ID prevent replacement or
++redispatch. One outstanding/unreviewed attempt blocks another trial turn.
++
++Input must have an independently verified, exact-payload token upper bound of at
++most 8,000; output is capped at 2,048 tokens including reasoning. Integer
++all-in rate ceilings and fixed fees must fit the reservation. Actual reported
++input/output/cache usage is recorded with a conservative cost ceiling and an
++explicitly non-invoice estimate. The offline byte counter is **not** accepted as
++a real-model tokenizer. No tokenizer or provider count endpoint is downloaded
++or invoked. Current all-in prices/fees and count/framing evidence still need
++independent verification before any actual trial.
++
++SQLite transactions and an interprocess file lock serialize reservations. A
++separate DPAPI-protected HMAC/sequence anchor detects DB-only rollback, tampering,
++clock rollback, missing storage and interrupted anchor updates. These conditions
++hold the trial; the code never resets the ledger to regain allowance. A crash
++before or after transport leaves a consumed reservation. `recover` halts an
++unresolved intent; `replay` returns only an already validated stored result and
++never calls transport. A timeout/unknown result stops the entire trial. No
++provider-side reconciliation or retrieval call is made automatically.
++
++This is a trusted local operator design. An administrator/current user can
++modify code or restore both DB and anchor together. There is no remote monotonic
++counter protecting against that deliberate whole-folder rollback. Owner files
++and token receipts are externally supplied evidence, not digitally authenticated
++approvals created by this code. Named review entries are operator attestations,
++not independent reviewer logins.
++
++## Quarantine and retention
++
++Windows is currently the supported platform; others fail closed. Storage is
++restricted to `%LOCALAPPDATA%\INSPIRE-Research\<storage-name>` on a fixed local
++disk, with a protected current-user-only DACL and per-record current-user DPAPI
++encryption. The path is obtained through the Windows known-folder API. Workspace,
++public, UNC, known sync roots, reparse and offline paths are rejected. Sync roots
++are checked against environment settings and the Windows SyncRootManager; an
++unknown third-party backup/sync agent cannot be proven absent by this code.
++
++Default retention is seven days after the trial ends/expires; it can be shortened
++to 1–7 days. All CLI commands purge expired content before reading it, and replay
++denies expired content. Purge clears candidate text, payload/history, validation
++state, reviews, owner/source disclosures and token receipts. Only budget/slot/
++operation tombstones remain, preserving the no-reset limit. SQLite secure-delete
++is enabled; this is not a promise of physical erasure from SSDs or backups.
++
++The tested `retention-watch` foreground worker checks and purges at most every
++60 seconds and exits when content has expired. **No background deletion task has
++been installed.** Keep that worker running, or arrange a local scheduled invocation
++of `purge` and verify it on the selected machine. Without a running worker/task,
++ciphertext remains until the next CLI invocation, although the runner refuses
++expired content. Do not redirect disclosure/replay output into
++OneDrive, public folders or logs. Candidates are never served by a web endpoint.
++
++## Controller and evaluation boundary
++
++The original 1,234-file package manifest is verified before loading. The sealed
++candidate passes native triage, quote-bound ledger, non-MOCK ScopeGuard,
++PermissionInspector, GeneratedValidator, exact-byte/source/policy rechecks and
++receipt-bound Session.commit. Its native MockSink receipt is explicitly a control
++test receipt; `actual_execution_eligible` remains false. Native internal source
++assembly is never forwarded to the research transport. Existing catalogue rules
++and permission files are not weakened or edited.
++
++Candidates remain quarantined. Two configured review entries bound to the exact
++validated SHA are required before text joins *research-only* subsequent history.
++Each scores naturalness, relevance, continuity and preferences (1–5), and records
++invented facts/sources, unsafe content, authority claims and privacy leaks. Any
++flag, rejection or score below 3 halts the trial. Completion requires all 12 turns,
++24 reviews, means at least 4 and no score below 3. Native rejection, wrong model,
++wrong response binding, invalid usage, refusals, tools, incomplete/oversized
++output, loss of storage/authorization or unknown outcome also holds/stops the run.
++Mock scores test this workflow; they establish no conversation or clinical quality.
++
++## Run locally (no API key)
++
++Executed dependencies: Windows; Node 25.2.0; Python 3.12.10 with pydantic 2.13.5,
++jsonschema 4.26.0 and httpx 0.28.1 for the unchanged private Controller; Java 21
++for existing Firebase emulators. The new store/HTTPS sender use Python's standard
++library. Existing npm lockfiles remain unchanged by this task. The verified
++private package must remain at the existing `.private.local/controller040-preview/INSPIRE_AI_040` path.
++
++```powershell
++# Terminal 1, for the shared account/IP integration tests only:
++npm run emulators
++# Terminal 2, executes and records the complete offline verification:
++node tests/verify-inspire-research.mjs
++# Actual CLI smoke journey, no key or source grants:
++node tests/inspire-research-cli-smoke.mjs
++
++# Independent manual offline conversation:
++$py = '.\.tools.local\python312\python.exe'
++& $py -X utf8 functions/inspire_research_cli.py init-offline --trial my-offline --storage-name my-offline-v1
++& $py -X utf8 functions/inspire_research_cli.py preview --trial my-offline --storage-name my-offline-v1 --conversation C1
++# Use the preview's exact body_sha256; re-preview if its 120-second window expires.
++& $py -X utf8 functions/inspire_research_cli.py execute --trial my-offline --storage-name my-offline-v1 --conversation C1 --preview-hash '<body_sha256>' --operation my-op-1
++& $py -X utf8 functions/inspire_research_cli.py replay --trial my-offline --storage-name my-offline-v1 --operation my-op-1
++& $py -X utf8 functions/inspire_research_cli.py purge --trial my-offline --storage-name my-offline-v1
++# Optional separate terminal; keep open to enforce unattended local deletion:
++& $py -X utf8 functions/inspire_research_cli.py retention-watch --trial my-offline --storage-name my-offline-v1
++```
++
++Use a fresh leaf/trial for an independent offline demonstration; this is not a
++way to restart an approved real trial. The CLI smoke script also demonstrates
++the two fixture reviews via `--review-json -`. Do not use those artificial ratings
++for an actual model candidate. Existing account/IP quotas apply through a private
++stdin-only Node bridge; its synthetic Auth token never enters the quarantine or
++command arguments. Shared-admission failure stops dispatch. No production auth
++or real OAuth was exercised.
++
++Preserved IP limits are 10 attempts per 10 minutes and 30 per rolling day. Pace
++an actual 12-turn trial accordingly, including the cooldown before attempt 11;
++the research runner does not bypass these limits. A failed shared reservation
++consumes the conservative trial intent and stops the run rather than replacing it.
++
++## Exact material still requiring approval
++
++All nine decisions below remain **false for internal research use and external
++API export**. Full file/section hashes and unresolved authority/version issues
++remain in the unchanged [owner matrix](evidence/research-trial-plan-2026-11-10/owner-decision-matrix.json).
++
++| Exact section | Proposed role/schedule, only after explicit individual consent |
++| --- | --- |
++| MOI-01 XCII — Foundational Conversational Support | Operating rule; all 12 instruction blocks |
++| MOI-01 XCIII — Formulation-Oriented Inquiry | Operating rule; all 12 instruction blocks |
++| MOI-01 CLVI — Internal State ≠ User-Facing Response | Operating rule; all 12 instruction blocks |
++| MOI-01 CLVII — User-Facing Response Should Be Natural | Operating rule; all 12 instruction blocks |
++| MOI-01 CLIX — Do Not Dump Hypotheses as Labels | Operating rule; all 12 instruction blocks |
++| MOI-01 CLXIII — Language of Unknown | Operating rule; all 12 instruction blocks |
++| INSPIRE-02 §4 — WHAT là dữ liệu trước khi là diễn giải | Reference only; C3 turns 1–3 |
++| INSPIRE-02 §6 — Ba lớp cần tách trong dữ liệu WHAT | Reference only; C3 turns 1–3 |
++| INSPIRE-02 §93 — Người dùng có thể thay đổi cách gọi WHAT | Reference only; C2 turns 2–3 |
++
++Read the exact received text locally, without granting anything:
++
++```powershell
++& $py -X utf8 functions/inspire_research_cli.py init-draft --trial owner-review --storage-name owner-review-v1
++& $py -X utf8 functions/inspire_research_cli.py source-disclosure --trial owner-review --storage-name owner-review-v1
++& $py -X utf8 functions/inspire_research_cli.py approval-disclosure --trial owner-review --storage-name owner-review-v1 --conversation C3
++```
++
++`source-disclosure` returns all nine verbatim sections with exact hashes and
++pending metadata. `approval-disclosure` returns the complete proposed first-turn
++JSON body, byte count and SHA. It is labelled **not dispatchable** and does not
++create an execution preview. The four first-turn bodies are regression-checked
++against runtime composition without granting any source rights. Later turns
++necessarily depend on quarantined, reviewed generated responses; the runner shows
++and requires acknowledgment of each resulting exact body before dispatch.
++
++The proposed outbound data remains the frozen [template and synthetic turns](evidence/research-trial-plan-2026-11-10/outbound-template-proposal.json):
++engineering instructions, the six individually permitted operating excerpts,
++scheduled permitted references with hashes/status, synthetic ordered history,
++correction references and synthetic addressing preferences. The sole provider
++request uses `gpt-6.1-sol`, low reasoning, 2,048 output tokens, `store:false`,
++`stream:false`, `background:false`, `truncation:disabled`, default tier and no tools.
++Headers carry the API credential and opaque operation ID; the provider also sees
++normal account/billing/network IP/TLS metadata. `store:false` is not a claim of
++zero provider retention. Real client/profile/identity data, emulator tokens,
++private corpus beyond the nine exact grants, draft lessons/content patches,
++reconstructed MOI-01-A, bookings and website traffic are excluded.
++
++## Evidence and remaining dependencies
++
++| Executed check | Result |
++| --- | --- |
++| Research safeguards, native controls, fake HTTPS, retention and fault recovery | 27/27 passed |
++| Shared research Auth/IP/quota integration | 2/2 passed |
++| Existing account/month-boundary/concurrency/restart/access regressions | 10/10 passed |
++| Existing generative interface/catalogue controls | 7/7 passed |
++| Existing conversation/correction/retry/binding tests | 17/17 passed |
++| Actual operator CLI journey | Passed, including draft denial and replay |
++| Chat/backend lint; Functions build; website build; public-asset canary scan | Passed |
++| Existing lint baseline | 30 booking errors identical to Git HEAD; zero introduced backend errors. Unchanged root config still lacks `@eslint/js`. |
++
++Executed results and exact commands: [executed-checks.json](evidence/research-implementation/executed-checks.json).
++Fault traces: [offline trace](evidence/research-implementation/offline-trace.json),
++[shared admission](evidence/research-implementation/shared-admission-trace.json),
++[actual CLI journey](evidence/research-implementation/cli-smoke-trace.json).
++The focused patch and preservation audit are in the same evidence directory.
++
++Before the first paid attempt, the owner must supply explicit trial/export
++decisions with authority evidence and exact hashes; confirm the source snapshots,
++amendments and examples' export rights; select two reviewers and local storage/
++retention supervision; and separately authorize release. Technical dependencies
++are verified model tokenizer/framing receipts for each exact request, current
++all-in price/tax evidence within the reserve, model/project access and a later
++secure project credential. No verified real token receipts or owner grants exist
++in this implementation. The receipt importer deliberately blocks rather than
++guessing. The actual model HTTP contract, account availability, generated quality,
++provider retention conditions and end-to-end authorized live run are unverified.
++
++No new public delivery permission, clinical validation, genuine OAuth validation,
++deployment permission or authoritative status for any source is established.
+diff --git a/functions/inspire_research.py b/functions/inspire_research.py
+--- /dev/null
++++ b/functions/inspire_research.py
+@@ -0,0 +1,639 @@
++"""Isolated research safeguards; default execution is strictly offline.
++
++The opt-in HTTPS transport cannot dispatch without external owner decisions,
++nine individual source grants, a verified token receipt and a durable reservation.
++Neither an environment variable nor a synthetic fixture authorizes model use.
++"""
++import copy
++import json
++import re
++from pathlib import Path
++import time
++import uuid
++from dataclasses import dataclass
++from inspire_research_store import ResearchStore, ResearchHold, canonical, digest
++from inspire_research_controller import NativeResearchValidation
++from inspire_research_live import ResearchHTTPS, RecordedModelTokenBound, pinned_document, validate_owner_decision
++
++MODEL = "gpt-6.1-sol"
++RESERVATION = 160000
++TOTAL = 2000000
++MAX_CALLS = 12
++DAY = 86400
++ROOT = Path(__file__).resolve().parents[1]
++TEMPLATE_PATH = ROOT / "docs/evidence/research-trial-plan-2026-11-10/outbound-template-proposal.json"
++MATRIX_PATH = ROOT / "docs/evidence/research-trial-plan-2026-11-10/owner-decision-matrix.json"
++TEMPLATE_SHA = "330f0330b78d36020c4574a5a81ba2a02c5a1e9db10dc7c5009704abe28d759b"
++MATRIX_SHA = "f1e127a98bce819c125041f4496fe3e2d6469410c24c61882c5a40681c8edbfd"
++
++
++def integer(value, maximum, code):
++    if type(value) is not int or not 0 <= value <= maximum:
++        raise ResearchHold(code)
++    return value
++
++
++class OfflineTokenBound:
++    domain = "offline-byte-bound-NOT-verified-model-tokenizer"
++
++    def count(self, payload):
++        return len(payload) + 2048
++
++
++@dataclass(frozen=True)
++class TransportResult:
++    operation_id: str
++    payload_sha256: str
++    binding: str
++    response: dict
++
++
++class OfflineTransport:
++    """Mechanical transport demo, not a model or an answer catalogue."""
++    domain = "offline"
++
++    def __init__(self):
++        self.calls = 0
++
++    def send(self, payload, operation_id, input_bound, binding):
++        self.calls += 1
++        latest = json.loads(payload)["input"][-1]["content"]
++        text = "Phản hồi giả lập chỉ để kiểm tra kỹ thuật: “" + latest[:240] + "”. Không có mô hình được gọi."
++        response = {"id": "offline-" + operation_id, "model": MODEL, "status": "completed",
++                "output": [{"type": "message", "role": "assistant", "status": "completed",
++                            "content": [{"type": "output_text", "text": text}]}],
++                "usage": {"input_tokens": input_bound, "output_tokens": 100,
++                          "input_tokens_details": {"cached_tokens": 0, "cache_write_tokens": 0}}}
++        return TransportResult(operation_id, digest(payload), binding, response)
++
++
++class ResearchRunner:
++    def __init__(self, store, transport=None, counter=None, validator=None, admission=None, now=time.time):
++        self.store, self.now = store, now
++        self.transport = transport or OfflineTransport()
++        self.counter = counter or (RecordedModelTokenBound(store, now) if type(self.transport) is ResearchHTTPS else OfflineTokenBound())
++        self.validator = validator or NativeResearchValidation()
++        self.admission = admission
++        if self.transport.domain != "offline" and type(self.transport) is not ResearchHTTPS:
++            raise ResearchHold("LIVE_TRANSPORT_NOT_INSTALLED")
++        if type(self.transport) is ResearchHTTPS:
++            self.transport.authorize = self._authorize_dispatch
++        raw = TEMPLATE_PATH.read_bytes()
++        if digest(raw) != TEMPLATE_SHA:
++            raise ResearchHold("FROZEN_SCENARIO_OR_PROMPT_CHANGED")
++        self.template = json.loads(raw)
++        matrix = MATRIX_PATH.read_bytes()
++        if digest(matrix) != MATRIX_SHA:
++            raise ResearchHold("OWNER_SOURCE_MATRIX_CHANGED")
++        self.real_sources = json.loads(matrix)["sources"]
++        code = {name: digest((Path(__file__).parent / name).read_bytes()) for name in
++                ["inspire_research.py", "inspire_research_store.py", "inspire_research_controller.py", "inspire_research_admission.py", "inspire_research_live.py"]}
++        code["shared_admission"] = digest((ROOT / "functions/src/inspireResearchAdmission.ts").read_bytes())
++        self.manifest_hash = digest(canonical({"template": self.template,
++                                              "sources": self.real_sources, "code": code}))
++
++    def create(self, trial_id, *, offline=False, retention_days=7, max_calls=12, max_micro=TOTAL):
++        if not isinstance(trial_id, str) or not re.fullmatch(r"[a-zA-Z0-9_-]{1,80}", trial_id):
++            raise ResearchHold("INVALID_TRIAL_ID")
++        if not 1 <= retention_days <= 7 or type(retention_days) is not int:
++            raise ResearchHold("INVALID_RETENTION")
++        integer(max_calls, MAX_CALLS, "CALL_LIMIT_CANNOT_INCREASE")
++        integer(max_micro, TOTAL, "MONEY_LIMIT_CANNOT_INCREASE")
++        if not max_calls or not max_micro:
++            raise ResearchHold("INVALID_LIMIT")
++        with self.store.transaction(write=True) as db:
++            if self.store.get(db, "trial", trial_id):
++                raise ResearchHold("TRIAL_ALREADY_EXISTS_NO_RESET")
++            identity = self.admission.identity() if self.admission else None
++            trial = {"id": trial_id, "mode": "offline" if offline else "research-draft",
++                     "created": self.now(), "expires": self.now() + 7200, "status": "ACTIVE" if offline else "DRAFT",
++                     "manifest": self.manifest_hash, "attempts": 0, "reserved_micro": 0,
++                     "max_calls": max_calls, "max_micro": max_micro, "retention_days": retention_days,
++                     "subject": identity["subject"] if identity else ("OFFLINE-REGISTERED-FIXTURE" if offline else None),
++                     "admission_domain": "firebase-demo-emulator" if identity else "offline-ledger-test-fixture",
++                     "reviewers": ["offline-reviewer-a", "offline-reviewer-b"] if offline else [],
++                     "authorization": "OFFLINE_SYNTHETIC_FIXTURE_ONLY" if offline else None,
++                     "authorization_revision": 1, "revoked": False, "ended": None,
++                     "real_source_permissions": {r["decision_id"]: {"internal": False, "export": False,
++                                                "source_sha256": r["source_sha256"], "section_sha256": r["section_sha256"]}
++                                                 for r in self.real_sources}}
++            self.store.put(db, "trial", trial_id, trial)
++        return self.status(trial_id)
++
++    def _trial(self, db, trial_id, active=True):
++        trial = self.store.get(db, "trial", trial_id)
++        if not trial:
++            raise ResearchHold("UNKNOWN_TRIAL_NO_IMPLICIT_CREATION")
++        if active and trial["manifest"] != self.manifest_hash:
++            raise ResearchHold("SOURCE_OR_CONTRACT_CHANGED")
++        if active:
++            if trial["mode"] == "research-draft":
++                raise ResearchHold("OWNER_AND_NINE_SOURCE_DECISIONS_REQUIRED_LIVE_CLOSED")
++            if trial["mode"] == "offline" and self.transport.domain != "offline":
++                raise ResearchHold("OFFLINE_AUTHORITY_CANNOT_ENABLE_LIVE_TRANSPORT")
++            if trial["mode"] == "research":
++                if (trial.get("authorization") != "EXTERNAL_OWNER_RESEARCH_DECISION" or
++                        type(self.transport) is not ResearchHTTPS or not self.admission or
++                        type(self.counter) is not RecordedModelTokenBound or
++                        not all(s["internal"] and s["export"] for s in trial["real_source_permissions"].values())):
++                    raise ResearchHold("LIVE_RESEARCH_AUTHORIZATION_HOLD")
++            elif trial["authorization"] != "OFFLINE_SYNTHETIC_FIXTURE_ONLY":
++                raise ResearchHold("RESEARCH_AUTHORIZATION_HOLD")
++            if trial["revoked"]:
++                raise ResearchHold("RESEARCH_AUTHORIZATION_HOLD")
++            if trial["status"] != "ACTIVE" or self.now() >= trial["expires"]:
++                raise ResearchHold("TRIAL_STOPPED_OR_EXPIRED")
++        return trial
++
++    def _case(self, db, trial, cid):
++        if cid not in {c["conversation"] for c in self.template["scenarios"]}:
++            raise ResearchHold("UNSCHEDULED_CONVERSATION")
++        return self.store.get(db, "case", trial["id"] + ":" + cid,
++                              {"messages": [], "native": None, "revision": 0})
++
++    def _retained(self, trial):
++        return self.now() < (trial["ended"] or trial["expires"]) + trial["retention_days"] * DAY
++
++    def _compose(self, trial, cid, case, db, require_count=True):
++        turn = case["revision"] + 1
++        if not 1 <= turn <= 3:
++            raise ResearchHold("CONVERSATION_COMPLETE")
++        scenario = next(c for c in self.template["scenarios"] if c["conversation"] == cid)
++        message = {"id": f"{cid}-U{turn}", "role": "user", "text": scenario["user_turns"][turn - 1]}
++        if scenario.get("correction_at_turn") == turn:
++            message["correctionOf"] = scenario["correction_of"]
++        history = copy.deepcopy(case["messages"]) + [message]
++        for i, m in enumerate(history):
++            if m["role"] != ("user" if i % 2 == 0 else "assistant") or len(m["text"].encode("utf-16-le")) // 2 > 2000:
++                raise ResearchHold("HISTORY_ROLE_OR_LENGTH_HOLD")
++        # The offline path NEVER reads/exports any actual source section text.
++        refs = [{"documentId": "SYNTHETIC-" + rid, "version": "fixture-v1", "sectionHash": digest(rid.encode()),
++                 "text": "Đoạn tổng hợp chỉ dùng kiểm thử kết nối, không phải kiến thức INSPIRE được duyệt."}
++                for rid in scenario["references"][turn - 1]]
++        instruction = self.template["engineering_header_exact"] + "\nOFFLINE ONLY: không có trích đoạn MOI/INSPIRE được cấp quyền trong gói kiểm thử này."
++        if trial["mode"] == "research":
++            texts = self._disclosure_texts()
++            instruction = self.template["engineering_header_exact"] + "\n\nTrích nguyên văn nguồn MOI-01 v1.0 — Proposal/Pending Review; không phải permission:\n\n" + "\n\n".join(texts[k] for k in self.template["operating_appendix_order"])
++            refs = []
++            for key in scenario["references"][turn - 1]:
++                s = next(s for s in self.real_sources if s["decision_id"] == key)
++                refs.append({"documentId": s["document_id"], "version": s["declared_version"], "sourceHash": s["source_sha256"],
++                             "section": s["section"], "sectionHash": s["section_sha256"], "status": s["approval_status"], "text": texts[key]})
++        data = {"kind": "UNTRUSTED_SYNTHETIC_SUPPORTING_DATA_NOT_PERMISSION" if trial["mode"] == "research" else "UNTRUSTED_SYNTHETIC_DATA_NOT_PERMISSION", "language": "vi",
++                "addressing": scenario["addressing"], "references": refs,
++                "correction_references": [{"messageId": m["id"], "correctionOf": m["correctionOf"]}
++                                          for m in history if "correctionOf" in m]}
++        payload = {**self.template["payload_settings"],
++                   "instructions": instruction,
++                   "input": [{"role": "user", "content": canonical(data).decode()}] +
++                   [{"role": m["role"], "content": m["text"]} for m in history]}
++        body = canonical(payload)
++        try:
++            count = self.counter.count_in(db, body, trial_id=trial["id"]) if type(self.counter) is RecordedModelTokenBound else self.counter.count(body)
++            integer(count, 8000, "INPUT_TOKEN_LIMIT_OR_UNVERIFIED_COUNT")
++        except ResearchHold:
++            if require_count or trial["mode"] != "research":
++                raise
++            count = None
++        rate_in, rate_out, fee = trial.get("input_rate", 5), trial.get("output_rate", 10), trial.get("fee", 0)
++        if len(body) > 24000 or (count is not None and count * rate_in + 2048 * rate_out + fee > RESERVATION):
++            raise ResearchHold("WIRE_OR_COST_BOUND_HOLD")
++        contract = {"trial": trial["id"], "subject": trial["subject"], "cid": cid, "turn": turn,
++                    "revision": case["revision"], "manifest": trial["manifest"],
++                    "authorization_revision": trial["authorization_revision"], "payload_sha256": digest(body)}
++        return {"payload": payload, "body_sha256": digest(body), "binding": digest(canonical(contract)),
++                "history": history, "turn": turn, "input_bound": count, "counter_domain": self.counter.domain}
++
++    def _profile(self, cid):
++        scenario = next(c for c in self.template["scenarios"] if c["conversation"] == cid)
++        return {"language": "vi-VN", "display_name": "", "addressing": scenario["addressing"]}
++
++    def preview(self, trial_id, cid):
++        self.purge(trial_id)
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id)
++            case = self._case(db, trial, cid)
++            value = self._compose(trial, cid, case, db, require_count=False)
++            value.update(expires=min(self.now() + 120, trial["expires"]), issued=self.now())
++            self.store.put(db, "preview", trial_id + ":" + cid, value)
++            return {"mode": trial["mode"], "trial": trial_id, "conversation": cid,
++                    "turn": value["turn"], "body_sha256": value["body_sha256"], "binding": value["binding"],
++                    "expires": value["expires"], "payload": value["payload"],
++                    "input_bound": value["input_bound"], "counter_domain": value["counter_domain"],
++                    "actual_INSPIRE_export_authorized": trial["mode"] == "research",
++                    "token_proof_ready": value["input_bound"] is not None}
++
++    def _admit_offline(self, db, trial):
++        key = "OFFLINE-REGISTERED-FIXTURE"
++        account = self.store.get(db, "offline-admission", key, {"completed": 0, "pending": 0, "timestamps": []})
++        if account["completed"] + account["pending"] >= 30:
++            raise ResearchHold("OFFLINE_ACCOUNT_QUOTA_EXHAUSTED")
++        stamps = [t for t in account["timestamps"] if self.now() - t < DAY]
++        if len(stamps) >= 30 or sum(self.now() - t < 600 for t in stamps) >= 10:
++            raise ResearchHold("OFFLINE_IP_RATE_LIMIT")
++        account["pending"] += 1
++        account["timestamps"] = stamps + [self.now()]
++        self.store.put(db, "offline-admission", key, account)
++
++    def execute(self, trial_id, cid, *, preview_hash, operation_id=None, crash=None):
++        """One durable attempt. `crash` is a private test hook, not a CLI field."""
++        operation_id = operation_id or str(uuid.uuid4())
++        if not isinstance(operation_id, str) or not re.fullmatch(r"[a-zA-Z0-9_-]{1,80}", operation_id):
++            raise ResearchHold("INVALID_OPERATION_ID")
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id)
++            if self.store.get(db, "operation", operation_id):
++                raise ResearchHold("USE_EXPLICIT_REPLAY_NO_REDISPATCH")
++            if trial.get("inflight"):
++                raise ResearchHold("UNRESOLVED_OR_UNREVIEWED_ATTEMPT")
++            case = self._case(db, trial, cid)
++            expected = self._compose(trial, cid, case, db)
++            preview = self.store.get(db, "preview", trial_id + ":" + cid)
++            if (not preview or self.now() >= preview["expires"] or preview_hash != preview["body_sha256"] or
++                    expected["binding"] != preview["binding"] or expected["body_sha256"] != preview_hash):
++                raise ResearchHold("EXACT_PREVIEW_REQUIRED_OR_STALE")
++            slot = f"{trial_id}:{cid}:{expected['turn']}"
++            if self.store.get(db, "slot", slot):
++                raise ResearchHold("SLOT_ALREADY_RESERVED_NO_REPLACEMENT")
++            if trial["attempts"] >= trial["max_calls"] or trial["reserved_micro"] + RESERVATION > trial["max_micro"]:
++                raise ResearchHold("HARD_CALL_OR_MONEY_LIMIT")
++            if trial["mode"] == "research":
++                self.transport.credential_ready()
++            if trial["admission_domain"] == "offline-ledger-test-fixture":
++                self._admit_offline(db, trial)
++            elif not self.admission:
++                raise ResearchHold("VERIFIED_EMULATOR_IDENTITY_REQUIRED")
++            attempt = {"operation": operation_id, "trial": trial_id, "cid": cid, "turn": expected["turn"],
++                       "status": "DISPATCH_INTENT", "reserved_micro": RESERVATION, "created": self.now(),
++                       "binding": expected["binding"], "body_sha256": preview_hash, "input_bound": expected["input_bound"],
++                       "expires": trial["expires"], "payload_record": operation_id}
++            trial["attempts"] += 1
++            trial["reserved_micro"] += RESERVATION
++            trial["inflight"] = operation_id
++            self.store.put(db, "trial", trial_id, trial)
++            self.store.put(db, "slot", slot, {"operation": operation_id})
++            self.store.put(db, "operation", operation_id, {"trial": trial_id})
++            self.store.put(db, "attempt", trial_id + ":" + operation_id, attempt)
++            self.store.put(db, "payload", operation_id, expected)
++        if crash:
++            crash("after-reservation")
++        try:
++            request = {"kind": "send", "epoch": trial_id, "sessionId": trial_id, "operationId": operation_id,
++                       "conversationId": cid, "messages": expected["history"]}
++            if trial["admission_domain"] == "firebase-demo-emulator":
++                self.admission.reserve(request, trial["subject"])
++            envelope = self.transport.send(canonical(expected["payload"]), operation_id, expected["input_bound"], expected["binding"])
++            if crash:
++                crash("after-transport")
++            if (not isinstance(envelope, TransportResult) or envelope.operation_id != operation_id or
++                    envelope.payload_sha256 != expected["body_sha256"] or envelope.binding != expected["binding"]):
++                raise ResearchHold("TRANSPORT_RESPONSE_REQUEST_BINDING_HOLD")
++            response = envelope.response
++            text, usage = self._decode(response, expected["input_bound"], trial)
++            # Persist candidate before invoking any native validation checks.
++            with self.store.transaction(write=True) as db:
++                self.store.put(db, "candidate", operation_id, {"text": text, "request": request,
++                               "provider_response_id": response["id"], "usage": usage, "received": self.now()})
++            validated = self.validator.validate(text, request, case["native"], expected["binding"], profile=self._profile(cid),
++                                                origin="RESEARCH_MODEL_CANDIDATE" if trial["mode"] == "research" else "RESEARCH_OFFLINE_CANDIDATE")
++            with self.store.transaction(write=True) as db:
++                trial = self._trial(db, trial_id)
++                current = self.store.get(db, "attempt", trial_id + ":" + operation_id)
++                current.update(status="QUARANTINED_PENDING_REVIEW", usage=usage,
++                               validated_sha256=digest(validated["text"].encode()), reviews={})
++                self.store.put(db, "validated", operation_id, validated)
++                self.store.put(db, "attempt", trial_id + ":" + operation_id, current)
++            return self.replay(trial_id, operation_id)
++        except Exception as error:
++            code = str(error) if isinstance(error, ResearchHold) and re.fullmatch(r"[A-Z0-9_]{1,160}", str(error)) else "TECHNICAL_FAILURE_DETAIL_WITHHELD"
++            self._halt(trial_id, operation_id, type(error).__name__, code)
++            raise ResearchHold("ATTEMPT_HELD_NO_RETRY_OR_REFUND") from error
++
++    def _decode(self, response, input_bound, trial):
++        if not isinstance(response, dict) or response.get("status") != "completed" or response.get("model") != MODEL:
++            raise ResearchHold("WRONG_MODEL_OR_INCOMPLETE")
++        if not isinstance(response.get("id"), str):
++            raise ResearchHold("MISSING_PROVIDER_RECEIPT")
++        chunks = []
++        if not isinstance(response.get("output"), list):
++            raise ResearchHold("MALFORMED_RESPONSE")
++        for item in response["output"]:
++            if isinstance(item, dict) and item.get("type") == "reasoning":
++                continue  # Do not persist reasoning content.
++            if (not isinstance(item, dict) or item.get("type") != "message" or item.get("role") != "assistant" or
++                    item.get("status") != "completed" or not isinstance(item.get("content"), list)):
++                raise ResearchHold("UNSUPPORTED_OUTPUT_OR_TOOL")
++            for part in item["content"]:
++                if not isinstance(part, dict) or part.get("type") != "output_text" or not isinstance(part.get("text"), str):
++                    raise ResearchHold("REFUSAL_OR_INVALID_OUTPUT")
++                chunks.append(part["text"])
++        usage = response.get("usage")
++        if not isinstance(usage, dict):
++            raise ResearchHold("USAGE_REQUIRED")
++        inp = integer(usage.get("input_tokens"), input_bound, "INPUT_USAGE_EXCEEDS_BOUND")
++        output = integer(usage.get("output_tokens"), 2048, "OUTPUT_USAGE_EXCEEDS_CAP")
++        details = usage.get("input_tokens_details") or {}
++        cached = integer(details.get("cached_tokens", 0), inp, "INVALID_CACHED_USAGE")
++        writes = integer(details.get("cache_write_tokens", 0), inp - cached, "INVALID_CACHE_WRITE_USAGE")
++        cost = (inp - cached - writes) * 2000 + cached * 100 + writes * 5000 + output * 10000
++        upper = inp * trial.get("input_rate", 5) + output * trial.get("output_rate", 10) + trial.get("fee", 0)
++        if upper > RESERVATION:
++            raise ResearchHold("USAGE_COST_EXCEEDS_RESERVATION")
++        return "".join(chunks), {"reported_input_tokens": inp, "reported_output_tokens": output,
++                                "conservative_upper_micro": upper,
++                                "estimated_model_nanoUSD": cost, "not_an_invoice": True}
++
++    def _halt(self, trial_id, op, error_type, code):
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id, active=False)
++            attempt = self.store.get(db, "attempt", trial_id + ":" + op)
++            trial.update(status="HALTED", ended=self.now())
++            attempt.update(status="UNKNOWN_OR_REJECTED", error_type=error_type,
++                           error_code=code[:160])
++            self.store.put(db, "trial", trial_id, trial)
++            self.store.put(db, "attempt", trial_id + ":" + op, attempt)
++
++    def recover(self, trial_id):
++        """A committed intent is never interpreted as permission to retry."""
++        with self.store.transaction() as db:
++            trial = self._trial(db, trial_id, active=False)
++            op = trial.get("inflight")
++            attempt = self.store.get(db, "attempt", trial_id + ":" + op) if op else None
++        if attempt and attempt["status"] in {"DISPATCH_INTENT", "DISPATCHING"}:
++            self._halt(trial_id, op, "ProcessLoss", "OUTCOME_UNKNOWN_AFTER_RESTART")
++        return self.status(trial_id)
++
++    def replay(self, trial_id, operation_id):
++        self.purge(trial_id)
++        with self.store.transaction() as db:
++            trial = self._trial(db, trial_id, active=False)
++            attempt = self.store.get(db, "attempt", trial_id + ":" + operation_id)
++            if not attempt:
++                raise ResearchHold("RESULT_UNKNOWN_NO_GENERATION")
++            if not self._retained(trial):
++                raise ResearchHold("QUARANTINE_EXPIRED")
++            if trial["manifest"] != self.manifest_hash:
++                raise ResearchHold("SOURCE_OR_CONTRACT_CHANGED")
++            validated = self.store.get(db, "validated", operation_id)
++            if not validated or digest(validated["text"].encode()) != attempt.get("validated_sha256"):
++                raise ResearchHold("RESULT_UNKNOWN_OR_BINDING_HOLD")
++            return {"operation": operation_id, "status": attempt["status"], "text": validated["text"],
++                    "sha256": attempt["validated_sha256"], "usage": attempt["usage"], "proof": validated["proof"],
++                    "domain": "OFFLINE_QUARANTINED_RESEARCH_ONLY" if trial["mode"] == "offline" else "MODEL_CANDIDATE_QUARANTINE", "user_delivery": False}
++
++    def review(self, trial_id, operation_id, reviewer, *, accept, scores, flags, expected_sha256):
++        if type(accept) is not bool or set(scores) != {"naturalness", "relevance", "continuity", "preferences"}:
++            raise ResearchHold("INVALID_REVIEW")
++        for value in scores.values():
++            integer(value, 5, "INVALID_SCORE")
++            if value < 1:
++                raise ResearchHold("INVALID_SCORE")
++        if set(flags) != {"invented_facts", "invented_sources", "unsafe", "authority_claim", "privacy_leak"} or any(type(v) is not bool for v in flags.values()):
++            raise ResearchHold("INVALID_SAFETY_REVIEW")
++        self.purge(trial_id)
++        # Revalidation uses only the sealed existing candidate, never transport.
++        with self.store.transaction() as db:
++            trial = self._trial(db, trial_id)
++            attempt = self.store.get(db, "attempt", trial_id + ":" + operation_id)
++            if not attempt or attempt["status"] != "QUARANTINED_PENDING_REVIEW" or reviewer not in trial["reviewers"]:
++                raise ResearchHold("REVIEWER_OR_ATTEMPT_HOLD")
++            if expected_sha256 != attempt["validated_sha256"]:
++                raise ResearchHold("REVIEW_OUTPUT_BINDING_HOLD")
++            candidate = self.store.get(db, "candidate", operation_id)
++            case = self._case(db, trial, attempt["cid"])
++        validated = self.validator.validate(candidate["text"], candidate["request"], case["native"], attempt["binding"],
++                                            profile=self._profile(attempt["cid"]),
++                                            origin="RESEARCH_MODEL_CANDIDATE" if trial["mode"] == "research" else "RESEARCH_OFFLINE_CANDIDATE")
++        if digest(validated["text"].encode()) != expected_sha256:
++            raise ResearchHold("REVALIDATED_BYTES_CHANGED")
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id)
++            attempt = self.store.get(db, "attempt", trial_id + ":" + operation_id)
++            if attempt["status"] != "QUARANTINED_PENDING_REVIEW" or reviewer in attempt["reviews"]:
++                raise ResearchHold("REVIEW_ALREADY_RECORDED")
++            attempt["reviews"][reviewer] = {"accept": accept, "scores": scores, "flags": flags,
++                                              "domain": "OFFLINE_TEST_REVIEW_NOT_LANGUAGE_QUALITY_EVIDENCE" if trial["mode"] == "offline" else "OPERATOR_RECORDED_RESEARCH_REVIEW"}
++            if not accept or any(flags.values()) or min(scores.values()) < 3:
++                attempt["status"] = "REJECTED_BY_REVIEW"
++                trial.update(status="HALTED", ended=self.now())
++            elif len(attempt["reviews"]) == 2:
++                if trial["admission_domain"] == "firebase-demo-emulator":
++                    if not self.admission:
++                        raise ResearchHold("VERIFIED_EMULATOR_IDENTITY_REQUIRED")
++                    self.admission.settle(operation_id, trial["subject"], expected_sha256)
++                case["revision"] += 1
++                case["messages"] = candidate["request"]["messages"] + [
++                    {"id": "A-" + operation_id, "role": "assistant", "text": validated["text"]}]
++                case["native"] = validated["state"]
++                self.store.put(db, "case", trial_id + ":" + attempt["cid"], case)
++                attempt["status"] = "ACCEPTED_FOR_OFFLINE_RESEARCH_CONTEXT" if trial["mode"] == "offline" else "ACCEPTED_FOR_RESEARCH_CONTEXT"
++                trial["inflight"] = None
++                if trial["admission_domain"] == "offline-ledger-test-fixture":
++                    account = self.store.get(db, "offline-admission", trial["subject"])
++                    account["pending"] -= 1
++                    account["completed"] += 1
++                    self.store.put(db, "offline-admission", trial["subject"], account)
++                if trial["attempts"] == trial["max_calls"]:
++                    trial.update(status="FINISHED", ended=self.now())
++            self.store.put(db, "attempt", trial_id + ":" + operation_id, attempt)
++            self.store.put(db, "trial", trial_id, trial)
++        return self.status(trial_id)
++
++    def revoke(self, trial_id):
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id, active=False)
++            trial.update(revoked=True, authorization_revision=trial["authorization_revision"] + 1,
++                         status="HALTED", ended=self.now())
++            self.store.put(db, "trial", trial_id, trial)
++
++    def purge(self, trial_id):
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id, active=False)
++            if self._retained(trial):
++                return
++            for kind, key in db.execute("SELECT kind,id FROM records").fetchall():
++                if kind == "attempt" and key.startswith(trial_id + ":"):
++                    a = self.store.get(db, kind, key)
++                    for content_kind in ["payload", "candidate", "validated"]:
++                        self.store.purge_record(db, content_kind, a["operation"])
++                    a.pop("reviews", None)
++                    a.pop("error_code", None)
++                    a["status"] = "CONTENT_EXPIRED_BUDGET_TOMBSTONE_RETAINED"
++                    self.store.put(db, kind, key, a)
++                elif kind in {"preview", "case", "approval-disclosure"} and key.startswith(trial_id + ":"):
++                    self.store.purge_record(db, kind, key)
++                elif kind == "source-disclosure" and key == trial_id:
++                    self.store.purge_record(db, kind, key)
++                elif kind == "owner-document" and key == trial_id:
++                    self.store.purge_record(db, kind, key)
++                elif kind == "token-receipt":
++                    proof = self.store.get(db, kind, key)
++                    if proof and proof["trial_id"] == trial_id:
++                        self.store.purge_record(db, kind, key)
++            trial.update(status="EXPIRED", ended=trial["ended"] or trial["expires"])
++            self.store.put(db, "trial", trial_id, trial)
++
++    def watch_retention(self, trial_id, *, sleep=time.sleep):
++        """Local foreground purge worker; no task/service is installed implicitly."""
++        while True:
++            self.purge(trial_id)
++            state = self.status(trial_id)
++            if state["status"] == "EXPIRED":
++                return state
++            with self.store.transaction() as db:
++                trial = self._trial(db, trial_id, active=False)
++                deadline = (trial["ended"] or trial["expires"]) + trial["retention_days"] * DAY
++            sleep(max(0.01, min(60, deadline - self.now())))
++
++    def status(self, trial_id):
++        with self.store.transaction() as db:
++            trial = self._trial(db, trial_id, active=False)
++            attempts = []
++            for (key,) in db.execute("SELECT id FROM records WHERE kind='attempt'"):
++                if key.startswith(trial_id + ":"):
++                    attempts.append(self.store.get(db, "attempt", key))
++            ratings = [r for a in attempts for r in a.get("reviews", {}).values()]
++            means = {k: sum(r["scores"][k] for r in ratings) / len(ratings) for k in
++                     ["naturalness", "relevance", "continuity", "preferences"]} if ratings else {}
++            quality = (len(attempts) == 12 and len(ratings) == 24 and all(v >= 4 for v in means.values()) and
++                       all(min(r["scores"].values()) >= 3 and not any(r["flags"].values()) for r in ratings))
++            return {"trial": trial_id, "mode": trial["mode"], "status": trial["status"],
++                    "attempts": trial["attempts"], "reserved_microUSD": trial["reserved_micro"],
++                    "remaining_attempts": max(0, trial["max_calls"] - trial["attempts"]),
++                    "admission_domain": trial["admission_domain"],
++                    "inflight": trial.get("inflight"), "real_source_permissions": trial["real_source_permissions"],
++                    "evaluation": {"means": means, "rubric_fixture_pass": quality,
++                                   "rubric_pass": quality if trial["mode"] == "research" else None,
++                                   "genuine_conversation_quality_established": False,
++                                   "review_domain": "OFFLINE_TEST_INPUTS_ONLY" if trial["mode"] == "offline" else "NAMED_RESEARCH_REVIEW"},
++                    "live_enabled": trial["mode"] == "research" and trial["status"] == "ACTIVE" and not trial["revoked"],
++                    "ledger_id": self.store.anchor["id"], "manifest_hash": trial["manifest"],
++                    "actual_execution_eligible": False, "website_delivery": False}
++
++    def import_owner_decision(self, trial_id, path, expected_sha256, decision_reference):
++        """Only a local owner/operator may invoke this after explicit decisions.
++        No model/public route invokes it. SHA and reference must come from the
++        owner outside the document; no approval file is generated by this code.
++        """
++        value = pinned_document(path, expected_sha256)
++        if value.get("owner_decision_reference") != decision_reference or not decision_reference:
++            raise ResearchHold("OWNER_OUT_OF_BAND_REFERENCE_REQUIRED")
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id, active=False)
++            if trial["mode"] != "research-draft" or trial["attempts"] or trial["admission_domain"] != "firebase-demo-emulator":
++                raise ResearchHold("OWNER_IMPORT_REQUIRES_UNUSED_BOUND_RESEARCH_DRAFT")
++            grant = validate_owner_decision(value, trial, self.store.anchor["id"], self.manifest_hash, self.real_sources, self.now())
++            trial.update(authorization="EXTERNAL_OWNER_RESEARCH_DECISION", owner_document_sha256=expected_sha256,
++                         owner_reference=decision_reference, owner_valid_from=grant["valid_from"], expires=grant["expires_at"],
++                         max_calls=min(trial["max_calls"], grant["max_calls"]), max_micro=min(trial["max_micro"], grant["max_microUSD"]),
++                         retention_days=min(trial["retention_days"], grant["retention_days"]), reviewers=grant["reviewers"],
++                         real_source_permissions=grant["source_decisions"], input_rate=grant["all_in_input_micro_per_token"],
++                         output_rate=grant["all_in_output_micro_per_token"], fee=grant["fixed_fee_micro_per_call"],
++                         authorization_revision=trial["authorization_revision"] + 1)
++            self.store.put(db, "owner-document", trial_id, grant)
++            self.store.put(db, "trial", trial_id, trial)
++        return self.status(trial_id)
++
++    def release(self, trial_id, expected_owner_sha256):
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id, active=False)
++            if (trial["mode"] != "research-draft" or trial.get("owner_document_sha256") != expected_owner_sha256 or
++                    not expected_owner_sha256 or trial["revoked"] or self.now() >= trial["expires"] or
++                    self.now() < trial.get("owner_valid_from", float("inf")) or
++                    not all(s["internal"] and s["export"] for s in trial["real_source_permissions"].values())):
++                raise ResearchHold("EXPLICIT_OWNER_RELEASE_AND_ALL_NINE_GRANTS_REQUIRED")
++            trial.update(mode="research", status="ACTIVE")
++            self.store.put(db, "trial", trial_id, trial)
++        return self.status(trial_id)
++
++    def import_token_receipt(self, trial_id, path, expected_sha256):
++        proof = pinned_document(path, expected_sha256)
++        keys = {"type", "trial_id", "ledger_id", "model", "payload_sha256", "input_upper_bound", "expires_at", "tokenizer_evidence_reference", "includes_model_framing"}
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id, active=False)
++            if (set(proof) != keys or proof["type"] != "EXTERNALLY_VERIFIED_MODEL_TOKEN_BOUND" or
++                    proof["trial_id"] != trial_id or proof["ledger_id"] != self.store.anchor["id"] or proof["model"] != MODEL or
++                    proof["includes_model_framing"] is not True or not proof["tokenizer_evidence_reference"] or
++                    not isinstance(proof["payload_sha256"], str) or not re.fullmatch(r"[a-f0-9]{64}", proof["payload_sha256"]) or
++                    type(proof["expires_at"]) not in {int, float} or not self.now() < proof["expires_at"] <= trial["expires"]):
++                raise ResearchHold("EXTERNAL_TOKEN_RECEIPT_SCOPE_HOLD")
++            integer(proof["input_upper_bound"], 8000, "TOKEN_RECEIPT_LIMIT_HOLD")
++            if not proof["input_upper_bound"]:
++                raise ResearchHold("TOKEN_RECEIPT_LIMIT_HOLD")
++            self.store.put(db, "token-receipt", proof["payload_sha256"], proof)
++
++    def _authorize_dispatch(self, payload, operation, binding):
++        """Consume one intent immediately before the HTTPS sender can read a key."""
++        with self.store.transaction(write=True) as db:
++            owner = self.store.get(db, "operation", operation)
++            if not owner:
++                raise ResearchHold("NO_DURABLE_DISPATCH_RESERVATION")
++            trial = self._trial(db, owner["trial"])
++            attempt = self.store.get(db, "attempt", trial["id"] + ":" + operation)
++            if (trial["mode"] != "research" or attempt["status"] != "DISPATCH_INTENT" or
++                    attempt["binding"] != binding or attempt["body_sha256"] != digest(payload)):
++                raise ResearchHold("ONE_SHOT_DISPATCH_PERMISSION_HOLD")
++            proof = self.store.get(db, "token-receipt", digest(payload))
++            if not proof or proof["trial_id"] != trial["id"] or self.now() >= proof["expires_at"]:
++                raise ResearchHold("FRESH_MODEL_TOKEN_RECEIPT_REQUIRED")
++            attempt["status"] = "DISPATCHING"
++            self.store.put(db, "attempt", trial["id"] + ":" + operation, attempt)
++
++    def _disclosure_texts(self):
++        import re
++        package = ROOT / ".private.local/controller040-preview/INSPIRE_AI_040"
++        texts = {}
++        for source in self.real_sources:
++            path = (package / source["source_path"]).resolve()
++            if not path.is_relative_to(package.resolve()):
++                raise ResearchHold("SOURCE_PATH_HOLD")
++            raw = path.read_bytes()
++            match = re.search(r"^# " + re.escape(source["section"]) + r"\..*?(?=^# |\Z)",
++                              raw.decode("utf-8-sig"), re.M | re.S)
++            if digest(raw) != source["source_sha256"] or not match or digest(match.group().encode()) != source["section_sha256"]:
++                raise ResearchHold("SOURCE_INTEGRITY_HOLD")
++            texts[source["decision_id"]] = match.group()
++        return texts
++
++    def source_disclosure(self, trial_id):
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id, active=False)
++            if not self._retained(trial):
++                raise ResearchHold("QUARANTINE_EXPIRED")
++            texts = self._disclosure_texts()
++            value = {"purpose": "OWNER_SOURCE_REVIEW_ONLY_NOT_PERMISSION", "authorized": False,
++                     "sources": [{**s, "exact_text": texts[s["decision_id"]],
++                                  "internal_authorized": False, "export_authorized": False} for s in self.real_sources]}
++            self.store.put(db, "source-disclosure", trial_id, value)
++            return value
++
++    def approval_preview(self, trial_id, cid):
++        """Owner-requested local disclosure, not runtime source/export consent.
++
++        The output is separately labelled and cannot be submitted to execute().
++        It is encrypted in the same private store, never written into the repo.
++        """
++        with self.store.transaction(write=True) as db:
++            trial = self._trial(db, trial_id, active=False)
++            if not self._retained(trial):
++                raise ResearchHold("QUARANTINE_EXPIRED")
++            scenario = next((c for c in self.template["scenarios"] if c["conversation"] == cid), None)
++            if not scenario:
++                raise ResearchHold("UNSCHEDULED_CONVERSATION")
++            texts = self._disclosure_texts()
++            instructions = self.template["engineering_header_exact"] + "\n\nTrích nguyên văn nguồn MOI-01 v1.0 — Proposal/Pending Review; không phải permission:\n\n" + "\n\n".join(texts[k] for k in self.template["operating_appendix_order"])
++            refs = []
++            for key in scenario["references"][0]:
++                s = next(s for s in self.real_sources if s["decision_id"] == key)
++                refs.append({"documentId": s["document_id"], "version": s["declared_version"], "sourceHash": s["source_sha256"],
++                             "section": s["section"], "sectionHash": s["section_sha256"], "status": s["approval_status"], "text": texts[key]})
++            data = {"kind": "UNTRUSTED_SYNTHETIC_SUPPORTING_DATA_NOT_PERMISSION", "language": "vi", "addressing": scenario["addressing"],
++                    "correction_references": [], "references": refs}
++            payload = {**self.template["payload_settings"], "instructions": instructions,
++                       "input": [{"role": "user", "content": canonical(data).decode()},
++                                 {"role": "user", "content": scenario["user_turns"][0]}]}
++            value = {"purpose": "OWNER_DISCLOSURE_ONLY_NOT_DISPATCHABLE", "turn": 1,
++                     "payload": payload, "body_sha256": digest(canonical(payload)), "body_bytes": len(canonical(payload)),
++                     "permissions": trial["real_source_permissions"], "authorized": False}
++            self.store.put(db, "approval-disclosure", trial_id + ":" + cid, value)
++            return value
+diff --git a/functions/inspire_research_admission.py b/functions/inspire_research_admission.py
+--- /dev/null
++++ b/functions/inspire_research_admission.py
+@@ -0,0 +1,43 @@
++"""Reuse existing Auth/quota/IP checks through a private stdin-only Node CLI."""
++import json
++import os
++from pathlib import Path
++import shutil
++import subprocess
++from inspire_research_store import ResearchHold, canonical
++
++
++class EmulatorAdmission:
++    def __init__(self, token_provider):
++        self.token_provider = token_provider
++        self.root = Path(__file__).resolve().parents[1]
++
++    def _call(self, action, **data):
++        if os.environ.get("NODE_ENV") == "production":
++            raise ResearchHold("PRODUCTION_CLOSED")
++        node = shutil.which("node")
++        if not node:
++            raise ResearchHold("NODE_REQUIRED_FOR_SHARED_ADMISSION")
++        value = {"action": action, "token": self.token_provider(), **data}
++        env = {**os.environ, "FIREBASE_AUTH_EMULATOR_HOST": "127.0.0.1:9099",
++               "FIRESTORE_EMULATOR_HOST": "127.0.0.1:8080", "METADATA_SERVER_DETECTION": "none"}
++        result = subprocess.run([node, "--import", (self.root / "tests/register-ts.mjs").as_uri(),
++                                 str(self.root / "functions/src/inspireResearchAdmission.ts")],
++                                input=canonical(value).decode(), capture_output=True, text=True,
++                                encoding="utf8", cwd=self.root, env=env, timeout=30,
++                                creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
++        if result.returncode:
++            raise ResearchHold("SHARED_AUTH_QUOTA_OR_IP_ADMISSION_HOLD")
++        try:
++            return json.loads(result.stdout)
++        except ValueError as error:
++            raise ResearchHold("ADMISSION_RESPONSE_HOLD") from error
++
++    def identity(self):
++        return self._call("identity")
++
++    def reserve(self, request, subject):
++        return self._call("reserve", request=request, subject=subject)
++
++    def settle(self, operation, subject, validated_sha256):
++        return self._call("settle", operation=operation, subject=subject, validatedSha256=validated_sha256)
+diff --git a/functions/inspire_research_cli.py b/functions/inspire_research_cli.py
+--- /dev/null
++++ b/functions/inspire_research_cli.py
+@@ -0,0 +1,96 @@
++"""Local operator commands, offline by default; never a website endpoint."""
++import argparse
++import json
++import sys
++from pathlib import Path
++sys.dont_write_bytecode = True
++# Embedded Windows Python can omit the script directory from sys.path.
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++from inspire_research import ResearchRunner
++from inspire_research_store import ResearchStore, ResearchHold
++
++
++def main():
++    parser = argparse.ArgumentParser(description="INSPIRE isolated research safeguards; offline by default, external approvals required for HTTPS")
++    parser.add_argument("command", choices=["init-offline", "init-draft", "status", "preview", "execute", "replay", "recover", "review", "purge", "retention-watch", "revoke", "source-disclosure", "approval-disclosure", "import-owner-decision", "import-token-receipt", "release"])
++    parser.add_argument("--trial", required=True)
++    parser.add_argument("--storage-name", default="quarantine-v1")
++    parser.add_argument("--conversation", choices=["C1", "C2", "C3", "C4"])
++    parser.add_argument("--operation")
++    parser.add_argument("--preview-hash")
++    parser.add_argument("--retention-days", type=int, default=7)
++    parser.add_argument("--reviewer", help="Must match a configured reviewer in this trial")
++    parser.add_argument("--review-json", help="Local JSON review file, or - for stdin; configured reviewers and exact candidate hash required")
++    parser.add_argument("--owner-document")
++    parser.add_argument("--document-sha256")
++    parser.add_argument("--owner-reference")
++    parser.add_argument("--real-model", action="store_true", help="Research HTTPS backend; still requires all owner/source/token/admission gates")
++    parser.add_argument("--emulator-token-stdin", action="store_true",
++                        help="Read a synthetic registered emulator ID token from stdin; never persist it")
++    args = parser.parse_args()
++    root = ResearchStore.default_root(args.storage_name)
++    create = args.command.startswith("init-") and not root.exists()
++    store = ResearchStore(root, create=create)
++    admission = None
++    if args.emulator_token_stdin:
++        from inspire_research_admission import EmulatorAdmission
++        token = sys.stdin.read(16000).strip()
++        if not token or len(token) > 8192:
++            raise ResearchHold("INVALID_EMULATOR_TOKEN")
++        admission = EmulatorAdmission(lambda: token)
++    transport = None
++    if args.real_model:
++        from inspire_research_live import ResearchHTTPS
++        transport = ResearchHTTPS()
++    runner = ResearchRunner(store, transport=transport, admission=admission)
++    if not args.command.startswith("init-"):
++        runner.purge(args.trial)
++    if args.command.startswith("init-"):
++        value = runner.create(args.trial, offline=args.command == "init-offline", retention_days=args.retention_days)
++    elif args.command == "preview":
++        value = runner.preview(args.trial, args.conversation)
++    elif args.command == "execute":
++        value = runner.execute(args.trial, args.conversation, preview_hash=args.preview_hash, operation_id=args.operation)
++    elif args.command == "replay":
++        value = runner.replay(args.trial, args.operation)
++    elif args.command == "recover":
++        value = runner.recover(args.trial)
++    elif args.command == "approval-disclosure":
++        value = runner.approval_preview(args.trial, args.conversation)
++    elif args.command == "source-disclosure":
++        value = runner.source_disclosure(args.trial)
++    elif args.command == "review":
++        from pathlib import Path
++        if args.review_json == "-" and args.emulator_token_stdin:
++            raise ResearchHold("SEPARATE_REVIEW_AND_IDENTITY_INPUT_REQUIRED")
++        review = json.loads(sys.stdin.read(16000) if args.review_json == "-" else Path(args.review_json).read_text(encoding="utf8"))
++        if set(review) != {"accept", "scores", "flags", "expected_sha256"}:
++            raise ResearchHold("INVALID_REVIEW_FIELDS")
++        value = runner.review(args.trial, args.operation, args.reviewer, **review)
++    elif args.command == "import-owner-decision":
++        value = runner.import_owner_decision(args.trial, args.owner_document, args.document_sha256, args.owner_reference)
++    elif args.command == "import-token-receipt":
++        runner.import_token_receipt(args.trial, args.owner_document, args.document_sha256)
++        value = runner.status(args.trial)
++    elif args.command == "release":
++        value = runner.release(args.trial, args.document_sha256)
++    elif args.command == "purge":
++        runner.purge(args.trial)
++        value = runner.status(args.trial)
++    elif args.command == "retention-watch":
++        value = runner.watch_retention(args.trial)
++    elif args.command == "revoke":
++        runner.revoke(args.trial)
++        value = runner.status(args.trial)
++    else:
++        value = runner.status(args.trial)
++    # JSON escaping prevents terminal control sequences/HTML execution.
++    print(json.dumps(value, ensure_ascii=True))
++
++
++if __name__ == "__main__":
++    try:
++        main()
++    except ResearchHold as error:
++        print(json.dumps({"held": str(error), "live_enabled": False, "user_delivery": False}), file=sys.stderr)
++        sys.exit(2)
+diff --git a/functions/inspire_research_controller.py b/functions/inspire_research_controller.py
+--- /dev/null
++++ b/functions/inspire_research_controller.py
+@@ -0,0 +1,92 @@
++"""Reuse original 0.4.0 checks on a sealed, already-quarantined candidate.
++
++No provider adapter or website delivery is reachable here. MockSink is a native
++control-test receipt, never permission to generate or deliver an actual reply.
++"""
++from dataclasses import asdict
++import hashlib
++import json
++import secrets
++from pathlib import Path
++import sys
++from inspire_research_store import ResearchHold, canonical, digest
++
++_loaded = False
++
++
++def original_modules():
++    global _loaded
++    root = Path(__file__).resolve().parents[1] / ".private.local/controller040-preview/INSPIRE_AI_040"
++    if not _loaded:
++        manifest = (root / "manifests/package_manifest.json").read_bytes()
++        if digest(manifest) != "7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a":
++            raise ResearchHold("CONTROLLER_MANIFEST_HOLD")
++        for row in json.loads(manifest)["files"]:
++            path = (root / row["path"]).resolve()
++            if not path.is_relative_to(root.resolve()):
++                raise ResearchHold("CONTROLLER_PATH_HOLD")
++            data = path.read_bytes()
++            if len(data) != row["bytes"] or hashlib.sha256(data).hexdigest() != row["sha256"]:
++                raise ResearchHold("CONTROLLER_SOURCE_INTEGRITY_HOLD")
++        sys.dont_write_bytecode = True
++        sys.path.insert(0, str(root))
++        _loaded = True
++    from studio.conversation import ConversationController
++    from studio.adapters import Generation
++    from integrity_eval.runtime import Session
++    from deep_eval.contract import Utterance
++    return ConversationController, Generation, Session, Utterance
++
++
++class NativeResearchValidation:
++    def validate(self, text, request, previous, binding, *, profile=None, origin="RESEARCH_OFFLINE_CANDIDATE"):
++        Controller, Generation, Session, Utterance = original_modules()
++        if len(text.encode("utf-16-le")) // 2 > 2000 or not text.strip() or any(ord(c) < 32 and c not in "\n\r\t" for c in text):
++            raise ResearchHold("RESEARCH_OUTPUT_LENGTH_OR_CONTROL_HOLD")
++
++        class SealedCandidate:
++            def generate(self, messages, profile):
++                # Native model_messages may contain proposal excerpts internally.
++                # They are NEVER sent to the research transport from this path.
++                return Generation(text, origin, "gpt-6.1-sol")
++
++        session = Session(request["sessionId"] + ":" + request["conversationId"])
++        if previous:
++            if previous["session_id"] != session.session_id:
++                raise ResearchHold("CONTROLLER_STATE_BINDING_HOLD")
++            session.revision = previous["revision"]
++            session.history = [Utterance.model_validate(u) for u in previous["history"]]
++            session.ledger_history = previous["ledger_history"]
++            session.unresolved_safety_followup = previous["unresolved_safety_followup"]
++        controller = Controller({"sealed-quarantine": SealedCandidate()}, secrets.token_bytes(32))
++        dialogue = [{"role": m["role"], "text": m["text"],
++                     **({"correction_of": m["correctionOf"]} if "correctionOf" in m else {})}
++                    for m in request["messages"]]
++        prepared = controller.prepare(session, dialogue[-1]["text"], dialogue,
++                                      profile or {"language": "vi-VN", "addressing": "neutral", "display_name": ""},
++                                      "sealed-quarantine", action_id=request["operationId"], binding=binding)
++        if prepared["generation"]["origin"] != origin:
++            raise ResearchHold("NATIVE_SAFETY_GATE_HELD_CANDIDATE")
++        self.before_finish(controller, prepared)
++        result = controller.finish(session, prepared)
++        if (result["actual_execution_eligible"] is not False or
++                result["text"] != text.strip() or result["response_sha256"] != digest(result["text"].encode())):
++            raise ResearchHold("CONTROLLER_EXACT_OUTPUT_HOLD")
++        state = {"session_id": session.session_id, "revision": session.revision,
++                 "history": [u.model_dump() for u in session.history],
++                 "ledger_history": session.ledger_history,
++                 "unresolved_safety_followup": session.unresolved_safety_followup}
++        proof = {"origin": result["model_origin"], "validated_sha256": result["response_sha256"],
++                 "candidate_sha256_before_native_strip": digest(text.encode()),
++                 "decision_fingerprint": result["decision_fingerprint"], "mock_control_receipt": result["receipt"],
++                 "permission_observation": prepared["permission_observation"],
++                 "actual_execution_eligible": False, "user_delivery": False,
++                 "checks_executed": ["Source/excerpt integrity", "Research triage", "Quote-bound ledger",
++                                     "Non-MOCK ScopeGuard", "PermissionInspector (actual execution held)",
++                                     "GeneratedValidator HMAC", "MockSink exact bytes/source/policy recheck",
++                                     "Native receipt-bound Session.commit"],
++                 "not_established": ["Clinical validation", "Actual model or user-delivery permission"]}
++        return {"text": result["text"], "state": state, "proof": proof}
++
++    def before_finish(self, controller, prepared):
++        """No-op extension point used only by negative-control tests."""
+diff --git a/functions/inspire_research_live.py b/functions/inspire_research_live.py
+--- /dev/null
++++ b/functions/inspire_research_live.py
+@@ -0,0 +1,113 @@
++"""Explicit-owner research boundary and one-shot HTTPS sender. Never auto-enabled.
++
++No credentials are loaded until an authorized, reserved dispatch. Owner records
++and token-count receipts are operator-supplied with out-of-band SHA-256 pins; this
++module does not create approvals or claim that a model/tokenizer is verified.
++"""
++import http.client
++import json
++import os
++from pathlib import Path
++import ssl
++from inspire_research_store import ResearchHold, canonical, digest
++
++
++def pinned_document(path, expected_sha256):
++    raw = Path(path).read_bytes()
++    if digest(raw) != expected_sha256:
++        raise ResearchHold("EXTERNAL_OWNER_DOCUMENT_HASH_MISMATCH")
++    value = json.loads(raw)
++    if not isinstance(value, dict):
++        raise ResearchHold("INVALID_OWNER_DOCUMENT")
++    return value
++
++
++def validate_owner_decision(value, trial, ledger_id, manifest, sources, now):
++    keys = {"type", "owner_decision_reference", "trial_id", "ledger_id", "manifest_hash", "subject", "model",
++            "valid_from", "expires_at", "max_calls", "max_microUSD", "permissions", "source_decisions",
++            "reviewers", "retention_days", "pricing_evidence_reference", "all_in_input_micro_per_token",
++            "all_in_output_micro_per_token", "fixed_fee_micro_per_call"}
++    if set(value) != keys or value["type"] != "EXTERNAL_OWNER_RESEARCH_DECISION":
++        raise ResearchHold("OWNER_DECISION_SCHEMA_HOLD")
++    if (not isinstance(value["owner_decision_reference"], str) or not value["owner_decision_reference"].strip() or
++            value["trial_id"] != trial["id"] or value["ledger_id"] != ledger_id or value["manifest_hash"] != manifest or
++            value["subject"] != trial["subject"] or not trial["subject"] or value["model"] != "gpt-6.1-sol"):
++        raise ResearchHold("OWNER_DECISION_SCOPE_HOLD")
++    if not (type(value["valid_from"]) in {int, float} and type(value["expires_at"]) in {int, float} and
++            value["valid_from"] <= now < value["expires_at"] <= value["valid_from"] + 7200):
++        raise ResearchHold("OWNER_DECISION_TIME_HOLD")
++    for key, maximum in [("max_calls", 12), ("max_microUSD", 2000000), ("retention_days", 7)]:
++        if type(value[key]) is not int or not 1 <= value[key] <= maximum:
++            raise ResearchHold("OWNER_DECISION_LIMIT_HOLD")
++    if value["permissions"] != {"synthetic_research_generation": True, "quarantined_review": True,
++                                "research_context_acceptance": True, "website_delivery": False, "intervention": False}:
++        raise ResearchHold("RESEARCH_PERMISSION_SCOPE_HOLD")
++    if (not isinstance(value["reviewers"], list) or len(value["reviewers"]) != 2 or
++            any(not isinstance(x, str) or not x.strip() for x in value["reviewers"]) or len(set(value["reviewers"])) != 2):
++        raise ResearchHold("TWO_NAMED_REVIEWERS_REQUIRED")
++    if not value["pricing_evidence_reference"]:
++        raise ResearchHold("PRICING_EVIDENCE_REQUIRED")
++    for key, minimum in [("all_in_input_micro_per_token", 5), ("all_in_output_micro_per_token", 10), ("fixed_fee_micro_per_call", 0)]:
++        if type(value[key]) is not int or not minimum <= value[key] <= 100000:
++            raise ResearchHold("UNVERIFIED_ALL_IN_RATE")
++    if set(value["source_decisions"]) != {s["decision_id"] for s in sources}:
++        raise ResearchHold("NINE_INDIVIDUAL_SOURCE_DECISIONS_REQUIRED")
++    for source in sources:
++        decision = value["source_decisions"][source["decision_id"]]
++        if (set(decision) != {"internal", "export", "source_sha256", "section_sha256", "role", "authority_reference"} or
++                type(decision["internal"]) is not bool or type(decision["export"]) is not bool or
++                decision["source_sha256"] != source["source_sha256"] or decision["section_sha256"] != source["section_sha256"] or
++                decision["role"] != source["proposed_use"] or not decision["authority_reference"]):
++            raise ResearchHold("INDIVIDUAL_SOURCE_SCOPE_HOLD")
++    return value
++
++
++class RecordedModelTokenBound:
++    """Trusted operator imports hash-bound receipts from an independently verified
++    offline tokenizer. Missing or unverified receipts always block; no guessing,
++    external count endpoint or vocabulary download is attempted.
++    """
++    domain = "operator-pinned-model-token-receipt"
++    def __init__(self, store, now):
++        self.store, self.now = store, now
++    def count(self, payload):
++        with self.store.transaction() as db:
++            return self.count_in(db, payload)
++    def count_in(self, db, payload, trial_id=None):
++        proof = self.store.get(db, "token-receipt", digest(payload))
++        if (not proof or self.now() >= proof["expires_at"] or proof["model"] != "gpt-6.1-sol" or
++                proof["ledger_id"] != self.store.anchor["id"] or (trial_id is not None and proof["trial_id"] != trial_id)):
++            raise ResearchHold("VERIFIED_MODEL_TOKEN_RECEIPT_REQUIRED")
++        return proof["input_upper_bound"]
++
++
++class ResearchHTTPS:
++    domain = "live"
++    def __init__(self, key_provider=None):
++        self.key_provider = key_provider or (lambda: os.environ.get("OPENAI_API_KEY"))
++        self.authorize = None  # Installed only by ResearchRunner, not model data.
++    def credential_ready(self):
++        if not self.key_provider():
++            raise ResearchHold("SERVER_API_KEY_REQUIRED_NOT_LOADED")
++    def send(self, payload, operation_id, input_bound, binding):
++        if not self.authorize:
++            raise ResearchHold("NO_PRE_DISPATCH_AUTHORIZER")
++        self.authorize(payload, operation_id, binding)
++        return self._one_request(payload, operation_id, binding)
++    def _one_request(self, payload, operation_id, binding):
++        # No retries, redirects, proxy inheritance, model-selected URLs or tools.
++        key = self.key_provider()
++        if not key or any(c in key for c in "\r\n"):
++            raise ResearchHold("SERVER_API_KEY_REQUIRED")
++        connection = http.client.HTTPSConnection("api.openai.com", 443, timeout=60, context=ssl.create_default_context())
++        try:
++            connection.request("POST", "/v1/responses", body=payload, headers={"Content-Type": "application/json",
++                               "Authorization": "Bearer " + key, "X-Client-Request-Id": operation_id})
++            response = connection.getresponse()
++            raw = response.read(512001)
++            if response.status != 200 or len(raw) > 512000:
++                raise ResearchHold("PROVIDER_HTTP_OR_SIZE_HOLD_NO_RETRY")
++            from inspire_research import TransportResult
++            return TransportResult(operation_id, digest(payload), binding, json.loads(raw.decode("utf8")))
++        finally:
++            connection.close()
+diff --git a/functions/inspire_research_store.py b/functions/inspire_research_store.py
+--- /dev/null
++++ b/functions/inspire_research_store.py
+@@ -0,0 +1,307 @@
++"""Windows-only private research storage. No website, cloud or model clients."""
++import contextlib
++import ctypes as ct
++from ctypes import wintypes as wt
++import csv
++import hashlib
++import hmac
++import io
++import json
++import os
++from pathlib import Path
++import re
++import secrets
++import sqlite3
++import subprocess
++import time
++
++
++class ResearchHold(RuntimeError):
++    pass
++
++
++def canonical(value):
++    return json.dumps(value, ensure_ascii=False, sort_keys=True,
++                      separators=(",", ":"), allow_nan=False).encode("utf8")
++
++
++def digest(value):
++    return hashlib.sha256(value).hexdigest()
++
++
++class Blob(ct.Structure):
++    _fields_ = [("size", wt.DWORD), ("data", ct.POINTER(ct.c_ubyte))]
++
++
++class WindowsProtection:
++    """Current-user DPAPI + protected single-SID DACL, not a sandbox."""
++    def __init__(self):
++        if os.name != "nt":
++            raise ResearchHold("SECURE_STORAGE_UNSUPPORTED_OS")
++        self.kernel = ct.WinDLL("kernel32", use_last_error=True)
++        self.adv = ct.WinDLL("advapi32", use_last_error=True)
++        self.cryptdll = ct.WinDLL("crypt32", use_last_error=True)
++        self.kernel.LocalFree.argtypes = [ct.c_void_p]
++        self.kernel.LocalFree.restype = ct.c_void_p
++        self.adv.ConvertStringSecurityDescriptorToSecurityDescriptorW.argtypes = [wt.LPCWSTR, wt.DWORD, ct.POINTER(ct.c_void_p), ct.POINTER(wt.DWORD)]
++        self.adv.GetSecurityDescriptorDacl.argtypes = [ct.c_void_p, ct.POINTER(wt.BOOL), ct.POINTER(ct.c_void_p), ct.POINTER(wt.BOOL)]
++        self.adv.SetNamedSecurityInfoW.argtypes = [wt.LPWSTR, wt.DWORD, wt.DWORD, ct.c_void_p, ct.c_void_p, ct.c_void_p, ct.c_void_p]
++        self.adv.GetNamedSecurityInfoW.argtypes = [wt.LPWSTR, wt.DWORD, wt.DWORD, ct.POINTER(ct.c_void_p), ct.c_void_p, ct.POINTER(ct.c_void_p), ct.c_void_p, ct.POINTER(ct.c_void_p)]
++        self.adv.GetSecurityDescriptorControl.argtypes = [ct.c_void_p, ct.POINTER(wt.WORD), ct.POINTER(wt.DWORD)]
++        self.adv.GetAce.argtypes = [ct.c_void_p, wt.DWORD, ct.POINTER(ct.c_void_p)]
++        self.adv.ConvertSidToStringSidW.argtypes = [ct.c_void_p, ct.POINTER(wt.LPWSTR)]
++        self.cryptdll.CryptProtectData.argtypes = [ct.POINTER(Blob), wt.LPCWSTR, ct.POINTER(Blob), ct.c_void_p, ct.c_void_p, wt.DWORD, ct.POINTER(Blob)]
++        self.cryptdll.CryptUnprotectData.argtypes = [ct.POINTER(Blob), ct.c_void_p, ct.POINTER(Blob), ct.c_void_p, ct.c_void_p, wt.DWORD, ct.POINTER(Blob)]
++        folder = ct.create_unicode_buffer(32768)
++        if ct.windll.shell32.SHGetFolderPathW(None, 0x1C, None, 0, folder) != 0:
++            raise ResearchHold("LOCAL_APPDATA_UNAVAILABLE")
++        self.base = Path(folder.value) / "INSPIRE-Research"
++        system = ct.create_unicode_buffer(32768)
++        self.kernel.GetSystemDirectoryW(system, len(system))
++        result = subprocess.run([str(Path(system.value) / "whoami.exe"), "/user", "/fo", "csv", "/nh"],
++                                capture_output=True, text=True, check=True,
++                                creationflags=subprocess.CREATE_NO_WINDOW)
++        self.sid = next(csv.reader(io.StringIO(result.stdout.strip())))[1]
++        if not re.fullmatch(r"S-1-5-21-[0-9-]+", self.sid):
++            raise ResearchHold("OWNER_SID_UNAVAILABLE")
++
++    def _sid(self, pointer):
++        value = wt.LPWSTR()
++        if not self.adv.ConvertSidToStringSidW(pointer, ct.byref(value)):
++            raise ResearchHold("ACL_SID_UNREADABLE")
++        try:
++            return value.value
++        finally:
++            self.kernel.LocalFree(ct.cast(value, ct.c_void_p))
++
++    def restrict(self, path):
++        descriptor = ct.c_void_p()
++        sddl = f"D:P(A;OICI;FA;;;{self.sid})"
++        if not self.adv.ConvertStringSecurityDescriptorToSecurityDescriptorW(sddl, 1, ct.byref(descriptor), None):
++            raise ResearchHold("ACL_CREATION_FAILED")
++        try:
++            present, defaulted, dacl = wt.BOOL(), wt.BOOL(), ct.c_void_p()
++            if not self.adv.GetSecurityDescriptorDacl(descriptor, ct.byref(present), ct.byref(dacl), ct.byref(defaulted)):
++                raise ResearchHold("ACL_CREATION_FAILED")
++            if self.adv.SetNamedSecurityInfoW(str(path), 1, 0x80000004, None, None, dacl, None):
++                raise ResearchHold("ACL_RESTRICTION_FAILED")
++        finally:
++            self.kernel.LocalFree(descriptor)
++        self.verify_acl(path, protected=True)
++
++    def verify_acl(self, path, protected=False):
++        owner, dacl, descriptor = ct.c_void_p(), ct.c_void_p(), ct.c_void_p()
++        if self.adv.GetNamedSecurityInfoW(str(path), 1, 5, ct.byref(owner), None, ct.byref(dacl), None, ct.byref(descriptor)):
++            raise ResearchHold("ACL_UNREADABLE")
++        try:
++            if self._sid(owner) != self.sid or not dacl.value:
++                raise ResearchHold("STORAGE_OWNER_CHANGED")
++            # ACL header: revision, reserved, size WORD, count WORD, reserved.
++            count = ct.c_ushort.from_address(dacl.value + 4).value
++            ace = ct.c_void_p()
++            if count != 1 or not self.adv.GetAce(dacl, 0, ct.byref(ace)):
++                raise ResearchHold("STORAGE_ACL_NOT_PRIVATE")
++            kind = ct.c_ubyte.from_address(ace.value).value
++            mask = ct.c_uint32.from_address(ace.value + 4).value
++            if kind != 0 or mask != 0x1F01FF or self._sid(ace.value + 8) != self.sid:
++                raise ResearchHold("STORAGE_ACL_NOT_PRIVATE")
++            control, revision = wt.WORD(), wt.DWORD()
++            if not self.adv.GetSecurityDescriptorControl(descriptor, ct.byref(control), ct.byref(revision)):
++                raise ResearchHold("ACL_UNREADABLE")
++            if protected and not control.value & 0x1000:
++                raise ResearchHold("STORAGE_ACL_INHERITANCE_ENABLED")
++        finally:
++            self.kernel.LocalFree(descriptor)
++
++    def safe_path(self, root):
++        import winreg
++        root = Path(os.path.abspath(root))
++        base = Path(os.path.abspath(self.base))
++        if root == base or not root.is_relative_to(base):
++            raise ResearchHold("STORAGE_OUTSIDE_PRIVATE_LOCAL_BASE")
++        if str(root).startswith("\\\\") or self.kernel.GetDriveTypeW(root.anchor) != 3:
++            raise ResearchHold("STORAGE_NOT_FIXED_LOCAL_DISK")
++        sync = [Path(v) for k, v in os.environ.items() if v and
++                (k.lower().startswith("onedrive") or k.lower() in {"dropbox", "googledrive"})]
++        try:
++            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\SyncRootManager")
++        except FileNotFoundError:
++            key = None
++        except OSError as error:
++            raise ResearchHold("SYNC_REGISTRY_UNREADABLE") from error
++        try:
++            if key:
++                with key:
++                    names = [winreg.EnumKey(key, i) for i in range(winreg.QueryInfoKey(key)[0])]
++                    for name in names:
++                        with winreg.OpenKey(key, name + r"\UserSyncRoots") as users:
++                            for j in range(winreg.QueryInfoKey(users)[1]):
++                                _, value, _ = winreg.EnumValue(users, j)
++                                if isinstance(value, str):
++                                    sync.append(Path(value))
++        except OSError as error:
++            raise ResearchHold("SYNC_REGISTRY_UNREADABLE") from error
++        if any(root == p or root.is_relative_to(p) for p in sync):
++            raise ResearchHold("STORAGE_IN_SYNC_ROOT")
++        for path in [root, *root.parents]:
++            if path.exists() and path.stat(follow_symlinks=False).st_file_attributes & 0x1400:
++                raise ResearchHold("STORAGE_REPARSE_OR_OFFLINE_PATH")
++        return root
++
++    def crypt(self, data, decrypt=False):
++        raw = ct.create_string_buffer(data)
++        entropy = ct.create_string_buffer(b"INSPIRE-RESEARCH-QUARANTINE-v1")
++        source = Blob(len(data), ct.cast(raw, ct.POINTER(ct.c_ubyte)))
++        extra = Blob(len(entropy.raw), ct.cast(entropy, ct.POINTER(ct.c_ubyte)))
++        result = Blob()
++        ok = (self.cryptdll.CryptUnprotectData(ct.byref(source), None, ct.byref(extra), None, None, 1, ct.byref(result))
++              if decrypt else self.cryptdll.CryptProtectData(ct.byref(source), "INSPIRE research", ct.byref(extra), None, None, 1, ct.byref(result)))
++        if not ok:
++            raise ResearchHold("DPAPI_INTEGRITY_OR_USER_HOLD")
++        try:
++            return ct.string_at(result.data, result.size)
++        finally:
++            self.kernel.LocalFree(result.data)
++
++
++class ResearchStore:
++    """Sealed durable ledger; DPAPI encrypts every content-bearing record."""
++    def __init__(self, root, *, create=False, now=time.time):
++        self.protection = WindowsProtection()
++        self.root = self.protection.safe_path(root)
++        self.now = now
++        self.db_path = self.root / "research.sqlite"
++        self.anchor_path = self.root / "anchor.dpapi"
++        if create:
++            if self.root.exists():
++                raise ResearchHold("REFUSE_LEDGER_RESET")
++            if not self.protection.base.exists():
++                self.protection.base.mkdir()
++                self.protection.restrict(self.protection.base)
++            self.protection.verify_acl(self.protection.base, protected=True)
++            self.root.mkdir()
++            self.protection.restrict(self.root)
++            self.anchor = {"key": secrets.token_hex(32), "id": secrets.token_hex(24), "seq": 0}
++            db = self._connect()
++            try:
++                db.executescript("""
++                CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
++                CREATE TABLE records (kind TEXT NOT NULL, id TEXT NOT NULL, content BLOB,
++                  PRIMARY KEY(kind,id));
++                """)
++                db.executemany("INSERT INTO meta VALUES (?,?)", [("id", self.anchor["id"]), ("seq", "0"), ("clock", str(int(now())))])
++                seal = self._seal(db)
++                db.execute("INSERT INTO meta VALUES ('seal',?)", (seal,))
++            finally:
++                db.close()
++            self.anchor["seal"] = seal
++            self._anchor_write()
++        self._files()
++        try:
++            self.anchor = json.loads(self.protection.crypt(self.anchor_path.read_bytes(), decrypt=True))
++        except (OSError, ValueError) as error:
++            raise ResearchHold("LEDGER_ANCHOR_MISSING_OR_INVALID") from error
++        with self.transaction() as db:
++            self._verify(db)
++
++    @classmethod
++    def default_root(cls, name="quarantine-v1"):
++        if not re.fullmatch(r"[a-zA-Z0-9_-]{1,100}", name):
++            raise ResearchHold("INVALID_STORAGE_NAME")
++        return WindowsProtection().base / name
++
++    def _files(self):
++        self.protection.safe_path(self.root)
++        self.protection.verify_acl(self.root, protected=True)
++        for p in self.root.iterdir():
++            if p.is_dir() or p.stat(follow_symlinks=False).st_file_attributes & 0x1400:
++                raise ResearchHold("UNEXPECTED_STORAGE_ENTRY")
++            self.protection.verify_acl(p)
++        if not self.db_path.is_file() or not self.anchor_path.is_file():
++            raise ResearchHold("LEDGER_MISSING_NO_RESET")
++
++    def _connect(self):
++        db = sqlite3.connect(str(self.db_path), timeout=10, isolation_level=None)
++        db.execute("PRAGMA synchronous=FULL")
++        db.execute("PRAGMA journal_mode=DELETE")
++        db.execute("PRAGMA secure_delete=ON")
++        db.execute("PRAGMA temp_store=MEMORY")
++        return db
++
++    def _seal(self, db):
++        value = {"meta": db.execute("SELECT key,value FROM meta WHERE key!='seal' ORDER BY key").fetchall(),
++                 "records": [(k, i, digest(b) if b is not None else None) for k, i, b in db.execute("SELECT kind,id,content FROM records ORDER BY kind,id")]}
++        return hmac.new(bytes.fromhex(self.anchor["key"]), canonical(value), hashlib.sha256).hexdigest()
++
++    def _verify(self, db):
++        meta = dict(db.execute("SELECT key,value FROM meta"))
++        if (meta.get("id") != self.anchor["id"] or int(meta.get("seq", -1)) != self.anchor["seq"] or
++                meta.get("seal") != self.anchor["seal"] or not hmac.compare_digest(self._seal(db), meta["seal"])):
++            raise ResearchHold("LEDGER_ROLLBACK_TAMPER_OR_INTERRUPTED_COMMIT")
++        if self.now() < float(meta["clock"]) - 2:
++            raise ResearchHold("CLOCK_ROLLBACK_HOLD")
++
++    def _anchor_write(self):
++        temp = self.root / "anchor.pending"
++        with temp.open("wb") as file:
++            file.write(self.protection.crypt(canonical(self.anchor)))
++            file.flush()
++            os.fsync(file.fileno())
++        os.replace(temp, self.anchor_path)
++
++    @contextlib.contextmanager
++    def transaction(self, write=False):
++        import msvcrt
++        self._files()
++        lock = (self.root / "writer.lock").open("a+b")
++        if lock.tell() == 0:
++            lock.write(b"0")
++            lock.flush()
++        lock.seek(0)
++        try:
++            msvcrt.locking(lock.fileno(), msvcrt.LK_LOCK, 1)
++        except OSError as error:
++            lock.close()
++            raise ResearchHold("STORAGE_LOCK_HOLD") from error
++        # Serialize writers across processes before reading the independent anchor.
++        db = self._connect()
++        try:
++            db.execute("BEGIN IMMEDIATE")
++            self.anchor = json.loads(self.protection.crypt(self.anchor_path.read_bytes(), decrypt=True))
++            self._verify(db)
++            yield db
++            if write:
++                seq = self.anchor["seq"] + 1
++                db.execute("UPDATE meta SET value=? WHERE key='seq'", (str(seq),))
++                db.execute("UPDATE meta SET value=? WHERE key='clock'", (str(int(self.now())),))
++                seal = self._seal(db)
++                db.execute("UPDATE meta SET value=? WHERE key='seal'", (seal,))
++                db.commit()
++                self.anchor.update(seq=seq, seal=seal)
++                self._anchor_write()
++            else:
++                db.commit()
++        except (sqlite3.Error, OSError, ValueError) as error:
++            db.rollback()
++            raise ResearchHold("DURABLE_STORAGE_HOLD") from error
++        except BaseException:
++            db.rollback()
++            raise
++        finally:
++            db.close()
++            lock.seek(0)
++            msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
++            lock.close()
++
++    def get(self, db, kind, key, default=None):
++        row = db.execute("SELECT content FROM records WHERE kind=? AND id=?", (kind, key)).fetchone()
++        if not row or row[0] is None:
++            return default
++        return json.loads(self.protection.crypt(row[0], decrypt=True))
++
++    def put(self, db, kind, key, value):
++        db.execute("INSERT INTO records VALUES (?,?,?) ON CONFLICT(kind,id) DO UPDATE SET content=excluded.content",
++                   (kind, key, self.protection.crypt(canonical(value))))
++
++    def purge_record(self, db, kind, key):
++        db.execute("UPDATE records SET content=NULL WHERE kind=? AND id=?", (kind, key))
+diff --git a/functions/package.json b/functions/package.json
+--- a/functions/package.json
++++ b/functions/package.json
+@@ -2,7 +2,7 @@
+   "name": "functions",
+   "scripts": {
+     "lint": "node lint.cjs .",
+-    "lint:chat": "node lint.cjs lint.cjs src/inspireAI.ts src/inspireAccount.ts src/inspireChatContract.ts src/inspireChatSimulation.ts src/inspireKnowledge.ts src/inspireLocalService.ts src/inspireHttp.ts src/inspireController040.ts",
++    "lint:chat": "node lint.cjs lint.cjs src/inspireAI.ts src/inspireAccount.ts src/inspireChatContract.ts src/inspireChatSimulation.ts src/inspireKnowledge.ts src/inspireLocalService.ts src/inspireHttp.ts src/inspireController040.ts src/inspireResearchAdmission.ts",
+     "build": "tsc",
+     "build:watch": "tsc --watch",
+     "serve": "npm run build && firebase emulators:start --only functions",
+diff --git a/functions/src/inspireResearchAdmission.ts b/functions/src/inspireResearchAdmission.ts
+--- /dev/null
++++ b/functions/src/inspireResearchAdmission.ts
+@@ -0,0 +1,70 @@
++/** Stdin-only research admission; never a public Firebase Function. */
++import {createHash} from "node:crypto";
++import {getFirestore} from "firebase-admin/firestore";
++import {AccountService, verifiedIdentity} from "./inspireAccount";
++import {requireLocalEmulators} from "./inspireLocalService";
++import {checkRateLimit, getVisitorKey} from "./inspireAI";
++import {exactKeys, record, validateRequest} from "./inspireChatContract";
++
++/** Read a bounded envelope without logging tokens or raw errors. */
++async function main() {
++  requireLocalEmulators();
++  let body = Buffer.alloc(0);
++  for await (const chunk of process.stdin) {
++    body = Buffer.concat([body, Buffer.from(chunk)]);
++    if (body.length > 64000) throw new Error("BODY_LIMIT");
++  }
++  const value: unknown = JSON.parse(body.toString("utf8"));
++  if (!record(value)) throw new Error("INVALID_ENVELOPE");
++  exactKeys(value, ["action", "token", "subject", "request", "operation",
++    "validatedSha256"]);
++  if (typeof value.token !== "string") throw new Error("AUTH_REQUIRED");
++  const identity = await verifiedIdentity(value.token);
++  if (!identity.registered ||
++      !identity.email?.endsWith("@synthetic.invalid") ||
++      !identity.providers.includes("password")) {
++    throw new Error("SYNTHETIC_REGISTERED_ACCOUNT_REQUIRED");
++  }
++  const subject = createHash("sha256").update(identity.uid).digest("hex");
++  if (value.action !== "identity" && value.subject !== subject) {
++    throw new Error("IDENTITY_CHANGED");
++  }
++  const accounts = new AccountService();
++  if (value.action === "identity") {
++    const account = await accounts.account(identity);
++    if (account.quota.remaining < 12) throw new Error("TWELVE_SLOTS_REQUIRED");
++    process.stdout.write(JSON.stringify({subject,
++      remaining: account.quota.remaining,
++      domain: "firebase-demo-emulator"}));
++  } else if (value.action === "reserve") {
++    validateRequest(value.request);
++    const rate = await checkRateLimit(getVisitorKey("127.0.0.1"), Date.now());
++    if (!rate.allowed) throw new Error("RATE_LIMITED");
++    await accounts.reserve(identity, value.request);
++    process.stdout.write(JSON.stringify({reserved: true, subject}));
++  } else if (value.action === "settle") {
++    if (typeof value.operation !== "string" ||
++        typeof value.validatedSha256 !== "string" ||
++        !/^[a-f0-9]{64}$/.test(value.validatedSha256)) {
++      throw new Error("RESEARCH_RECEIPT_REQUIRED");
++    }
++    // Local operator-only, synthetic research acceptance; no user delivery.
++    await accounts.settle(identity, value.operation, "completed");
++    process.stdout.write(JSON.stringify({settled: true, subject}));
++  } else {
++    throw new Error("UNSUPPORTED_ACTION");
++  }
++}
++
++main().catch((error: unknown) => {
++  const code = record(error) && typeof error.code === "string" ?
++    error.code : "RESEARCH_ADMISSION_HOLD";
++  process.stderr.write(JSON.stringify({held: code}));
++  process.exitCode = 2;
++}).finally(async () => {
++  try {
++    await getFirestore().terminate();
++  } catch {
++    // No initialized Admin app, e.g. production guard.
++  }
++});
+diff --git a/tests/inspire-research-admission.py b/tests/inspire-research-admission.py
+--- /dev/null
++++ b/tests/inspire-research-admission.py
+@@ -0,0 +1,42 @@
++"""Synthetic emulator identity integration; ID token arrives only on stdin."""
++import sys
++sys.dont_write_bytecode = True
++import json
++from pathlib import Path
++import uuid
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "functions"))
++from inspire_research import ResearchRunner, OfflineTransport
++from inspire_research_store import ResearchStore, WindowsProtection
++from inspire_research_admission import EmulatorAdmission
++
++input_data = json.loads(sys.stdin.read())
++token = input_data["token"]
++path = ResearchStore.default_root("offline-test-" + uuid.uuid4().hex)
++store = ResearchStore(path, create=True)
++try:
++    admission = EmulatorAdmission(lambda: token)
++    transport = OfflineTransport()
++    runner = ResearchRunner(store, transport, admission=admission)
++    trial = "emulator-" + uuid.uuid4().hex
++    runner.create(trial, offline=True)
++    preview = runner.preview(trial, "C1")
++    candidate = runner.execute(trial, "C1", preview_hash=preview["body_sha256"])
++    for reviewer in ["offline-reviewer-a", "offline-reviewer-b"]:
++        runner.review(trial, candidate["operation"], reviewer, accept=True,
++                      scores={k: 4 for k in ["naturalness", "relevance", "continuity", "preferences"]},
++                      flags={k: False for k in ["invented_facts", "invented_sources", "unsafe", "authority_claim", "privacy_leak"]},
++                      expected_sha256=candidate["sha256"])
++    runner.replay(trial, candidate["operation"])
++    state = runner.status(trial)
++    assert transport.calls == 1
++    assert state["admission_domain"] == "firebase-demo-emulator"
++    print(json.dumps({"executed": True, "mock_transport_calls": transport.calls,
++                      "replay_added_calls": 0, "state": state, "proof": candidate["proof"]}))
++finally:
++    base = WindowsProtection().base.resolve()
++    if path.resolve().is_relative_to(base) and path.name.startswith("offline-test-"):
++        for file in path.iterdir():
++            if file.is_file() and not file.is_symlink():
++                file.unlink()
++        path.rmdir()
+diff --git a/tests/inspire-research-admission.test.mjs b/tests/inspire-research-admission.test.mjs
+--- /dev/null
++++ b/tests/inspire-research-admission.test.mjs
+@@ -0,0 +1,66 @@
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {spawnSync} from 'node:child_process'
++import {randomUUID,createHash} from 'node:crypto'
++import {mkdirSync,writeFileSync} from 'node:fs'
++import {resolve} from 'node:path'
++import {createRequire} from 'node:module'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {verifiedIdentity,AccountService} from '../functions/src/inspireAccount.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099'
++process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080'
++process.env.METADATA_SERVER_DETECTION='none'
++requireLocalEmulators()
++const require=createRequire(new URL('../functions/package.json',import.meta.url))
++const db=require('firebase-admin/firestore').getFirestore(),auth=require('firebase-admin/auth').getAuth()
++const users=[]
++async function member(){
++  const email=randomUUID()+'@synthetic.invalid'
++  const body=await fetch('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=synthetic-test',{
++    method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({email,password:'Synthetic-only-987!',returnSecureToken:true})}).then(r=>r.json())
++  assert.ok(body.idToken,'Synthetic emulator account created')
++  const identity=await verifiedIdentity(body.idToken);users.push(identity.uid)
++  return{identity,token:body.idToken,subject:createHash('sha256').update(identity.uid).digest('hex')}
++}
++function bridge(value,env={}){
++  return spawnSync(process.execPath,['--import','./tests/register-ts.mjs','functions/src/inspireResearchAdmission.ts'],
++    {input:JSON.stringify(value),encoding:'utf8',env:{...process.env,...env},maxBuffer:4*1024*1024})
++}
++test('verified registered synthetic identity is bound; forged fields, account switching and production fail before reservation',async()=>{
++  const first=await member(),second=await member()
++  const identity=bridge({action:'identity',token:first.token})
++  assert.equal(identity.status,0,identity.stderr)
++  assert.equal(JSON.parse(identity.stdout).subject,first.subject)
++  const request={kind:'send',epoch:'research',sessionId:'research',operationId:randomUUID(),conversationId:'C1',messages:[{id:'u1',role:'user',text:'Nội dung tổng hợp.'}]}
++  for(const value of [
++    {action:'reserve',token:first.token,subject:second.subject,request},
++    {action:'reserve',token:first.token,subject:first.subject,request,quota:999},
++    {action:'reserve',token:'forged-token',subject:first.subject,request},
++  ])assert.notEqual(bridge(value).status,0)
++  assert.notEqual(bridge({action:'identity',token:first.token},{NODE_ENV:'production'}).status,0)
++  assert.equal((await new AccountService().account(first.identity)).quota.pending,0)
++})
++test('actual protected runner → shared emulator Auth/IP/quota → native validation → research acceptance and replay',async()=>{
++  const account=await member()
++  const result=spawnSync(process.env.INSPIRE_CONTROLLER_PYTHON||resolve('.tools.local/python312/python.exe'),
++    ['-X','utf8','tests/inspire-research-admission.py'],{input:JSON.stringify({token:account.token}),encoding:'utf8',
++      env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:4*1024*1024})
++  assert.equal(result.status,0,result.stderr)
++  const evidence=JSON.parse(result.stdout)
++  assert.equal(evidence.mock_transport_calls,1)
++  assert.equal(evidence.replay_added_calls,0)
++  const state=await new AccountService().account(account.identity)
++  assert.equal(state.quota.completed,1);assert.equal(state.quota.pending,0);assert.equal(state.quota.remaining,29)
++  mkdirSync('docs/evidence/research-implementation',{recursive:true})
++  writeFileSync('docs/evidence/research-implementation/shared-admission-trace.json',JSON.stringify({
++    ...evidence,quota:state.quota,paidCalls:0,realOAuth:false,domain:'Synthetic Firebase emulators only; token never persisted'},null,2))
++})
++test.after(async()=>{
++  for(const uid of users){
++    await db.recursiveDelete(db.doc('inspireAccounts/'+uid))
++    await db.doc('inspirePreferences/'+uid).delete()
++    const operations=await db.collection('inspireOperations').where('uid','==',uid).get()
++    await Promise.all(operations.docs.map(d=>d.ref.delete()));await auth.deleteUser(uid)
++  }
++  await db.terminate()
++})
+diff --git a/tests/inspire-research-cli-smoke.mjs b/tests/inspire-research-cli-smoke.mjs
+--- /dev/null
++++ b/tests/inspire-research-cli-smoke.mjs
+@@ -0,0 +1,53 @@
++// Actual operator CLI, Windows private storage and native Controller. No network.
++import assert from 'node:assert/strict'
++import {spawnSync} from 'node:child_process'
++import {resolve} from 'node:path'
++import {randomUUID} from 'node:crypto'
++import {mkdirSync,writeFileSync} from 'node:fs'
++const python=process.env.INSPIRE_CONTROLLER_PYTHON||resolve('.tools.local/python312/python.exe')
++const storage='offline-demo-'+randomUUID(),trial='cli-synthetic',draft='cli-owner-draft'
++const steps=[]
++function cli(command,args=[],input='',trialId=trial,expected=0){
++  const r=spawnSync(python,['-X','utf8','functions/inspire_research_cli.py',command,'--storage-name',storage,'--trial',trialId,...args],{
++    encoding:'utf8',input,maxBuffer:2*1024*1024,env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}})
++  assert.equal(r.status,expected,`${command}: ${r.stderr}`)
++  const value=JSON.parse(expected===0?r.stdout:r.stderr)
++  steps.push({command,trial:trialId,exitCode:r.status,status:value.status||value.held||value.purpose||null})
++  return value
++}
++cli('init-offline')
++cli('init-draft',[],'',draft)
++const sources=cli('source-disclosure',[],'',draft)
++assert.equal(sources.sources.length,9)
++assert.equal(sources.authorized,false)
++assert.ok(sources.sources.every(s=>!s.internal_authorized&&!s.export_authorized))
++const disclosure=cli('approval-disclosure',['--conversation','C1'],'',draft)
++assert.equal(disclosure.authorized,false)
++cli('execute',['--conversation','C1','--preview-hash',disclosure.body_sha256],'',draft,2)
++const preview=cli('preview',['--conversation','C1'])
++const result=cli('execute',['--conversation','C1','--preview-hash',preview.body_sha256,'--operation','cli-op-1'])
++const replay=cli('replay',['--operation','cli-op-1'])
++assert.equal(result.sha256,replay.sha256)
++assert.equal(replay.user_delivery,false)
++assert.ok(result.proof.checks_executed.includes('Non-MOCK ScopeGuard'))
++const review={accept:true,scores:{naturalness:4,relevance:4,continuity:4,preferences:4},
++  flags:{invented_facts:false,invented_sources:false,unsafe:false,authority_claim:false,privacy_leak:false},expected_sha256:result.sha256}
++for(const reviewer of ['offline-reviewer-a','offline-reviewer-b'])cli('review',['--operation','cli-op-1','--reviewer',reviewer,'--review-json','-'],JSON.stringify(review))
++const final=cli('status')
++assert.equal(final.attempts,1)
++assert.equal(final.reserved_microUSD,160000)
++assert.equal(final.inflight,null)
++assert.equal(final.live_enabled,false)
++assert.ok(Object.values(final.real_source_permissions).every(s=>!s.internal&&!s.export))
++const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/research-implementation'
++mkdirSync(out,{recursive:true})
++writeFileSync(out+'/cli-smoke-trace.json',JSON.stringify({
++  executedAt:new Date().toISOString(),steps,storageLeaf:storage,
++  storage:'DPAPI and owner-only Windows ACL under LocalAppData; no output data in workspace',
++  ownerDisclosedSourceHashes:sources.sources.map(s=>({id:s.decision_id,source_sha256:s.source_sha256,section_sha256:s.section_sha256,internal:false,export:false})),
++  firstActualSourceDisclosureBodySHA:disclosure.body_sha256,offlineRequestSHA:preview.body_sha256,
++  nativeChecks:result.proof.checks_executed,quarantineOutputSHA:result.sha256,
++  attempts:final.attempts,reserved_microUSD:final.reserved_microUSD,
++  paidCalls:0,websiteDelivery:false,actualSourcesExported:false,quality:'Fixture scores test workflow only; no language-quality evidence'
++},null,2))
++console.log('PASS CLI draft denial → offline preview → native validation → encrypted quarantine → replay → two fixture reviews; one reserved attempt; no source grants or network')
+diff --git a/tests/inspire-research-preservation.py b/tests/inspire-research-preservation.py
+--- /dev/null
++++ b/tests/inspire-research-preservation.py
+@@ -0,0 +1,71 @@
++"""Focused diff against the pre-task snapshot; never stage or alter old code."""
++import difflib
++import hashlib
++import json
++from pathlib import Path
++import zipfile
++
++ROOT = Path(__file__).resolve().parents[1]
++BEFORE = ROOT / '.private.local/research-implementation-before'
++OUT = ROOT / 'docs/evidence/research-implementation'
++OUT.mkdir(parents=True, exist_ok=True)
++sha = lambda data: hashlib.sha256(data).hexdigest()
++allowed_old = {'REVIEW.md', 'functions/package.json'}
++with zipfile.ZipFile(ROOT / 'INSPIRE-review-model-preparation-2026-11-09.zip') as archive:
++    mismatches = []
++    checked = 0
++    for entry in archive.infolist():
++        if entry.is_dir() or entry.filename == 'ARCHIVE-MANIFEST.json':
++            continue
++        current = ROOT / entry.filename
++        if not current.is_file() or current.read_bytes() != archive.read(entry):
++            if entry.filename not in allowed_old:
++                mismatches.append(entry.filename)
++        checked += 1
++    old_package = archive.read('functions/package.json')
++
++preserved = []
++for path in BEFORE.rglob('*'):
++    if path.is_file():
++        name = path.relative_to(BEFORE).as_posix()
++        if name not in allowed_old:
++            current = ROOT / name
++            assert current.is_file() and current.read_bytes() == path.read_bytes(), 'Pre-task change lost: ' + name
++            preserved.append(name)
++assert not mismatches, 'Historical handoff changed: ' + ', '.join(mismatches)
++
++package = ROOT / '.private.local/controller040-preview/INSPIRE_AI_040'
++manifest = (package / 'manifests/package_manifest.json').read_bytes()
++assert sha(manifest) == '7e84cef6083755879364d31ed69f8d00305feab0cbcc50a94ef9d5e97753797a'
++rows = json.loads(manifest)['files']
++for row in rows:
++    path = (package / row['path']).resolve()
++    assert path.is_relative_to(package.resolve())
++    raw = path.read_bytes()
++    assert len(raw) == row['bytes'] and sha(raw) == row['sha256'], row['path']
++
++names = set(allowed_old)
++for pattern in ['functions/inspire_research*.py', 'tests/inspire-research*', 'tests/verify-inspire-research.mjs']:
++    names.update(p.relative_to(ROOT).as_posix() for p in ROOT.glob(pattern) if p.is_file())
++names.update(['functions/src/inspireResearchAdmission.ts', 'docs/inspire-research-implementation.md'])
++patch = []
++inventory = []
++for name in sorted(names):
++    file = ROOT / name
++    raw = file.read_bytes()
++    old_path = BEFORE / name
++    old = old_package if name == 'functions/package.json' else old_path.read_bytes() if old_path.exists() else b''
++    if old == raw:
++        continue
++    patch.append('diff --git a/' + name + ' b/' + name + '\n')
++    patch.extend(difflib.unified_diff(old.decode('utf8').splitlines(keepends=True), raw.decode('utf8').splitlines(keepends=True),
++                                    fromfile='a/' + name if old else '/dev/null', tofile='b/' + name))
++    inventory.append({'path': name, 'before_sha256': sha(old) if old else None, 'after_sha256': sha(raw)})
++(OUT / 'focused-implementation.patch').write_text(''.join(patch), encoding='utf8', newline='\n')
++(OUT / 'preservation.json').write_text(json.dumps({
++    'executed': True, 'preTaskFilesPreserved': len(preserved), 'handoffFilesChecked': checked,
++    'unexpectedHandoffChanges': mismatches, 'controllerFilesVerified': len(rows),
++    'existingWebsiteAndBusinessCodeChanged': False, 'sourcePermissionsChanged': False,
++    'taskChanges': inventory, 'limitation': 'Snapshot comparison verifies bytes, not interactive website behavior.'
++}, indent=2), encoding='utf8')
++print(f'PASS {len(preserved)} pre-task files preserved; {checked} handoff files checked; {len(rows)} Controller payloads unchanged; focused diff written')
+diff --git a/tests/inspire-research.test.py b/tests/inspire-research.test.py
+--- /dev/null
++++ b/tests/inspire-research.test.py
+@@ -0,0 +1,543 @@
++"""Actual Windows ACL/DPAPI/SQLite + offline research fault regressions."""
++import sys
++sys.dont_write_bytecode = True
++from pathlib import Path
++import concurrent.futures
++import json
++import os
++import shutil
++import socket
++import sqlite3
++import subprocess
++import time
++import unittest
++from unittest.mock import patch
++import uuid
++
++ROOT = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(ROOT / "functions"))
++from inspire_research_store import ResearchStore, ResearchHold, WindowsProtection, digest, canonical
++from inspire_research import ResearchRunner, OfflineTransport, TransportResult, RESERVATION
++from inspire_research_controller import NativeResearchValidation
++from inspire_research_live import ResearchHTTPS, validate_owner_decision, RecordedModelTokenBound
++
++
++def deny_network(*args, **kwargs):
++    raise AssertionError("All network forbidden in research tests")
++
++
++socket.socket.connect = deny_network
++socket.socket.connect_ex = deny_network
++socket.create_connection = deny_network
++SCORES = {k: 4 for k in ["naturalness", "relevance", "continuity", "preferences"]}
++FLAGS = {k: False for k in ["invented_facts", "invented_sources", "unsafe", "authority_claim", "privacy_leak"]}
++EVIDENCE = []
++
++
++class FastValidation:
++    """Ledger test double; native checks tested separately, not claimed here."""
++    def validate(self, text, request, previous, binding, **kwargs):
++        if not text.strip() or len(text.encode("utf-16-le")) // 2 > 2000:
++            raise ResearchHold("INVALID_TEST_CANDIDATE")
++        return {"text": text.strip(), "state": None,
++                "proof": {"domain": "LEDGER_TEST_DOUBLE_NOT_CONTROLLER", "actual_execution_eligible": False}}
++
++
++class ResearchTests(unittest.TestCase):
++    def setUp(self):
++        self.clock = time.time()
++        self.root = ResearchStore.default_root("offline-test-" + uuid.uuid4().hex)
++        self.store = ResearchStore(self.root, create=True, now=lambda: self.clock)
++        self.transport = OfflineTransport()
++        self.runner = ResearchRunner(self.store, self.transport, validator=FastValidation(), now=lambda: self.clock)
++        self.trial = "trial-" + uuid.uuid4().hex
++        self.runner.create(self.trial, offline=True)
++
++    def tearDown(self):
++        # Only this test-created leaf under the explicit managed base is removed.
++        base = WindowsProtection().base.resolve()
++        target = self.root.resolve()
++        if target.is_relative_to(base) and target.name.startswith("offline-test-") and target.exists():
++            WindowsProtection().restrict(target)
++            for file in target.iterdir():
++                if file.is_file() and not file.is_symlink():
++                    file.unlink()
++            target.rmdir()
++
++    def send(self, cid="C1", **kwargs):
++        p = self.runner.preview(self.trial, cid)
++        return self.runner.execute(self.trial, cid, preview_hash=p["body_sha256"], **kwargs)
++
++    def accept(self, value, scores=None):
++        for reviewer in ["offline-reviewer-a", "offline-reviewer-b"]:
++            self.runner.review(self.trial, value["operation"], reviewer, accept=True,
++                               scores=scores or SCORES, flags=FLAGS, expected_sha256=value["sha256"])
++
++    def test_secure_storage_is_outside_workspace_private_acl_and_dpapi_ciphertext(self):
++        self.assertFalse(self.root.resolve().is_relative_to(ROOT))
++        self.store.protection.verify_acl(self.root, protected=True)
++        with self.store.transaction(write=True) as db:
++            self.store.put(db, "canary", "one", {"text": "PRIVATE_RESEARCH_CANARY_Đính_chính"})
++        data = self.store.db_path.read_bytes()
++        self.assertNotIn(b"PRIVATE_RESEARCH_CANARY", data)
++        with self.store.transaction() as db:
++            self.assertEqual(self.store.get(db, "canary", "one")["text"], "PRIVATE_RESEARCH_CANARY_Đính_chính")
++        with self.assertRaises(ResearchHold):
++            self.store.protection.crypt(b"corrupt-DPAPI", decrypt=True)
++
++    def test_owner_preview_matches_proposed_runtime_bytes_without_granting_sources(self):
++        # Pure local assembly comparison: no grant/import/release or transport.
++        # A copied mode selects the proposed appendix format, never an authority.
++        for cid in ["C1", "C2", "C3", "C4"]:
++            disclosure = self.runner.approval_preview(self.trial, cid)
++            with self.store.transaction() as db:
++                proposed = self.store.get(db, "trial", self.trial)
++                proposed["mode"] = "research"
++                assembled = self.runner._compose(proposed, cid, self.runner._case(db, proposed, cid), db, require_count=False)
++            self.assertEqual(disclosure["body_sha256"], assembled["body_sha256"])
++        self.assertEqual(self.transport.calls, 0)
++        state = self.runner.status(self.trial)
++        self.assertTrue(all(not x["internal"] and not x["export"] for x in state["real_source_permissions"].values()))
++
++    def test_foreground_retention_worker_purges_at_configured_deadline(self):
++        self.send()
++        with self.store.transaction() as db:
++            trial = self.store.get(db, "trial", self.trial)
++            deadline = trial["expires"] + trial["retention_days"] * 86400
++        self.clock = deadline - 30
++        ticks = []
++        def advance(seconds):
++            ticks.append(seconds)
++            self.clock += seconds
++        state = self.runner.watch_retention(self.trial, sleep=advance)
++        self.assertEqual(ticks, [30])
++        self.assertEqual(state["status"], "EXPIRED")
++        self.assertEqual(state["attempts"], 1)
++        with self.store.transaction() as db:
++            count = db.execute("SELECT count(*) FROM records WHERE kind='candidate' AND content IS NOT NULL").fetchone()[0]
++        self.assertEqual(count, 0)
++
++    def test_public_workspace_sync_and_network_locations_are_rejected(self):
++        for path in [ROOT / "public/quarantine", ROOT / ".private.local/quarantine", Path(r"\\server\share\research")]:
++            with self.assertRaises(ResearchHold):
++                ResearchStore(path, create=True)
++        with patch.dict(os.environ, {"OneDrive": str(WindowsProtection().base)}):
++            with self.assertRaises(ResearchHold):
++                ResearchStore(self.root)
++
++    def test_all_real_source_permissions_remain_false_and_draft_cannot_dispatch(self):
++        draft = "real-draft"
++        state = self.runner.create(draft)
++        self.assertEqual(len(state["real_source_permissions"]), 9)
++        self.assertTrue(all(not r["internal"] and not r["export"] for r in state["real_source_permissions"].values()))
++        for action in [lambda: self.runner.preview(draft, "C1"),
++                       lambda: self.runner.execute(draft, "C1", preview_hash="forged")]:
++            with self.assertRaisesRegex(ResearchHold, "OWNER_AND_NINE_SOURCE"):
++                action()
++        disclosure = self.runner.approval_preview(draft, "C1")
++        self.assertFalse(disclosure["authorized"])
++        self.assertEqual(disclosure["body_sha256"], "06350da5873830a8f1d0cc1fc71880fc9c835d4cfca915c72b4e18c7d5f0f8f0")
++        sources = self.runner.source_disclosure(draft)
++        self.assertEqual(len(sources["sources"]), 9)
++        self.assertTrue(all(not s["export_authorized"] and digest(s["exact_text"].encode()) == s["section_sha256"] for s in sources["sources"]))
++        with self.assertRaises(ResearchHold):
++            self.runner.execute(draft, "C1", preview_hash=disclosure["body_sha256"])
++        self.assertEqual(self.transport.calls, 0)
++        self.assertEqual(self.runner.status(draft)["attempts"], 0)
++
++    def test_exact_preview_expiry_auth_revocation_and_live_transport_are_pre_dispatch(self):
++        with self.assertRaises(ResearchHold):
++            self.runner.execute(self.trial, "C1", preview_hash="no-preview")
++        p = self.runner.preview(self.trial, "C1")
++        with self.assertRaises(ResearchHold):
++            self.runner.execute(self.trial, "C1", preview_hash="different")
++        self.clock += 121
++        with self.assertRaises(ResearchHold):
++            self.runner.execute(self.trial, "C1", preview_hash=p["body_sha256"])
++        p = self.runner.preview(self.trial, "C1")
++        self.runner.revoke(self.trial)
++        with self.assertRaises(ResearchHold):
++            self.runner.execute(self.trial, "C1", preview_hash=p["body_sha256"])
++        self.assertEqual(self.transport.calls, 0)
++        class NetworkTransport:
++            domain = "live"
++        with self.assertRaisesRegex(ResearchHold, "LIVE_TRANSPORT"):
++            ResearchRunner(self.store, NetworkTransport())
++
++    def test_live_sender_cannot_read_key_from_offline_or_unapproved_authority(self):
++        def forbidden_key(): raise AssertionError("Key must not be read")
++        transport = ResearchHTTPS(forbidden_key)
++        with self.assertRaisesRegex(ResearchHold, "NO_PRE_DISPATCH"):
++            transport.send(b"{}", "op", 10, "binding")
++        runner = ResearchRunner(self.store, transport, now=lambda: self.clock)
++        with self.assertRaises(ResearchHold):
++            runner.preview(self.trial, "C1")
++        draft = "blocked-live-draft"
++        runner.create(draft)
++        with self.assertRaises(ResearchHold):
++            runner.preview(draft, "C1")
++        with self.assertRaises(ResearchHold):
++            runner.release(draft, "not-an-owner-decision")
++        self.assertEqual(self.runner.status(draft)["attempts"], 0)
++
++    def test_https_implementation_exact_bytes_no_redirect_or_retry_with_fake_connection(self):
++        body = canonical({"model": "gpt-6.1-sol", "input": "SYNTHETIC TRANSPORT FIXTURE ONLY"})
++        calls = []
++        class FakeResponse:
++            status = 200
++            def read(self, _): return b'{"model":"gpt-6.1-sol","status":"completed","output":[]}'
++        class FakeConnection:
++            def __init__(self, host, port, **kwargs):
++                self.host, self.port = host, port
++                self.asserted = host == "api.openai.com" and port == 443
++            def request(self, method, path, body, headers):
++                calls.append({"method": method, "path": path, "body": body, "headers": headers})
++            def getresponse(self): return FakeResponse()
++            def close(self): pass
++        transport = ResearchHTTPS(lambda: "OFFLINE_SENTINEL_NOT_A_REAL_KEY")
++        with patch("inspire_research_live.http.client.HTTPSConnection", FakeConnection):
++            value = transport._one_request(body, "operation-fixture", "binding-fixture")
++            self.assertEqual(value.payload_sha256, digest(body))
++            self.assertEqual(calls[0]["body"], body)
++            self.assertEqual(calls[0]["path"], "/v1/responses")
++            self.assertEqual(calls[0]["headers"]["X-Client-Request-Id"], "operation-fixture")
++            FakeResponse.status = 307
++            with self.assertRaises(ResearchHold):
++                transport._one_request(body, "second-fixture", "binding")
++        self.assertEqual(len(calls), 2)  # One request per invocation; no redirects.
++
++    def test_owner_scope_validator_with_synthetic_catalogue_no_real_grants_created(self):
++        sources = [{"decision_id": "SYNTHETIC-"+str(i), "source_sha256": digest(str(i).encode()),
++                    "section_sha256": digest(("section"+str(i)).encode()), "proposed_use": "fixture-only"} for i in range(9)]
++        trial = {"id": "SYNTHETIC", "subject": "SYNTHETIC-SUBJECT"}
++        value = {"type": "EXTERNAL_OWNER_RESEARCH_DECISION", "owner_decision_reference": "SYNTHETIC TEST FIXTURE NOT AN OWNER APPROVAL",
++                 "trial_id": trial["id"], "subject": trial["subject"], "ledger_id": "fixture-ledger", "manifest_hash": "fixture-manifest",
++                 "model": "gpt-6.1-sol", "valid_from": self.clock-1, "expires_at": self.clock+3600, "max_calls": 12, "max_microUSD": 2000000,
++                 "permissions": {"synthetic_research_generation": True, "quarantined_review": True, "research_context_acceptance": True, "website_delivery": False, "intervention": False},
++                 "source_decisions": {s["decision_id"]: {"internal": True, "export": True, "source_sha256": s["source_sha256"],
++                   "section_sha256": s["section_sha256"], "role": "fixture-only", "authority_reference": "SYNTHETIC ONLY"} for s in sources},
++                 "reviewers": ["SYNTHETIC-A", "SYNTHETIC-B"], "retention_days": 7, "pricing_evidence_reference": "SYNTHETIC PRICE FIXTURE",
++                 "all_in_input_micro_per_token": 5, "all_in_output_micro_per_token": 10, "fixed_fee_micro_per_call": 0}
++        validate_owner_decision(value, trial, "fixture-ledger", "fixture-manifest", sources, self.clock)
++        import copy
++        for mutate in [lambda v:v.update(max_calls=13), lambda v:v.update(max_microUSD=2000001),
++                       lambda v:v.update(model="wrong"), lambda v:v["permissions"].update(website_delivery=True),
++                       lambda v:v["source_decisions"].pop("SYNTHETIC-0"), lambda v:v.update(expires_at=self.clock-1)]:
++            bad = copy.deepcopy(value); mutate(bad)
++            with self.assertRaises(ResearchHold):
++                validate_owner_decision(bad, trial, "fixture-ledger", "fixture-manifest", sources, self.clock)
++        self.assertTrue(all(not x["export"] for x in self.runner.status(self.trial)["real_source_permissions"].values()))
++
++    def test_model_token_receipts_are_hash_trial_expiry_bound_and_no_online_counter(self):
++        payload = b'SYNTHETIC TOKEN COUNT FIXTURE'
++        counter = RecordedModelTokenBound(self.store, lambda: self.clock)
++        with self.assertRaises(ResearchHold): counter.count(payload)
++        proof = {"model": "gpt-6.1-sol", "trial_id": "SYNTHETIC-COUNT", "ledger_id": self.store.anchor["id"],
++                 "expires_at": self.clock+60, "input_upper_bound": 20}
++        with self.store.transaction(write=True) as db:
++            self.store.put(db, "token-receipt", digest(payload), proof)
++        self.assertEqual(counter.count(payload), 20)
++        with self.store.transaction() as db:
++            with self.assertRaises(ResearchHold): counter.count_in(db, payload, trial_id="different")
++        self.clock += 61
++        with self.assertRaises(ResearchHold): counter.count(payload)
++
++    def test_full_twelve_slots_roles_correction_quality_and_no_thirteenth(self):
++        trace = []
++        for index, cid in enumerate(["C1", "C2", "C3", "C4"]):
++            if index == 2:
++                self.clock += 601
++            for turn in range(1, 4):
++                p = self.runner.preview(self.trial, cid)
++                self.assertEqual([m["role"] for m in p["payload"]["input"][1:]], ["user", "assistant"] * (turn - 1) + ["user"])
++                self.assertNotIn("Trích nguyên văn nguồn MOI", p["payload"]["instructions"])
++                if cid == "C2" and turn >= 2:
++                    meta = json.loads(p["payload"]["input"][0]["content"])
++                    self.assertEqual(meta["correction_references"], [{"messageId": "C2-U2", "correctionOf": "C2-U1"}])
++                result = self.runner.execute(self.trial, cid, preview_hash=p["body_sha256"])
++                self.accept(result)
++                trace.append({"conversation": cid, "turn": turn, "body_sha256": p["body_sha256"],
++                              "validated_sha256": result["sha256"], "reserved_micro": RESERVATION})
++        state = self.runner.status(self.trial)
++        self.assertEqual(state["attempts"], 12)
++        self.assertEqual(state["reserved_microUSD"], 1920000)
++        self.assertEqual(self.transport.calls, 12)
++        self.assertTrue(state["evaluation"]["rubric_fixture_pass"])
++        self.assertFalse(state["evaluation"]["genuine_conversation_quality_established"])
++        with self.assertRaises(ResearchHold):
++            self.runner.preview(self.trial, "C1")
++        EVIDENCE.append({"test": "12-slot-offline-journey", "trace": trace, "state": state})
++
++    def test_money_and_token_caps_fail_before_transport(self):
++        other = "tight-budget"
++        self.runner.create(other, offline=True, max_micro=159999)
++        p = self.runner.preview(other, "C1")
++        with self.assertRaisesRegex(ResearchHold, "HARD_CALL_OR_MONEY"):
++            self.runner.execute(other, "C1", preview_hash=p["body_sha256"])
++        class TooManyTokens:
++            domain = "test"
++            def count(self, _): return 8001
++        r = ResearchRunner(self.store, self.transport, counter=TooManyTokens(), validator=FastValidation(), now=lambda: self.clock)
++        with self.assertRaises(ResearchHold):
++            r.preview(self.trial, "C1")
++        self.assertEqual(self.transport.calls, 0)
++        for kwargs in [{"max_calls": 13}, {"max_micro": 2000001}, {"max_calls": True}]:
++            with self.assertRaises(ResearchHold):
++                self.runner.create("invalid-" + uuid.uuid4().hex, offline=True, **kwargs)
++
++    def test_duplicate_and_explicit_replay_never_generate_or_charge_again(self):
++        result = self.send(operation_id="same-operation")
++        replay = self.runner.replay(self.trial, "same-operation")
++        self.assertEqual(replay, result)
++        p = self.runner.preview(self.trial, "C1")
++        with self.assertRaises(ResearchHold):
++            self.runner.execute(self.trial, "C1", preview_hash=p["body_sha256"], operation_id="same-operation")
++        with self.assertRaisesRegex(ResearchHold, "RESULT_UNKNOWN"):
++            self.runner.replay(self.trial, "not-a-result")
++        self.assertEqual(self.transport.calls, 1)
++        self.assertEqual(self.runner.status(self.trial)["reserved_microUSD"], 160000)
++
++    def test_failure_halts_without_replacement(self):
++        class Failure(OfflineTransport):
++            def send(self, *args):
++                self.calls += 1
++                raise TimeoutError("synthetic transport timeout")
++        self.runner.transport = Failure()
++        with self.assertRaisesRegex(ResearchHold, "NO_RETRY_OR_REFUND"):
++            self.send()
++        self.assertEqual(self.runner.transport.calls, 1)
++        self.assertEqual(self.runner.status(self.trial)["attempts"], 1)
++        with self.assertRaises(ResearchHold):
++            self.runner.preview(self.trial, "C1")
++        EVIDENCE.append({"test": "timeout", "state": self.runner.status(self.trial)})
++
++    def test_misbound_model_incomplete_tool_and_usage_overrun_are_quarantined_not_retried(self):
++        for fault in ["binding", "model", "incomplete", "tools", "usage", "reasoning"]:
++            trial = "fault-" + fault
++            self.runner.create(trial, offline=True)
++            class Broken(OfflineTransport):
++                def send(self, *args):
++                    envelope = super().send(*args)
++                    raw = envelope.response
++                    if fault == "binding":
++                        return TransportResult("other-operation", envelope.payload_sha256, envelope.binding, raw)
++                    if fault == "model": raw["model"] = "another-model"
++                    if fault == "incomplete": raw["status"] = "incomplete"
++                    if fault == "tools": raw["output"] = [{"type": "function_call"}]
++                    if fault == "usage": raw["usage"]["output_tokens"] = 2049
++                    if fault == "reasoning":
++                        raw["output"].insert(0, {"type": "reasoning", "summary": [{"text": "DO_NOT_PERSIST_REASONING_CANARY"}]})
++                    return envelope
++            transport = Broken()
++            runner = ResearchRunner(self.store, transport, validator=FastValidation(), now=lambda: self.clock)
++            p = runner.preview(trial, "C1")
++            if fault == "reasoning":
++                value = runner.execute(trial, "C1", preview_hash=p["body_sha256"])
++                with self.store.transaction() as db:
++                    self.assertNotIn("DO_NOT_PERSIST_REASONING_CANARY", json.dumps(self.store.get(db, "candidate", value["operation"])))
++            else:
++                with self.assertRaises(ResearchHold):
++                    runner.execute(trial, "C1", preview_hash=p["body_sha256"])
++                self.assertEqual(runner.status(trial)["status"], "HALTED")
++            self.assertEqual(transport.calls, 1)
++            self.assertEqual(runner.status(trial)["reserved_microUSD"], 160000)
++
++    def test_race_at_final_slot_accepts_twelve_never_thirteen(self):
++        for index in range(11):
++            if index == 6:
++                self.clock += 601
++            cid = "C" + str(index // 3 + 1)
++            self.accept(self.send(cid))
++        p = self.runner.preview(self.trial, "C4")
++        def last():
++            try:
++                r = ResearchRunner(ResearchStore(self.root, now=lambda: self.clock), self.transport,
++                                   validator=FastValidation(), now=lambda: self.clock)
++                return r.execute(self.trial, "C4", preview_hash=p["body_sha256"])["operation"]
++            except ResearchHold:
++                return None
++        with concurrent.futures.ThreadPoolExecutor(2) as pool:
++            result = list(pool.map(lambda _: last(), range(2)))
++        self.assertEqual(sum(x is not None for x in result), 1)
++        self.assertEqual(self.transport.calls, 12)
++        self.assertEqual(self.runner.status(self.trial)["reserved_microUSD"], 1920000)
++
++    def test_account_rate_state_persists_between_trials_and_is_not_client_supplied(self):
++        for index in range(10):
++            trial = "rate-" + str(index)
++            self.runner.create(trial, offline=True)
++            p = self.runner.preview(trial, "C1")
++            value = self.runner.execute(trial, "C1", preview_hash=p["body_sha256"])
++            for reviewer in ["offline-reviewer-a", "offline-reviewer-b"]:
++                self.runner.review(trial, value["operation"], reviewer, accept=True,
++                                   scores=SCORES, flags=FLAGS, expected_sha256=value["sha256"])
++        p = self.runner.preview(self.trial, "C1")
++        with self.assertRaisesRegex(ResearchHold, "IP_RATE"):
++            self.runner.execute(self.trial, "C1", preview_hash=p["body_sha256"])
++        self.assertEqual(self.runner.status(self.trial)["attempts"], 0)
++        self.clock += 601
++        self.send()
++        self.assertEqual(self.transport.calls, 11)
++
++    def test_missing_ledger_and_acl_widening_and_interrupted_anchor_commit_hold(self):
++        ledger = self.store.db_path.read_bytes()
++        self.store.db_path.unlink()
++        with self.assertRaises(ResearchHold):
++            ResearchStore(self.root)
++        self.store.db_path.write_bytes(ledger)
++        system = Path(os.environ["SystemRoot"]) / "System32/icacls.exe"
++        subprocess.run([str(system), str(self.root), "/grant", "*S-1-1-0:R"],
++                       capture_output=True, check=True, creationflags=subprocess.CREATE_NO_WINDOW)
++        with self.assertRaises(ResearchHold):
++            ResearchStore(self.root)
++        self.store.protection.restrict(self.root)
++        p = self.runner.preview(self.trial, "C1")
++        with patch.object(self.store, "_anchor_write", side_effect=OSError("injected interrupted commit")):
++            with self.assertRaises(ResearchHold):
++                self.runner.execute(self.trial, "C1", preview_hash=p["body_sha256"])
++        self.assertEqual(self.transport.calls, 0)
++        with self.assertRaises(ResearchHold):
++            ResearchStore(self.root)
++
++    def test_native_semantic_guard_and_revoked_policy_hold_candidates(self):
++        class Unsafe(OfflineTransport):
++            def send(self, *args):
++                envelope = super().send(*args)
++                envelope.response["output"][0]["content"][0]["text"] = "Bạn chắc chắn bị trầm cảm."
++                return envelope
++        self.runner.transport = Unsafe()
++        self.runner.validator = NativeResearchValidation()
++        with self.assertRaises(ResearchHold):
++            self.send()
++        self.assertEqual(self.runner.status(self.trial)["status"], "HALTED")
++        other = "revoked-policy"
++        self.runner.create(other, offline=True)
++        class Revoke(NativeResearchValidation):
++            def before_finish(self, controller, prepared):
++                controller.policy.revoke(prepared["decision"]["template_id"])
++        runner = ResearchRunner(self.store, OfflineTransport(), validator=Revoke(), now=lambda: self.clock)
++        p = runner.preview(other, "C1")
++        with self.assertRaises(ResearchHold):
++            runner.execute(other, "C1", preview_hash=p["body_sha256"])
++
++    def test_retention_also_removes_private_source_disclosures(self):
++        trial = "disclosure"
++        self.runner.create(trial)
++        self.runner.approval_preview(trial, "C3")
++        self.clock += 7200 + 7 * 86400 + 1
++        self.runner.purge(trial)
++        with self.store.transaction() as db:
++            self.assertIsNone(self.store.get(db, "approval-disclosure", trial + ":C3"))
++        with self.assertRaises(ResearchHold):
++            self.runner.approval_preview(trial, "C3")
++
++    def test_crash_before_and_after_transport_recovery_does_not_regenerate(self):
++        for phase in ["after-reservation", "after-transport"]:
++            trial = phase
++            self.runner.create(trial, offline=True)
++            p = self.runner.preview(trial, "C1")
++            def crash(where):
++                if where == phase:
++                    raise SystemExit("injected process death")
++            with self.assertRaises(SystemExit):
++                self.runner.execute(trial, "C1", preview_hash=p["body_sha256"], operation_id=phase, crash=crash)
++            calls = self.transport.calls
++            restarted = ResearchRunner(ResearchStore(self.root, now=lambda: self.clock), self.transport,
++                                       validator=FastValidation(), now=lambda: self.clock)
++            state = restarted.recover(trial)
++            self.assertEqual(state["status"], "HALTED")
++            self.assertEqual(state["reserved_microUSD"], 160000)
++            with self.assertRaises(ResearchHold):
++                restarted.replay(trial, phase)
++            with self.assertRaises(ResearchHold):
++                restarted.preview(trial, "C1")
++            self.assertEqual(calls, self.transport.calls)
++
++    def test_concurrent_duplicates_only_one_durable_attempt(self):
++        p = self.runner.preview(self.trial, "C1")
++        def run():
++            try:
++                r = ResearchRunner(ResearchStore(self.root, now=lambda: self.clock), self.transport,
++                                   validator=FastValidation(), now=lambda: self.clock)
++                r.execute(self.trial, "C1", preview_hash=p["body_sha256"])
++                return "accepted"
++            except ResearchHold:
++                return "held"
++        with concurrent.futures.ThreadPoolExecutor(2) as pool:
++            results = list(pool.map(lambda _: run(), range(2)))
++        self.assertEqual(results.count("accepted"), 1)
++        self.assertEqual(self.transport.calls, 1)
++        self.assertEqual(self.runner.status(self.trial)["attempts"], 1)
++
++    def test_storage_tamper_missing_ledger_and_rollback_fail_closed(self):
++        old = self.store.db_path.read_bytes()
++        self.send()
++        self.store.db_path.write_bytes(old)
++        with self.assertRaisesRegex(ResearchHold, "ROLLBACK_TAMPER"):
++            ResearchStore(self.root)
++        with self.assertRaisesRegex(ResearchHold, "REFUSE_LEDGER_RESET"):
++            ResearchStore(self.root, create=True)
++
++    def test_retention_scrubs_content_preserves_budget_and_blocks_replay(self):
++        result = self.send()
++        self.clock += 7200 + 7 * 86400 + 1
++        self.runner.purge(self.trial)
++        with self.assertRaises(ResearchHold):
++            self.runner.replay(self.trial, result["operation"])
++        state = self.runner.status(self.trial)
++        self.assertEqual(state["attempts"], 1)
++        self.assertEqual(state["reserved_microUSD"], 160000)
++        with self.store.transaction() as db:
++            self.assertIsNone(self.store.get(db, "candidate", result["operation"]))
++            self.assertIsNone(self.store.get(db, "validated", result["operation"]))
++        with self.assertRaises(ResearchHold):
++            self.runner.create(self.trial, offline=True)
++
++    def test_review_binding_two_reviewers_rejection_and_no_premature_history_advance(self):
++        result = self.send()
++        with self.assertRaises(ResearchHold):
++            self.runner.review(self.trial, result["operation"], "unconfigured", accept=True,
++                               scores=SCORES, flags=FLAGS, expected_sha256=result["sha256"])
++        with self.assertRaises(ResearchHold):
++            self.runner.review(self.trial, result["operation"], "offline-reviewer-a", accept=True,
++                               scores=SCORES, flags=FLAGS, expected_sha256="wrong")
++        with self.assertRaises(ResearchHold):
++            p = self.runner.preview(self.trial, "C1")
++            self.runner.execute(self.trial, "C1", preview_hash=p["body_sha256"])
++        self.runner.review(self.trial, result["operation"], "offline-reviewer-a", accept=False,
++                           scores=SCORES, flags=FLAGS, expected_sha256=result["sha256"])
++        self.assertEqual(self.runner.status(self.trial)["status"], "HALTED")
++        self.assertEqual(self.transport.calls, 1)
++
++    def test_native_controller_validates_sealed_candidate_and_correction_without_paid_regeneration(self):
++        self.runner.validator = NativeResearchValidation()
++        results = []
++        for _ in range(3):
++            value = self.send("C2")
++            self.accept(value)
++            self.assertFalse(value["proof"]["actual_execution_eligible"])
++            self.assertEqual(value["proof"]["permission_observation"]["evaluation_result"], "HOLD_ACTUAL_EXECUTION")
++            results.append(value)
++        self.assertEqual(self.transport.calls, 3)
++        EVIDENCE.append({"test": "native-control-and-correction", "results": results})
++
++    def test_original_validator_rejects_changed_post_validation_bytes(self):
++        class Swap(NativeResearchValidation):
++            def before_finish(self, controller, prepared):
++                prepared["body"] += " altered-after-validation"
++        self.runner.validator = Swap()
++        with self.assertRaises(ResearchHold):
++            self.send()
++        self.assertEqual(self.runner.status(self.trial)["status"], "HALTED")
++
++
++if __name__ == "__main__":
++    out = ROOT / "docs/evidence/research-implementation"
++    out.mkdir(parents=True, exist_ok=True)
++    result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(ResearchTests))
++    (out / "offline-trace.json").write_text(json.dumps({"executed": True, "tests": result.testsRun,
++        "failures": len(result.failures), "errors": len(result.errors), "skips": len(result.skipped),
++        "paid_calls": 0, "real_source_grants_created": 0, "live_enabled": False,
++        "scope": "Actual Windows ACL/DPAPI/SQLite plus synthetic transports; not model quality or actual research permission",
++        "evidence": EVIDENCE}, ensure_ascii=False, indent=2), encoding="utf8")
++    sys.exit(0 if result.wasSuccessful() else 1)
+diff --git a/tests/verify-inspire-research.mjs b/tests/verify-inspire-research.mjs
+--- /dev/null
++++ b/tests/verify-inspire-research.mjs
+@@ -0,0 +1,46 @@
++// Offline execution recorder. No key, paid call, approval or deployment command.
++import {spawnSync} from 'node:child_process'
++import {mkdirSync,writeFileSync,readFileSync,existsSync} from 'node:fs'
++import {resolve,dirname,join} from 'node:path'
++const out='docs/evidence/research-implementation'
++mkdirSync(out,{recursive:true})
++const python=process.env.INSPIRE_CONTROLLER_PYTHON||resolve('.tools.local/python312/python.exe')
++const npm=process.env.npm_execpath||join(dirname(process.execPath),'node_modules/npm/bin/npm-cli.js')
++const tasks={
++  research:[python,['-X','utf8','tests/inspire-research.test.py']],
++  admission:[process.execPath,['--import','./tests/register-ts.mjs','--test','tests/inspire-research-admission.test.mjs']],
++  'cli-smoke':[process.execPath,['tests/inspire-research-cli-smoke.mjs']],
++  catalogue:[python,['-X','utf8','tests/inspire-generative.test.py']],
++  conversation:[process.execPath,['--import','./tests/register-ts.mjs','--test','tests/inspire-chat.test.mjs']],
++  'account-regressions':[process.execPath,['--import','./tests/register-ts.mjs','--test','tests/inspire-emulator.test.mjs']],
++  'lint-baseline':[process.execPath,['tests/scope-a040-lint-baseline.mjs']],
++  lint:[process.execPath,[npm,'--prefix','functions','run','lint:chat']],
++  'functions-build':[process.execPath,[npm,'--prefix','functions','run','build']],
++  'website-build':[process.execPath,[npm,'run','build']],
++  'public-build-audit':[process.execPath,['tests/inspire-build-audit.mjs']],
++}
++const file=out+'/executed-checks.json'
++const previous=existsSync(file)?JSON.parse(readFileSync(file,'utf8')):{}
++const results=previous.results||{}
++const selected=process.argv.slice(2),names=selected.length?selected:Object.keys(tasks)
++for(const name of names){
++  if(!tasks[name])throw Error('Unsupported offline check: '+name)
++  const [exe,args]=tasks[name],start=Date.now()
++  // The older catalogue test writes its historical trace. Preserve that handoff
++  // byte for byte and retain this execution's trace in the new evidence folder.
++  const preserve=name==='catalogue'?['docs/evidence/generative-preparation/offline-candidate-trace.json']:
++    name==='lint-baseline'?['docs/evidence/scope-a040/lint-baseline.json','docs/evidence/scope-a040/root-lint.txt']:[]
++  const originals=preserve.filter(existsSync).map(file=>[file,readFileSync(file)])
++  const r=spawnSync(exe,args,{encoding:'utf8',maxBuffer:32*1024*1024,
++    env:{...process.env,PYTHONDONTWRITEBYTECODE:'1',METADATA_SERVER_DETECTION:'none',INSPIRE_REVIEW_EVIDENCE_DIR:out}})
++  for(const [file,original] of originals){
++    writeFileSync(out+'/'+(name==='catalogue'?'catalogue-native-trace.json':file.split('/').at(-1)),readFileSync(file))
++    writeFileSync(file,original)
++  }
++  writeFileSync(out+'/'+name+'.txt',`${r.stdout??''}${r.stderr??''}\nEXIT_CODE=${r.status}\n`)
++  results[name]={executed:true,executedAt:new Date().toISOString(),command:[exe,...args],exitCode:r.status,passed:r.status===0,durationMs:Date.now()-start}
++  writeFileSync(file,JSON.stringify({results,paidCalls:0,liveEnabled:false,
++    scope:'Offline transports; actual Windows private storage and local Firebase emulators; not model quality'},null,2))
++  console.log(`${r.status===0?'PASS':'FAIL'} ${name}: exit ${r.status}`)
++}
++process.exitCode=names.every(name=>results[name].passed)?0:1

@@ -1,0 +1,4 @@
+{
+  "unchanged": true,
+  "note": "Unmodified root frontend flat configuration is separate from Functions ESLint 8; its missing dependency/import failure is pre-existing."
+}

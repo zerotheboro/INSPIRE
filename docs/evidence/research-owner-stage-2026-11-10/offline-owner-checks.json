@@ -1,0 +1,219 @@
+{
+  "checkedAtUTC": "2026-11-10T13:55:03.046898+00:00",
+  "stage": "OWNER_REVIEW_PENDING_NO_RUN_RELEASE",
+  "sourceDecisions": {
+    "MOI-XCII": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "1f2ee34f58ab059018746f894ae652fbb17eb196e5e597051e7e8221aaf959fb"
+    },
+    "MOI-XCIII": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "54710f01aa01e523ea99cb45bc65ffe47fd022c1b064fc399b76cdbcb13bb7b5"
+    },
+    "MOI-CLVI": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "6b2433e3a3ffe9e69420404d179c4c6c0eb9654a0308ae58c8c696fda328dc51"
+    },
+    "MOI-CLVII": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "d9e0089e35896970ba5f5d07a7139e20e43029efc2bbe3d1caaba370e9ed14c8"
+    },
+    "MOI-CLIX": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "5079ef6a6d2f7dbd57eb1df6e4442f0f042ae0cf88269c39eb11d8b0ca17ebd5"
+    },
+    "MOI-CLXIII": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3",
+      "section_sha256": "793043a399cc2b384b0d4bb12e46dbf2b35c2f193b714082ccdeaf9cc806ed68"
+    },
+    "REF-02-4": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+      "section_sha256": "a7fc89e00ef9884711e4226347ca4d65afe6044217b9aa75b6dffab74a364a7e"
+    },
+    "REF-02-6": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+      "section_sha256": "edd315b59be007a555c5807bbbffff0a80ba52dd5f3d2a6639fde2bddec2b760"
+    },
+    "REF-02-93": {
+      "internal": null,
+      "export": null,
+      "source_sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+      "section_sha256": "a4861a9ac2c1843a156571e17aef5c1251bb979668d8d5755fd72e898ca47128"
+    }
+  },
+  "executedChecks": {
+    "research": {
+      "executed": true,
+      "executedAt": "2026-11-10T13:51:02.511Z",
+      "command": [
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\web_develope\\INSPIRE\\.tools.local\\python312\\python.exe",
+        "-X",
+        "utf8",
+        "tests/inspire-research.test.py"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 36116
+    },
+    "admission": {
+      "executed": true,
+      "executedAt": "2026-11-10T13:51:24.639Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-research-admission.test.mjs"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 22121
+    },
+    "cli-smoke": {
+      "executed": true,
+      "executedAt": "2026-11-10T13:51:34.289Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-research-cli-smoke.mjs"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 9649
+    },
+    "catalogue": {
+      "executed": true,
+      "executedAt": "2026-11-10T13:51:38.178Z",
+      "command": [
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\web_develope\\INSPIRE\\.tools.local\\python312\\python.exe",
+        "-X",
+        "utf8",
+        "tests/inspire-generative.test.py"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 3889
+    },
+    "conversation": {
+      "executed": true,
+      "executedAt": "2026-11-10T13:51:39.953Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-chat.test.mjs"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 1774
+    },
+    "account-regressions": {
+      "executed": true,
+      "executedAt": "2026-11-10T13:52:09.389Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-emulator.test.mjs"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 29436
+    },
+    "lint": {
+      "executed": true,
+      "executedAt": "2026-11-10T13:52:17.543Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "--prefix",
+        "functions",
+        "run",
+        "lint:chat"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 8153
+    },
+    "public-build-audit": {
+      "executed": true,
+      "executedAt": "2026-11-10T13:52:17.651Z",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-build-audit.mjs"
+      ],
+      "exitCode": 0,
+      "passed": true,
+      "durationMs": 108
+    }
+  },
+  "testsPassed": 63,
+  "pricingDocumentation": {
+    "verifiedBy": "Fetched official public pages during owner review; no authenticated endpoint",
+    "urls": [
+      "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "https://developers.openai.com/api/docs/pricing"
+    ],
+    "model": "gpt-6.1-sol",
+    "tier": "Standard/default; short context",
+    "USDPerMillionTokens": {
+      "uncachedInput": 2,
+      "cachedInput": 0.1,
+      "cacheWrite30min": 2.5,
+      "cacheWrite12hour": 5,
+      "output": 10
+    },
+    "accountSpecificTaxesFeesVerified": false
+  },
+  "tokenAccounting": {
+    "offlineEnforcement": "PASS",
+    "actualModelInputTokenReceipt": "MISSING_FAIL_CLOSED",
+    "localTokenizerPackagesAbsent": [
+      "tiktoken",
+      "transformers",
+      "tokenizers"
+    ],
+    "reference": "https://developers.openai.com/api/docs/guides/token-counting",
+    "credentialedCountEndpoint": "POST /v1/responses/input_tokens; not in current transport/permission scope; no call made"
+  },
+  "budgetArithmetic": {
+    "maximumInputTokens": 8000,
+    "maximumOutputTokens": 2048,
+    "upperCostAtFloorRatesMicroUSD": 60480,
+    "perAttemptIrrevocableReserveMicroUSD": 160000,
+    "maximumAttempts": 12,
+    "maximumTotalReserveMicroUSD": 1920000,
+    "hardTrialCapMicroUSD": 2000000,
+    "accountTaxFeeEvidenceStillRequired": true
+  },
+  "storage": "Actual Windows ACL/DPAPI/recovery/retention tests PASS; private LocalAppData preview store checked",
+  "retentionSupervision": {
+    "foregroundWorkerTest": "PASS at configured deadline",
+    "observedMatchingWorkerProcesses": 0,
+    "observedINSPIRENamedTasks": 0,
+    "limitation": "No matching worker or INSPIRE-named scheduled task found. Unnamed tasks and third-party backups not established. Actual trial supervisor and deletion operation remain unconfirmed."
+  },
+  "providerRetentionReference": "https://developers.openai.com/api/docs/guides/your-data",
+  "providerRetentionNotLocalRetention": true,
+  "approvalDocumentsImported": 0,
+  "paidCalls": 0,
+  "liveEnabled": false,
+  "runReleased": false
+}

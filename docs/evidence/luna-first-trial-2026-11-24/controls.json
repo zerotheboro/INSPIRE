@@ -1,0 +1,98 @@
+{
+  "cliVersion": "0.171.0-alpha.13.2",
+  "schemas": {
+    "ThreadStartParams": {
+      "sha256": "1d41b8b95bcd810592eb66a1f2a12479543b3f50b9e5fc4a46c860c44333205c",
+      "fields": [
+        "allowProviderModelFallback",
+        "approvalPolicy",
+        "approvalsReviewer",
+        "baseInstructions",
+        "config",
+        "cwd",
+        "daybreakEnabled",
+        "daybreakProgramPropagationEnrolled",
+        "developerInstructions",
+        "dynamicTools",
+        "environments",
+        "ephemeral",
+        "experimentalRawEvents",
+        "historyMode",
+        "mockExperimentalField",
+        "model",
+        "modelProvider",
+        "multiAgentMode",
+        "permissions",
+        "personality",
+        "projectId",
+        "runtimeWorkspaceRoots",
+        "sandbox",
+        "selectedCapabilityRoots",
+        "serviceName",
+        "serviceTier",
+        "sessionStartSource",
+        "threadSource"
+      ]
+    },
+    "TurnStartParams": {
+      "sha256": "b64078d4310cb1fa591c7f63344bed6b8c08d216f9f81d86c00045136187a2b6",
+      "required": [
+        "input",
+        "threadId"
+      ],
+      "fields": [
+        "additionalContext",
+        "approvalPolicy",
+        "approvalsReviewer",
+        "clientUserMessageId",
+        "collaborationMode",
+        "cwd",
+        "cyberAccessProgram",
+        "disabledPluginIds",
+        "effort",
+        "environments",
+        "input",
+        "model",
+        "multiAgentMode",
+        "outputSchema",
+        "parentTurnId",
+        "permissions",
+        "personality",
+        "responsesapiClientMetadata",
+        "responsesapiClientMetadataPatch",
+        "rootTurnId",
+        "runtimeWorkspaceRoots",
+        "sandboxPolicy",
+        "serviceTier",
+        "serviceTierForTurn",
+        "summary",
+        "threadId",
+        "toolOutput",
+        "turnTrigger"
+      ]
+    },
+    "ErrorNotification": {
+      "sha256": "a7fd1c10392a28a5f29dddca7ac1f1a0a77738a4f1148a3b7dbf0b4f5c697628",
+      "required": [
+        "error",
+        "threadId",
+        "turnId",
+        "willRetry"
+      ],
+      "fields": [
+        "error",
+        "threadId",
+        "turnId",
+        "willRetry"
+      ]
+    }
+  },
+  "ownerBillingVerified": true,
+  "ownerBillingStatementDate": "2026-11-24",
+  "hard512TokenCapVerified": false,
+  "allManagedRetriesDisabledVerified": false,
+  "liveDispatchEnabled": false,
+  "liveCalls": 0,
+  "limitation": "Frozen model input is exact, but threadId and isolated thread configuration are unresolved; no complete executable RPC request or final release exists.",
+  "reference": "https://learn.chatgpt.com/docs/config-file/config-reference"
+}

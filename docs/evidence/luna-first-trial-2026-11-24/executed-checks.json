@@ -1,0 +1,30 @@
+{
+  "results": {
+    "tests": {
+      "exitCode": 0,
+      "error": null
+    },
+    "boundary": {
+      "exitCode": 0,
+      "error": null
+    },
+    "lint": {
+      "exitCode": 0,
+      "error": null
+    },
+    "backend-build": {
+      "exitCode": 0,
+      "error": null
+    },
+    "website-build": {
+      "exitCode": 0,
+      "error": null
+    }
+  },
+  "liveCalls": 0,
+  "initialSandboxRun": {
+    "passed": 5,
+    "total": 6,
+    "failed": "Native Controller concurrent-success assertion; no successful return after roughly 20 seconds. Exact underlying cause not established."
+  }
+}

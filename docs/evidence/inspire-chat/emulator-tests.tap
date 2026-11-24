@@ -1,0 +1,80 @@
+TAP version 13
+# Subtest: verified anonymous + email registration links same UID, login and signout do not mint another identity
+ok 1 - verified anonymous + email registration links same UID, login and signout do not mint another identity
+  ---
+  duration_ms: 1152.0166
+  type: 'test'
+  ...
+# Subtest: Google emulator credentials create verified Google account (synthetic OAuth substitute)
+ok 2 - Google emulator credentials create verified Google account (synthetic OAuth substitute)
+  ---
+  duration_ms: 98.3177
+  type: 'test'
+  ...
+# Subtest: guest 10 total, completion once, durable duplicate rejected, no periodic reset
+ok 3 - guest 10 total, completion once, durable duplicate rejected, no periodic reset
+  ---
+  duration_ms: 2035.9081
+  type: 'test'
+  ...
+# Subtest: registered 30 replies, Vietnam midnight boundary, mid-month allowance and no rollover
+ok 4 - registered 30 replies, Vietnam midnight boundary, mid-month allowance and no rollover
+  ---
+  duration_ms: 4641.5484
+  type: 'test'
+  ...
+# Subtest: atomic reservations prevent overspending; midnight completion charges the completion month
+ok 5 - atomic reservations prevent overspending; midnight completion charges the completion month
+  ---
+  duration_ms: 10899.2562
+  type: 'test'
+  ...
+# Subtest: confirmed failure refunds; unknown adapter or completion outcome remains reserved after restart
+ok 6 - confirmed failure refunds; unknown adapter or completion outcome remains reserved after restart
+  ---
+  duration_ms: 629.1147
+  type: 'test'
+  ...
+# Subtest: account linking blocks old anonymous identity, adds no guest balance, and sessions reject another user
+ok 7 - account linking blocks old anonymous identity, adds no guest balance, and sessions reject another user
+  ---
+  duration_ms: 313.6304
+  type: 'test'
+  ...
+# [2026-11-09T09:05:37.280Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2d0e7fde error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L6, false for 'update' @ L6
+# [2026-11-09T09:05:37.318Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2d0e7fdf error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L6, false for 'update' @ L6
+# [2026-11-09T09:05:37.347Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2d0e7fe0 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L6, false for 'update' @ L6
+# [2026-11-09T09:05:37.379Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2d0e7fe1 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L6, false for 'update' @ L6
+# [2026-11-09T09:05:37.408Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x2d0e7fe2 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+# false for 'create' @ L6, false for 'update' @ L6
+# Subtest: client quota manipulation, cross-user records and private sources are rejected
+ok 8 - client quota manipulation, cross-user records and private sources are rejected
+  ---
+  duration_ms: 582.078
+  type: 'test'
+  ...
+# Subtest: incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction
+ok 9 - incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction
+  ---
+  duration_ms: 430.5188
+  type: 'test'
+  ...
+# Subtest: existing shared IP request-rate limits remain separate and reject before quota reservation or adapter
+ok 10 - existing shared IP request-rate limits remain separate and reject before quota reservation or adapter
+  ---
+  duration_ms: 1198.3081
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 26006.3065

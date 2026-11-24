@@ -1,0 +1,66 @@
+✔ multi-turn passes both ordered roles and corrections preserve exact original wording (11.7617ms)
+✔ duplicate clicks while pending create one user, one operation and one generation (12.5951ms)
+✔ dropped response uses explicit replay with same IDs; no error enters timeline (2.2542ms)
+✔ failure before dispatch never converts an unknown replay into a generation (0.9801ms)
+✔ definitive adapter failure offers a NEW attempt, preserving the same user message (1.9036ms)
+✔ server restart with unresolved operation rejects old epoch, never generates again (6.4209ms)
+✔ expired session and missing operation fail closed (1.0166ms)
+✔ UI state keeps an unresolved user turn and closes retry after server restart (3.4101ms)
+✔ a different operation cannot overlap a pending turn in the same conversation (2.2064ms)
+✔ concurrent duplicate requests share the cached operation; changed content conflicts (1.4125ms)
+✔ validation rejects roles, authority/identity fields, invalid corrections and oversized context before adapter (3.7108ms)
+✔ server rejects forged or changed assistant history and invalid assistant correction references (1.7082ms)
+✔ response binding rejects wrong conversation, request, user, epoch, session, role and unsupported fields (2.5866ms)
+✔ conversation switching isolates drafts, histories and late responses; fresh store resets memory (5.0584ms)
+✔ HTTP transport handles network failure and callable-like errors without inventing assistant text (58.9795ms)
+✔ simulation responds from input and never imports test fixtures (0.7399ms)
+✔ Firebase callable validates then closes the live path without touching Firestore or a provider (1775.6886ms)
+✔ verified anonymous + email registration links same UID, login and signout do not mint another identity (4907.939ms)
+✔ Google emulator credentials create verified Google account (synthetic OAuth substitute) (121.0074ms)
+✔ guest 10 total, completion once, durable duplicate rejected, no periodic reset (2093.7447ms)
+✔ registered 30 replies, Vietnam midnight boundary, mid-month allowance and no rollover (5203.7325ms)
+✔ atomic reservations prevent overspending; midnight completion charges the completion month (18974.4059ms)
+✔ confirmed failure refunds; unknown adapter or completion outcome remains reserved after restart (569.5785ms)
+✔ account linking blocks old anonymous identity, adds no guest balance, and sessions reject another user (337.4307ms)
+[2026-11-14T06:27:44.661Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x59e39f21 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-14T06:27:44.694Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x59e39f22 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-14T06:27:44.720Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x59e39f23 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-14T06:27:44.753Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x59e39f24 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-14T06:27:44.791Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x59e39f25 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+✔ client quota manipulation, cross-user records and private sources are rejected (585.3641ms)
+✔ incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction (3165.4707ms)
+✔ existing shared IP request-rate limits remain separate and reject before quota reservation or adapter (5046.2843ms)
+✔ exact API preview retains both roles/corrections and omits private profiles and inherited operating text (27.5197ms)
+✔ meaningful sections preserve exact CRLF/source offsets, heading paths and bounded Unicode text (6.8612ms)
+✔ durable one-shot rejects missing/mismatched/expired authority, races, restart and accounting overflow (130.4632ms)
+✔ SDK uses the fixed Responses endpoint, exact body and zero automatic 429 retries (intercepted fetch) (78.3273ms)
+✔ strict candidate parsing rejects wrong models, tools, reasoning-only, refusals and altered whitespace (2.7092ms)
+✔ conversation retrieval, permission isolation, incremental replacement and immediate revocation reach exact adapter input (1682.9036ms)
+✔ an exact excerpt grant exports only that section, while other sections remain internal (1942.8689ms)
+✔ 51 ineligible matching sources cannot consume the candidate limit before an eligible reference (4892.4793ms)
+✔ actual native Controller + private service preserve multi-turn/corrections, duplicate/replay identity and quotas (31295.4486ms)
+✔ authorization, cross-user access, outage, unknown outcome and restart reject without replacement calls (359.7574ms)
+✔ private rate/quota checks, forged history and revoked preview sources stop before the key or paid transport (725.7351ms)
+✔ original native safety triage holds a synthetic high-risk request before model dispatch (3371.0222ms)
+✔ private transport prepares only, prevents duplicate submissions, and replays the same operation after a lost response (7.0703ms)
+✔ Luna preparation preserves ordered history, correction and separate preferences; no private source/profile/instructions leave (7.5207ms)
+✔ Invalid roles, authority, corrections, history mismatch, oversized inputs and replay cannot prepare generation (1.4161ms)
+✔ Candidate binding and exact bytes are checked but no Controller/delivery permission is claimed (1.1829ms)
+✔ Real Luna generation and use in the simulation service stay closed without any API fallback (3.4204ms)
+✔ Private testing requires server opt-in and observed loopback; rejects remote, rebinding, cross-origin and production (1.1436ms)
+✔ Actual development middleware rejects private remote requests before identity or quota processing (3.032ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 105271.3962
+
+EXIT_CODE=0

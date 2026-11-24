@@ -1,0 +1,14 @@
+{
+  "executed": true,
+  "passed": true,
+  "exitCode": 0,
+  "durationMs": 33176,
+  "at": "2026-11-14T06:21:11.474Z",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "--import",
+    "./tests/register-ts.mjs",
+    "tests/import-inspire-knowledge.mjs",
+    "--controller-originals"
+  ]
+}

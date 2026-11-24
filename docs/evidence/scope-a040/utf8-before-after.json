@@ -1,0 +1,8 @@
+{
+  "executed": true,
+  "scope": "actual Vite middleware, synthetic Auth/account stub; not an emulator end-to-end probe",
+  "originalText": "  Tôi muốn được lắng nghe. 🌿 Bác – cháu; ă vẫn giữ nguyên.  ",
+  "priorPerChunkDecoding": "  T��i mu���n �������c l���ng nghe. ���� B��c ��� ch��u; a�� v���n gi��� nguy��n.  ",
+  "actualMiddlewareText": "  Tôi muốn được lắng nghe. 🌿 Bác – cháu; ă vẫn giữ nguyên.  ",
+  "exactContextAndCorrectionPreserved": true
+}

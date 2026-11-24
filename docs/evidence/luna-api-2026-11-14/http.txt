@@ -1,0 +1,3 @@
+PASS: real local HTTP preview, exact single-request proposal, authorization hold, origin/field/file guards; quota unchanged; no provider request.
+
+EXIT_CODE=0

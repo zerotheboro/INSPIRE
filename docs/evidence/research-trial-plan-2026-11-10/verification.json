@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-10",
+  "checks_executed": [
+    "Nine original source and exact-section hashes rechecked against handoff",
+    "Four first-turn proposal bodies assembled locally; valid UTF-8 JSON; below 24000 raw bytes",
+    "No real data, credentials, network dispatch, runtime database or approval record created"
+  ],
+  "private_original_text_in_public_artifacts": false,
+  "selected_sources": 9,
+  "previews": [
+    {
+      "conversation": "C1",
+      "turn": 1,
+      "private_file": "C:\\Users\\Admin\\AppData\\Local\\Temp\\INSPIRE-owner-plan-2026-11-10\\C1-turn-1-UNAPPROVED-request.json",
+      "body_sha256": "06350da5873830a8f1d0cc1fc71880fc9c835d4cfca915c72b4e18c7d5f0f8f0",
+      "body_bytes": 3841,
+      "source_references": [],
+      "outbound_instructions_sha256": "80a447aa24514aa8e6f98b9e51f385df346f5c3f9bc87a4cb1d8c81e8c4c5ce8",
+      "outbound_instructions_bytes": 3191,
+      "authorization": "NONE; offline proposal preview only"
+    },
+    {
+      "conversation": "C2",
+      "turn": 1,
+      "private_file": "C:\\Users\\Admin\\AppData\\Local\\Temp\\INSPIRE-owner-plan-2026-11-10\\C2-turn-1-UNAPPROVED-request.json",
+      "body_sha256": "36488d6795c97a9055634191a6434ea547fa59a7b1ffbf7011bfbaf5ca08c8c0",
+      "body_bytes": 3839,
+      "source_references": [],
+      "outbound_instructions_sha256": "80a447aa24514aa8e6f98b9e51f385df346f5c3f9bc87a4cb1d8c81e8c4c5ce8",
+      "outbound_instructions_bytes": 3191,
+      "authorization": "NONE; offline proposal preview only"
+    },
+    {
+      "conversation": "C3",
+      "turn": 1,
+      "private_file": "C:\\Users\\Admin\\AppData\\Local\\Temp\\INSPIRE-owner-plan-2026-11-10\\C3-turn-1-UNAPPROVED-request.json",
+      "body_sha256": "be5935407195397ac1c6ed46ac295bdbe877147f1203775aecf9d0c0f0e7acaf",
+      "body_bytes": 6005,
+      "source_references": [
+        "REF-02-4",
+        "REF-02-6"
+      ],
+      "outbound_instructions_sha256": "80a447aa24514aa8e6f98b9e51f385df346f5c3f9bc87a4cb1d8c81e8c4c5ce8",
+      "outbound_instructions_bytes": 3191,
+      "authorization": "NONE; offline proposal preview only"
+    },
+    {
+      "conversation": "C4",
+      "turn": 1,
+      "private_file": "C:\\Users\\Admin\\AppData\\Local\\Temp\\INSPIRE-owner-plan-2026-11-10\\C4-turn-1-UNAPPROVED-request.json",
+      "body_sha256": "2c03aeba2af29bdd5ec9acc53c7543e86523aed3b07e7b4922541114a0499a05",
+      "body_bytes": 3918,
+      "source_references": [],
+      "outbound_instructions_sha256": "80a447aa24514aa8e6f98b9e51f385df346f5c3f9bc87a4cb1d8c81e8c4c5ce8",
+      "outbound_instructions_bytes": 3191,
+      "authorization": "NONE; offline proposal preview only"
+    }
+  ],
+  "unknown_future_request_count": 8,
+  "tokenizer_check": "NOT EXECUTED; required before any dispatch",
+  "storage_note": "Source-containing previews moved to OS temp outside OneDrive workspace; this is not proof of ACL/encryption/sync isolation. Prior ambient synchronization was not audited. Future research quarantine storage still requires review.",
+  "paid_calls": 0,
+  "live_adapter_enabled": false
+}

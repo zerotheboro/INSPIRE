@@ -1,0 +1,30 @@
+✔ verified anonymous + email registration links same UID, login and signout do not mint another identity (778.2145ms)
+✔ Google emulator credentials create verified Google account (synthetic OAuth substitute) (73.3338ms)
+✔ guest 10 total, completion once, durable duplicate rejected, no periodic reset (1938.8836ms)
+✔ registered 30 replies, Vietnam midnight boundary, mid-month allowance and no rollover (5028.904ms)
+✔ atomic reservations prevent overspending; midnight completion charges the completion month (15202.6245ms)
+✔ confirmed failure refunds; unknown adapter or completion outcome remains reserved after restart (552.6783ms)
+✔ account linking blocks old anonymous identity, adds no guest balance, and sessions reject another user (277.7824ms)
+[2026-11-10T13:52:07.398Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x7acc1d8d error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-10T13:52:07.431Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x7acc1d8e error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-10T13:52:07.479Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x7acc1d8f error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-10T13:52:07.510Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x7acc1d90 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-10T13:52:07.553Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x7acc1d91 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+✔ client quota manipulation, cross-user records and private sources are rejected (542.1794ms)
+✔ incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction (365.648ms)
+✔ existing shared IP request-rate limits remain separate and reject before quota reservation or adapter (1170.2072ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29340.8789
+
+EXIT_CODE=0

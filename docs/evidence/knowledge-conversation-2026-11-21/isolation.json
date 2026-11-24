@@ -1,0 +1,13 @@
+{
+  "executed": true,
+  "productionPOST": {
+    "/api/inspire-luna": 404,
+    "/api/inspire-prototype": 404
+  },
+  "privateStatus": {
+    "mode": "simulation",
+    "modelAvailable": false
+  },
+  "privateOriginalHTTP": 403,
+  "modelCalls": 0
+}

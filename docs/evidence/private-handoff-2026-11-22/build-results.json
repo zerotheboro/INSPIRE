@@ -1,0 +1,14 @@
+{
+  "website-build": {
+    "exitCode": 0,
+    "passed": true
+  },
+  "functions-build": {
+    "exitCode": 0,
+    "passed": true
+  },
+  "touched-lint": {
+    "exitCode": 0,
+    "passed": true
+  }
+}

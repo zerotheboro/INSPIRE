@@ -1,0 +1,11 @@
+{
+  "archive": "INSPIRE-review-luna-api-2026-11-14.zip",
+  "bytes": 3521627,
+  "sha256": "2e64ff368b52e2224e88a822fc345cf83466e5bbb77538b045b2879a2f841b14",
+  "sourceAndEvidenceFiles": 166,
+  "allEntryHashesVerified": true,
+  "crcVerified": true,
+  "focusedPatchChecked": true,
+  "privateOriginalDocumentsIncluded": false,
+  "credentialsIncluded": false
+}

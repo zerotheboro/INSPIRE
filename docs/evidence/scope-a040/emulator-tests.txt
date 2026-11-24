@@ -1,0 +1,35 @@
+✔ permitted synthetic passages and exact provenance reach the constructed adapter input (477.2994ms)
+✔ registered concurrent requests at 28/30 reserve only the final two slots (5757.0653ms)
+✔ actual in-flight adapter spans Vietnam midnight and replay does not charge the new month twice (648.3473ms)
+✔ unknown outcome stays reserved across restart until independent synthetic completion evidence is reconciled once (435.9387ms)
+✔ production config does not initialize a demo service or enable emulator middleware, even with emulator variables set (2.4698ms)
+✔ verified anonymous + email registration links same UID, login and signout do not mint another identity (786.2264ms)
+✔ Google emulator credentials create verified Google account (synthetic OAuth substitute) (82.2857ms)
+✔ guest 10 total, completion once, durable duplicate rejected, no periodic reset (1785.8503ms)
+✔ registered 30 replies, Vietnam midnight boundary, mid-month allowance and no rollover (5460.1176ms)
+✔ atomic reservations prevent overspending; midnight completion charges the completion month (19313.2703ms)
+✔ confirmed failure refunds; unknown adapter or completion outcome remains reserved after restart (582.7104ms)
+✔ account linking blocks old anonymous identity, adds no guest balance, and sessions reject another user (277.6293ms)
+[2026-11-09T13:29:03.245Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x375b7f12 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T13:29:03.270Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x375b7f13 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T13:29:03.303Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x375b7f14 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T13:29:03.326Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x375b7f15 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T13:29:03.359Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x375b7f16 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+✔ client quota manipulation, cross-user records and private sources are rejected (478.7819ms)
+✔ incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction (362.2174ms)
+✔ existing shared IP request-rate limits remain separate and reject before quota reservation or adapter (1237.8638ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 33103.6539
+
+EXIT_CODE=0

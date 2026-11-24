@@ -1,0 +1,160 @@
+{
+  "lint-chat": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "--prefix",
+      "functions",
+      "run",
+      "lint:chat"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "lint-full": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "--prefix",
+      "functions",
+      "run",
+      "lint"
+    ],
+    "exitCode": 1,
+    "expectedExitCode": 1,
+    "passed": true,
+    "scope": "Known baseline errors; see baseline comparison."
+  },
+  "build-functions": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "--prefix",
+      "functions",
+      "run",
+      "build"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "build-web": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+      "run",
+      "build"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "public-build-audit": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/inspire-build-audit.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "browser-checks": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/inspire-browser.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "lint-baseline": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/scope-a040-lint-baseline.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "core-and-regressions": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "--import",
+      "./tests/register-ts.mjs",
+      "--test",
+      "tests/inspire-chat.test.mjs",
+      "tests/scope-a040-bugs.test.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "emulator-tests": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "--import",
+      "./tests/register-ts.mjs",
+      "--test",
+      "tests/inspire-emulator.test.mjs",
+      "tests/inspire-consolidation.test.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "controller-tests": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "--import",
+      "./tests/register-ts.mjs",
+      "--test",
+      "tests/scope-a040-integration.test.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "package-check": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/verify-controller040-package.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  },
+  "production-browser": {
+    "executed": true,
+    "command": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "tests/inspire-browser.mjs",
+      "--production"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "passed": true,
+    "scope": "Local offline only"
+  }
+}

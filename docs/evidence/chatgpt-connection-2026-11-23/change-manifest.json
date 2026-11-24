@@ -1,0 +1,86 @@
+[
+  {
+    "file": "functions/src/inspireLuna.ts",
+    "baseline": "pre-task local checkpoint",
+    "beforeSHA256": "fe0963fc5c9c04b33932472522d0da195198420cef8e789eb5c47c45b19b4677",
+    "currentSHA256": "d417cac2baf3211d22a91593778494a27132b5d3843fc55bbfd74c9064765542"
+  },
+  {
+    "file": "functions/src/inspireLunaController.ts",
+    "baseline": "pre-task local checkpoint",
+    "beforeSHA256": "59e69d2038a29ddb55e2177427a7e817084637f470d5db0c741fe77256c9a3c3",
+    "currentSHA256": "b1de8d29ec7474d8e4e24eb22a55d24b50b55f6bd837f0b38ee66ba48c55ccfb"
+  },
+  {
+    "file": "functions/src/inspireLunaService.ts",
+    "baseline": "pre-task local checkpoint",
+    "beforeSHA256": "df9d8169d5e227c5ab37b4d76bc31f344f5472e437d32d3801d0b7d2ac453917",
+    "currentSHA256": "d27b3a645818d138b31acfe541ea517d0754f03560d26b4b4c013c7ee5ff7070"
+  },
+  {
+    "file": "vite.config.ts",
+    "baseline": "pre-task local checkpoint",
+    "beforeSHA256": "e411e37e5f20ce81ddffb810347d7af9be805f96d0a534f59750ef56a00f0efb",
+    "currentSHA256": "e6b16138a5e2014f32d5e7bcb39ceb5e10596b1f5e1d559179bb5c9b54d40328"
+  },
+  {
+    "file": "src/pages/AIInspire.tsx",
+    "baseline": "pre-task local checkpoint",
+    "beforeSHA256": "e55deaf07dc84f2ab7673894015acc36d762c9d5f33fe8100d98c3de65b29bbf",
+    "currentSHA256": "571b17ff2c6fedbd409d58237c995acb08310c4e6d70b69a0f183ebd092306bd"
+  },
+  {
+    "file": "src/services/InspireAIconnect.ts",
+    "baseline": "pre-task local checkpoint",
+    "beforeSHA256": "05a4b39dd5a7b5e152f110e71ffb8e356a800f24531c86486c4859fbfb2df703",
+    "currentSHA256": "8a46afa207b9fc79fdc02b6de45f76bba9e3f1dc14b328f2a589f1db9e3c46a0"
+  },
+  {
+    "file": "tests/inspire-luna.test.mjs",
+    "baseline": "November 22 handoff ZIP",
+    "beforeSHA256": "bd65b9eedfcea81087e8e434ef250d2c676780729bfac6c3aa4db1096f691da0",
+    "currentSHA256": "ddb33f92c5696a7b5959cc748a4a1ac522f80ffd87da4ed69d86dc1ebb40b42f"
+  },
+  {
+    "file": "tests/inspire-knowledge-conversation.test.mjs",
+    "baseline": "November 22 handoff ZIP",
+    "beforeSHA256": "9c289faafe22448aefb05b94177b21abee8fcffc4cd1e7dff4d022ee849cd681",
+    "currentSHA256": "d005a6714cc19b8d3ee3674ac2e606e5851258cc221c5b4b16de36c7b0c80c67"
+  },
+  {
+    "file": "functions/src/inspireChatgptSession.ts",
+    "baseline": "new in this task",
+    "beforeSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "currentSHA256": "ef3e4537bec1799926e1fde42d8b6e9d6905fdabb3728028f497896d4d7dfece"
+  },
+  {
+    "file": "tests/inspire-chatgpt-session.test.mjs",
+    "baseline": "new in this task",
+    "beforeSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "currentSHA256": "b77c64842268c14258739b1e81d4bc1d0c7bc1ee70172782db42e8996d69bafd"
+  },
+  {
+    "file": "tests/inspire-chatgpt-emulator.test.mjs",
+    "baseline": "new in this task",
+    "beforeSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "currentSHA256": "7186897355298ca6860460d378c4595a9be1873f8778a7462458cc0d85d64c81"
+  },
+  {
+    "file": "tests/inspire-chatgpt-http.mjs",
+    "baseline": "new in this task",
+    "beforeSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "currentSHA256": "4015f7cab043d993cadc47b792946757977afe356897a4c8c67962464e4bf027"
+  },
+  {
+    "file": "tests/verify-inspire-chatgpt.mjs",
+    "baseline": "new in this task",
+    "beforeSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "currentSHA256": "ef53bf896a29e422db11661d947024ee867fdd312c32552b8e41a28f75cc4f77"
+  },
+  {
+    "file": "docs/private-chatgpt-readiness-2026-11-23.txt",
+    "baseline": "new in this task",
+    "beforeSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "currentSHA256": "c41076f24f2b3b89b8142ba878c4db59407789f4347f9da7b7d181caf4006281"
+  }
+]

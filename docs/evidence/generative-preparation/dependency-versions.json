@@ -1,0 +1,32 @@
+{
+  "executed": true,
+  "node": "v25.2.0",
+  "platform": "win32",
+  "architecture": "x64",
+  "npmDependencies": {
+    "node_modules/react": "19.3.0",
+    "node_modules/vite": "7.2.2",
+    "node_modules/typescript": "7.0.2",
+    "node_modules/firebase": "12.18.0",
+    "node_modules/firebase-tools": "15.35.0",
+    "functions/node_modules/firebase-admin": "13.10.0",
+    "functions/node_modules/firebase-functions": "7.3.2",
+    "functions/node_modules/openai": "7.10.0",
+    "functions/node_modules/typescript": "6.0.3",
+    "functions/node_modules/eslint": "8.57.1"
+  },
+  "python": {
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "dependencies": {
+      "pydantic": "2.13.5",
+      "jsonschema": "4.26.0",
+      "httpx": "0.28.1"
+    }
+  },
+  "java": "openjdk version \"21.0.13.0.2\" 2026-10-22 LTS\r\nOpenJDK Runtime Environment Microsoft-15780113 (build 21.0.13.0.2+1-LTS)\r\nOpenJDK 64-Bit Server VM Microsoft-15780113 (build 21.0.13.0.2+1-LTS, mixed mode, sharing)\r\n",
+  "excludedFromZIP": [
+    "Python/Java portable runtimes",
+    "node_modules"
+  ],
+  "productionNode22Executed": false
+}

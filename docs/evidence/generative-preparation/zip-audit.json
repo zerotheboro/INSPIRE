@@ -1,0 +1,9 @@
+{
+  "entriesVerified": 157,
+  "bytes": 5993967,
+  "archive": "INSPIRE-review-model-preparation-2026-11-09.zip",
+  "executed": true,
+  "sha256": "cb5179dbc261cb6b6c5dcb60a38bdda2cea18c56192c64ac5871392e815a24da",
+  "reader": ".NET ZipArchive",
+  "allHashesMatch": true
+}

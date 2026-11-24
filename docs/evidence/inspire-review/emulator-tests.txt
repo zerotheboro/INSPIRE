@@ -1,0 +1,32 @@
+C:\Program Files\nodejs\node.exe --import ./tests/register-ts.mjs --test tests/inspire-emulator.test.mjs
+
+✔ verified anonymous + email registration links same UID, login and signout do not mint another identity (1092.9368ms)
+✔ Google emulator credentials create verified Google account (synthetic OAuth substitute) (143.3819ms)
+✔ guest 10 total, completion once, durable duplicate rejected, no periodic reset (1935.0071ms)
+✔ registered 30 replies, Vietnam midnight boundary, mid-month allowance and no rollover (4822.0359ms)
+✔ atomic reservations prevent overspending; midnight completion charges the completion month (16262.1069ms)
+✔ confirmed failure refunds; unknown adapter or completion outcome remains reserved after restart (674.9707ms)
+✔ account linking blocks old anonymous identity, adds no guest balance, and sessions reject another user (243.8345ms)
+[2026-11-09T10:15:49.259Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x27e39048 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T10:15:49.310Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x27e39049 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T10:15:49.343Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x27e3904a error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T10:15:49.372Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x27e3904b error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-09T10:15:49.401Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x27e3904c error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+✔ client quota manipulation, cross-user records and private sources are rejected (560.5023ms)
+✔ incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction (414.414ms)
+✔ existing shared IP request-rate limits remain separate and reject before quota reservation or adapter (1299.865ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 35281.1315
+
+EXIT_CODE=0

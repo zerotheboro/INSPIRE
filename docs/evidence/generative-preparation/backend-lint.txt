@@ -1,0 +1,6 @@
+
+> lint:chat
+> node lint.cjs lint.cjs src/inspireAI.ts src/inspireAccount.ts src/inspireChatContract.ts src/inspireChatSimulation.ts src/inspireKnowledge.ts src/inspireLocalService.ts src/inspireHttp.ts src/inspireController040.ts
+
+
+EXIT_CODE=0
