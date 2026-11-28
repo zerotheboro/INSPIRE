@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-11-27T12:59:54.136Z",
+  "records": 661,
+  "sections": 10676,
+  "externalEligible": 513,
+  "deltaFrom513": 0,
+  "unchangedFromVerifiedRestart": true,
+  "sourceVersionHashPermissionProblems": 0,
+  "expectedSourceMatches": 3,
+  "cases": [
+    {
+      "case": "direct",
+      "status": "EXPECTED_SOURCE_FOUND"
+    },
+    {
+      "case": "paraphrase",
+      "status": "EXPECTED_SOURCE_FOUND"
+    },
+    {
+      "case": "follow-up",
+      "status": "EXPECTED_SOURCE_NOT_IN_TOP_3"
+    },
+    {
+      "case": "correction",
+      "status": "EXPECTED_SOURCE_FOUND"
+    },
+    {
+      "case": "existing-amendment",
+      "status": "EXPECTED_SOURCE_NOT_IN_TOP_3"
+    }
+  ],
+  "missingExtraction": "tong-ket-he-8-muc.docx; original and metadata retained, no duplicate indexed",
+  "restoreRepeated": false,
+  "restartRepeated": false,
+  "modelCalls": 0
+}

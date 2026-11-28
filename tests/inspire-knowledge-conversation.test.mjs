@@ -30,8 +30,8 @@ test('automatic relevant retrieval, follow-up, correction, conflict preservation
  await source('restricted','# Bản nháp\nzgardenbeta PRIVATE_RESTRICTED',false)
  await source('rules','# Quy tắc\nzgardenbeta PRIVATE_OPERATING',true,'operating-rules')
  await source('unrelated','# Chủ đề khác\nzunrelatedomega')
- let messages=[{id:'u1',role:'user',text:'Tình huống giả định zworkalpha, tôi nên bắt đầu thế nào?'}]
- for(const [i,next] of [[0,null],[1,{id:'u2',role:'user',text:'Bạn nói rõ hơn được không?'}],[2,{id:'u3',role:'user',text:'Đính chính: đây là zgardenbeta, chuyện chăm cây.',correctionOf:'u1'}]]){
+ let messages=[{id:'u1',role:'user',text:'Tình huống giả định zworkalpha'}]
+ for(const [i,next] of [[0,null],[1,{id:'u2',role:'user',text:'Bạn nói rõ hơn được không?'}],[2,{id:'u3',role:'user',text:'Đính chính: zgardenbeta',correctionOf:'u1'}]]){
   if(next)messages=[...messages,{id:'a'+i,role:'assistant',text:'Phản hồi mô phỏng dùng riêng cho kiểm thử.'},next]
   const r=request(messages),p=await prepareLunaKnowledgeInput(context(r),r),input=JSON.parse(p.text)
   assert.deepEqual(input.messages,messages);assert.ok(input.supportingKnowledge.length>0)

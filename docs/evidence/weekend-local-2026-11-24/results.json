@@ -1,0 +1,34 @@
+{
+  "results": {
+    "http": {
+      "exitCode": 0,
+      "error": null
+    },
+    "weekend": {
+      "exitCode": 0,
+      "error": null
+    },
+    "conversation": {
+      "exitCode": 0,
+      "error": null
+    },
+    "backend": {
+      "exitCode": 0,
+      "error": null
+    },
+    "website": {
+      "exitCode": 0,
+      "error": null
+    },
+    "lint": {
+      "exitCode": 0,
+      "error": null
+    },
+    "lintInitial": {
+      "exitCode": 1,
+      "error": null
+    }
+  },
+  "liveModelCalls": 0,
+  "browser": "NOT VERIFIED: Windows Computer Use could not safely establish current browser URL"
+}

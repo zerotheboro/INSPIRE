@@ -1,0 +1,95 @@
+{
+  "baselineZipSHA256": "4bcb7aa821c45d0af72822213a846481b6dbb751a18e94a2b3c29cf68bb2d63b",
+  "changes": [
+    {
+      "path": "functions/src/inspireKnowledge.ts",
+      "status": "modified",
+      "beforeSHA256": "bb9f710997124e8cd940ea69101c1136326d7de50f49f992ac465b935ecfffba",
+      "sha256": "94a68003c8c0139b95d6a372f9026b18fb0a298ce22a21f6ebd732e586d8d158"
+    },
+    {
+      "path": "functions/src/inspireLocalService.ts",
+      "status": "modified",
+      "beforeSHA256": "47227cc5ac8c1481fd3396e0f3a08263e7f81364d6ab64812c94a2015c1f877d",
+      "sha256": "0ec543e2e7dcf75e065d448413895a0a749f1712e05defda228aca9b3dcdb824"
+    },
+    {
+      "path": "functions/src/inspireLuna.ts",
+      "status": "modified",
+      "beforeSHA256": "d417cac2baf3211d22a91593778494a27132b5d3843fc55bbfd74c9064765542",
+      "sha256": "8d611721c804eaca807962d03dbeb81d81325bcf1979338e655b5f5d1de214d1"
+    },
+    {
+      "path": "functions/src/inspireLunaService.ts",
+      "status": "modified",
+      "beforeSHA256": "d27b3a645818d138b31acfe541ea517d0754f03560d26b4b4c013c7ee5ff7070",
+      "sha256": "ad87c11e2b8c84818c3475ccf5ada053f15b5e1a977e232f257af819838053dd"
+    },
+    {
+      "path": "functions/src/inspireReviewReceipt.ts",
+      "status": "new",
+      "beforeSHA256": null,
+      "sha256": "435ad492d6ac946ef6983080952d5577305ec73b29f36c3c960c4c44ac0c76f5"
+    },
+    {
+      "path": "functions/src/inspireReviewShelf.ts",
+      "status": "new",
+      "beforeSHA256": null,
+      "sha256": "d414426d42a783d4f2c176166457d289dbb5c2d5718b9a016273c598d8fdbeae"
+    },
+    {
+      "path": "package.json",
+      "status": "modified",
+      "beforeSHA256": "f1ffe526c36057b8ef16c8e5b0879a86e8533204c9e5830537a273d7d7eb496b",
+      "sha256": "5aee253d1ca090c843b1152b795147a5872c4a98e6295bf7e31d2c012b40406b"
+    },
+    {
+      "path": "src/pages/AIInspire.tsx",
+      "status": "modified",
+      "beforeSHA256": "571b17ff2c6fedbd409d58237c995acb08310c4e6d70b69a0f183ebd092306bd",
+      "sha256": "f4397f567d07067eb14a2cab2c0af7794abf161413031f1cc4a1b2733215db78"
+    },
+    {
+      "path": "src/services/InspireAIconnect.ts",
+      "status": "modified",
+      "beforeSHA256": "8a46afa207b9fc79fdc02b6de45f76bba9e3f1dc14b328f2a589f1db9e3c46a0",
+      "sha256": "cc6cc9126a71756f7027d1eb1e734a437642381a55123362930269c1fa15aea5"
+    },
+    {
+      "path": "tests/father-weekend-http.mjs",
+      "status": "new",
+      "beforeSHA256": null,
+      "sha256": "f8f5ac5ca78684cdb4a858787769763a52c63ea536495256c7a932a4f0f8d487"
+    },
+    {
+      "path": "tests/father-weekend.test.mjs",
+      "status": "new",
+      "beforeSHA256": null,
+      "sha256": "ae1ca28e929db6723baf1fba5c22dbec172d093108d21362652fe54f3efb7d3b"
+    },
+    {
+      "path": "tests/inspire-browser.mjs",
+      "status": "modified",
+      "beforeSHA256": "3235650a20804d5754900b50d75f385e1bb203f9014d3c3a9f3a84af44128013",
+      "sha256": "d75db35b6b9502e55ac08fc24be9af9e405f2b1e652380344709a29c19e25204"
+    },
+    {
+      "path": "tests/package-father-weekend.py",
+      "status": "new",
+      "beforeSHA256": null,
+      "sha256": "de61bcc49d08fbe117000053d03fd1727c1b9b1dccc59bc8b59b310e5584716e"
+    },
+    {
+      "path": "tests/start-father-weekend.mjs",
+      "status": "new",
+      "beforeSHA256": null,
+      "sha256": "8977aaeabe17c4cca81ff800db170a7774d21e9790dec3d6046daacd34f41b71"
+    },
+    {
+      "path": "vite.config.ts",
+      "status": "modified",
+      "beforeSHA256": "e6b16138a5e2014f32d5e7bcb39ceb5e10596b1f5e1d559179bb5c9b54d40328",
+      "sha256": "3bc072fdfd4b92f53f67d25515dcdf41f24344577e4e35f2e32cb8f4c3d1eb02"
+    }
+  ]
+}

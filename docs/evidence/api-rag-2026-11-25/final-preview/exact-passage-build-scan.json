@@ -1,0 +1,13 @@
+{
+  "executed": true,
+  "files": 17,
+  "selectedPrivateLessonPassages": [
+    {
+      "id": "lesson-C04-06",
+      "sectionHash": "5829537a1e878619c5455543a1d0402072721ca8040ca2a39775aa0f9a22f62e"
+    }
+  ],
+  "fullInstructionSHA": "4cdcf0c6d98b591e5cf08ec668fb1ca5885f5b11e8ecaa2975088daf5267212c",
+  "hits": [],
+  "limitation": "Exact-byte scan for the selected private passage and complete instruction; not proof against all transformations. Complemented by production canary scan and private HTTP asset denial."
+}

@@ -40,7 +40,10 @@ async function registered() {
 function request(service, identity, session = service.session(identity), extra = {}) {
   return {kind: 'send', epoch: session.epoch, sessionId: session.sessionId,
     conversationId: randomUUID(), operationId: randomUUID(),
-    messages: [{id: randomUUID(), role: 'user', text: 'Nội dung giả định về cảm xúc và mối quan hệ'}], ...extra}
+    // Quota/auth fixtures must not search the growing real corpus. Natural
+    // relevance is exercised separately; this suite overrides the text below
+    // for the explicit adapter/provenance case.
+    messages: [{id: randomUUID(), role: 'user', text: 'zaccountquotafixture'}], ...extra}
 }
 const noRate = async () => ({allowed: true})
 const offline = {mode: 'simulation', reply: async () => 'Phản hồi mô phỏng cho kiểm thử.'}
@@ -59,7 +62,7 @@ test('verified anonymous + email registration links same UID, login and signout 
   assert.deepEqual(verified.providers, ['password'])
   assert.equal((await account.account(verified)).quota.remaining, 30)
   const next = {...first, operationId:randomUUID(), messages:[...first.messages, answer.message,
-    {id:randomUUID(),role:'user',text:'Đính chính giả định sau đăng ký',correctionOf:first.messages[0].id}]}
+    {id:randomUUID(),role:'user',text:'zaccountlinkcorrectionfixture',correctionOf:first.messages[0].id}]}
   await service.handle(next, verified, 'quota-test')
   assert.equal((await account.account(verified)).quota.remaining, 29)
   await signOut(guest.auth)
@@ -208,7 +211,10 @@ test('incremental knowledge provenance, review exclusion, Edulience isolation an
   assert.deepEqual(await importSource(record, b, b.toString()), {changed:true,version:2})
   await importSource({...record,documentId:id+'-review',status:'review-required',permittedUse:'receipt-only'}, a, a.toString())
   await importSource({...record,collection:'Edulience',documentId:id+'-edulience'}, a, a.toString())
-  const retrieved = await retrieveKnowledge('giấc ngủ nghỉ ngơi ' + needle)
+  // This checks exact provenance and receipt exclusion independently of the
+  // growing permitted draft corpus. Natural Vietnamese relevance has its own
+  // global-corpus follow-up/correction regression in inspire-pagination.
+  const retrieved = await retrieveKnowledge(needle)
   assert.ok(retrieved.some((s) => s.documentId === id && s.version === 2 && s.hash.length === 64))
   assert.ok(retrieved.every((s) => s.sourceStatus === 'published-supporting' && !s.documentId.endsWith('-review') && !s.documentId.endsWith('-edulience')))
   assert.equal((await db.doc(`inspireKnowledge/${id}/versions/1`).get()).exists, true)
@@ -216,7 +222,7 @@ test('incremental knowledge provenance, review exclusion, Edulience isolation an
   let context
   const service = createLocalService({mode:'simulation', reply: async (input) => { context = input; return 'Mô phỏng với ngữ cảnh có nguồn.' }}, Date.now, noRate)
   const r = request(service, identity)
-  r.messages[0].text = 'giấc ngủ nghỉ ngơi ' + needle
+  r.messages[0].text = needle
   await service.handle(r, identity, 'quota-test')
   assert.ok(context.operatingInstructions.some((s) => s.includes('WHAT → WHERE → WHY → TOWARD WHAT → HOW')))
   assert.ok(context.supportingKnowledge.length)

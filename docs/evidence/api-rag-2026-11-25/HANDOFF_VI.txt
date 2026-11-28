@@ -1,0 +1,129 @@
+INSPIRE — tiếp tục API/RAG ngày 25/11/2026
+Trạng thái: UNARMED. Không inference thật, không phát hành grant, không deploy.
+Chỉ thay đổi INSPIRE; các thay đổi có trước được giữ nguyên. Không xử lý Z-PROJECT.
+
+MỞ BẢN LOCAL
+  http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+  Auth emulator: 127.0.0.1:9099; Firestore: 127.0.0.1:8080; demo-inspire.
+  Nếu cần mở lại, chạy trong hai terminal ở root INSPIRE:
+    npm.cmd run emulators
+    npm.cmd run father:api
+  Cần node_modules hiện có ở root/functions, Java 21 và Python/Controller gốc
+  đang cài local. ZIP không chứa dependencies, portable runtimes hoặc Controller
+  riêng tư. Phiên bản đã chạy nằm trong dependency-versions.json.
+  Emulator khởi động rỗng: phục hồi từ corpus-manifest hiện hành, rồi merge gói:
+    node --import ./tests/register-ts.mjs tests/import-inspire-knowledge.mjs --manifest .private.local/knowledge/corpus-manifest.json
+    node --import ./tests/register-ts.mjs tests/import-api-rag-bundle.mjs
+  Không chạy importer/test ghi dữ liệu đồng thời với đóng băng preview.
+  Hội thoại giao diện vẫn ở bộ nhớ; refresh làm mất hội thoại. Mô phỏng và API
+  có nhãn riêng. API chỉ chuẩn bị đầu vào khi chưa có release đúng request.
+
+KEY PHÍA BACKEND
+  Chủ hệ tự tạo thư mục %LOCALAPPDATA%\INSPIRE-Luna, dùng trình soạn thảo local
+  lưu key vào api-key.txt trong thư mục đó. Không đặt trong repository/OneDrive,
+  không dùng VITE_*, không dán key vào chat. Code chỉ đọc key sau admission,
+  Controller và kiểm quyền nguồn; không trả key về browser hoặc log.
+  Đây là OpenAI API billing riêng, không dùng hạn mức ChatGPT Business.
+  Chưa cấu hình key; chưa kiểm được quyền truy cập model của tài khoản API.
+  Chỉ thêm key không cấp quyền generation. authorization-template.json vẫn false.
+
+MÃ ĐÃ HOÀN THIỆN
+  - Cursor theo document ID, trang 50 là page size chứ không phải candidate cap.
+    Lọc eligibility trước đọc trang và kiểm lại từng source/section; rank có
+    tie-break ổn định, chỉ trả tối đa 3 đoạn. Revision đổi thì giữ lỗi, không dùng
+    snapshot/cache pha trộn và không tự chạy lại.
+  - Giữ lời gốc/correction; chỉ query dẫn xuất bỏ lời đã được đính chính.
+    Update/version/permission làm vô hiệu cache; kiểm quyền lại trước dispatch.
+  - Kiểm quyền đúng danh sách passages nằm trong payload đã hash: thay riêng
+    prepared.references cũng bị từ chối, không thể kiểm một list khác wire body.
+  - Preview operator được lưu riêng và kiểm byte/hash khi mở lại, giữ message,
+    operation và conversation ID. Runtime restart không được tự đổi epoch/binding.
+  - Reuse API adapter, Controller gốc, auth/quota/replay và private UI.
+    Không API-key fallback từ ChatGPT: đây là route API Chủ hệ đã chọn rõ ràng.
+    SDK/application không tự retry; không tuyên bố kiểm soát retry nội bộ provider.
+    tools=[]; không có tool executor; incomplete/refusal/error không là lời AI.
+    Public generation đóng. Grant v1, budget/grant cũ không dùng cho release v2.
+
+CORPUS ĐÃ KIỂM
+  177 payload bytes của gói đã đối chiếu, không gọi là 177 tài liệu canonical.
+  661 receipts/IDs hiện hành; 458 lesson IDs riêng biệt, giữ DRAFT và parent/content
+  hashes; 28 volume trùng không có sections để nhân đôi retrieval. Import lặp lại:
+  changed=0, unchanged=637 thao tác nguồn; đây không phải số canonical documents.
+  514 document records đủ scope tham khảo private/export hiện hành; 147 held.
+  Draft được phép tham khảo riêng vẫn là draft. Không nâng thành operating rule,
+  Actual Permission Record, quyền can thiệp hoặc quyền chạy public.
+  Quyền private/reference được ghi theo task §2 trong gói Chủ hệ yêu cầu thực hiện;
+  không mở lại audit/quyền toàn corpus. Governance, management/duplicate receipts
+  và các hạn chế cụ thể tiếp tục held. Originals/indexes/history nằm private.
+
+KIỂM CHỨNG THỰC THI
+  Xem verification-summary.json và các log được dẫn chiếu:
+  API 13/13; safeguards 4/4; hội thoại 17/17; retrieval/hội thoại 4/4;
+  phân trang + relevance tiếng Việt tự nhiên 3/3; auth/quota/rate 10/10;
+  corpus integrity; backend build; website build; touched-backend lint;
+  public build canary scan. Đã chạy lại API/safeguards/backend/lint sau sửa binding.
+  Native Controller có preflight/triage/ScopeGuard/PermissionInspector/
+  GeneratedValidator/exact-byte binding; evidence vẫn ghi actual execution và
+  public/user delivery permission held, không dùng mock receipt làm quyền thật.
+  Candidate của kiểm thử là giả lập; không chứng minh chất lượng tạo sinh.
+  Trần 512 output tokens là tham số API; giới hạn 2.000 ký tự là validation riêng,
+  không cắt sửa output đã kiểm. Reservation là ước lượng bảo thủ, không tokenizer.
+
+GIỮ RIÊNG CÁC LẦN CHƯA QUA
+  - Broad suite lịch sử: 48/49; rerun riêng 1/1 ở evidence 21/11 giữ nguyên.
+    Không đổi broad suite thành full pass.
+  - final-checks và final-fixed giữ kết quả trước sửa, gồm API 12/13.
+  - resume-service: API timeout sau 8 ca; quota 9/10. Native chạy riêng 1/1.
+    Full API chạy lại 13/13; không suy nguyên nhân timeout đã được chứng minh.
+  - Ca provenance quota cũ trộn query từ phổ biến với corpus draft mở rộng.
+    Fixture dùng marker để kiểm provenance/quota, giữ nguyên assertions.
+    Các ca natural Vietnamese global relevance vẫn chạy riêng, không bỏ.
+  - Website build đầu bị sandbox chặn esbuild; host rerun đạt. Log đầu giữ nguyên.
+  - freeze-final bị KNOWLEDGE_REVISION_CHANGED khi fixture đổi revision;
+    không tạo một preview giả vờ nhất quán. Preview cuối đọc sau test ghi dữ liệu.
+
+PREVIEW VÀ TRACE CUỐI
+  Câu hỏi: “Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm.
+  Giúp tôi hiểu khoảng cách giữa ý định và hành động.”
+  operationId: api-rag-final-attempt-20261125
+  payloadSHA: cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f
+  binding: 6135befb55f3b4447c115638f3f2bee7bfaa91aefc2d8d822c8f389b1b058916
+  Model gpt-6-luna; max_output_tokens=512; 3 passages (nguồn tham vấn v6,
+  website-counseling v6, lesson-C04-06 v2 DRAFT); tools=[]; store=false.
+  Input byte-bound + overhead: 13.346; estimate US$0.0015906;
+  reservation đề nghị US$0.0035925 (3.592.500 nanoUSD), maxAttempts=1.
+  Giá kiểm 25/11: input $0.10/output $0.50 mỗi triệu tokens; reservation input
+  dùng $0.25 để dự phòng cache write. approved=false; không tái sử dụng grant.
+  HTTP preview/reopen đã chạy, ba file request/wire/preview giữ nguyên SHA256.
+  Key chưa có và không gửi execute trên localhost trong lượt này.
+  final-preview/first-request-summary.json: câu hỏi, model, refs/version/hash,
+  output limit, payloadSHA, binding, giá/estimate/reservation mới, approved=false.
+  Full wire body/đúng passages ở file ignored riêng được summary dẫn tới.
+  final-preview/adapter-controller-trace.json: passages thực sự tới adapter input,
+  recheck quyền và Controller gốc với candidate giả lập, không phải Luna output.
+  Kiểm quyền/version của RAG ở backend. Native receipt không chứng minh Controller
+  đã đọc toàn corpus hay xác nhận đúng/sai nội dung và chất lượng tư vấn của nó.
+  final-preview/http-checks.json: local HTTP/auth/origin/private isolation/reopen.
+  Không share private preview/session token ra public hoặc đưa vào review ZIP.
+  Đừng tự tái tạo preview sau restart/thay nguồn: bản cũ phải held, không rebind
+  authorization. Operator phải xem lại nếu exact payload/identity/budget đổi.
+
+CÒN LẠI
+  Kỹ thuật/kiểm chứng: cold relevance query chậm trên emulator; nhóm phân trang
+  thực tế mất ~506 giây. Đây là hạn chế hiệu năng chưa xử lý trong milestone này.
+  Browser desktop/mobile NOT VERIFIED: CUA dừng do không xác định URL Windows;
+  không vượt chặn, không dùng screenshot cũ làm bằng chứng hiện tại. HTTP 200
+  không chứng minh render hoặc thao tác UI. Không có screenshot mới được xác minh.
+  Entitlement/billing response/model quality chưa kiểm được khi chưa có key và
+  khi chưa được phép gửi thật. Không có inference/chi phí phát sinh từ lượt này.
+  Chủ hệ: tự đặt key local; sau khi xem exact request + budget mới, quyết định
+  release riêng đúng một attempt. Không dùng US$0.0016065, trial $2 hoặc grant
+  ChatGPT 1/3 attempts cũ. Proposal 50 attempts còn false, chưa có API allowance
+  cho phiên dài; không tự nâng guest10/member30 hoặc IP10/10phút,30/ngày.
+
+DIFF/ZIP
+  focused.patch so với checkpoint working tree ngay trước API milestone.
+  resume.patch so với checkpoint đầu lượt tiếp tục này. Cả hai được apply --check
+  trong staging riêng, không áp patch vào repository. diff-check.json liệt kê file.
+  Review ZIP gồm source hiện hành, diff và bằng chứng; loại credentials, dữ liệu
+  private gốc/index/history, runtime DB, node_modules, dist và portable runtimes.

@@ -1,0 +1,31 @@
+{
+  "asOf": "2026-11-24",
+  "regression": {
+    "passed": 54,
+    "failed": 0,
+    "log": "regression.log"
+  },
+  "volumeTest": {
+    "userTurns": 100,
+    "cases": 10,
+    "layer": "ConversationStore + simulation engine only; not quota entitlement or model quality"
+  },
+  "builds": "frontend and functions passed",
+  "touchedBackendLint": "passed",
+  "privateHTTP": "passed: three native Controller turns, auth, redacted receipt, private path lockouts",
+  "browser": {
+    "staticScreen": "Observed in cloud browser with backend disconnected",
+    "authenticatedDesktopMobile": "NOT VERIFIED: local Chromium socket permission denied; cloud browser had no emulator connection",
+    "screenshots": "No current screenshots delivered"
+  },
+  "liveCalls": 0,
+  "sourceApprovalsCreated": 0,
+  "deployments": 0,
+  "billing": "Owner confirmed checked; no account changes or independent certification",
+  "restrictions": {
+    "tokenCap512": "Unsupported on ChatGPT plan route; dispatch held",
+    "managedRetries": "Complete disable not verified; dispatch held",
+    "APIKeyFallback": false,
+    "approved100MessageSession": false
+  }
+}

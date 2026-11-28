@@ -1,0 +1,76 @@
+INSPIRE localhost — 26/11/2026
+
+Đang chạy: http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+Auth Emulator: 9099. Firestore Emulator: 8080. Không deploy.
+
+Đường thật đã thực thi một lần:
+Firebase SDK → ConversationStore/HTTP → RAG (3 đoạn đủ quyền)
+→ Controller preflight → reservation bền vững → đếm token chính xác
+→ kiểm lại nguồn → OpenAI Responses gpt-6-luna (SDK maxRetries=0)
+→ lưu DPAPI → kiểm tra response → Controller exact-output → ConversationStore.
+Provider completed; input 2.290, output 175, cached 0, cache writes 2.287.
+Không gọi lại inference. Không sử dụng grant cũ.
+
+Payload SHA: 4ae3f7d25bea3c33ca1c094d6b74928d063d77fcb28bbd8e041137bca5620edb
+Binding thực: 77cb62de908af39ed1a1d79846039d9abc18bafd4259305e56be0035074137fe
+real-verification.json giữ nguyên bản báo cáo đầu tiên. reconciliation.json
+đối soát chênh lệch binding do thứ tự key trong object của harness; model body
+không thay đổi. Ledger, Controller và request HTTP thực khớp cùng binding.
+Harness đã được sửa thứ tự; chặn chạy lại bằng hồ sơ bền vững.
+
+Chi phí tạo sinh tính theo usage + giá Standard/cache writes 30 phút:
+US$0.000373675 (ước tính, chưa đối soát hóa đơn). Trần tính bảo thủ gồm cả
+khả năng tính phí đếm token: US$0.0012325. Reservation giữ: US$0.007066,
+dưới quyền xác minh US$0.01. Giá: https://developers.openai.com/api/docs/pricing
+
+Phiên riêng đã được Chủ hệ cấp quyền và mở SAU khi xác minh:
+tối đa 10 attempts / US$0.05 tổng reservation, dừng khi chạm một mức.
+Tính cả attempts thất bại/không rõ; không tự retry hoặc nạp tiền.
+Chưa dùng lượt nào lúc bàn giao. Hết hạn 27/11/2026 13:57 giờ Việt Nam.
+Danh tính Firebase SDK đầu tiên gửi tin sẽ gắn cố định với phiên.
+Quotas và rate limits cũ vẫn áp dụng; có thể dừng trước 10 câu trả lời.
+
+Ba mở URL, nhập câu hỏi tiếng Việt và bấm Gửi; hỏi tiếp bình thường.
+Muốn sửa lời đã nói, bấm Đính chính ở tin đó; lời gốc vẫn được giữ.
+Không cần chọn tài liệu hay duyệt mỗi tin. Chỉ dùng dữ liệu giả định,
+không nhập dữ liệu thân chủ. Dành cho con chứa kết nối, hạn mức và nguồn.
+Nếu trình duyệt giữ danh tính của Auth Emulator đã mất: Dành cho con →
+Kết nối lại. Chỉ SDK chính thức thay khách đã thực sự mất; lỗi mạng không
+tự thay danh tính. Phiên đã gắn UID không tự chuyển sang UID khác.
+
+Nguồn: phục hồi 661 bản ghi từ receipt/blob local hiện có, không đổi quyền
+hay tăng version. Hiện 513 external-eligible, 148 bị giữ khỏi external RAG.
+Không gửi nguyên thư viện. Lần thật dùng hai đoạn tham vấn + lesson C04-06;
+xem source IDs/version/hash ở reconciliation.json. Không tự cấp quyền
+operating rules, nguồn draft/restricted hay can thiệp chuyên môn.
+
+Đã thực thi:
+- Hội thoại mới: 7/7 sau sửa; thêm ca SDK token-count/no-retry: 1/1.
+  Giữ log ban đầu 4/7, lần chạy giữa 6/7 và các lần chạy lại riêng.
+- Kiểm soát cũ: ban đầu 27/28 (native timeout); ca riêng đạt 1/1;
+  chạy lại tuần tự toàn bộ đạt 28/28.
+- TypeScript app và backend --noEmit: exit 0. Touched backend lint: exit 0.
+- DPAPI lưu/đọc qua restart và đọc lại output thật khớp hash Controller.
+  Lỗi transaction lưu thử đã sửa; kho giả bị lỗi được giữ trong archive.
+- HTTP: trang AI/tham vấn/nghỉ dưỡng 200; key/private/backend paths 403.
+  Key không tracked, được Git ignore; không thấy key trong client modules
+  hoặc dist hiện có. Không chạy build/rebuild theo yêu cầu.
+
+Chưa xác minh: browser rendering/mobile (NOT VERIFIED), hóa đơn thực tế,
+chất lượng hội thoại nhiều lượt bằng model thật/đánh giá nội dung của ba.
+Không dùng mock để kết luận chất lượng tạo sinh hay kiểm định lâm sàng.
+Controller vẫn giữ actual-execution/intervention permission đóng; owner
+grant chỉ cho giao diện đánh giá riêng. AI công khai vẫn đóng.
+Output thô mã hóa có hạn đọc 7 ngày; dọn khi kho hoạt động, không tuyên bố
+có tiến trình nền xóa đúng hạn khi máy/server tắt. Lịch sử tab ở bộ nhớ.
+
+Nếu tiến trình dừng: tại repo INSPIRE, npm.cmd run emulators rồi
+npm.cmd run father:api. Launcher chỉ đọc OPENAI_API_KEY phía backend từ
+functions/.env.local; không fallback txt/ChatGPT. Không in key.
+Không tự chạy lại run-private-connection.mjs: lần xác minh đã được dùng.
+Restart Auth Emulator làm mất UID nếu không có snapshot: giữ phiên bị khóa,
+không tự cấp thêm budget hay identity mới cho một phiên đã gắn.
+
+Mã thay đổi trong focused.patch so với snapshot trước lượt này; không ZIP.
+Hồ sơ exact input riêng: LocalAppData/INSPIRE-Luna/private-session/
+verification-plan.json; không đưa nguồn private vào evidence công khai.

@@ -1,0 +1,168 @@
+{
+  "executedAt": "2026-11-27T01:12:04.634Z",
+  "project": "demo-inspire",
+  "emulator": "127.0.0.1:8080",
+  "readOnly": true,
+  "revision": null,
+  "records": 0,
+  "sections": 0,
+  "recordsWithSections": 0,
+  "internalEligible": 0,
+  "externalEligible": 0,
+  "versions": {},
+  "indexVersions": {},
+  "versionSnapshotProblems": [],
+  "sectionBindingProblems": [],
+  "receiptDrift": [],
+  "receiptRecords": 661,
+  "receiptRecordsAbsent": 661,
+  "baselineExternalEligible": 513,
+  "deltaFrom513": -513,
+  "explanation": "Services were stopped before this audit. No export snapshot found; existing launcher restarted a fresh empty emulator. No source import or index reconstruction was performed. 513 is historical (2026-11-26), not current.",
+  "docx": null,
+  "txt": null,
+  "retrieval": [
+    {
+      "case": "direct",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Khoảng cách giữa ý định và hành động là gì khi tôi trì hoãn công việc?"
+        }
+      ],
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "expectation": "Ít nhất một đoạn về vận hành/hành động hoặc động cơ, động lực.",
+      "selected": [],
+      "expectedSourceFound": false,
+      "status": "BLOCKED_EMPTY_LIVE_INDEX",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "NO_PASSAGE_TO_VALIDATE"
+    },
+    {
+      "case": "paraphrase",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Tôi biết mình nên bắt đầu nhưng cứ chần chừ. Điều gì khiến tôi không làm điều đã định?"
+        }
+      ],
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "expectation": "Cùng chủ đề hành động dù không lặp đúng tên tài liệu.",
+      "selected": [],
+      "expectedSourceFound": false,
+      "status": "BLOCKED_EMPTY_LIVE_INDEX",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "NO_PASSAGE_TO_VALIDATE"
+    },
+    {
+      "case": "follow-up",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Tôi cứ trì hoãn công việc dù đã có ý định hành động."
+        },
+        {
+          "id": "a1",
+          "role": "assistant",
+          "text": "Đây chỉ là lời nối hội thoại giả lập, không phải câu trả lời đánh giá."
+        },
+        {
+          "id": "u2",
+          "role": "user",
+          "text": "Vậy nếu chỉ có ít thời gian thì sao?"
+        }
+      ],
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "expectation": "Giữ chủ đề công việc từ lượt trước.",
+      "selected": [],
+      "expectedSourceFound": false,
+      "status": "BLOCKED_EMPTY_LIVE_INDEX",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "NO_PASSAGE_TO_VALIDATE"
+    },
+    {
+      "case": "correction",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Tôi muốn hỏi về trì hoãn công việc."
+        },
+        {
+          "id": "a1",
+          "role": "assistant",
+          "text": "Lời nối hội thoại giả lập."
+        },
+        {
+          "id": "u2",
+          "role": "user",
+          "text": "Đính chính: tôi muốn tìm hiểu ranh giới và nhu cầu trong quan hệ với người khác.",
+          "correctionOf": "u1"
+        }
+      ],
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063"
+      ],
+      "expectation": "Đoạn về quan hệ/ranh giới; lời gốc giữ nguyên nhưng không dùng cho query dẫn xuất.",
+      "selected": [],
+      "expectedSourceFound": false,
+      "status": "BLOCKED_EMPTY_LIVE_INDEX",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "NO_PASSAGE_TO_VALIDATE"
+    },
+    {
+      "case": "existing-amendment",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Tài liệu INSPIRE-07-A đính chính nội dung gì?"
+        }
+      ],
+      "expectedDocumentIds": [
+        "original-8e9a8623b864c4282dc3d68c"
+      ],
+      "expectation": "Ưu tiên amendment 07-A hiện đã nhận, không suy ra quyền vận hành.",
+      "selected": [],
+      "expectedSourceFound": false,
+      "status": "BLOCKED_EMPTY_LIVE_INDEX",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "NO_PASSAGE_TO_VALIDATE"
+    }
+  ],
+  "restrictedSelections": [],
+  "writeAttempts": 0,
+  "indexUnchangedDuringInspection": true,
+  "modelCalls": 0,
+  "grantChanges": false,
+  "permissionsChanged": false,
+  "localhost": {
+    "5173": {
+      "running": false
+    },
+    "5174": {
+      "running": false
+    }
+  }
+}

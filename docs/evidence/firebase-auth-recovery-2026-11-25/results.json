@@ -1,0 +1,51 @@
+{
+  "scope": "Firebase token recovery only; existing changes preserved",
+  "modifiedSource": [
+    "src/services/inspireIdentity.ts",
+    "src/services/InspireAIconnect.ts"
+  ],
+  "newTests": [
+    "tests/inspire-auth-recovery.test.mjs"
+  ],
+  "tests": {
+    "finalFocused": {
+      "passed": 25,
+      "failed": 0,
+      "log": "offline-tests-final.txt"
+    },
+    "existingPrivateTransport": {
+      "passed": 1,
+      "failed": 0,
+      "log": "existing-private-transport-final.txt"
+    }
+  },
+  "builds": {
+    "backend": "PASS",
+    "website": "PASS on final rerun; initial sandbox Access is denied retained",
+    "websiteWarning": "Existing large JS chunk"
+  },
+  "productionCanaryScan": {
+    "files": 17,
+    "markers": 11,
+    "hits": 0
+  },
+  "frozenAttemptCheck": "frozen-check.json",
+  "notes": [
+    "Initial native Controller preflight was held without a captured safe cause; isolated recheck passed. Both records retained.",
+    "Local diagnostic script initially rejected a PowerShell evidence-file UTF-8 BOM; diagnostic reader corrected, original frozen files untouched.",
+    "Actual same-UID SDK token refresh NOT EXECUTED: frozen REST helper saved no SDK User or refresh credential.",
+    "Backend restart independently lost frozen session and prepared plan. No replacement was created."
+  ],
+  "finalAttemptLedger": {
+    "intentPresent": false,
+    "grantPresent": false
+  },
+  "providerDispatchSent": false,
+  "inferenceCalls": 0,
+  "newChargesUSD": 0,
+  "authorizationExtended": false,
+  "publicGenerationEnabled": false,
+  "localhost": "http://127.0.0.1:5173/ai-inspire?thu-rieng=1",
+  "readyForOriginalAttempt": false,
+  "stopCode": "FROZEN_SERVER_SESSION_LOST"
+}

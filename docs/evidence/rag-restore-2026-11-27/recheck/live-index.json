@@ -1,0 +1,441 @@
+{
+  "executedAt": "2026-11-27T12:59:54.136Z",
+  "project": "demo-inspire",
+  "emulator": "127.0.0.1:8080",
+  "readOnly": true,
+  "revision": 661,
+  "records": 661,
+  "sections": 10676,
+  "recordsWithSections": 547,
+  "internalEligible": 514,
+  "externalEligible": 513,
+  "externallyEligibleSections": 8369,
+  "versions": {
+    "2": 589,
+    "3": 5,
+    "4": 1,
+    "6": 3,
+    "7": 62,
+    "8": 1
+  },
+  "indexVersions": {
+    "3": 661
+  },
+  "versionSnapshotProblems": [],
+  "sectionBindingProblems": [],
+  "receiptDrift": [],
+  "receiptRecords": 661,
+  "receiptRecordsAbsent": 0,
+  "baselineExternalEligible": 513,
+  "deltaFrom513": 0,
+  "explanation": "Compare current record/permission/version details with receipts.",
+  "amendments": [
+    {
+      "claimedId": "INSPIRE-07-A",
+      "status": "INDEXED_PRIVATE_REFERENCE_ONLY",
+      "records": [
+        {
+          "id": "original-8e9a8623b864c4282dc3d68c",
+          "version": 7,
+          "hash": "d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2",
+          "sections": 54,
+          "externalEligible": true
+        }
+      ]
+    },
+    {
+      "claimedId": "INSPIRE-06-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-12-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-13-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-14-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-15-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-MOI-01-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": [
+        {
+          "id": "bundle-a29f6838dd67d5a8a4bb6bad",
+          "version": 2,
+          "hash": "d8e442eff2f10e392419976c79847d6bdd34ee8e26004ab12e33bb9570b4e12f",
+          "sections": 0,
+          "externalEligible": false
+        }
+      ]
+    }
+  ],
+  "docx": {
+    "version": 2,
+    "sections": 0
+  },
+  "txt": {
+    "version": 2,
+    "sections": 8
+  },
+  "retrieval": [
+    {
+      "case": "direct",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Khoảng cách giữa ý định và hành động là gì khi tôi trì hoãn công việc?"
+        }
+      ],
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "expectation": "Ít nhất một đoạn về vận hành/hành động hoặc động cơ, động lực.",
+      "selected": [
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 6,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+          "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ]
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-18",
+          "sectionHash": "1c440ec8aa67669694690ff3b6464554f05c30a3b20aced6ea461de4dad87afe",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ]
+        },
+        {
+          "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+          "version": 2,
+          "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+          "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-20",
+          "sectionHash": "69979482d86d81fdc275b01c1aa9b7968ff0962547c4605f57bd2f1b1069c7c0",
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "headingPath": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Điều bạn có thể hướng đến"
+          ]
+        }
+      ],
+      "expectedSourceFound": true,
+      "status": "EXPECTED_SOURCE_FOUND",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "EXECUTED_FOR_EACH_SELECTED_PASSAGE"
+    },
+    {
+      "case": "paraphrase",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Tôi biết mình nên bắt đầu nhưng cứ chần chừ. Điều gì khiến tôi không làm điều đã định?"
+        }
+      ],
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "expectation": "Cùng chủ đề hành động dù không lặp đúng tên tài liệu.",
+      "selected": [
+        {
+          "documentId": "website-counseling",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-17",
+          "sectionHash": "f6f6cf67614db4c6a9beb5d6863c651d42cbd3ba4b086529eac859e3ca352895",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ]
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-23",
+          "sectionHash": "f0348863d88df1bdf67372ebf9eb769ecce54662a034ab7f88ab640bb424ff92",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+            "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+          ]
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-29",
+          "sectionHash": "76ca4d7383d10d3c2a8133c7b7575dc19b88ae203712618e747bbcab8e21610c",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ]
+        }
+      ],
+      "expectedSourceFound": true,
+      "status": "EXPECTED_SOURCE_FOUND",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "EXECUTED_FOR_EACH_SELECTED_PASSAGE"
+    },
+    {
+      "case": "follow-up",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Tôi cứ trì hoãn công việc dù đã có ý định hành động."
+        },
+        {
+          "id": "a1",
+          "role": "assistant",
+          "text": "Đây chỉ là lời nối hội thoại giả lập, không phải câu trả lời đánh giá."
+        },
+        {
+          "id": "u2",
+          "role": "user",
+          "text": "Vậy nếu chỉ có ít thời gian thì sao?"
+        }
+      ],
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "expectation": "Giữ chủ đề công việc từ lượt trước.",
+      "selected": [
+        {
+          "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+          "version": 2,
+          "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+          "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-17",
+          "sectionHash": "4ba7f48a1f43681e70d68b7aa0417bfaba98ec1ef8527ff1d4ea4cec476aad93",
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "headingPath": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Một tình huống: Người phụ nữ luôn phải giữ cho gia đình được bình yên"
+          ]
+        },
+        {
+          "documentId": "devamicus-inspire-original",
+          "version": 8,
+          "hash": "67a0e479419d605abc26f5ae4311e12f7e7fd33e557cee7fe377509f9f5d71a6",
+          "sectionId": "devamicus-inspire-original-3",
+          "sectionHash": "0b8a45cc4634bc0adc3f65110588d97b68eac0cefa3e22c35c654999e043c482",
+          "title": "Devamicus INSPIRE original received; approval unverified",
+          "headingPath": [
+            "Page 4"
+          ]
+        },
+        {
+          "documentId": "lesson-CN-B11",
+          "version": 2,
+          "hash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+          "sectionId": "lesson-CN-B11-3",
+          "sectionHash": "02180374edfabfc5c10d3fc64c637b51f86ea3d84947c27af7aa7758ec9c62b1",
+          "title": "CN-B11 · Dựng một cảnh cụ thể và trục thời gian",
+          "headingPath": [
+            "Dựng một cảnh cụ thể và trục thời gian",
+            "CN-B11 — Dựng một cảnh cụ thể và trục thời gian"
+          ]
+        }
+      ],
+      "expectedSourceFound": false,
+      "status": "EXPECTED_SOURCE_NOT_IN_TOP_3",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "EXECUTED_FOR_EACH_SELECTED_PASSAGE"
+    },
+    {
+      "case": "correction",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Tôi muốn hỏi về trì hoãn công việc."
+        },
+        {
+          "id": "a1",
+          "role": "assistant",
+          "text": "Lời nối hội thoại giả lập."
+        },
+        {
+          "id": "u2",
+          "role": "user",
+          "text": "Đính chính: tôi muốn tìm hiểu ranh giới và nhu cầu trong quan hệ với người khác.",
+          "correctionOf": "u1"
+        }
+      ],
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063"
+      ],
+      "expectation": "Đoạn về quan hệ/ranh giới; lời gốc giữ nguyên nhưng không dùng cho query dẫn xuất.",
+      "selected": [
+        {
+          "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+          "version": 2,
+          "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+          "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-9",
+          "sectionHash": "792728dd13c829c35daadbb775f88c9ff0f81f4a42544c4a5b6d6e029adbfc23",
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "headingPath": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Khi nào bạn có thể cần dịch vụ này?"
+          ]
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 6,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-13",
+          "sectionHash": "f965c29631ff013efe22088a78714a5922942922973642ed69f20c116efb3f40",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ]
+        },
+        {
+          "documentId": "lesson-CD-A05",
+          "version": 2,
+          "hash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+          "sectionId": "lesson-CD-A05-2",
+          "sectionHash": "dd2de1ae6c8ca56fe76ab646665c03ba1385a313a35226845811b78601612d0b",
+          "title": "CD-A05 · Ranh giới, nhu cầu và sự khác biệt",
+          "headingPath": [
+            "Ranh giới, nhu cầu và sự khác biệt",
+            "CD-A05 — Ranh giới, nhu cầu và sự khác biệt"
+          ]
+        }
+      ],
+      "expectedSourceFound": true,
+      "status": "EXPECTED_SOURCE_FOUND",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "EXECUTED_FOR_EACH_SELECTED_PASSAGE"
+    },
+    {
+      "case": "existing-amendment",
+      "questions": [
+        {
+          "id": "u1",
+          "role": "user",
+          "text": "Tài liệu INSPIRE-07-A đính chính nội dung gì?"
+        }
+      ],
+      "expectedDocumentIds": [
+        "original-8e9a8623b864c4282dc3d68c"
+      ],
+      "expectation": "Ưu tiên amendment 07-A hiện đã nhận, không suy ra quyền vận hành.",
+      "selected": [
+        {
+          "documentId": "bundle-0c7e0a5d429106186d01faef",
+          "version": 2,
+          "hash": "0a01c3c272508cda6a93a53086f5f313fec975eaf65f7ba42273b334ae3551e6",
+          "sectionId": "bundle-0c7e0a5d429106186d01faef-0",
+          "sectionHash": "58c3e227eecb2d182262a764e8fc5887c17dce9e966d57b7a8054bb9ef29cc1e",
+          "title": "THREE_DEEP_LESSON_EXEMPLARS.md",
+          "headingPath": [
+            "INSPIRE — BA BÀI MẪU CHUYÊN SÂU CHO NGƯỜI DẪN"
+          ]
+        },
+        {
+          "documentId": "bundle-d1774aa65c72e8f5165ccb67",
+          "version": 2,
+          "hash": "e8646d70560ea516d66ec18500c237fb7ffb696247f3656b888e4f30d8f935ee",
+          "sectionId": "bundle-d1774aa65c72e8f5165ccb67-1",
+          "sectionHash": "64a2e5a8db6128c8bfd61d7119dd3a31175a35472387c3e83f751bb91e7a18d3",
+          "title": "Pasted text(2).txt",
+          "headingPath": [
+            "INSPIRE — MASTER SOURCE RECOVERY & COMPLETE DOCUMENT HANDOFF",
+            "Chỉ thị dành cho GPT-6 Pro — Thu hồi và bàn giao toàn bộ hệ tài liệu INSPIRE"
+          ]
+        },
+        {
+          "documentId": "bundle-d1774aa65c72e8f5165ccb67",
+          "version": 2,
+          "hash": "e8646d70560ea516d66ec18500c237fb7ffb696247f3656b888e4f30d8f935ee",
+          "sectionId": "bundle-d1774aa65c72e8f5165ccb67-10",
+          "sectionHash": "913d6aa81953e7b8ac518cb69f0f108edc574fa204a59434e87133cd76543aaa",
+          "title": "Pasted text(2).txt",
+          "headingPath": [
+            "INSPIRE — MASTER SOURCE RECOVERY & COMPLETE DOCUMENT HANDOFF",
+            "Chỉ thị dành cho GPT-6 Pro — Thu hồi và bàn giao toàn bộ hệ tài liệu INSPIRE",
+            "IX. NGUYÊN TẮC BẢO TOÀN NGUỒN"
+          ]
+        }
+      ],
+      "expectedSourceFound": false,
+      "status": "EXPECTED_SOURCE_NOT_IN_TOP_3",
+      "historyUnchanged": true,
+      "boundedTo3": true,
+      "permissionRecheck": "EXECUTED_FOR_EACH_SELECTED_PASSAGE"
+    }
+  ],
+  "restrictedSelections": [],
+  "writeAttempts": 0,
+  "indexUnchangedDuringInspection": true,
+  "modelCalls": 0,
+  "grantChanges": false,
+  "permissionsChanged": false,
+  "localhost": {
+    "5173": {
+      "status": 200,
+      "configuration": {
+        "mode": "simulation",
+        "modelAvailable": false,
+        "rag": {
+          "ready": true,
+          "state": "ready",
+          "records": 661,
+          "sections": 10676,
+          "externalEligible": 513,
+          "revision": 661,
+          "warnings": 1,
+          "countsKnown": true
+        },
+        "chatgptPreview": false,
+        "lunaApiPreview": true,
+        "conversationTransport": true
+      }
+    },
+    "5174": {
+      "running": false
+    }
+  }
+}

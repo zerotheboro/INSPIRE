@@ -16,7 +16,12 @@ export const chatgptControls = Object.freeze({
   route: "codex-app-server", authentication: "chatgpt-managed",
   model: "gpt-6-luna", maxAttempts: 3, requestedOutputTokens: 512,
   hardOutputCapVerified: false, managedRetriesDisabledVerified: false,
+  privateEvaluationLimitException: true,
+  displayCharacterLimit: 2000, automaticApplicationRetries: false,
+  providerRetriesOutsideApplicationControl: true,
+  toolIsolationVerified: false,
   noAdditionalChargeVerified: false, ownerSessionReleased: false,
+  ownerBillingConfirmed: true, ownerBillingConfirmedOn: "2026-11-24",
   liveDispatchEnabled: false,
 });
 
@@ -67,10 +72,12 @@ export function decodeChatgptTurn(prepared: Prepared, threadId: string,
 
 /** Private persistent identity and conservative attempt allocation.
  * @param {string} directory Local nonsynced directory, temp directory in tests.
+ * @param {Function} allowance Separate operator grant, never client fields.
  * @return {object} Hash-only ledger. Corrupt/partial records fail closed.
  */
 export function chatgptLedger(directory = join(
-  process.env.LOCALAPPDATA ?? "", "INSPIRE-ChatGPT")) {
+  process.env.LOCALAPPDATA ?? "", "INSPIRE-ChatGPT"),
+allowance?: (owner?: string) => number) {
   const root = resolve(directory);
   const ensure = () => {
     if (process.env.NODE_ENV === "production" ||
@@ -98,6 +105,7 @@ export function chatgptLedger(directory = join(
   };
   const identify = (owner: string, request: ChatRequest, p: Prepared) => {
     ensure(); validateRequest(request);
+    allowance?.(owner);
     if (request.kind !== "send" || sha(p.text) !== p.payloadSHA ||
         sha(JSON.stringify([request, p.payloadSHA])) !== p.binding ||
         p.operationId !== request.operationId || p.model !== "gpt-6-luna" ||
@@ -149,8 +157,9 @@ export function chatgptLedger(directory = join(
         if (read("owner.json").owner !== fingerprint.owner) {
           throw Error("CHATGPT_SESSION_OWNER_HOLD");
         }
-        const slots = [1, 2, 3].filter((i) =>
-          existsSync(join(root, "attempt-" + i + ".json")));
+        const maximum = allowance?.(owner) ?? 3;
+        const slots = Array.from({length: maximum}, (_, i) => i + 1)
+          .filter((i) => existsSync(join(root, "attempt-" + i + ".json")));
         for (const i of slots) {
           const attempt = read("attempt-" + i + ".json");
           if (attempt.binding === p.binding) throw Error("OUTCOME_UNRESOLVED");
@@ -163,7 +172,7 @@ export function chatgptLedger(directory = join(
             throw Error("OUTCOME_UNRESOLVED");
           }
         }
-        if (slots.length >= 3) throw Error("CHATGPT_SESSION_EXHAUSTED");
+        if (slots.length >= maximum) throw Error("CHATGPT_SESSION_EXHAUSTED");
         const slot = slots.length + 1;
         write("attempt-" + slot + ".json", {...fingerprint,
           outcome: "unknown", slot});
@@ -183,10 +192,11 @@ export function chatgptLedger(directory = join(
     status() {
       ensure();
       const attempts = readdirSync(root)
-        .filter((s) => /^attempt-[123]\.json$/.test(s));
+        .filter((s) => /^attempt-\d+\.json$/.test(s));
       const unresolved = attempts.filter((s) => !existsSync(
         join(root, s.replace("attempt-", "receipt-")))).length;
-      return {maxAttempts: 3, used: attempts.length, unresolved,
+      return {maxAttempts: allowance?.() ?? 3,
+        used: attempts.length, unresolved,
         recoveryHold: unresolved > 0 ||
           existsSync(join(root, "allocation.lock")),
         persisted: "identity-and-hashes-only"};

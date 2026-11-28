@@ -1,0 +1,314 @@
+{
+  "executed": true,
+  "paidCalls": 0,
+  "transport": "OFFLINE INJECTED RESPONSE; NOT GENERATIVE QUALITY",
+  "calls": 3,
+  "evidence": [
+    {
+      "phase": "preflight",
+      "operationId": "76492bd6-75bf-44ab-8e62-18fd08117077",
+      "binding": "e95582b274bdfd1308db86dc82ebdd1a713e2b5c5ef2512f90afbfc358f2c57c",
+      "payloadSHA": "e0eb6f6d8497f47611dabc15d8ac4043295b561e0bed85d4e0b2bfedebaa968a",
+      "origin": "LUNA_PREFLIGHT_PROBE",
+      "validated_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "candidate_sha256_before_native_strip": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "decision_fingerprint": "0c5c98293bb273cf49b87858c0d22edd1734180441edee9ed6e70b26c648f72b",
+      "mock_control_receipt": {
+        "action_id": "76492bd6-75bf-44ab-8e62-18fd08117077",
+        "decision_fingerprint": "0c5c98293bb273cf49b87858c0d22edd1734180441edee9ed6e70b26c648f72b",
+        "response_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "permission_observation": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "f35cc744c4e8a2e636eb77b997fdc6b0ed8ce1742fcb7d1147356e5964ee8ae7",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "2e3417ebce8ab29794e19967d5788f295ab1454ad0b0e9d5d1436c835a8aa133",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1795595023.2257655,
+        "actual_execution_eligible": false
+      },
+      "actual_execution_eligible": false,
+      "user_delivery": false,
+      "checks_executed": [
+        "Source/excerpt integrity",
+        "Research triage",
+        "Quote-bound ledger",
+        "Non-MOCK ScopeGuard",
+        "PermissionInspector (actual execution held)",
+        "GeneratedValidator HMAC",
+        "MockSink exact bytes/source/policy recheck",
+        "Native receipt-bound Session.commit"
+      ],
+      "not_established": [
+        "Clinical validation",
+        "Actual model or user-delivery permission"
+      ]
+    },
+    {
+      "phase": "candidate",
+      "operationId": "76492bd6-75bf-44ab-8e62-18fd08117077",
+      "binding": "e95582b274bdfd1308db86dc82ebdd1a713e2b5c5ef2512f90afbfc358f2c57c",
+      "payloadSHA": "e0eb6f6d8497f47611dabc15d8ac4043295b561e0bed85d4e0b2bfedebaa968a",
+      "origin": "PRIVATE_LUNA_GENERATED_CANDIDATE",
+      "validated_sha256": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+      "candidate_sha256_before_native_strip": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+      "decision_fingerprint": "701156ea123d0ee73e4c768f5c872ab746c993b824a981836045a5cea6b2fc53",
+      "mock_control_receipt": {
+        "action_id": "76492bd6-75bf-44ab-8e62-18fd08117077",
+        "decision_fingerprint": "701156ea123d0ee73e4c768f5c872ab746c993b824a981836045a5cea6b2fc53",
+        "response_sha256": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "permission_observation": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "3a381bd866c0860111177833ac57652625fbd686dfdc53f6c27249967eaecf83",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "2e3417ebce8ab29794e19967d5788f295ab1454ad0b0e9d5d1436c835a8aa133",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1795595028.6415503,
+        "actual_execution_eligible": false
+      },
+      "actual_execution_eligible": false,
+      "user_delivery": false,
+      "checks_executed": [
+        "Source/excerpt integrity",
+        "Research triage",
+        "Quote-bound ledger",
+        "Non-MOCK ScopeGuard",
+        "PermissionInspector (actual execution held)",
+        "GeneratedValidator HMAC",
+        "MockSink exact bytes/source/policy recheck",
+        "Native receipt-bound Session.commit"
+      ],
+      "not_established": [
+        "Clinical validation",
+        "Actual model or user-delivery permission"
+      ]
+    },
+    {
+      "phase": "preflight",
+      "operationId": "4b2da2b8-08e7-449a-b6fa-f1ccf8d63b23",
+      "binding": "4ef98a024f064a6b62290aa12ee85546dde58eb899de12c42f876b130bdf7529",
+      "payloadSHA": "b515d07afcbbb687ee4a12f8e472379a5e9a382233242316944313829e6eeef4",
+      "origin": "LUNA_PREFLIGHT_PROBE",
+      "validated_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "candidate_sha256_before_native_strip": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "decision_fingerprint": "6d830e0752f1caabac6b144bcada1cb10efe17649886f7d2185b3bc4bd4d387d",
+      "mock_control_receipt": {
+        "action_id": "4b2da2b8-08e7-449a-b6fa-f1ccf8d63b23",
+        "decision_fingerprint": "6d830e0752f1caabac6b144bcada1cb10efe17649886f7d2185b3bc4bd4d387d",
+        "response_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "permission_observation": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "f002450094526641fe5bac00b283093db89ef13d0535dc519ffad333ad76c0b2",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "5f03526234b17abdb4ab089bf3a470742390d46fd7fa7e1dab28179db1e9d502",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1795595257.537883,
+        "actual_execution_eligible": false
+      },
+      "actual_execution_eligible": false,
+      "user_delivery": false,
+      "checks_executed": [
+        "Source/excerpt integrity",
+        "Research triage",
+        "Quote-bound ledger",
+        "Non-MOCK ScopeGuard",
+        "PermissionInspector (actual execution held)",
+        "GeneratedValidator HMAC",
+        "MockSink exact bytes/source/policy recheck",
+        "Native receipt-bound Session.commit"
+      ],
+      "not_established": [
+        "Clinical validation",
+        "Actual model or user-delivery permission"
+      ]
+    },
+    {
+      "phase": "candidate",
+      "operationId": "4b2da2b8-08e7-449a-b6fa-f1ccf8d63b23",
+      "binding": "4ef98a024f064a6b62290aa12ee85546dde58eb899de12c42f876b130bdf7529",
+      "payloadSHA": "b515d07afcbbb687ee4a12f8e472379a5e9a382233242316944313829e6eeef4",
+      "origin": "PRIVATE_LUNA_GENERATED_CANDIDATE",
+      "validated_sha256": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+      "candidate_sha256_before_native_strip": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+      "decision_fingerprint": "ebe9a29b2bcfadfe913f1ee3d65bcefa712229eacb7601f1960364bed5ad520d",
+      "mock_control_receipt": {
+        "action_id": "4b2da2b8-08e7-449a-b6fa-f1ccf8d63b23",
+        "decision_fingerprint": "ebe9a29b2bcfadfe913f1ee3d65bcefa712229eacb7601f1960364bed5ad520d",
+        "response_sha256": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "permission_observation": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "f3d2e3d5488bf62c1f25e1ae9e099434f7d4ce9f34f366f12e9ebfcc2fbfaf03",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "5f03526234b17abdb4ab089bf3a470742390d46fd7fa7e1dab28179db1e9d502",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1795595263.8662095,
+        "actual_execution_eligible": false
+      },
+      "actual_execution_eligible": false,
+      "user_delivery": false,
+      "checks_executed": [
+        "Source/excerpt integrity",
+        "Research triage",
+        "Quote-bound ledger",
+        "Non-MOCK ScopeGuard",
+        "PermissionInspector (actual execution held)",
+        "GeneratedValidator HMAC",
+        "MockSink exact bytes/source/policy recheck",
+        "Native receipt-bound Session.commit"
+      ],
+      "not_established": [
+        "Clinical validation",
+        "Actual model or user-delivery permission"
+      ]
+    },
+    {
+      "phase": "preflight",
+      "operationId": "10eda250-7561-46f0-839c-ef5442864f7a",
+      "binding": "2febacbb1dc1bcd958995ad12a2c9d4f61b7a2ff9f5a59e8983d72a20455cf05",
+      "payloadSHA": "27febfe785ac7ea3f7bba4738c7e3f387562571ba591d4df77027a52ee6e0e86",
+      "origin": "LUNA_PREFLIGHT_PROBE",
+      "validated_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "candidate_sha256_before_native_strip": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "decision_fingerprint": "889db6fb5336ed6d3810ef437dda8d45333cf25684261ee438f930f18191847f",
+      "mock_control_receipt": {
+        "action_id": "10eda250-7561-46f0-839c-ef5442864f7a",
+        "decision_fingerprint": "889db6fb5336ed6d3810ef437dda8d45333cf25684261ee438f930f18191847f",
+        "response_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "permission_observation": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "6cec0b40690e4353051fe52a6447b62f7d8b4d0a6481fa83f74b4b5aae23ce16",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "142a1ade9698576b764ca7fd6725a514b057331ae228acd3abb74c5c09b715b0",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1795595436.9418492,
+        "actual_execution_eligible": false
+      },
+      "actual_execution_eligible": false,
+      "user_delivery": false,
+      "checks_executed": [
+        "Source/excerpt integrity",
+        "Research triage",
+        "Quote-bound ledger",
+        "Non-MOCK ScopeGuard",
+        "PermissionInspector (actual execution held)",
+        "GeneratedValidator HMAC",
+        "MockSink exact bytes/source/policy recheck",
+        "Native receipt-bound Session.commit"
+      ],
+      "not_established": [
+        "Clinical validation",
+        "Actual model or user-delivery permission"
+      ]
+    },
+    {
+      "phase": "candidate",
+      "operationId": "10eda250-7561-46f0-839c-ef5442864f7a",
+      "binding": "2febacbb1dc1bcd958995ad12a2c9d4f61b7a2ff9f5a59e8983d72a20455cf05",
+      "payloadSHA": "27febfe785ac7ea3f7bba4738c7e3f387562571ba591d4df77027a52ee6e0e86",
+      "origin": "PRIVATE_LUNA_GENERATED_CANDIDATE",
+      "validated_sha256": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+      "candidate_sha256_before_native_strip": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+      "decision_fingerprint": "028c9bd1ab83167c08107aac04622743e98b3a2a7c7253f6f21f17e5fba4b3bd",
+      "mock_control_receipt": {
+        "action_id": "10eda250-7561-46f0-839c-ef5442864f7a",
+        "decision_fingerprint": "028c9bd1ab83167c08107aac04622743e98b3a2a7c7253f6f21f17e5fba4b3bd",
+        "response_sha256": "946c48ad78095e94bb1ee535d431b77e7da2ccf8d8a5ee574cf6da992b7333fd",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "permission_observation": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "7e16972ecbf610f37a4b2ea00eb34f8d68efa985cf224300151aeeb693a1bb6c",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "142a1ade9698576b764ca7fd6725a514b057331ae228acd3abb74c5c09b715b0",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1795595442.3010557,
+        "actual_execution_eligible": false
+      },
+      "actual_execution_eligible": false,
+      "user_delivery": false,
+      "checks_executed": [
+        "Source/excerpt integrity",
+        "Research triage",
+        "Quote-bound ledger",
+        "Non-MOCK ScopeGuard",
+        "PermissionInspector (actual execution held)",
+        "GeneratedValidator HMAC",
+        "MockSink exact bytes/source/policy recheck",
+        "Native receipt-bound Session.commit"
+      ],
+      "not_established": [
+        "Clinical validation",
+        "Actual model or user-delivery permission"
+      ]
+    }
+  ]
+}

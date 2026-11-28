@@ -1,0 +1,24 @@
+{
+  "baseline": "Working tree immediately before this turn, not blanket HEAD",
+  "files": [
+    "functions/src/inspireChatgptTransport.ts",
+    "functions/src/inspireChatgptSession.ts",
+    "functions/src/inspireKnowledge.ts",
+    "functions/src/inspireLuna.ts",
+    "functions/src/inspireLunaService.ts",
+    "functions/src/inspireReviewReceipt.ts",
+    "src/services/InspireAIconnect.ts",
+    "src/pages/AIInspire.tsx",
+    "vite.config.ts",
+    "tests/inspect-inspire-luna.mjs",
+    "tests/inspire-chatgpt-emulator.test.mjs",
+    "tests/inspire-chatgpt-session.test.mjs",
+    "tests/verify-inspire-chatgpt.mjs",
+    "tests/inspire-chatgpt-path.test.mjs",
+    "tests/inspire-private-knowledge-http.mjs",
+    "tests/prepare-father-reference-proposal.mjs"
+  ],
+  "priorChangesPreserved": true,
+  "excludedGenerated": "tsconfig.node.tsbuildinfo",
+  "newEvidenceDirectory": "docs/evidence/knowledge-chat-2026-11-24"
+}

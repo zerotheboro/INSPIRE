@@ -13,7 +13,9 @@
     "test:emulators": "node --import ./tests/register-ts.mjs --test tests/inspire-emulator.test.mjs",
     "knowledge:import": "node --import ./tests/register-ts.mjs tests/import-inspire-knowledge.mjs",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "father:weekend": "node tests/start-father-weekend.mjs",
+    "father:api": "node tests/start-father-api.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

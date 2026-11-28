@@ -19,6 +19,7 @@ type Workspace = { activeId: string; conversations: Conversation[] }
 export class ConversationStore {
   private listeners = new Set<() => void>()
   private state: Workspace
+  private preparingApproved = false
   constructor(private transport: ChatTransport, private id = () => crypto.randomUUID()) {
     const first = this.makeConversation()
     this.state = { activeId: first.id, conversations: [first] }
@@ -45,11 +46,28 @@ export class ConversationStore {
     this.listeners.forEach((l) => l())
   }
   draft(id: string, draft: string) { this.update(id, { draft }) }
+  diagnostics() { return this.transport.diagnostics?.() ?? Promise.resolve(null) }
   correct(id: string, messageId?: string) {
     const c = this.conversation(id)
     if (c.status !== "idle") return
     if (messageId && !c.messages.some((m) => m.id === messageId && m.role === "user")) return
     this.update(id, { correctionOf: messageId })
+  }
+  async prepareApproved() {
+    if (this.preparingApproved) return
+    if (!this.transport.prepareApproved) throw new ChatError('OWNER_ROUTE_CLOSED', 'Chưa mở bước chuẩn bị attempt đã duyệt.')
+    this.preparingApproved = true
+    try {
+      const {request} = await this.transport.prepareApproved()
+      const conversation: Conversation = {id: request.conversationId, title: request.messages[0].text.slice(0,48),
+        messages: structuredClone(request.messages), draft: '', status: 'error',
+        session: {epoch: request.epoch, sessionId: request.sessionId, mode: 'private-model'}, pending: {request},
+        error: new ChatError('OWNER_APPROVED_READY', 'Backend đã đối chiếu quyền một attempt. Chưa gọi OpenAI. Gửi bằng nút trong “Dành cho con”.', 'replay', 403)}
+      const others = this.state.conversations.filter(c=>c.id !== conversation.id)
+      if (others.length >= 20) throw new ChatError('CAPACITY', 'Đã đủ số cuộc trò chuyện trong bộ nhớ.')
+      this.state = {activeId: conversation.id, conversations:[...others,conversation]}
+      this.listeners.forEach(listener=>listener())
+    } finally { this.preparingApproved = false }
   }
   async send(id: string) {
     const c = this.conversation(id)
@@ -66,7 +84,17 @@ export class ConversationStore {
   }
   async retry(id: string) {
     const c = this.conversation(id)
-    if (c.status !== "error" || !c.pending || c.error?.retry === "none") return
+    const recover = ['SESSION_IDENTITY','SESSION_LOST'].includes(c.error?.code ?? '') && !!this.transport.recoverUnsent && !!c.pending?.request
+    if (c.status !== "error" || !c.pending || (c.error?.retry === "none" && !recover)) return
+    if (recover) {
+      this.update(id, {status:'sending',error:undefined})
+      try {
+        const request = await this.transport.recoverUnsent!(c.pending.request!)
+        this.update(id, {pending:{request},session:{epoch:request.epoch,sessionId:request.sessionId,mode:'private-model'}})
+        await this.execute(id,'send')
+      } catch(error) { this.update(id,{status:'error',error:error instanceof ChatError ? error : new ChatError('RESULT_UNKNOWN','Chưa xác minh được lượt gửi. Không gọi lại AI.','none',409)}) }
+      return
+    }
     const kind = c.error?.retry === "new-attempt" ? "send" : "replay"
     if (kind === "send") this.update(id, { pending: {} })
     this.update(id, { status: "sending", error: undefined })

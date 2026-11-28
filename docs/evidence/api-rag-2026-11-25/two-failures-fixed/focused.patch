@@ -1,0 +1,416 @@
+diff --git a/functions/inspire_luna_bridge.py b/functions/inspire_luna_bridge.py
+index 1743da6..bbb5a33 100644
+--- a/functions/inspire_luna_bridge.py
++++ b/functions/inspire_luna_bridge.py
+@@ -15,6 +15,18 @@ socket.socket.connect_ex = blocked
+ socket.create_connection = blocked
+ from inspire_research_controller import NativeResearchValidation
+ 
++# Explicit diagnostic codes only. No raw exception/prompt/packet is returned.
++SAFE_HOLDS = {
++    "CONTROLLER_MANIFEST_HOLD", "CONTROLLER_PATH_HOLD",
++    "CONTROLLER_SOURCE_INTEGRITY_HOLD", "CONTROLLER_STATE_BINDING_HOLD",
++    "RESEARCH_OUTPUT_LENGTH_OR_CONTROL_HOLD", "CONTROLLER_EXACT_OUTPUT_HOLD",
++    "NATIVE_SAFETY_GATE_HELD_CANDIDATE", "SOURCE_INTEGRITY_HOLD",
++    "OUTPUT_INVALID", "OUTPUT_SCOPE_HOLD", "OUTPUT_ARCHITECTURE_JARGON_HOLD",
++    "OUTPUT_LANGUAGE_REVIEW_REQUIRED", "OUTPUT_BINDING_HOLD",
++    "OUTPUT_BINDING_OR_EXPIRY_HOLD", "MOCK_POLICY_HOLD",
++    "INVALID_NATIVE_PACKET", "INVALID_NATIVE_PHASE",
++}
++
+ try:
+     packet = json.load(sys.stdin)
+     if set(packet) != {"kind", "request", "previous", "binding", "text"}:
+@@ -34,6 +46,7 @@ try:
+                       "text": None if preflight else result["text"],
+                       "state": None if preflight else result["state"],
+                       "proof": result["proof"]}, ensure_ascii=False))
+-except Exception:
++except Exception as exc:
+     # No raw exception, prompt, private excerpt or profile is returned/logged.
+-    print(json.dumps({"ok": False, "code": "NATIVE_CONTROLLER_HOLD"}))
++    reason = str(exc) if str(exc) in SAFE_HOLDS else "NATIVE_CONTROLLER_REJECTED"
++    print(json.dumps({"ok": False, "code": "NATIVE_CONTROLLER_HOLD", "reason": reason}))
+diff --git a/functions/src/inspireChatContract.ts b/functions/src/inspireChatContract.ts
+index d837439..684654c 100644
+--- a/functions/src/inspireChatContract.ts
++++ b/functions/src/inspireChatContract.ts
+@@ -32,15 +32,24 @@ export type RetryKind = "replay" | "new-attempt" | "none";
+ export class ChatError extends Error {
+   /**
+    * Construct a failure with a machine-readable retry policy.
++   * @param {string} code Public failure identifier.
+    * @param {string} message Display-safe Vietnamese explanation.
++   * @param {RetryKind} retry Explicit replay/new-attempt policy.
++   * @param {number} status HTTP status.
++   * @param {unknown} cause Internal non-serialized diagnostic cause.
+    */
+   constructor(
+     public code: string,
+     message: string,
+     public retry: RetryKind = "none",
+     public status = 400,
++    cause?: unknown,
+   ) {
+     super(message);
++    // Internal debugging only; never part of the callable/browser JSON.
++    if (cause !== undefined) {
++      Object.defineProperty(this, "cause", {value: cause});
++    }
+   }
+ }
+ 
+diff --git a/functions/src/inspireKnowledge.ts b/functions/src/inspireKnowledge.ts
+index bd71dc6..a566c17 100644
+--- a/functions/src/inspireKnowledge.ts
++++ b/functions/src/inspireKnowledge.ts
+@@ -62,9 +62,31 @@ export interface ModelAdapter {
+   close?(): void;
+ }
+ /** Explicit proof that the adapter did not produce a reply. */
+-export class ConfirmedNoReply extends Error {}
++export class ConfirmedNoReply extends Error {
++  /** Keep the original hold private instead of losing it in a generic error.
++   * @param {string} message Machine-readable hold.
++   * @param {unknown} cause Internal failure; non-enumerable, never serialized.
++   */
++  constructor(message?: string, cause?: unknown) {
++    super(message);
++    if (cause !== undefined) {
++      Object.defineProperty(this, "cause", {value: cause});
++    }
++  }
++}
+ /** An ambiguous adapter outcome that must not automatically be refunded. */
+-export class UnknownReplyOutcome extends Error {}
++export class UnknownReplyOutcome extends Error {
++  /** Preserve diagnostics without putting them in a browser response.
++   * @param {string} message Machine-readable hold.
++   * @param {unknown} cause Internal failure; non-enumerable, never serialized.
++   */
++  constructor(message?: string, cause?: unknown) {
++    super(message);
++    if (cause !== undefined) {
++      Object.defineProperty(this, "cause", {value: cause});
++    }
++  }
++}
+ 
+ /**
+  * Normalize lexical search terms without inferring customer classifications.
+diff --git a/functions/src/inspireLocalService.ts b/functions/src/inspireLocalService.ts
+index 545625e..cc2b5ab 100644
+--- a/functions/src/inspireLocalService.ts
++++ b/functions/src/inspireLocalService.ts
+@@ -102,7 +102,7 @@ export function createLocalService(
+             else await accounts.settle(identity, request.operationId, "failed");
+             throw new ChatError("ATTEMPT_FAILED",
+               "Lượt này chưa tạo phản hồi và đã được trả lại. " +
+-              "Bạn có thể thử bằng lượt mới.", "new-attempt", 503);
++              "Bạn có thể thử bằng lượt mới.", "new-attempt", 503, error);
+           }
+           try {
+             if (evaluation) await evaluation.settle(identity);
+diff --git a/functions/src/inspireLunaController.ts b/functions/src/inspireLunaController.ts
+index d5be4e3..fb22522 100644
+--- a/functions/src/inspireLunaController.ts
++++ b/functions/src/inspireLunaController.ts
+@@ -22,6 +22,7 @@ export function createLunaController() {
+     const preflight = text === undefined;
+     const key = prepared.request.sessionId + ":" +
+       prepared.request.conversationId;
++    let transportFailure: unknown;
+     const packet: unknown = await new Promise((done, reject) => {
+       const child = spawn(process.env.INSPIRE_CONTROLLER_PYTHON ||
+         resolve(".tools.local/python312/python.exe"), ["-X", "utf8",
+@@ -42,8 +43,9 @@ export function createLunaController() {
+         else chunks.push(part);
+       });
+       child.stderr.resume();
+-      child.on("error", () => {
+-        clearTimeout(timer); reject(new Error("NATIVE_UNAVAILABLE"));
++      child.on("error", (error) => {
++        clearTimeout(timer);
++        reject(new ConfirmedNoReply("NATIVE_UNAVAILABLE", error));
+       });
+       child.on("close", (code) => {
+         clearTimeout(timer);
+@@ -51,8 +53,8 @@ export function createLunaController() {
+           if (code !== 0 || size > 1000000) throw Error();
+           done(JSON.parse(new TextDecoder("utf-8", {fatal: true})
+             .decode(Buffer.concat(chunks))));
+-        } catch {
+-          reject(new Error("NATIVE_PROTOCOL_HOLD"));
++        } catch (error) {
++          reject(new ConfirmedNoReply("NATIVE_PROTOCOL_HOLD", error));
+         }
+       });
+       child.stdin.on("error", () => {});
+@@ -60,7 +62,10 @@ export function createLunaController() {
+         kind: preflight ? "preflight" : "validate",
+         request: prepared.request, previous: states.get(key) ?? null,
+         binding: prepared.binding, text: text ?? null}));
+-    }).catch(() => null);
++    }).catch((error) => {
++      transportFailure = error;
++      return null;
++    });
+     if (!record(packet) || packet.ok !== true ||
+         packet.binding !== prepared.binding ||
+         packet.operationId !== prepared.request.operationId ||
+@@ -69,10 +74,16 @@ export function createLunaController() {
+         packet.proof.user_delivery !== false ||
+         (!preflight && (packet.text !== text ||
+           packet.proof.validated_sha256 !== lunaHash(text!)))) {
++      const reason = transportFailure ?? new Error(
++        record(packet) && packet.ok === false ?
++          packet.code === "NATIVE_CONTROLLER_HOLD" &&
++          typeof packet.reason === "string" &&
++          /^[A-Z_]{1,80}$/.test(packet.reason) ? packet.reason :
++            "NATIVE_CONTROLLER_REJECTED" : "NATIVE_RESPONSE_BINDING_HOLD");
+       if (preflight) {
+-        throw new ConfirmedNoReply("LUNA_CONTROLLER_PREFLIGHT_HOLD");
++        throw new ConfirmedNoReply("LUNA_CONTROLLER_PREFLIGHT_HOLD", reason);
+       }
+-      throw new UnknownReplyOutcome("LUNA_CONTROLLER_OUTPUT_HOLD");
++      throw new UnknownReplyOutcome("LUNA_CONTROLLER_OUTPUT_HOLD", reason);
+     }
+     receipts.push({phase: preflight ? "preflight" : "candidate",
+       operationId: prepared.request.operationId, binding: prepared.binding,
+diff --git a/functions/src/inspireLunaService.ts b/functions/src/inspireLunaService.ts
+index 5f18195..8991476 100644
+--- a/functions/src/inspireLunaService.ts
++++ b/functions/src/inspireLunaService.ts
+@@ -139,6 +139,10 @@ export function createPrivateLunaService(dependencies: {
+   const plans = new Map<string, {
+     uid: string; prepared: LunaPrepared; started: boolean; at: number;
+   }>();
++  const preparing = new Map<string, {
++    uid: string; request: ChatRequest;
++    result: Promise<LunaPrepared>;
++  }>();
+   const facade = createLocalService({mode: "model",
+     async reply(_context, request) {
+       const plan = plans.get(request!.operationId);
+@@ -147,8 +151,8 @@ export function createPrivateLunaService(dependencies: {
+       try {
+         await controller.preflight(p);
+         await recheckLunaSources(p);
+-      } catch {
+-        throw new ConfirmedNoReply("LUNA_PRE_DISPATCH_HOLD");
++      } catch (error) {
++        throw new ConfirmedNoReply("LUNA_PRE_DISPATCH_HOLD", error);
+       }
+       // All checks, quotas and rate reservations precede credential access.
+       const key = store.consume(p);
+@@ -165,7 +169,10 @@ export function createPrivateLunaService(dependencies: {
+       // This is a quarantined private evaluation surface, not actual execution
+       // or public delivery permission. Native observations stay held.
+       return candidate.text;
+-    }}, now, dependencies.rateCheck, true, dependencies.sourceFree);
++    // The adapter uses the frozen plan above, not this facade's context.
++    // Retrieval happens during preview; dispatch rechecks those exact sources.
++    // A second, unused search could invalidate a still-valid approved plan.
++    }}, now, dependencies.rateCheck, true, true);
+ 
+   return {...facade, controller,
+     async handlePrivate(data: unknown, identity: Identity, ip: string) {
+@@ -187,6 +194,11 @@ export function createPrivateLunaService(dependencies: {
+           JSON.stringify(request))) {
+         throw new ChatError("OPERATION_CONFLICT", "Lượt gửi không khớp.");
+       }
++      const pending = preparing.get(request.operationId);
++      if (pending && (pending.uid !== identity.uid ||
++          JSON.stringify(pending.request) !== JSON.stringify(request))) {
++        throw new ChatError("OPERATION_CONFLICT", "Lượt gửi không khớp.");
++      }
+       if (data.kind === "preview") {
+         if (data.request.kind !== "send") {
+           throw new ChatError("REPLAY_ONLY",
+@@ -195,25 +207,56 @@ export function createPrivateLunaService(dependencies: {
+         for (const [key, plan] of plans) {
+           if (now() - plan.at > 1800000) plans.delete(key);
+         }
+-        if (plans.size >= 100) {
+-          throw new ChatError("CAPACITY", "Phòng thử đã đầy.", "none", 503);
+-        }
+         const account = await facade.accounts.account(identity);
+         if (account.quota.remaining <= 0) {
+           throw new ChatError("QUOTA", "Tài khoản đã hết lượt.", "none", 429);
+         }
+-        const prepared = existing?.prepared ?? prepareLunaApi({
+-          messages: request.messages, operatingInstructions: [],
+-          userStatedPreferences: {...emptyPreferences},
+-          supportingKnowledge: dependencies.sourceFree ? [] :
+-            await retrieveKnowledge(request.messages, true),
+-        }, request);
+-        await recheckLunaSources(prepared);
+-        if (!existing) {
+-          plans.set(request.operationId, {
+-            uid: identity.uid, prepared, started: false, at: now(),
+-          });
++        // Re-read after account IO: another preview may have finished while
++        // awaiting it. Share cold retrieval and never reset `started` to false.
++        const ready = plans.get(request.operationId);
++        if (ready && (ready.uid !== identity.uid ||
++            JSON.stringify(ready.prepared.request) !==
++            JSON.stringify(request))) {
++          throw new ChatError("OPERATION_CONFLICT", "Lượt gửi không khớp.");
+         }
++        let prepared = ready?.prepared;
++        if (!prepared) {
++          let work = preparing.get(request.operationId);
++          if (!work) {
++            if (plans.size + preparing.size >= 100) {
++              throw new ChatError("CAPACITY", "Phòng thử đã đầy.", "none", 503);
++            }
++            const result = Promise.resolve().then(async () => {
++              const value = prepareLunaApi({
++                messages: request.messages, operatingInstructions: [],
++                userStatedPreferences: {...emptyPreferences},
++                supportingKnowledge: dependencies.sourceFree ? [] :
++                  await retrieveKnowledge(request.messages, true),
++              }, request);
++              await recheckLunaSources(value);
++              plans.set(request.operationId, {
++                uid: identity.uid, prepared: value, started: false, at: now(),
++              });
++              return value;
++            });
++            work = {uid: identity.uid,
++              request: structuredClone(request), result};
++            preparing.set(request.operationId, work);
++          }
++          // A different caller may have started this preparation during IO.
++          if (work.uid !== identity.uid ||
++              JSON.stringify(work.request) !== JSON.stringify(request)) {
++            throw new ChatError("OPERATION_CONFLICT", "Lượt gửi không khớp.");
++          }
++          try {
++            prepared = await work.result;
++          } finally {
++            if (preparing.get(request.operationId) === work) {
++              preparing.delete(request.operationId);
++            }
++          }
++        }
++        await recheckLunaSources(prepared);
+         return {mode: "private-model", previewOnly: true,
+           operationId: request.operationId,
+           conversationId: request.conversationId,
+diff --git a/tests/inspire-luna-api.test.mjs b/tests/inspire-luna-api.test.mjs
+index 2d9a7fc..957020d 100644
+--- a/tests/inspire-luna-api.test.mjs
++++ b/tests/inspire-luna-api.test.mjs
+@@ -160,7 +160,7 @@ const noRate=async()=>({allowed:true})
+ const makeRequest=(s,identity,messages)=>{const {epoch,sessionId}=s.session(identity);return {...r(messages),epoch,sessionId,operationId:randomUUID(),conversationId:randomUUID(),kind:'send'}}
+ test('actual native Controller + private service preserve multi-turn/corrections, duplicate/replay identity and quotas',async t=>{
+  const identity=await member(t),controller=createLunaController();let calls=0
+- const service=createPrivateLunaService({store:fixtureStore(),controller,sourceFree:true,rateCheck:noRate,send:async()=>{calls++;return body('Bạn có thể chọn việc có thời hạn gần nhất, rồi cân nhắc sức lực của mình. Đây là phản hồi giả định để kiểm tra kỹ thuật.')}})
++ const service=createPrivateLunaService({store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;return body('Bạn có thể chọn việc có thời hạn gần nhất, rồi cân nhắc sức lực của mình. Đây là phản hồi giả định để kiểm tra kỹ thuật.')}})
+  const request=makeRequest(service,identity)
+  const run=async q=>{await service.handlePrivate({kind:'preview',request:q},identity,'local');return service.handlePrivate({kind:'execute',request:{...q,kind:'replay'}},identity,'local')}
+  const first=await run(request)
+diff --git a/tests/inspire-luna-failure-regression.test.mjs b/tests/inspire-luna-failure-regression.test.mjs
+new file mode 100644
+index 0000000..25d1d34
+--- /dev/null
++++ b/tests/inspire-luna-failure-regression.test.mjs
+@@ -0,0 +1,97 @@
++// Offline only: real demo Firestore/Auth; injected model sender; no key reads.
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {createRequire} from 'node:module'
++import {randomUUID} from 'node:crypto'
++import {resolve} from 'node:path'
++import {mkdirSync,writeFileSync} from 'node:fs'
++import {setImmediate as nextTurn} from 'node:timers/promises'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {createPrivateLunaService} from '../functions/src/inspireLunaService.ts'
++import {importSource} from '../functions/src/inspireKnowledge.ts'
++import {LUNA_API,lunaHash,prepareLunaApi} from '../functions/src/inspireLunaApi.ts'
++import {createLunaController} from '../functions/src/inspireLunaController.ts'
++import {emptyPreferences} from '../functions/src/inspireAccount.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const require=createRequire(new URL('../functions/package.json',import.meta.url)),{getFirestore}=require('firebase-admin/firestore'),{Query,FieldValue}=require('@google-cloud/firestore'),db=getFirestore(),auth=require('firebase-admin/auth').getAuth()
++const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/api-rag-2026-11-25/two-failures-fixed',trace=[],ids=[]
++const deferred=()=>{let resolve;const result=new Promise(r=>resolve=r);return{result,resolve}}
++const reply=()=>({id:'offline',status:'completed',model:LUNA_API.model,usage:{input_tokens:20,output_tokens:30},output:[{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text:'Phản hồi giả lập chỉ kiểm tra kỹ thuật.'}]}]})
++const fakeController=()=>({async preflight(){},async validate(){},evidence(){return[]}})
++async function member(t){const u=await auth.createUser({email:randomUUID()+'@synthetic.invalid',password:'Synthetic-only-753!'});t.after(()=>auth.deleteUser(u.uid));return{uid:u.uid,registered:true,providers:['password'],email:u.email,createdAt:u.metadata.creationTime}}
++async function source(){const id='failure-'+randomUUID(),marker='zfailure'+randomUUID().replaceAll('-',''),text='# '+marker+'\nNguồn tổng hợp kiểm thử kỹ thuật.',hash=lunaHash(text);ids.push(id);await importSource({collection:'INSPIRE',documentId:id,title:'SYNTHETIC ONLY',status:'published-supporting',permittedUse:'supporting-retrieval',rawFile:hash,kind:'reference',permissions:{sourceHash:hash,internalResearch:true,externalExport:true,evidence:'SYNTHETIC TEST ONLY'}},Buffer.from(text),text);return{id,marker}}
++const request=(s,i,text)=>{const{epoch,sessionId}=s.session(i);return{epoch,sessionId,kind:'send',operationId:randomUUID(),conversationId:randomUUID(),messages:[{id:'u1',role:'user',text}]}}
++const codes=e=>{const a=[],seen=new Set();for(let n=e;n&&!seen.has(n)&&a.length<10;n=n.cause){seen.add(n);const code=n.code??n.message;if(typeof code==='string'&&/^[A-Z][A-Z0-9_]*$/.test(code))a.push(code)}return a}
++
++test('cold duplicate previews share retrieval and a late preview cannot reset an already consumed attempt',async t=>{
++ const identity=await member(t),fixture=await source(),entered=deferred(),releaseFirst=deferred(),releaseSecond=deferred(),secondAccount=deferred()
++ let queries=0,accountCalls=0,sends=0,consumed=false
++ const service=createPrivateLunaService({controller:fakeController(),rateCheck:async()=>({allowed:true}),store:{configured:()=>false,authorized:()=>!consumed,consume(){consumed=true;return'OFFLINE_FAKE_KEY'},receipt:()=>0},send:async()=>{sends++;return reply()}})
++ const r=request(service,identity,fixture.marker),get=Query.prototype.get,account=service.accounts.account.bind(service.accounts)
++ service.accounts.account=async(...args)=>{const result=await account(...args);if(++accountCalls===2)secondAccount.resolve();return result}
++ t.mock.method(Query.prototype,'get',async function(...args){const result=await get.apply(this,args);if(result.docs.some(d=>d.id===fixture.id)){queries++;if(queries===1){entered.resolve();await releaseFirst.result}else await releaseSecond.result}return result})
++ const a=service.handlePrivate({kind:'preview',request:r},identity,'offline')
++ await entered.result
++ const b=service.handlePrivate({kind:'preview',request:r},identity,'offline')
++ try {
++  await secondAccount.result;await nextTurn()
++  releaseFirst.resolve();const first=await a
++  const delivered=await service.handlePrivate({kind:'execute',request:r},identity,'offline')
++  releaseSecond.resolve();const late=await b
++  assert.equal(late.payloadSHA,first.payloadSHA);assert.equal(late.binding,first.binding)
++  assert.deepEqual(await service.handlePrivate({kind:'execute',request:{...r,kind:'replay'}},identity,'offline'),delivered)
++  await assert.rejects(service.handlePrivate({kind:'preview',request:{...r,messages:[{...r.messages[0],text:'changed'}]}},identity,'offline'),{code:'OPERATION_CONFLICT'})
++  assert.equal(queries,1);assert.equal(sends,1);assert.equal((await service.accounts.account(identity)).quota.completed,1)
++  trace.push({case:'cold duplicate/late preview',queries,sends,identicalBinding:true,replayWithoutAnotherAuthorization:true})
++ }finally{releaseFirst.resolve();releaseSecond.resolve();await Promise.allSettled([a,b])}
++})
++
++test('an unrelated revision does not run unused retrieval after a frozen preview; exact sources are still rechecked',async t=>{
++ const identity=await member(t),fixture=await source();let queries=0,sends=0
++ const service=createPrivateLunaService({controller:fakeController(),rateCheck:async()=>({allowed:true}),store:{configured:()=>false,authorized:()=>true,consume:()=> 'OFFLINE_FAKE_KEY',receipt:()=>0},send:async()=>{sends++;return reply()}})
++ const r=request(service,identity,fixture.marker),p=await service.handlePrivate({kind:'preview',request:r},identity,'offline')
++ assert.equal(p.sourceCount,1)
++ await db.doc('inspireKnowledge/_index').set({revision:FieldValue.increment(1)},{merge:true})
++ const get=Query.prototype.get
++ t.mock.method(Query.prototype,'get',async function(...args){
++  queries++;const result=await get.apply(this,args)
++  // Real revision check, not a fabricated retrieval exception: unrelated
++  // metadata changes while the redundant query is being read.
++  await db.doc('inspireKnowledge/_index').set({revision:FieldValue.increment(1)},{merge:true})
++  return result
++ })
++ let result
++ try{result=await service.handlePrivate({kind:'execute',request:r},identity,'offline')}
++ catch(e){trace.push({case:'unnecessary search after frozen preview',trigger:'actual index revision changed during Query.get',observedError:e.code,queries,sends});throw e}
++ assert.equal(result.mode,'private-model');assert.equal(sends,1);assert.equal(queries,0)
++ trace.push({case:'frozen exact source after unrelated revision',queries,sends})
++})
++
++test('ATTEMPT_FAILED retains a native ENOENT cause internally while browser JSON stays redacted',async t=>{
++ const identity=await member(t),previous=process.env.INSPIRE_CONTROLLER_PYTHON;let sends=0,keyReads=0
++ const service=createPrivateLunaService({sourceFree:true,rateCheck:async()=>({allowed:true}),store:{configured:()=>false,authorized:()=>true,consume(){keyReads++;return'OFFLINE_FAKE_KEY'},receipt:()=>0},send:async()=>{sends++;return reply()}})
++ const r=request(service,identity,'Tình huống tổng hợp kiểm tra lỗi kết nối.')
++ await service.handlePrivate({kind:'preview',request:r},identity,'offline')
++ process.env.INSPIRE_CONTROLLER_PYTHON=resolve('.private.local/does-not-exist-'+randomUUID()+'.exe')
++ try {
++  await assert.rejects(service.handlePrivate({kind:'execute',request:r},identity,'offline'),e=>{
++   assert.deepEqual(codes(e),['ATTEMPT_FAILED','LUNA_PRE_DISPATCH_HOLD','LUNA_CONTROLLER_PREFLIGHT_HOLD','NATIVE_UNAVAILABLE','ENOENT'])
++   assert.equal(Object.getOwnPropertyDescriptor(e,'cause').enumerable,false)
++   const json=JSON.stringify(e);assert.ok(!/cause|ENOENT|does-not-exist|PRIVATE|sk-/.test(json))
++   trace.push({case:'missing native executable',causeCodes:codes(e),browserJSONRedacted:true});return true
++  })
++  assert.equal(sends,0);assert.equal(keyReads,0);assert.equal((await service.accounts.account(identity)).quota.completed,0)
++ }finally{if(previous===undefined)delete process.env.INSPIRE_CONTROLLER_PYTHON;else process.env.INSPIRE_CONTROLLER_PYTHON=previous}
++})
++
++test('original native safety refusal retains only its allowlisted hold reason',async()=>{
++ const r={kind:'send',epoch:'offline',sessionId:'offline',operationId:'offline-risk',conversationId:'offline',messages:[{id:'u1',role:'user',text:'Tối nay tôi sẽ tự tử. Tôi đã chuẩn bị thuốc và định thực hiện.'}]}
++ const p=prepareLunaApi({messages:r.messages,operatingInstructions:[],supportingKnowledge:[],userStatedPreferences:emptyPreferences},r)
++ await assert.rejects(createLunaController().preflight(p),e=>{
++  assert.deepEqual(codes(e),['LUNA_CONTROLLER_PREFLIGHT_HOLD','NATIVE_SAFETY_GATE_HELD_CANDIDATE'])
++  assert.ok(!JSON.stringify(e).includes(r.messages[0].text))
++  trace.push({case:'original native safety hold',causeCodes:codes(e),rawPromptSerialized:false});return true
++ })
++})
++
++test.after(async()=>{for(const id of ids)await db.recursiveDelete(db.doc('inspireKnowledge/'+id));await db.doc('inspireKnowledge/_index').set({revision:FieldValue.increment(1)},{merge:true});mkdirSync(out,{recursive:true});writeFileSync(out+'/regression-trace.json',JSON.stringify({executed:true,model:'INJECTED OFFLINE ONLY',realKeyRead:false,paidCalls:0,trace},null,2));await db.terminate()})

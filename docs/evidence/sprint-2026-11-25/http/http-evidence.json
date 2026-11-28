@@ -1,0 +1,38 @@
+{
+  "executed": true,
+  "liveCalls": 0,
+  "renderedBrowserVerified": false,
+  "trace": [
+    {
+      "preview": {
+        "mode": "private-model",
+        "previewOnly": true,
+        "operationId": "http-preview",
+        "executionAvailable": false,
+        "conversationId": "http-private",
+        "sourceCount": 1,
+        "payloadSHA": "f46570c93c94a8c0e171f194b13762d8456cdf3aa21404b915f84d0b5dcf82b1",
+        "binding": "8d6cdd3e892b303b4e1cd7b71ba748b2fc29010767077d305386f0dac1a79b8a",
+        "actualExecutionEligible": false,
+        "publicDelivery": false,
+        "automaticRetries": false,
+        "accounting": {
+          "used": 0,
+          "maxAttempts": 3
+        }
+      },
+      "revoked": {
+        "error": {
+          "code": "CHATGPT_HOLD",
+          "message": "Chưa xác minh được lượt gửi hoặc kho lưu cục bộ. Không gửi tới ChatGPT.",
+          "retry": "none"
+        }
+      },
+      "sourceId": "http-source-2bf434db-e8a0-4e69-9e09-baf44d7ad4d5",
+      "sourceHash": "f4e75a8a9b712d90a7ba5700b07b5e643c543f300db9e216dc707c7ba2dce601",
+      "execute": 403,
+      "apiFallback": 503,
+      "privatePathsBlocked": true
+    }
+  ]
+}

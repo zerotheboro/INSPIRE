@@ -1,0 +1,706 @@
+{
+  "restored": 661,
+  "unchanged": 0,
+  "held": 147,
+  "failures": [],
+  "missingExtraction": [
+    {
+      "id": "bundle-a89c8851a5c86033eb487afa",
+      "title": "tong-ket-he-8-muc.docx",
+      "hash": "0fdfa8a9cd9b7d5c0339e341f719336adc2b2f81b7f3e80553856dc792ac27a7",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    }
+  ],
+  "intentionalReceiptOnly": [
+    {
+      "id": "pec-stage1-5-receipt",
+      "title": "PEC stage 1.5 source receipt; missing mock_engine dependency",
+      "hash": "3120e01a4061e3e0b53fe5f16f0910ff2761862d0dda836fd8054211cdb4bb33",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "website-source-bundle",
+      "title": "Existing INSPIRE website source bundle",
+      "hash": "25aa0f775ff2b04f27309876f670a053dd9afb1870cd1b3db6732de7cc76ee12",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "original-d52251646cfaa92fd0243df1",
+      "title": "sources/provenance/INSPIRE_PEC_STAGE1_5_DURABLE_PATCH.zip",
+      "hash": "58215fb63c693e66c3de4a376e30cc18a9180156851c8e28cc4c5f9928da2541",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "original-e2621872786a6b940cd5f26a",
+      "title": "sources/provenance/INSPIRE_PEC_STAGE1_5_RECOVERY_PATCH2.zip",
+      "hash": "57efead4da24bf2637366ef915fb1935b41880507f813ad077e54c91f1ddc065",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "original-6e6298824e17abc7aa37afe4",
+      "title": "sources/provenance/INSPIRE_PEC_STAGE1_PATCH_1.zip",
+      "hash": "378c390bf62f4c417a34d902ffb2052bd822cc3b9646f9e23a35d40278e435ea",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "original-617b60dce2c9662aea9adf33",
+      "title": "sources/verified_corpus_032.json",
+      "hash": "61e3ea8aa22498c98c9fecba08c61fe87792f4b7a977e84eebb77b90308124f3",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "corpus-4bcb7aa821c45d0af7282221",
+      "title": "INSPIRE-main (1).zip",
+      "hash": "4bcb7aa821c45d0af72822213a846481b6dbb751a18e94a2b3c29cf68bb2d63b",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "corpus-cdb29305ee95cadfa06485c6",
+      "title": "INSPIRE-review-father-weekend-2026-11-24.zip",
+      "hash": "cdb29305ee95cadfa06485c69e5d17905f0bb3a0637d502b18ec8ff9e2aca6df",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-e02b9b6784ab99fe0ef57778",
+      "title": "MISSING_ORIGINALS_AND_DEPENDENCIES.md",
+      "hash": "20dbd3b7a9ee6984288a638f10b1a8e9904a344a22be5e2ba149f6522575f1b3",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-a6ee706f600f3f8214da5d28",
+      "title": "README.md",
+      "hash": "98ea1b2eb6e9011e26b6fd12f02087c8975fbea406f9c07169be743ea850a887",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-30ed3af31209705735ee93ee",
+      "title": "SOURCE_ACCEPTANCE_REGISTER.md",
+      "hash": "1fa99d594d53693cc8b2c07bd4df7256be0998e13d684e616e2bd54925c804f5",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-d6e910a38583d48b1fe49b3a",
+      "title": "SOURCE_MANIFEST.json",
+      "hash": "f2dab5b34159974ea04d36f59d9225cfca551e548e6790c990550ecb376bd80c",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-14798d2b2b5afd76db300222",
+      "title": "SOURCE_REGISTRY.json",
+      "hash": "fa82f13a6ec988cb34db65061e32c5dcf4812305a0d014126c2a620d9a8eae19",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-f323aab5fe34b50c4a47c6dc",
+      "title": "CORE_01_24_COVERAGE.md",
+      "hash": "c9afbfede7d9e5fd6cc6374dae8bde9ddc7407a436768d9534c4d7fc38c5465b",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-d26122e82d4c52e13e33d1a2",
+      "title": "GROUP_MANIFEST.json",
+      "hash": "63a9a7e63409d1b722e68895aa877d750e748476192af96840e72bc39c69026d",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-6498a8b0eabf3e426185a930",
+      "title": "README.md",
+      "hash": "d988c0f10097f13432de91260e2956e98ba84e433e1d32b35a8fa10e2c15cbac",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-b061b3603d4eeff1d1bd0170",
+      "title": "SOURCE_INDEX.md",
+      "hash": "dbfffdac838a0bb4f8ff7fb952f13f57147d7779fa3084ea16d97ca0c9009815",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-45a5576d7e786d9a220db79c",
+      "title": "CLUSTERS_20_UNITS_7_COVERAGE.md",
+      "hash": "b8f793bd3d0dbf259ca91ecda373a9831ffca3e9e085c2a56c660d028740beb4",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-f98141968c4787ae8410980e",
+      "title": "GROUP_MANIFEST.json",
+      "hash": "2f2ccc00a2254315010521a28fa023c94883dee96fc829d0eac163ceb06f2f19",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-ec253aa90739cffe53c014e6",
+      "title": "README.md",
+      "hash": "7d7a736a9c138577e451674f784b29ea354984f5dd5415ae4603506364b7f112",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-e0b836735ebab3d89b1d136b",
+      "title": "SOURCE_INDEX.md",
+      "hash": "d70d9713f79820620da375bbfbe67d9ef6621634aa8579ef945bda1f76d24e2d",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-7441a2d051406710228734ed",
+      "title": "GROUP_MANIFEST.json",
+      "hash": "ff1b7b41bf39b053af448a5cdebee9dd7e3fc7f34086c8ceb99ede03c834ed0e",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-2b7b9edffdee9a696c8d27f4",
+      "title": "README.md",
+      "hash": "6c838828fe9a367cbf8c3649db6da7157036a42d0b456af4a018022344bc8cc7",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-e44354726e32f14e2d35281b",
+      "title": "SOURCE_INDEX.md",
+      "hash": "c03f074685358f26a4930fc585b114c92d402675da2eb2fed29c9852b5ac8229",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-141cae282e8a4c420b2e8251",
+      "title": "INSPIRE-WORK-01_v1.0_CHAT_TRANSCRIPTION.md",
+      "hash": "6809405829dc7f794bc6a2e7a80c8e36d2f44135435a112ca48c83d3785019fd",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-3158c123b240bafd28c4ec67",
+      "title": "INSPIRE-WORK-01_v2.0_CHAT_TRANSCRIPTION.md",
+      "hash": "3ce56d1497139b9c45f5c85185f294046483fa649c316c7785e3b75f3affc62a",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-24e9132ed975165f4520ea1e",
+      "title": "INSPIRE_DEVELOPMENT_CONTRACT_PASTED_UNVERSIONED.md",
+      "hash": "9fe8abf284d3734fb1f950da3147042151ccecb83a20cb04c6cff9a4378d733d",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-4edd8f1ceeda701bb9d2d434",
+      "title": "01_DOC_TRUOC_KHI_NHAN_DOT.md",
+      "hash": "2bbc814a690bfc8eb268df57f4b88a5fe909c256d1636d5241b28920e374f4e5",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-51c7f75bdb65b84b41a52a1d",
+      "title": "02_DANH_MUC_NGUON_CAN_GUI_THEO_LO.md",
+      "hash": "bf9e8c20ba69332f464958e418a6b284beb2c775cb8141efdee48ddc866d4329",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-9aab58accd9f8463da1f9d30",
+      "title": "03_QUY_TAC_NGUON_QUYEN_HAN.md",
+      "hash": "51a976d4d12c44ccb01f1e686716d22a0a5135d518747f626856231afc0b99b0",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-429f8dcde777974b53087e8a",
+      "title": "04_BAN_DO_TRI_THUC_DEN_RUNTIME.md",
+      "hash": "c9bbbc3ed2c424ef7f62fb1de0e4b1ef9214103d80e0fb0670fc6366b2693428",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-b426e3ab11277cd677edf1e1",
+      "title": "05_CAPABILITY_MATRIX_SCOPE_A_B_C.md",
+      "hash": "db3174c46a179db0f4f0387be96cffb74556e03d33572b4fc0ddf58077b367fa",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-bcd37b66dd348a6c35b57b52",
+      "title": "06_VIETNAMESE_FIRST_RUNTIME_POLICY.md",
+      "hash": "e88f96e72a47e858f543ee20474f1ed056ea12d7d92b11e8a62eeec16e1c53ac",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-6df28cddacd9a87641d3430b",
+      "title": "07_SAFETY_GATE_VA_RECOVERY.md",
+      "hash": "0adfd3c549de9ec7078b0e8c4919f5adfa952aa448622ea2244d40992a9c7e17",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-960cd4f179ff02db9688e757",
+      "title": "08_RUBRIC_DANH_GIA_HIEU_CA_A1_A8.md",
+      "hash": "f976346b838e01daeeaeb86bd926ea762a7742b52f62bd2b87a3f12884d28436",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-7b37f88f86665abab093a246",
+      "title": "09_DU_LIEU_QUYEN_RIENG_TU_NHAN_SU.md",
+      "hash": "db78dbf0612ad7fbd814f78642492f710da57e43c29820678364e0dbdaf80e05",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-2432e233669891b734b80d3f",
+      "title": "10_APPROVAL_AUTHORITY_REGISTRY_DU_THAO.md",
+      "hash": "adefd6e5404f33edf0c9acc0a77d9319639b723954e630465eb4e7bd6f1b2687",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-4bc261b066faed50f97e8e93",
+      "title": "11_CONSOLIDATED_REVIEW_PROTOCOL.md",
+      "hash": "e2b4a8e7390c856a2f58838117b632f30625d4d24acde33f88fba2beec10ead6",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-6b15d5c43fb9574b8d71ca2b",
+      "title": "12_GPT_WORK_NHAN_LO_NGUON_PROMPT.md",
+      "hash": "c31ecbc3a582bf76bec5fd33eb9e7178ae92a8f079bfdef0c99b2e156ab4b66c",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-cd7f2a4b7280b90b284aa99f",
+      "title": "13_TRANG_THAI_VA_LO_HONG_20261104.md",
+      "hash": "8414469a0b97fa6f829ddc26761ecb552b507d68e116b90a3c4c2ea5859b8564",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-0812767606c224ef535e486b",
+      "title": "14_MAU_BANG_NHAN_NGUON.md",
+      "hash": "d5ec1efcfa78c11d5dd12ff5f44e231e978e8ea709d25407d08c81ee3fa63e39",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-4403889e430fcfe778ac4bc0",
+      "title": "GROUP_MANIFEST.json",
+      "hash": "f7b6613e253af9f25de14f6c2b4d24228ead1b1986b17fa6395ca75329233872",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-f723527d48a5875563e709bb",
+      "title": "README.md",
+      "hash": "67a78ebc6ca4b2f2210f5119d78cc99e801f36978fadadfc1662f365ba7e0bb7",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-87bd2f0d739e617c9dec6c9a",
+      "title": "SOURCE_INDEX.md",
+      "hash": "666ca68207506f64d407b865d560158e7bd692c8cadc343d9e7fb55b1430366e",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-90cf20840e95aa312174aa0c",
+      "title": "INSPIRE-CSS-01_v1.0_CHAT_TRANSCRIPTION.md",
+      "hash": "6554ef876321daa10d3fee1056cad1137be2c2bf43fd1a2d9aca9aa84c2084ec",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-18e4a95f1b1b4e3621e5f7a7",
+      "title": "INSPIRE-RDS-01_v1.0_CHAT_TRANSCRIPTION.md",
+      "hash": "64ce2721b268bb24c8c35cab0979e15b4296c12ab071f4998c5846084efebc17",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-69897728c0ba8288144280b3",
+      "title": "INSPIRE-RDS-01_v1.1_CHAT_TRANSCRIPTION.md",
+      "hash": "00d8557fd0ee26a330a9d244252341ac6d8361a5067e80098212dfbd2f2d372a",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-34df3e817617a53209bd29c6",
+      "title": "ARCHITECTURE_VERSION_MATRIX.md",
+      "hash": "d4eccb31c16bb5be30cf86620566da24f39b4045edbd97a5b3c5a5d3bc855c7f",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-927e2859d34b60c564406eb6",
+      "title": "ARCHIVE_MEMBER_INDEX.json",
+      "hash": "b862919469e02fa2abd4274cba516901d479b7f02666d416c30162841d1342be",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-885b381c0e08e213de8462bd",
+      "title": "CHAT_TRANSCRIPTION_CHECKS.json",
+      "hash": "617dff6a5c2d6a95652b2790851467eb77f97e3bd7169dd1da4d69cb05382fac",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-95d47e4e1a6aee51e0958cb2",
+      "title": "CLUSTERS_20_UNITS_7_COVERAGE.json",
+      "hash": "ce5e23cacc46ebcdfa73bbf3e05175d659ee17fc0852ad2242cdb2124896d2ff",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-0dc8d2e6735a82dd36066786",
+      "title": "CORE_01_24_COVERAGE.json",
+      "hash": "e563f3dff90310446598578944fa77fa1dafd15965caef67d70bafcec1662549",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-0763582aa2fa58a0f3f62963",
+      "title": "DUPLICATES_AND_VERSION_NOTES.md",
+      "hash": "30fa45f204eaa5415ebf36f56096c422ae16d4ea6c30a454de0c02cc3c2c1f0e",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-024bedb38ab356bd04bb97f5",
+      "title": "DUPLICATE_ALIASES.json",
+      "hash": "55ed9b9a96463b414005374be6b9b3051beca12933a5800663ea4747febe1993",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-c3c8b866be6b16147b74a753",
+      "title": "DUPLICATE_GROUPS.json",
+      "hash": "a190002840114b337c3bd98d7435b269d7d22f800b4486187bbb569d4c19db60",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-79b471a325ecdf351e2be19b",
+      "title": "EXCLUDED_SENSITIVE_SOURCES.json",
+      "hash": "e5a14b7d6e605ee513f003a8775b6001f410763ae44ef9ebb2e51651e6ecf182",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-5dceef74dd8160036f15dc35",
+      "title": "EXCLUDED_SENSITIVE_SOURCES.md",
+      "hash": "1797e008f3b6049129f8abdac6f9ef21d38f73550ff117fd5025b4f50522962f",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-d9a5549e31b15bcbfad72231",
+      "title": "GPT_WORK_BATCH_INTAKE_PROMPT.md",
+      "hash": "4c900e1bdd0016173f0fe835c9f053bdafa1962b498ccde199976aa492a62100",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-c9e6aa089cc12735d8132099",
+      "title": "GROUP_MANIFEST.json",
+      "hash": "e2ec570e2242bf7efa1bf00362e421966a753582dd1a46a4958618c674d7945a",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-50a84cae131f3f14f20aac3a",
+      "title": "HISTORICAL_SCOPE_WARNINGS.md",
+      "hash": "69ce4d246d2dcc36829942a33845e9a46f877299846681f90510a4ceba47241a",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-974563279a0ff2cb683ccd1a",
+      "title": "MASTER_INDEX.md",
+      "hash": "c3bebe3331aa99ff198c214af6e5eb1d16ee16317662453b62a00ed034101658",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-3a77d6ddf6ff6bef695731b6",
+      "title": "MASTER_SOURCE_REGISTRY.json",
+      "hash": "9ebe02c87d19c97171ad8aef5b96c982b0f95fe87b02b5cdbda9cc127b678ece",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-a765a8b009520dc7e12bd80e",
+      "title": "MASTER_SOURCE_REGISTRY.md",
+      "hash": "bd83e9fb6e2ffc18e61720e47bf12fc083d83baa9a65a1c58c5d4a5b5ef591db",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-0ee8b476f8b6e9c79a52a620",
+      "title": "MISSING_AND_INACCESSIBLE.md",
+      "hash": "b921d07695a6c56bb5a80115e8aa279b31c44489033bfee0c1b1e0e492549a66",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-92fe248d529caccb4eb12a38",
+      "title": "OWNER_DECISIONS_PENDING.md",
+      "hash": "911ecc477700f62c6924d1a4b9eecc4c707b59249009c49e34d0f477b8324b1b",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-301313ffae43077dd60a1da8",
+      "title": "PROVENANCE_AND_RECONSTRUCTION.md",
+      "hash": "787d66a8f2112cd674ea1f727c6d4877bc20ac7e3a8860586424a26570c35845",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-68ef97e9d702b636b60242d1",
+      "title": "README.md",
+      "hash": "0bcce35b59b6f1b28f451287a30a11d157017a70dcb6d6afae4fea77cddfeaa0",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-4538b755e0da2945f56c2931",
+      "title": "RECOVERY_COUNTS.json",
+      "hash": "1811ea3fdbcc128548daed1df84316537673cc352227de479bfcf43132383af1",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-1c963b8d8b4f56dacc23ea32",
+      "title": "SEARCH_SCOPE_AND_LIMITS.md",
+      "hash": "07113d1703e2a9ef92368f6303c4fe6f14cbd8227a9b6754bac40acc30c6eb17",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-333217b1e7a968f2e400cc44",
+      "title": "SOURCE_INDEX.md",
+      "hash": "4146ce4cc012ed21134cb382350e118d4b3abcf38dd098edacb04e9fa21a0e90",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-ae4c572625c275db98202dc4",
+      "title": "SOURCE_INTEGRITY_VERIFICATION.json",
+      "hash": "3a50fa8a45f8090442a43f3c1945561c7a6a1d7ca027424cd14f86fd432db7b4",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-71ccf4a48cd055dbbbf1f370",
+      "title": "SOURCE_INTEGRITY_VERIFICATION.md",
+      "hash": "80af5bde49e3fee9af3bdcb77cc30473ce16fd64e34a1febd3ca303485d5faae",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-f834f3f85909b19d8c2c2b4f",
+      "title": "TEXT_TRANSFER_INSTRUCTIONS.md",
+      "hash": "31e443ecd2296312917a82172d9d2262ad95e6b09c970ef52afaa65d3dcbf197",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-8f61b1ce8920d3ef1e8468e2",
+      "title": "INDEX_20_CUM.md",
+      "hash": "c1ca68d709c4d15bb6e56ce89b5efd65693a9bd7dba4af2bf0120daa5fb9db57",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-407a6580da5b1d93ef6b558c",
+      "title": "INDEX_7_DON_VI.md",
+      "hash": "ca445b1cddaac73c5bee2c5dcbba1144e17fc34a234d404b8dee31284068bdad",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-582aea6d92a82fda9aafd433",
+      "title": "LESSON_CATALOG_458.csv",
+      "hash": "85551f46f3d7c5f1fc0c02d97a9fe120508d4ab4638341325219ad5de54c8f19",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-d9ebdc27d27afcda15bd8cb3",
+      "title": "LESSON_CATALOG_458.json",
+      "hash": "ed2b82e4b4be72e141c8e5bba2e04cba14c71753347cedde031b688e4a0dc804",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-89008decdedc74e57d6fddb8",
+      "title": "LESSON_CONTENT_458.jsonl",
+      "hash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-ffdf736e6b16502ab49c4c38",
+      "title": "SOURCE_PROVENANCE_AND_STATUS.md",
+      "hash": "b691bb8fcecec48a451f4f3777b752585f23afbb76884f4a4bc3972ee27bb49a",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-a29f6838dd67d5a8a4bb6bad",
+      "title": "INSPIRE-MOI-01-A_RECONSTRUCTED_PROPOSAL_v0.1.md",
+      "hash": "d8e442eff2f10e392419976c79847d6bdd34ee8e26004ab12e33bb9570b4e12f",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-0e072f12a67f9653e49af6a7",
+      "title": "CUM_01_sinh_hoc_va_than_kinh_cua_tam_ly.md",
+      "hash": "b61de3c20560cd9029cecb7b3ceff8b8de003bc25f624a4a629da74c66d63c15",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-e6a94e5ae8c6c5c06a77b939",
+      "title": "CUM_02_tam_ly_hoc_nhan_thuc.md",
+      "hash": "8923c7c5567ed33b44b12b003a6b0765b89caaa6ffcfc0275640db5c03179d7a",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-2dc126fd05659f47a49f3ed2",
+      "title": "CUM_03_tam_ly_hoc_hoc_tap_va_hanh_vi.md",
+      "hash": "fe90191ee795e21be9d17105f0069c923298ac7f4ec7a7b572b50357d509554b",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-2718ac577b4f6de4552fd671",
+      "title": "CUM_04_cam_xuc_dong_co_va_tu_dieu_chinh.md",
+      "hash": "83b97662bb61232befc92115d67941f66b0dc4ab4ad68b20840372dcf8a16b97",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-eb8408480afbb69a42156065",
+      "title": "CUM_05_tam_ly_hoc_nhan_cach_va_khac_biet_ca_nhan.md",
+      "hash": "de944370d724d85ca0e3a92fca9ba75d0e8e59a2c171949345897a615e78ff14",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-48c6475779cbdd681dc0e4a1",
+      "title": "CUM_06_tam_ly_hoc_phat_trien.md",
+      "hash": "502803ccae902d269e36646adc212e4b5faf1d551d8cf250c7ab48f7bb6fee47",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-d45c997c978c607fc13744d3",
+      "title": "CUM_07_tam_ly_hoc_xa_hoi_va_van_hoa.md",
+      "hash": "c7f87b743dfad06e06620045b9a8a1f281a966fd35055831091579cf88c31f0c",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-33035bcbceb6f12dade898f4",
+      "title": "CUM_08_tam_ly_hoc_tham_van.md",
+      "hash": "04cb5f8342b8053dbed35f33d6e85ad7779c5ebfec3f08fc8740c6bf7ede62b6",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-89f07610e5e5af77f19b597f",
+      "title": "CUM_09_tam_ly_hoc_lam_sang.md",
+      "hash": "30e9575a57e020731b356114a2825990feb5cc33c85f30cdba71cab8546e45c3",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-fdc85273a818b535d26e2820",
+      "title": "CUM_10_tam_ly_hoc_cap_doi_va_gia_dinh.md",
+      "hash": "06ccac98952fc7978851349b0d827dece2bcad4b81dfe94f3f97048c8fde721a",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-de4c44164e74275602453fa6",
+      "title": "CUM_11_tam_ly_hoc_suc_khoe.md",
+      "hash": "4d9f4cbea6d1267e5fbf1fee668fd700479051e338593ff28e471d7b3b5c7914",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-b3e92152e47892b96c26e0d9",
+      "title": "CUM_12_tam_ly_hoc_giao_duc_va_hoc_duong.md",
+      "hash": "222be3812aa811e717e8e64f97035dae5c51259e6ccda4a3d3355bfe142212b3",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-1ef47304595e31f3eea8cc07",
+      "title": "CUM_13_tam_ly_hoc_nghe_nghiep_va_to_chuc.md",
+      "hash": "2ba5b4e34c98bb6508d6d90b1db3da7b77fbe781689ee915053e7a0445d8e3e3",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-5a0317bd5a14668c167c5346",
+      "title": "CUM_14_cong_dong_va_dieu_kien_xa_hoi.md",
+      "hash": "a406f7d5f4b6def7a47b7f4fbd84281867104564d4f5df7ae9f2be803b484b39",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-c7d18d888a7e7eb2dd3424d7",
+      "title": "CUM_15_tam_ly_hoc_moi_truong_so_va_cong_nghe.md",
+      "hash": "cf8b38ae145788615f4a834f5c941af1796bc83eb47d325ade57ddad3d1cf572",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-c408b0ff0ecf08841d6dfb72",
+      "title": "CUM_16_tam_ly_hoc_va_phap_luat.md",
+      "hash": "7921c9db864d8212cfc19e5c2fce93288ab33efc426e32b117f8b9ab0e465de1",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-230e02be5360bf8014a904ce",
+      "title": "CUM_17_tam_ly_hoc_kinh_te_va_tai_chinh.md",
+      "hash": "2bbef21c19c99132f916c8a42ad4dde41e79fe5debea0efe9583523fb93da5b1",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-c4ee8a553388f891eec250eb",
+      "title": "CUM_18_tam_ly_hoc_the_thao_va_hieu_suat.md",
+      "hash": "bc1be1141f06aac0c6db8d097fcc4d970b2ca0f1505b67f3316938ba895cfd20",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-d0917c20b47589c082526973",
+      "title": "CUM_19_tam_ly_hoc_nghe_thuat_sang_tao_va_trai_nghiem_tham_my.md",
+      "hash": "0be6fe81998f5997e950b879cda1bf52b18123637d6ae13463f35a24ff529dc6",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-1da087353d0886a2815d8c2a",
+      "title": "CUM_20_tam_ly_hoc_hien_sinh_y_nghia_song_va_tam_linh.md",
+      "hash": "733246930936488885d88b6c56e7368a3114af0e5c8bbadf4e481290c2884cb2",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-164564ed62b4a74522de0fbe",
+      "title": "DON_VI_1_ca_nhan.md",
+      "hash": "b10b2b206e1d9357908f8371132a0b083c1800e5aee42c06cfe85aaf707fa644",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-f6eb8fbd8f25c6c56d80d9ac",
+      "title": "DON_VI_2_cap_doi.md",
+      "hash": "1f2a6b6b9e1d73e7702826065744714a3ad07c7cdf70f56f26c3d36471b8695e",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-68de9005ff354f7dea6261a2",
+      "title": "DON_VI_3_gia_dinh.md",
+      "hash": "8bf9d472fde1f351c3633d986b027d2c3047ee4a1e7468b1bc6fd581726a68c3",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-38ccd8323ba5fbe90cbd5928",
+      "title": "DON_VI_4_nhom.md",
+      "hash": "0cd21ea5cb2b59f8002ae205b7df7c34d3032cf1fd879c0723546fc190df1b7b",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-0083a0602333b42b2809479b",
+      "title": "DON_VI_5_doi.md",
+      "hash": "5450b8f7f019cbb6f69e2b179d2f26636be481841d6a49c2c3d227c4b88878d6",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-cac9b65fb4c46ec48be9eefa",
+      "title": "DON_VI_6_to_chuc.md",
+      "hash": "96a33edc042343689a358c0eac37ae0434a1608a07a6597c561a2b56a11a6e0a",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-fb72dd300d1bbf814b4e84ec",
+      "title": "DON_VI_7_cong_dong.md",
+      "hash": "58ef1d078e11c5aea46046a70dbdf56a6d2a8c9b4049cc247318745327679965",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-b700548aa57384558b171f18",
+      "title": "SYNTHETIC_CASES_18_RAW_AND_SCORER.json",
+      "hash": "fd26b7ab6aceab8339bc08010ecae1a4f457502bef14b85b24060fb73b860977",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-a76eab1dd51f5755da9ea5a4",
+      "title": "PASTE_INTO_GPT_WORK.md",
+      "hash": "8e9133e73bc7a73a30c53ea8326578aa2773ce1795b216df3cf0e6fe66af1d37",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-550823f2dd50f63eb75e19bb",
+      "title": "INSPIRE_MOI_AND_CURRICULA_READABLE.txt",
+      "hash": "65d0ea1aa5b716eae9d5f190ab1cb0993610a3153ce800e7ca84849a7d49b755",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-1c7c92a8293d78daa2ca75ae",
+      "title": "MANIFEST.json",
+      "hash": "326198652526621a8ad82c692c6d4dc3a6137833951d78d285778a7c3e1c0f71",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-a8a98568de843363128b24bb",
+      "title": "README_START_HERE.md",
+      "hash": "066aa0bfe8f00e2fe6f045a460b71eb461edf25af2dd267dbd468af9d9a5083c",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    },
+    {
+      "id": "bundle-4b90b8f267d7801772d62f7f",
+      "title": "SHA256SUMS.txt",
+      "hash": "e0030f55cc3f0e2c1e8ebf0dc113c8998534ca05fc912f70991fe89425d83498",
+      "reason": "NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented"
+    }
+  ],
+  "permissionsChanged": false,
+  "versionsPromoted": false,
+  "providerCalls": 0,
+  "live": {
+    "ready": true,
+    "state": "ready",
+    "records": 661,
+    "sections": 10676,
+    "externalEligible": 513,
+    "revision": 661,
+    "warnings": 1
+  }
+}

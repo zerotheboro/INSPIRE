@@ -1,0 +1,61 @@
+INSPIRE — kiểm tra giới hạn phạm vi, 27/11/2026
+
+Ban đầu: localhost 5173/5174, Firestore 8080 và Auth 9099 đều dừng
+(ECONNREFUSED; không có listener/tiến trình Java). Không tìm thấy Firebase
+export snapshot trong INSPIRE. Không có cơ sở đọc lại index trong RAM hôm qua.
+
+Đã mở lại launcher hiện có, không import corpus/ZIP, không đổi permissions.
+Lần chạy father:api đầu bị sandbox chặn esbuild đọc cấu hình; chạy host đạt.
+Đang giữ localhost và Auth/Firestore chạy:
+http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+
+Firestore thực tế đang phục vụ trang này: demo-inspire, 127.0.0.1:8080.
+Records 0; sections 0; internal/external eligible 0; revision không tồn tại.
+Không có version để kiểm. Chênh với 513 là -513 do emulator khởi động rỗng,
+không phải 513 nguồn bị thu hồi quyền. Receipts/raw/cache hiện có vẫn giữ nguyên.
+Kết quả 661 records/513 external ngày 26/11 là bằng chứng lịch sử, không phải
+trạng thái sống ngày 27/11. Không tái tạo âm thầm để làm kiểm thử đạt.
+
+Đọc trước/sau cho cùng kết quả; writeAttempts=0; modelCalls=0.
+live-index.json chứa phép đo sống, quyền/version và từng kỳ vọng retrieval.
+Năm ca đã gọi retrieval thực tế, không viết fixture vào emulator:
+- Trực tiếp về ý định/hành động: mong bài tham vấn hoặc C04-06; thực tế [].
+- Diễn đạt lại về chần chừ: mong cùng vùng nguồn; thực tế [].
+- Hỏi tiếp về ít thời gian: mong giữ chủ đề hành động; thực tế [].
+- Đính chính sang quan hệ/ranh giới: mong đoạn tương ứng trong tham vấn;
+  thực tế []. Lời gốc không bị sửa.
+- INSPIRE-07-A: mong original-8e9a8623b864c4282dc3d68c; thực tế [].
+Tất cả BLOCKED_EMPTY_LIVE_INDEX, không ghi PASS cho relevance hoặc quyền
+trên một index không có nguồn. Không có đoạn nào tới mô hình.
+
+DOCX–TXT: đã đối chiếu đúng originals theo SHA256, giải XML thân bài DOCX
+trong bộ nhớ, không ghi extraction/index mới. TXT chính xác bằng thân bài
+DOCX cộng MỘT ký tự xuống dòng cuối. Không có header/footer/footnotes/endnotes/
+comments XML hoặc tracked insertions/deletions. Hash văn bản sau chuẩn hóa
+Unicode/khoảng trắng giống nhau. Xem docx-txt-comparison.json.
+Chỉ xác minh tương ứng văn bản; không gộp tệp, version, authority hay quyền.
+Hiện cả hai vắng khỏi Firestore sống, không tuyên bố TXT còn được index hôm nay.
+
+Chuẩn bị nhận amendment nguyên văn:
+tests/receive-inspire-amendment.mjs chỉ tạo receipt private, không gọi importer
+hoặc Firebase, không sửa receipts.json hiện hành. CLI yêu cầu --receive.
+JSON stdin có amendmentId, declaredVersion, conversationId, messageId, text.
+Không chỉnh text: giữ CRLF/BOM/khoảng trắng, SHA256 UTF-8 và locator hội thoại.
+Locator là operator-supplied, không tự nhận SDK/platform đã xác minh.
+Nếu version chưa được cung cấp, ghi rõ 'not-declared', không đoán version.
+Raw + metadata nằm trong ignored .private.local/inbox/conversation-amendments.
+Không ghi đè cùng message; nội dung sửa cần receipt riêng. Replay nguyên vẹn
+trả changed=false. Chưa có amendment thật mới được cung cấp trong lượt này,
+nên chưa tạo receipt thật hay thay đổi corpus. Chỉ đã chạy fixtures tổng hợp.
+
+Trạng thái mặc định: received-unverified; semantic approval Pending;
+receipt-only; không quyền internal research/export; chưa yêu cầu indexing.
+Không giả là tệp gốc, không áp dụng amendment hoặc thay operating instructions.
+MOI-01-A gốc tiếp tục Pending. Không phát hành approval hay spending grant.
+Kiểm thử intake: 4/4; syntax checks đạt; không sửa backend/runtime/Controller.
+
+Còn chặn: phải có index sống được khôi phục từ receipts/raw/cache đang có,
+hoặc một export snapshot thật, mới kiểm được relevance trên corpus thực tế.
+Trong lượt chỉ đọc này không chạy restore-inspire-knowledge.mjs, không import
+ZIP, không thêm duplicate hoặc sửa permission. Không coi localhost hiện tại
+là bản RAG đã sẵn sàng. Không gửi inference và không gia hạn ngân sách.

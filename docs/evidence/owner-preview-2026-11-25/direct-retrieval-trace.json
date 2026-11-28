@@ -1,0 +1,101 @@
+[
+  {
+    "query": 0,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 76,
+    "size": 50,
+    "first": "bundle-0c7e0a5d429106186d01faef",
+    "last": "lesson-C04-05"
+  },
+  {
+    "query": 1,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 40,
+    "size": 50,
+    "first": "lesson-C04-06",
+    "last": "lesson-C08-11"
+  },
+  {
+    "query": 2,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 49,
+    "size": 50,
+    "first": "lesson-C08-12",
+    "last": "lesson-C13-01"
+  },
+  {
+    "query": 3,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 37,
+    "size": 50,
+    "first": "lesson-C13-02",
+    "last": "lesson-C17-03"
+  },
+  {
+    "query": 4,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 45,
+    "size": 50,
+    "first": "lesson-C17-04",
+    "last": "lesson-CD-A05"
+  },
+  {
+    "query": 5,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 47,
+    "size": 50,
+    "first": "lesson-CD-A06",
+    "last": "lesson-CDG-C23"
+  },
+  {
+    "query": 6,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 35,
+    "size": 50,
+    "first": "lesson-CDG-C24",
+    "last": "lesson-DOI-B09"
+  },
+  {
+    "query": 7,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 39,
+    "size": 50,
+    "first": "lesson-DOI-B10",
+    "last": "lesson-GD-D27"
+  },
+  {
+    "query": 8,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 44,
+    "size": 50,
+    "first": "lesson-GD-D28",
+    "last": "lesson-TC-B13"
+  },
+  {
+    "query": 9,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 164,
+    "size": 50,
+    "first": "lesson-TC-B14",
+    "last": "original-bf544e7987ffcefcc2fcf9d7"
+  },
+  {
+    "query": 10,
+    "phase": "completed",
+    "limit": 50,
+    "ms": 92,
+    "size": 14,
+    "first": "original-dac9253ba33f3a0f6076a9b0",
+    "last": "website-counseling"
+  }
+]

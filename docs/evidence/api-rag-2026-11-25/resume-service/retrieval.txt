@@ -1,0 +1,14 @@
+✔ automatic relevant retrieval, follow-up, correction, conflict preservation and exact adapter input (81930.8734ms)
+✔ content and permission updates revoke cached inputs and adapter traces (2061.6884ms)
+✔ conversation transport keeps exact pending operation on technical failure and replay; no new adapter call (2693.2739ms)
+✔ private receipt version survives rebuilding an empty emulator index (78.5793ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 91308.3704
+
+EXIT_CODE=0

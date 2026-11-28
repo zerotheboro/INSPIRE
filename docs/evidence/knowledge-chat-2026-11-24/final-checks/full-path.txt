@@ -1,0 +1,16 @@
+✔ website transport → retrieval → RPC → native Controller → delivery; follow-up, correction and lost-response replay (14019.9128ms)
+✔ revocation after thread metadata prevents turn/start; changed content invalidates old binding (265.3733ms)
+✔ malicious reference remains data; client authority cannot dispatch; auth route cannot fall back (195.7631ms)
+✔ transport failure counts conservatively; replay/restart cannot regenerate (2334.8171ms)
+✔ explicit scoped draft-reference permission never changes editorial status or admits unapproved sibling passages (696.255ms)
+✔ actual JSONL decoder handles fragmented Vietnamese UTF-8 and rejects managed retry/tool events (6.5919ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20229.1206
+
+EXIT_CODE=0

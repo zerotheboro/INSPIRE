@@ -1,0 +1,266 @@
+{
+  "liveCalls": 0,
+  "scope": "Actual source passages in a local review envelope, not permitted dispatch. Raw input kept private; synthetic permitted runtime trace is separate.",
+  "trace": [
+    {
+      "query": "ưu tiên công việc hành động",
+      "dispatchEligible": false,
+      "exportStatus": "HELD: runtime/export permission unresolved",
+      "sources": [
+        {
+          "documentId": "original-6500e74238578f3590c0c9fb",
+          "version": 3,
+          "hash": "f496c5a2cea51b8ef70a55e261aa769586ab69e18c3527e87c8ce865d0336cb1",
+          "sectionId": "original-6500e74238578f3590c0c9fb-4",
+          "title": "sources/provenance/WHERE_INTAKE_REPORT_NOT_CORE.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "fe8b9382c4da5905a78c446769c57d78fc362a3fd62aa28ad90f8e9fa6d5c2b3",
+          "headingPath": [
+            "1. Vị trí và trạng thái trong hệ",
+            "3. Sáu mô-đun: giữ cả trọng tâm lẫn giới hạn nhận diện"
+          ],
+          "startOffset": 3873,
+          "endOffset": 5250,
+          "startLine": 39,
+          "endLine": 43,
+          "textSHA": "fe8b9382c4da5905a78c446769c57d78fc362a3fd62aa28ad90f8e9fa6d5c2b3",
+          "characters": 1377
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-16",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "04ed22eaaf176d4e494b507a9dbab757738afb3c4be8d27296ce8c26b1816982",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "startOffset": 10240,
+          "endOffset": 11564,
+          "startLine": 320,
+          "endLine": 365,
+          "textSHA": "04ed22eaaf176d4e494b507a9dbab757738afb3c4be8d27296ce8c26b1816982",
+          "characters": 1324
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "startOffset": 11564,
+          "endOffset": 12927,
+          "startLine": 366,
+          "endLine": 420,
+          "textSHA": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+          "characters": 1363
+        }
+      ],
+      "inputHash": "26a263bccf96b2a880517211183259d150a2a67c575232ab6ca99afdd24ac528"
+    },
+    {
+      "query": "đời sống nội tâm cảm xúc",
+      "dispatchEligible": false,
+      "exportStatus": "HELD: runtime/export permission unresolved",
+      "sources": [
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "startOffset": 11564,
+          "endOffset": 12927,
+          "startLine": 366,
+          "endLine": 420,
+          "textSHA": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+          "characters": 1363
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-6",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "fd71a5544c9e6ac81d000804b6dc330b30e0c5454f7960a3e2c5b8b5bc4072a2",
+          "headingPath": [
+            "ĐỜI SỐNG NỘI TÂM",
+            "Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày"
+          ],
+          "startOffset": 2335,
+          "endOffset": 3716,
+          "startLine": 61,
+          "endLine": 118,
+          "textSHA": "fd71a5544c9e6ac81d000804b6dc330b30e0c5454f7960a3e2c5b8b5bc4072a2",
+          "characters": 1381
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-7",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "0b9246d21ac71350b3aad885e98c9478a2539fa9300a8593a09e74605d7c2a92",
+          "headingPath": [
+            "ĐỜI SỐNG NỘI TÂM",
+            "Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày"
+          ],
+          "startOffset": 3716,
+          "endOffset": 5064,
+          "startLine": 119,
+          "endLine": 168,
+          "textSHA": "0b9246d21ac71350b3aad885e98c9478a2539fa9300a8593a09e74605d7c2a92",
+          "characters": 1348
+        }
+      ],
+      "inputHash": "1052d78a8cfaa5ec6fecf52f37fee782d3c6a664aa986f2b697d172d5e4c185b"
+    },
+    {
+      "query": "mối quan hệ ranh giới",
+      "dispatchEligible": false,
+      "exportStatus": "HELD: runtime/export permission unresolved",
+      "sources": [
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-12",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "c9145d92e519bb74cf3d1f20bdcf36ebd488a52a20e66286c3f4406745998e1b",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ],
+          "startOffset": 7525,
+          "endOffset": 8877,
+          "startLine": 241,
+          "endLine": 279,
+          "textSHA": "c9145d92e519bb74cf3d1f20bdcf36ebd488a52a20e66286c3f4406745998e1b",
+          "characters": 1352
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-13",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "f965c29631ff013efe22088a78714a5922942922973642ed69f20c116efb3f40",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ],
+          "startOffset": 8877,
+          "endOffset": 10189,
+          "startLine": 280,
+          "endLine": 316,
+          "textSHA": "f965c29631ff013efe22088a78714a5922942922973642ed69f20c116efb3f40",
+          "characters": 1312
+        },
+        {
+          "documentId": "discovered-566f2bdfce74e534612db148",
+          "version": 3,
+          "hash": "75b2c6452128d98db79de1343a9c283841bba927268646272403774cac59985f",
+          "sectionId": "discovered-566f2bdfce74e534612db148-11",
+          "title": "BAN_DO_TONG_THE_14_DINH_HUONG_INSPIRE_20261117.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "aa048efb23bb05b7d6fd47886576534b8f24c21bbdf8675330e4aa8975a913ea",
+          "headingPath": [
+            "3. Các hồ sơ có nội dung cụ thể: DT01–DT04",
+            "3.4 DT04 — Tâm lý cặp đôi, hôn nhân và gia đình"
+          ],
+          "startOffset": 9066,
+          "endOffset": 10153,
+          "startLine": 88,
+          "endLine": 97,
+          "textSHA": "aa048efb23bb05b7d6fd47886576534b8f24c21bbdf8675330e4aa8975a913ea",
+          "characters": 1087
+        }
+      ],
+      "inputHash": "ce3066937a5463d6ac86a3c86e73ce1166cc7c55a4cee2cc055238950a3fc0db"
+    },
+    {
+      "query": "ý nghĩa lựa chọn cuộc sống",
+      "dispatchEligible": false,
+      "exportStatus": "HELD: runtime/export permission unresolved",
+      "sources": [
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-24",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "800f5bd9896532742774fe7083c96a483c542fa6228e43d37096d54243b9bd8d",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+            "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+          ],
+          "startOffset": 17486,
+          "endOffset": 18828,
+          "startLine": 601,
+          "endLine": 654,
+          "textSHA": "800f5bd9896532742774fe7083c96a483c542fa6228e43d37096d54243b9bd8d",
+          "characters": 1342
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-28",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "75268a4d212bcee71bb2970c2ebc27d03595e54392545e9dccc322024589dfd8",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "startOffset": 19461,
+          "endOffset": 20830,
+          "startLine": 681,
+          "endLine": 724,
+          "textSHA": "75268a4d212bcee71bb2970c2ebc27d03595e54392545e9dccc322024589dfd8",
+          "characters": 1369
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "version": 2,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-29",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "sourceStatus": "review-required",
+          "sectionHash": "dee8848081f2f303785489eb66c58176c52319fbfa742b93b79becac800e260c",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "startOffset": 20830,
+          "endOffset": 22226,
+          "startLine": 725,
+          "endLine": 765,
+          "textSHA": "dee8848081f2f303785489eb66c58176c52319fbfa742b93b79becac800e260c",
+          "characters": 1396
+        }
+      ],
+      "inputHash": "d7fd67eed3c2979135f8db155993b3d474b6e47816b0b100458dd758eb105c69"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+﻿{
+    "executed":  true,
+    "requestFiles":  [
+                         ".private.local/api-rag-final-20261125/first-preview.json",
+                         ".private.local/api-rag-final-20261125/first-runtime-preview.json",
+                         ".private.local/api-rag-final-20261125/first-outbound.json"
+                     ],
+    "sha256":  [
+                   "506375A09CF67A591D6A302C380EF744ECCE1E074460C89D7F901C5BB6D65E48",
+                   "F9BEB32F9294DDC48199557C712E606C3ABDE06E8A2B3C0F590EAC8C913939E5",
+                   "CB8C554DD8C315E7F314CA3BDFBA068C64B5BF5F933173210C0D46733520AD0F"
+               ],
+    "identicalOnReopen":  true,
+    "newGenerationAttempts":  0
+}

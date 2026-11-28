@@ -1,0 +1,35 @@
+Private evaluation only — owner exception applied 2026-11-24
+
+Implemented: provider hard-512-token/retry guarantees no longer gate this private
+route. They remain unverified, not silently marked supported. Existing frozen
+one-attempt proposal/grant and public code are unchanged. New execution remains
+blocked by toolIsolationVerified=false, ownerSessionReleased=false and
+liveDispatchEnabled=false. No source permissions or quotas changed.
+
+Display admission: existing 2,000-character validator rejects an oversized
+candidate before delivery. No substring is substituted after Controller binding.
+This is not a provider token, inference-count or cost limit. Application retry
+loops remain absent; managed provider retries are outside this guarantee.
+
+Thread proposal now explicitly requests ChatGPT authentication, disables web
+search, shell tool, view_image, remote plugin catalog and skill dependency
+installation. These are requested settings, NOT verified effective isolation.
+Installed ThreadStartResponse schema says disabledPluginIds does not yet filter
+plugin capabilities. Read-only sandbox permits reads. Rejecting tool events can
+detect an attempted tool action after it began; it is not prevention.
+Remaining technical blocker: an enforced, verified pre-execution deny-all tool,
+MCP/plugin and filesystem-access boundary for the actual managed app-server
+process, including inherited configuration. No live thread/turn was started to
+claim this proof. Do not release generation based solely on these settings.
+
+Executed: full-path 6/6; session 12/12; backend build; website build; public asset
+scan; touched-backend lint. All final exits 0. Initial formatting lint retained.
+These are focused offline checks, not generative-quality or tool-isolation proof.
+No additional approval requested for billing, source use or provider-cap waiver.
+Still needed after the technical blocker: separate exact-attempt release.
+Private sources remain unapproved; a source-free test does not require granting
+them. Existing one/three-attempt grants do not authorize a longer session.
+
+URL: http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+Public generation/API fallback disabled. No paid/live calls, deployment or Core edits.
+Documentation consulted: https://learn.chatgpt.com/docs/config-file/config-reference

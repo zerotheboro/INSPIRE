@@ -1,0 +1,55 @@
+✔ exact API preview retains both roles/corrections and omits private profiles and inherited operating text (9.0451ms)
+✔ meaningful sections preserve exact CRLF/source offsets, heading paths and bounded Unicode text (2.5875ms)
+✔ durable one-shot rejects missing/mismatched/expired authority, races, restart and accounting overflow (63.9647ms)
+✔ SDK uses the fixed Responses endpoint, exact body and zero automatic 429 retries (intercepted fetch) (33.1082ms)
+✔ strict candidate parsing rejects wrong models, tools, reasoning-only, refusals and altered whitespace (1.5842ms)
+✖ conversation retrieval, permission isolation, incremental replacement and immediate revocation reach exact adapter input (6364.1862ms)
+✔ an exact excerpt grant exports only that section, while other sections remain internal (5508.3778ms)
+✔ 51 ineligible matching sources cannot consume the candidate limit before an eligible reference (7158.4239ms)
+✖ actual native Controller + private service preserve multi-turn/corrections, duplicate/replay identity and quotas (349172.1672ms)
+✔ authorization, cross-user access, outage, unknown outcome and restart reject without replacement calls (574.0801ms)
+✔ private rate/quota checks, forged history and revoked preview sources stop before the key or paid transport (8779.4324ms)
+✔ original native safety triage holds a synthetic high-risk request before model dispatch (6602.3949ms)
+✔ private transport prepares only, prevents duplicate submissions, and replays the same operation after a lost response (7.1364ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 11
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 389142.5765
+
+✖ failing tests:
+
+test at tests\inspire-luna-api.test.mjs:94:1
+✖ conversation retrieval, permission isolation, incremental replacement and immediate revocation reach exact adapter input (6364.1862ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(found.some(s=>s.documentId===sleep.id))
+  
+      at TestContext.<anonymous> (file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/tests/inspire-luna-api.test.mjs:104:9)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests\inspire-luna-api.test.mjs:161:1
+✖ actual native Controller + private service preserve multi-turn/corrections, duplicate/replay identity and quotas (349172.1672ms)
+  Error: Lượt này chưa tạo phản hồi và đã được trả lại. Bạn có thể thử bằng lượt mới.
+      at Object.fail (file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/functions/src/inspireLocalService.ts:90:31)
+      at async TestContext.<anonymous> (file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/tests/inspire-luna-api.test.mjs:171:15)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    code: 'ATTEMPT_FAILED',
+    retry: 'new-attempt',
+    status: 503
+  }
+
+EXIT_CODE=1

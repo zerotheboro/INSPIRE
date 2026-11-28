@@ -2,7 +2,7 @@
 import {spawn,execFileSync} from 'node:child_process'
 import {createInterface} from 'node:readline'
 import {mkdirSync,writeFileSync} from 'node:fs'
-const out='docs/evidence/luna-private-2026-11-11'
+const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/luna-private-2026-11-11'
 mkdirSync(out,{recursive:true})
 const binary=process.env.INSPIRE_CODEX_BIN||execFileSync('powershell.exe',[
   '-NoProfile','-Command','(Get-Command codex -ErrorAction Stop).Source'],{encoding:'utf8',windowsHide:true}).trim()

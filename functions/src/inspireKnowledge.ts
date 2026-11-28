@@ -1,4 +1,4 @@
-import {getFirestore} from "firebase-admin/firestore";
+import {getFirestore, FieldPath} from "firebase-admin/firestore";
 import {createHash} from "node:crypto";
 import type {ChatMessage, ChatRequest} from "./inspireChatContract";
 import type {Preferences} from "./inspireAccount";
@@ -10,12 +10,21 @@ export type SourceRecord = {
   permittedUse: "supporting-retrieval" | "receipt-only";
   rawFile: string;
   kind?: "reference" | "operating-rules";
+  contentClass?: "content" | "engineering" | "archive" | "receipt";
+  aliases?: string[];
+  origins?: string[];
+  lesson?: {lessonId: string; moduleId: string; kind: string;
+    contentHash: string; parentHash: string; status: "DRAFT"};
+  extraction?: {engine: string; textHash: string; format: string};
+  relations?: {family: string; amendment: boolean; relatedIds: string[];
+    authority: string};
   provenance?: {packageHash: string; relativePath: string;
     declaredVersion: string; authority: string};
   permissions?: {
     sourceHash: string; internalResearch: boolean; externalExport: boolean;
     evidence: string;
     sectionHashes?: string[];
+    runtimeUse?: "private-reference-evaluation";
   };
 };
 export type KnowledgeSection = {
@@ -24,6 +33,9 @@ export type KnowledgeSection = {
   sectionHash?: string; headingPath?: string[];
   startOffset?: number; endOffset?: number;
   startLine?: number; endLine?: number;
+  page?: number;
+  sourceRelations?: SourceRecord["relations"];
+  lesson?: SourceRecord["lesson"];
 };
 export const coreInstructions = Object.freeze([
   "INSPIRE: WHAT → WHERE → WHY → TOWARD WHAT → HOW. M1–M6 belong within WHERE.",
@@ -50,9 +62,31 @@ export interface ModelAdapter {
   close?(): void;
 }
 /** Explicit proof that the adapter did not produce a reply. */
-export class ConfirmedNoReply extends Error {}
+export class ConfirmedNoReply extends Error {
+  /** Keep the original hold private instead of losing it in a generic error.
+   * @param {string} message Machine-readable hold.
+   * @param {unknown} cause Internal failure; non-enumerable, never serialized.
+   */
+  constructor(message?: string, cause?: unknown) {
+    super(message);
+    if (cause !== undefined) {
+      Object.defineProperty(this, "cause", {value: cause});
+    }
+  }
+}
 /** An ambiguous adapter outcome that must not automatically be refunded. */
-export class UnknownReplyOutcome extends Error {}
+export class UnknownReplyOutcome extends Error {
+  /** Preserve diagnostics without putting them in a browser response.
+   * @param {string} message Machine-readable hold.
+   * @param {unknown} cause Internal failure; non-enumerable, never serialized.
+   */
+  constructor(message?: string, cause?: unknown) {
+    super(message);
+    if (cause !== undefined) {
+      Object.defineProperty(this, "cause", {value: cause});
+    }
+  }
+}
 
 /**
  * Normalize lexical search terms without inferring customer classifications.
@@ -68,9 +102,52 @@ export function words(text: string): string[] {
 const digest = (text: string | Buffer) =>
   createHash("sha256").update(text).digest("hex");
 const stop = new Set(words("tôi bạn mình cháu bác không những một các của " +
-  "được đang trong này vậy thì thế sao với muốn thêm hiểu điều hãy có thể"));
+  "được đang trong này vậy thì thế sao với muốn thêm hiểu điều hãy có thể " +
+  "nói rõ hơn áp dụng thế nào"));
 const cached = new Map<string, KnowledgeSection[]>();
 let cacheRevision = -1;
+
+/** Preserve document identifiers separately from ordinary search words.
+ * @param {string} text User text or a server-owned source label.
+ * @return {string[]} Exact references, never permissions or operating rules.
+ */
+function referenceIds(text: string): string[] {
+  const normalized = text.replace(/[\u2010-\u2015\u2212]/g, "-")
+    .replace(/\s*-\s*/g, "-");
+  return [...new Set([...normalized.matchAll(
+    /\bINSPIRE-(?:[A-Z]+-)*\d+(?:-[A-Z])?(?=$|[^A-Z0-9-])/gi,
+  )].map((match) => match[0].toUpperCase()))];
+}
+
+/** A reference in a passage is not that passage's own document identity.
+ * @param {SourceRecord} source Current metadata, not retrieved prose.
+ * @return {string[]} Self IDs from source names; parent links stay separate.
+ */
+function sourceReferenceIds(source: SourceRecord): string[] {
+  return [source.documentId, source.title, ...(source.aliases ?? [])]
+    .flatMap((label) => {
+      if (typeof label !== "string") return [];
+      const name = label.replace(/\\/g, "/").split("/").pop() ?? "";
+      const ids = referenceIds(name);
+      return ids.filter((id) => name.toUpperCase().startsWith(id));
+    });
+}
+
+/** Keep editorial status separate from a narrowly scoped research grant.
+ * @param {SourceRecord} source Current operator receipt, not retrieved text.
+ * @return {boolean} Local reference eligibility; never operating authority.
+ */
+function referencePermitted(source: SourceRecord): boolean {
+  const grant = source.permissions;
+  return source.kind !== "operating-rules" &&
+    (!source.contentClass || source.contentClass === "content") &&
+    source.permittedUse === "supporting-retrieval" &&
+    (source.status === "published-supporting" ||
+      (["review-required", "unverified"].includes(source.status) &&
+        grant?.runtimeUse === "private-reference-evaluation" &&
+        grant.sourceHash === source.hash && grant.internalResearch === true &&
+        !!grant.evidence.trim() && !!grant.sectionHashes?.length));
+}
 
 /** Source permissions are operator metadata, never a client or model claim.
  * @param {SourceRecord} source Current receipt.
@@ -81,9 +158,7 @@ function exportPermitted(
   source: SourceRecord, section?: KnowledgeSection,
 ): boolean {
   const grant = source.permissions;
-  return source.kind !== "operating-rules" &&
-    source.status === "published-supporting" &&
-    source.permittedUse === "supporting-retrieval" &&
+  return referencePermitted(source) &&
     grant?.sourceHash === source.hash && grant.internalResearch === true &&
     grant.externalExport === true && !!grant.evidence.trim() &&
     (!section || !grant.sectionHashes ||
@@ -135,6 +210,11 @@ export function deriveSections(
           startOffset: start, endOffset: end,
           startLine: text.slice(0, start).split("\n").length,
           endLine: text.slice(0, Math.max(start, end - 1)).split("\n").length,
+          ...(source.extraction?.format === ".pdf" ?
+            {page: Number(headings[i].path.find((s) =>
+              /^Page \d+$/.test(s))?.split(" ")[1] ?? 1)} : {}),
+          ...(source.relations ? {sourceRelations: source.relations} : {}),
+          ...(source.lesson ? {lesson: source.lesson} : {}),
         });
       }
       start = end;
@@ -172,6 +252,8 @@ export async function importSource(
       typeof record.permissions.internalResearch !== "boolean" ||
       typeof record.permissions.externalExport !== "boolean" ||
       !record.permissions.evidence?.trim() ||
+      (record.permissions.runtimeUse !== undefined &&
+        record.permissions.runtimeUse !== "private-reference-evaluation") ||
       (record.permissions.sectionHashes !== undefined &&
         (!Array.isArray(record.permissions.sectionHashes) ||
           record.permissions.sectionHashes.some((s) =>
@@ -188,7 +270,7 @@ export async function importSource(
     const data = old.data();
     const extracted = text ?? (data?.hash === hash ? data?.extractedText : "");
     const signature = digest(JSON.stringify([record, hash, extracted ?? ""]));
-    if (data?.importSignature === signature && data?.indexVersion === 2) {
+    if (data?.importSignature === signature && data?.indexVersion === 3) {
       return {changed: false, version: data.version};
     }
     const source: SourceRecord = {
@@ -197,16 +279,14 @@ export async function importSource(
     };
     const sections = extracted ? deriveSections(source, extracted) : [];
     const searchTerms = words(source.title + " " + (extracted ?? ""));
-    const internalEligible = source.status === "published-supporting" &&
-      source.permittedUse === "supporting-retrieval" &&
-      source.kind !== "operating-rules" &&
+    const internalEligible = referencePermitted(source) &&
       (!source.permissions || source.permissions.internalResearch === true);
     const exportable = sections.filter((s) => exportPermitted(source, s));
     const externalSearchTerms = exportable.length ? words(source.title + " " +
       exportable.map((s) => s.text).join(" ")) : [];
     if (searchTerms.length > 5000) throw new Error("Source index too large.");
     // Full extracted text is kept once, privately, for permission-only updates.
-    const stored = {...source, sections, searchTerms, indexVersion: 2,
+    const stored = {...source, sections, searchTerms, indexVersion: 3,
       internalEligible, externalEligible: exportable.length > 0,
       externalSearchTerms,
       extractedText: extracted ?? "", importSignature: signature};
@@ -215,34 +295,129 @@ export async function importSource(
     }
     tx.set(ref, stored);
     tx.create(ref.collection("versions").doc(String(source.version)), stored);
-    tx.set(index, {revision: (revision.data()?.revision ?? 0) + 1});
+    tx.set(index, {revision: (revision.data()?.revision ?? 0) + 1},
+      {merge: true});
     cached.clear();
     return {changed: true, version: source.version};
   });
+}
+
+type KnowledgeReadiness = {
+  ready: boolean; state: string; records: number; sections: number;
+  externalEligible: number; revision: number | null; warnings: number;
+  countsKnown: boolean;
+};
+const readinessCache = new WeakMap<object, {
+  key: string; value: KnowledgeReadiness;
+}>();
+const readinessPending = new WeakMap<object, {
+  key: string; work: Promise<KnowledgeReadiness>;
+}>();
+
+/** Report live local index readiness without exposing passages or originals.
+ * @param {object} db Existing Firestore client; injectable for offline checks.
+ * @return {Promise<object>} Safe status; unavailable/partial indexes hold.
+ */
+export async function knowledgeReadiness(db = getFirestore()):
+  Promise<KnowledgeReadiness> {
+  const held = (state: string, revision: number | null = null) => ({
+    ready: false, state, records: 0, sections: 0,
+    externalEligible: 0, revision, warnings: 0,
+    countsKnown: state === "empty",
+  });
+  try {
+    const index = await db.doc("inspireKnowledge/_index").get();
+    const meta = index.data();
+    if (!index.exists) return held("empty");
+    const revision = meta?.revision ?? null;
+    if (meta?.restoreStatus !== "ready") {
+      return held(["restoring", "checkpointing"].includes(meta?.restoreStatus) ?
+        meta!.restoreStatus : "unverified", revision);
+    }
+    const key = JSON.stringify([revision, meta.restoreStatus,
+      meta.restoreCompletedAt]);
+    const previous = readinessCache.get(db);
+    if (previous?.key === key) return {...previous.value};
+    const pending = readinessPending.get(db);
+    if (pending?.key === key) return {...await pending.work};
+    const work = (async (): Promise<KnowledgeReadiness> => {
+      const rows = await db.collection("inspireKnowledge")
+        .select("sections", "externalEligible", "indexVersion").get();
+      const sources = rows.docs.filter((d) => d.id !== "_index");
+      const value: KnowledgeReadiness = {
+        ready: sources.length > 0 && sources.every((d) =>
+          d.data().indexVersion === 3),
+        state: "ready", records: sources.length,
+        sections: sources.reduce((n, d) =>
+          n + (d.data().sections?.length ?? 0), 0),
+        externalEligible: sources.filter((d) =>
+          d.data().externalEligible === true).length,
+        revision, warnings: meta.missingExtractionCount ?? 0,
+        countsKnown: true,
+      };
+      if (!value.records || !value.sections || !value.externalEligible) {
+        value.ready = false; value.state = "empty";
+      } else if (!value.ready) value.state = "invalid";
+      const latest = await db.doc("inspireKnowledge/_index").get();
+      if (JSON.stringify(latest.data()) !== JSON.stringify(meta)) {
+        return held("changing", revision);
+      }
+      readinessCache.set(db, {key, value});
+      return {...value};
+    })();
+    readinessPending.set(db, {key, work});
+    try {
+      return {...await work};
+    } finally {
+      if (readinessPending.get(db)?.work === work) readinessPending.delete(db);
+    }
+  } catch {
+    return held("unavailable");
+  }
 }
 
 /**
  * Retrieve bounded INSPIRE supporting sections with consistent provenance.
  * @param {string|ChatMessage[]} query Complete validated conversation or query.
  * @param {boolean} external Require explicit, hash-bound export permission.
+ * @param {string} documentId Optional trusted document scope.
+ * @param {boolean} reviewOnly Operator-only review, never external dispatch.
  * @return {Promise<KnowledgeSection[]>} At most three source-bound sections.
  */
 export async function retrieveKnowledge(
-  query: string | readonly ChatMessage[], external = false,
+  query: string | readonly ChatMessage[], external = false, documentId?: string,
+  reviewOnly = false,
 ): Promise<KnowledgeSection[]> {
-  const active = typeof query === "string" ? [query] : (() => {
+  if (reviewOnly && external) throw Error("REVIEW_CANNOT_AUTHORIZE_EXPORT");
+  const userTurns = typeof query === "string" ? [query] : (() => {
     const replaced = new Set(query.flatMap((m) =>
       m.correctionOf ? [m.correctionOf] : []));
     return query.filter((m) => m.role === "user" && !replaced.has(m.id))
       .map((m) => m.text);
   })();
+  // A stated topic change ends the old retrieval thread, not the stored chat.
+  // Merely quoting a topic-change phrase later in a sentence does not reset it.
+  const topicChange = new RegExp(
+    "^(?:(?:tôi muốn|mình muốn|bây giờ|giờ)\\s+)*" +
+    "(?:chuyển sang|đổi chủ đề|chủ đề mới|câu hỏi khác)" +
+    "(?:\\s|[.:,]|$)", "iu");
+  const start = userTurns.reduce((last, text, i) =>
+    topicChange.test(text.trim()) ? i : last, 0);
+  const active = userTurns.slice(start);
   const weighted = new Map<string, number>();
-  // Conversational bookkeeping cannot make unrelated passages relevant.
+  // An explicit reference follows the latest uncorrected user mention. A
+  // follow-up without a new ID retains it; a correction never inherits the
+  // superseded ID. Matching an ID does not bypass source/section permissions.
+  const references = active.map(referenceIds).reverse()
+    .find((ids) => ids.length) ?? [];
+  // Retain uncorrected user context with gradual recency decay. A short
+  // follow-up must not outweigh the topic merely because it is newest.
+  // Conversation text itself, including correction targets, is never edited.
   active.forEach((text, i) => words(text.replace(
     /tình huống giả định|giả định|đính chính/giu, " "))
     .filter((t) => !stop.has(t))
     .forEach((t) => weighted.set(t, (weighted.get(t) ?? 0) +
-      (i === active.length - 1 ? 3 : 1))));
+      Math.pow(0.8, active.length - 1 - i))));
   const terms = [...weighted.keys()].sort((a, b) =>
     weighted.get(b)! - weighted.get(a)!).slice(0, 30);
   if (!terms.length) return [];
@@ -251,45 +426,97 @@ export async function retrieveKnowledge(
   if (revision !== cacheRevision) {
     cached.clear(); cacheRevision = revision;
   }
-  const key = JSON.stringify([external, [...weighted], revision]);
-  if (cached.has(key)) return structuredClone(cached.get(key)!);
-  // All source eligibility is indexed BEFORE the candidate bound. External
+  const key = JSON.stringify([external, reviewOnly, documentId ?? null,
+    [...weighted], references, revision]);
+  const unchanged = async () => {
+    const latest = await getFirestore().doc("inspireKnowledge/_index").get();
+    if ((latest.data()?.revision ?? 0) !== revision) {
+      cached.clear();
+      throw new ConfirmedNoReply("KNOWLEDGE_REVISION_CHANGED");
+    }
+  };
+  if (cached.has(key)) {
+    await unchanged();
+    return structuredClone(cached.get(key)!);
+  }
+  // All source eligibility is indexed BEFORE pagination. External
   // terms come only from permitted excerpts, not restricted sibling sections.
-  const selection = getFirestore().collection("inspireKnowledge")
-    .where(external ? "externalEligible" : "internalEligible", "==", true)
-    .where(external ? "externalSearchTerms" : "searchTerms",
-      "array-contains-any", terms);
-  const docs = await selection.limit(50).get();
+  // Emulator OR queries with many terms can take >10 s per page even for
+  // metadata-only projections. Keep eligibility indexed and apply the same
+  // lexical filter locally for that case; cloud query behavior is unchanged.
+  const termField = external ? "externalSearchTerms" : "searchTerms";
+  const localWide = references.length > 0 ||
+    (process.env.FIRESTORE_EMULATOR_HOST === "127.0.0.1:8080" &&
+      terms.length > 3);
+  const eligible = getFirestore().collection("inspireKnowledge")
+    .where(reviewOnly ? "collection" :
+      external ? "externalEligible" : "internalEligible", "==",
+    reviewOnly ? "INSPIRE" : true);
+  const selection = (localWide ? eligible :
+    eligible.where(termField, "array-contains-any", terms))
+    .orderBy(FieldPath.documentId())
+    .select("collection", "status", "permittedUse", "kind", "permissions",
+      "documentId", "title", "aliases", "hash", "version", "sections",
+      "contentClass",
+      ...(localWide ? [termField] : []));
+  const scoped = documentId ? selection.where("documentId", "==",
+    documentId) : selection;
   const candidates: {section: KnowledgeSection; score: number}[] = [];
-  for (const doc of docs.docs) {
-    const source = doc.data();
-    if (source.collection !== "INSPIRE" ||
-        source.status !== "published-supporting" ||
-        source.permittedUse !== "supporting-retrieval" ||
-        source.kind === "operating-rules" ||
+  let lastId = "";
+  let page = await scoped.limit(50).get();
+  for (;;) {
+    const docs = page;
+    for (const doc of docs.docs) {
+      if (doc.id <= lastId) {
+        throw new ConfirmedNoReply("KNOWLEDGE_PAGE_ORDER_HOLD");
+      }
+      lastId = doc.id;
+      const source = doc.data();
+      if (references.length && !sourceReferenceIds(source as SourceRecord)
+        .some((id) => references.includes(id))) continue;
+      if (localWide && !references.length &&
+          (!Array.isArray(source[termField]) ||
+          !source[termField].some((term: string) => terms.includes(term)))) {
+        continue;
+      }
+      if (source.collection !== "INSPIRE" ||
+        (source.contentClass && source.contentClass !== "content") ||
+        (reviewOnly ? source.kind === "operating-rules" :
+          !referencePermitted(source as SourceRecord)) ||
         (source.permissions && !source.permissions.internalResearch) ||
         (external && !exportPermitted(source as SourceRecord)) ||
         source.documentId !== doc.id ||
         !/^[a-f0-9]{64}$/.test(source.hash) ||
         !Number.isInteger(source.version)) continue;
-    for (const section of source.sections ?? []) {
-      if (section.documentId !== source.documentId ||
+      for (const section of source.sections ?? []) {
+        if (section.documentId !== source.documentId ||
           section.version !== source.version || section.hash !== source.hash ||
           section.sourceStatus !== source.status ||
           typeof section.text !== "string" ||
           section.text.length > 1400 ||
           section.sectionHash !== digest(section.text)) continue;
-      if (external &&
+        if (external &&
           !exportPermitted(source as SourceRecord, section)) continue;
-      const tokens = words(section.title + " " +
+        if ((external || source.status !== "published-supporting") &&
+          source.permissions?.sectionHashes &&
+          !source.permissions.sectionHashes.includes(section.sectionHash)) {
+          continue;
+        }
+        const tokens = words(section.title + " " +
         (section.headingPath ?? []).join(" ") + " " + section.text);
-      const score = terms.filter((term) => tokens.includes(term))
-        .reduce((n, t) => n + weighted.get(t)!, 0);
-      if (score) candidates.push({section, score});
+        const score = terms.filter((term) => tokens.includes(term))
+          .reduce((n, t) => n + weighted.get(t)!, 0);
+        if (score) candidates.push({section, score});
+      }
     }
+    if (docs.size < 50) break;
+    page = await scoped.startAfter(docs.docs[docs.docs.length - 1])
+      .limit(50).get();
   }
+  await unchanged();
   const result = candidates.sort((a, b) => b.score - a.score ||
-    a.section.sectionId.localeCompare(b.section.sectionId))
+    (a.section.sectionId < b.section.sectionId ? -1 :
+      a.section.sectionId > b.section.sectionId ? 1 : 0))
     .slice(0, 3).map((entry) => entry.section);
   if (cached.size >= 64) cached.delete(cached.keys().next().value!);
   cached.set(key, structuredClone(result));

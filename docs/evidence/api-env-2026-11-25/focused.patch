@@ -1,0 +1,263 @@
+diff --git a/functions/.env.example b/functions/.env.example
+new file mode 100644
+index 0000000..232b197
+--- /dev/null
++++ b/functions/.env.example
+@@ -0,0 +1,4 @@
++# Backend local only: copy to functions/.env.local and fill the value locally.
++# Never use VITE_* for this key. Only OPENAI_API_KEY is selected by father:api.
++# Authorization, attempt accounting and budgets remain separate and unchanged.
++OPENAI_API_KEY=
+diff --git a/functions/src/inspireLunaApi.ts b/functions/src/inspireLunaApi.ts
+index b5790a7..45fb7e4 100644
+--- a/functions/src/inspireLunaApi.ts
++++ b/functions/src/inspireLunaApi.ts
+@@ -83,8 +83,8 @@ export function prepareLunaApi(context: ModelContext, request: ChatRequest) {
+ }
+ export type LunaPrepared = ReturnType<typeof prepareLunaApi>;
+ 
+-/** Private nonsynced location; no Vite variable or API fallback.
+- * @return {string} Operator-controlled credential/authorization directory.
++/** Private nonsynced authorization/attempt ledger; credentials are in env.
++ * @return {string} Operator-controlled authorization directory.
+  */
+ export function lunaLocalDirectory(): string {
+   if (!process.env.LOCALAPPDATA) throw new Error("LOCAL_CONFIG_REQUIRED");
+@@ -97,7 +97,6 @@ export function lunaLocalDirectory(): string {
+  * @return {object} Consume and account functions; no approval writer.
+  */
+ export function lunaOneShot(directory = lunaLocalDirectory(), now = Date.now) {
+-  const keyFile = join(directory, "api-key.txt");
+   const intentFile = join(directory, "first-attempt.json");
+   const assertDirectory = () => {
+     const actual = realpathSync(directory);
+@@ -135,7 +134,7 @@ export function lunaOneShot(directory = lunaLocalDirectory(), now = Date.now) {
+         now() >= Date.parse(LUNA_API.pricingExpires)) throw Error();
+   };
+   return {
+-    configured: () => existsSync(keyFile),
++    configured: () => Boolean(process.env.OPENAI_API_KEY?.trim()),
+     freeze(prepared: LunaPrepared) {
+       assertDirectory();
+       const file = join(directory, "approved-preview.json");
+@@ -162,9 +161,7 @@ export function lunaOneShot(directory = lunaLocalDirectory(), now = Date.now) {
+     consume(prepared: LunaPrepared) {
+       try {
+         authorized(prepared);
+-        const key = readFileSync(keyFile, "utf8").trim();
+-        if (realpathSync(keyFile).toLowerCase() !==
+-            resolve(keyFile).toLowerCase()) throw Error();
++        const key = process.env.OPENAI_API_KEY?.trim() ?? "";
+         if (!/^sk-[A-Za-z0-9_-]{16,}$/.test(key) || key.length > 1000) {
+           throw Error();
+         }
+diff --git a/tests/inspire-luna-api.test.mjs b/tests/inspire-luna-api.test.mjs
+index 957020d..54595b7 100644
+--- a/tests/inspire-luna-api.test.mjs
++++ b/tests/inspire-luna-api.test.mjs
+@@ -53,6 +53,9 @@ test('meaningful sections preserve exact CRLF/source offsets, heading paths and
+ })
+ 
+ test('durable one-shot rejects missing/mismatched/expired authority, races, restart and accounting overflow',async t=>{
++ const previousKey=process.env.OPENAI_API_KEY
++ process.env.OPENAI_API_KEY='sk-offline_fixture_no_real_credential'
++ t.after(()=>{if(previousKey===undefined)delete process.env.OPENAI_API_KEY;else process.env.OPENAI_API_KEY=previousKey})
+  const dir=temporary(t),p=prepareLunaApi(ctx(r()),r()),store=lunaOneShot(dir,now)
+  writeFileSync(join(dir,'api-key.txt'),'sk-offline_fixture_no_real_credential')
+  assert.equal(store.authorized(p),false);assert.throws(()=>store.consume(p))
+diff --git a/tests/inspire-luna-env.test.mjs b/tests/inspire-luna-env.test.mjs
+new file mode 100644
+index 0000000..1bcda2b
+--- /dev/null
++++ b/tests/inspire-luna-env.test.mjs
+@@ -0,0 +1,67 @@
++// Offline configuration tests. All dotenv values/keys here are synthetic.
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {mkdtempSync,writeFileSync,existsSync,mkdirSync,statSync} from 'node:fs'
++import {tmpdir} from 'node:os'
++import {join,resolve} from 'node:path'
++import {pathToFileURL} from 'node:url'
++import {randomUUID} from 'node:crypto'
++import {execFileSync} from 'node:child_process'
++import {fatherApiEnvironment} from './start-father-api.mjs'
++import {lunaOneShot,prepareLunaApi,LUNA_API} from '../functions/src/inspireLunaApi.ts'
++import {emptyPreferences} from '../functions/src/inspireAccount.ts'
++const fake=()=> 'sk-offline_fixture_'+randomUUID().replaceAll('-','')
++const temp=()=>mkdtempSync(join(tmpdir(),'inspire-env-fixture-'))
++function envKey(t,value){const old=process.env.OPENAI_API_KEY;if(value===undefined)delete process.env.OPENAI_API_KEY;else process.env.OPENAI_API_KEY=value;t.after(()=>{if(old===undefined)delete process.env.OPENAI_API_KEY;else process.env.OPENAI_API_KEY=old})}
++const request={kind:'send',epoch:'offline',sessionId:'offline',operationId:'offline',conversationId:'offline',messages:[{id:'u1',role:'user',text:'Tình huống tổng hợp kiểm tra cấu hình.'}]}
++const plan=()=>prepareLunaApi({messages:request.messages,operatingInstructions:[],supportingKnowledge:[],userStatedPreferences:emptyPreferences},request)
++function authorize(root,p){const now=Date.UTC(2026,10,25);writeFileSync(join(root,'authorization.json'),JSON.stringify({schema:'inspire-luna-one-shot-v2',approved:true,model:LUNA_API.model,payloadSHA:p.payloadSHA,binding:p.binding,maxAttempts:1,maxCostNanoUSD:p.reservedNanoUSD,expiresAt:new Date(now+60000).toISOString(),ownerDecision:'SYNTHETIC OFFLINE FIXTURE ONLY',syntheticOnly:true,privateEvaluationOnly:true}));return lunaOneShot(root,()=>now)}
++
++test('native file loader selects only backend key, overrides inherited keys and pins API route',()=>{
++ const root=temp(),file=join(root,'.env.local'),value=fake(),other=fake()
++ writeFileSync(file,'\uFEFF# synthetic\nexport OPENAI_API_KEY="'+value+'"\nVITE_DO_NOT_EXPORT='+other+'\nNODE_OPTIONS=ignored\nINSPIRE_BILLING_ROUTE=chatgpt\n')
++ const env=fatherApiEnvironment({LOCALAPPDATA:root,OPENAI_API_KEY:other,openai_api_key:other,KEEP_ME:'unchanged'},file)
++ assert.ok(env.OPENAI_API_KEY===value,'FILE_KEY_NOT_SELECTED')
++ assert.equal(Object.keys(env).filter(k=>k.toUpperCase()==='OPENAI_API_KEY').length,1)
++ assert.equal(env.VITE_DO_NOT_EXPORT,undefined);assert.equal(env.NODE_OPTIONS,undefined)
++ assert.equal(env.KEEP_ME,'unchanged');assert.equal(env.INSPIRE_BILLING_ROUTE,'api-key');assert.equal(env.INSPIRE_FATHER_WEEKEND,'0')
++ assert.equal(env.INSPIRE_API_KEY_SOURCE,'functions/.env.local')
++})
++
++test('missing/empty selected file clears inherited key and never reads neighboring .env',()=>{
++ const root=temp(),file=join(root,'.env.local'),parent={LOCALAPPDATA:root,OPENAI_API_KEY:fake()}
++ writeFileSync(join(root,'.env'),'OPENAI_API_KEY='+fake())
++ assert.equal(fatherApiEnvironment(parent,file).OPENAI_API_KEY,'')
++ writeFileSync(file,'OPENAI_API_KEY=   \n');assert.equal(fatherApiEnvironment(parent,file).OPENAI_API_KEY,'')
++ writeFileSync(file,'VITE_OPENAI_API_KEY='+fake());assert.equal(fatherApiEnvironment(parent,file).OPENAI_API_KEY,'')
++})
++
++test('unreadable configuration fails closed without returning file values',()=>{
++ const root=temp(),directory=join(root,'not-a-file');mkdirSync(directory)
++ assert.throws(()=>fatherApiEnvironment({LOCALAPPDATA:root},directory),{message:'LOCAL_API_ENV_LOAD_HOLD'})
++})
++
++test('adapter consumes environment key and leaves legacy key file unchanged',t=>{
++ const root=temp(),value=fake();envKey(t,value)
++ const legacy=join(root,'api-key.txt');writeFileSync(legacy,fake());const before=statSync(legacy)
++ const p=plan(),store=authorize(root,p);assert.equal(store.configured(),true)
++ assert.ok(store.consume(p)===value,'ADAPTER_DID_NOT_USE_ENV_KEY')
++ const after=statSync(legacy);assert.equal(after.mtimeMs,before.mtimeMs);assert.equal(after.size,before.size)
++ assert.throws(()=>store.consume(p));assert.equal(existsSync(join(root,'first-attempt.json')),true)
++})
++
++test('legacy file cannot enable or supply a missing environment key',t=>{
++ const root=temp();envKey(t,undefined);writeFileSync(join(root,'api-key.txt'),fake())
++ const p=plan(),store=authorize(root,p);assert.equal(store.configured(),false)
++ assert.throws(()=>store.consume(p),/LUNA_AUTHORIZATION_OR_STORAGE_HOLD/)
++ assert.equal(existsSync(join(root,'first-attempt.json')),false)
++ process.env.OPENAI_API_KEY=' \t ';assert.equal(store.configured(),false)
++})
++
++test('spawn environment is loaded before adapter import/initialization in a fresh Node process',()=>{
++ const root=temp(),value=fake(),file=join(root,'.env.local');writeFileSync(file,"OPENAI_API_KEY='"+value+"'\n")
++ const env=fatherApiEnvironment({...process.env,EXPECTED_SYNTHETIC_KEY:value},file)
++ const code="import {lunaOneShot} from "+JSON.stringify(pathToFileURL(resolve('functions/src/inspireLunaApi.ts')).href)+"; if(process.env.OPENAI_API_KEY!==process.env.EXPECTED_SYNTHETIC_KEY)throw Error('BOOT_ORDER_HOLD');console.log(JSON.stringify({keyConfigured:lunaOneShot().configured()}))"
++ const stdout=execFileSync(process.execPath,['--import',pathToFileURL(resolve('tests/register-ts.mjs')).href,'--input-type=module','-e',code],{env,encoding:'utf8',windowsHide:true})
++ assert.deepEqual(JSON.parse(stdout),{keyConfigured:true});assert.ok(!stdout.includes(value),'SECRET_IN_CHILD_OUTPUT')
++})
+diff --git a/tests/prepare-api-rag-first.mjs b/tests/prepare-api-rag-first.mjs
+index 353e5b4..0b3fd4e 100644
+--- a/tests/prepare-api-rag-first.mjs
++++ b/tests/prepare-api-rag-first.mjs
+@@ -1,11 +1,14 @@
+-// Exact operator review only. No key read, login, send or approval writer.
++// Exact operator review only. Key configuration is reported as a boolean.
++// No login, generation send or approval writer.
+ import {readFileSync,writeFileSync,mkdirSync,existsSync,openSync,writeSync,fsyncSync,closeSync} from 'node:fs'
+ import {join} from 'node:path'
+ import {createRequire} from 'node:module'
+ import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
+ import {retrieveKnowledge} from '../functions/src/inspireKnowledge.ts'
+-import {prepareLunaApi,recheckLunaSources,LUNA_API,lunaLocalDirectory} from '../functions/src/inspireLunaApi.ts'
++import {prepareLunaApi,recheckLunaSources,LUNA_API,lunaOneShot} from '../functions/src/inspireLunaApi.ts'
++import {fatherApiEnvironment} from './start-father-api.mjs'
+ import {emptyPreferences} from '../functions/src/inspireAccount.ts'
++process.env.OPENAI_API_KEY=fatherApiEnvironment().OPENAI_API_KEY
+ process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
+ const local='.private.local/api-rag-final-20261125',out='docs/evidence/api-rag-2026-11-25/final-preview';mkdirSync(local,{recursive:true});mkdirSync(out,{recursive:true})
+ const request={kind:'send',epoch:'api-rag-final-review-20261125',sessionId:'api-rag-final-session-20261125',operationId:'api-rag-final-attempt-20261125',conversationId:'api-rag-final-conversation-20261125',messages:[{id:'api-rag-final-user-message',role:'user',text:'Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm. Giúp tôi hiểu khoảng cách giữa ý định và hành động.'}]}
+@@ -30,7 +33,7 @@ const summary={question:request.messages[0].text,operationId:request.operationId
+  conservativeReservationUSD:plan.reservedNanoUSD/1e9,estimatedAtUncachedInputBoundUSD:(plan.inputTokenBound*LUNA_API.inputNanoUSD+LUNA_API.maxOutputTokens*LUNA_API.outputNanoUSD)/1e9,
+  estimateMethod:'UTF-8 request bytes + 4096 overhead as conservative offline token bound; not tokenizer count. Reservation allows higher input cache-write rate, no discounted cache assumption.',
+  proposedSession:{approved:false,userQuestions:50,maxResponses:50,maxAttemptsIncludingFailures:50,perRequestReservationMaxUSD:maxRequestReserve/1e9,totalReservationProposalUSD:50*maxRequestReserve/1e9,noOldGrantReused:true,existingQuotasAndRatesUnchanged:true},
+- approved:false,keyConfigured:existsSync(join(lunaLocalDirectory(),'api-key.txt')),fullExactRequestPrivateFile:file,liveCalls:0}
++ approved:false,keyConfigured:lunaOneShot().configured(),fullExactRequestPrivateFile:file,liveCalls:0}
+ if(!existsSync(join(local,'first-runtime-preview.json')))writeFileSync(join(out,'first-request-summary.json'),JSON.stringify(summary,null,2))
+ console.log(JSON.stringify({payloadSHA:plan.payloadSHA,sources:refs.length,estimateUSD:summary.estimatedAtUncachedInputBoundUSD,reserveUSD:summary.conservativeReservationUSD,keyConfigured:summary.keyConfigured,approved:false}))
+ const require=createRequire(new URL('../functions/package.json',import.meta.url));await require('firebase-admin/firestore').getFirestore().terminate()
+diff --git a/tests/start-father-api.mjs b/tests/start-father-api.mjs
+index 0e5c4a8..fdca68e 100644
+--- a/tests/start-father-api.mjs
++++ b/tests/start-father-api.mjs
+@@ -1,9 +1,29 @@
+ // Explicit owner-selected direct API route. Startup/preview never generates.
+ import {spawn} from 'node:child_process'
+ import {resolve} from 'node:path'
+-if(!process.env.LOCALAPPDATA)throw Error('LOCALAPPDATA required for external key configuration')
+-const env={...process.env,INSPIRE_FATHER_WEEKEND:'0',INSPIRE_PRIVATE_TEST:'1',INSPIRE_LUNA_API_PREVIEW:'1',INSPIRE_BILLING_ROUTE:'api-key'}
+-delete env.OPENAI_API_KEY // This route reads only the established external file.
+-const child=spawn(process.execPath,[resolve('node_modules/vite/bin/vite.js'),'--host','127.0.0.1','--port','5173','--strictPort'],{env,stdio:'inherit',windowsHide:true})
+-for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>child.kill(sig))
+-child.once('exit',code=>process.exit(code??1))
++import {readFileSync} from 'node:fs'
++import {parseEnv} from 'node:util'
++import {pathToFileURL} from 'node:url'
++
++// Node's native dotenv parser; no expansion or frontend environment loading.
++// Importing this module is inert. Only the requested backend key is selected.
++export function fatherApiEnvironment(parent=process.env,file=resolve('functions/.env.local')) {
++ if(!parent.LOCALAPPDATA)throw Error('LOCALAPPDATA required for authorization storage')
++ const env={...parent,INSPIRE_FATHER_WEEKEND:'0',INSPIRE_PRIVATE_TEST:'1',INSPIRE_LUNA_API_PREVIEW:'1',INSPIRE_BILLING_ROUTE:'api-key',INSPIRE_API_KEY_SOURCE:'functions/.env.local'}
++ // Windows environment names are case-insensitive. An inherited key must not
++ // win over the selected file, including when that file is absent or empty.
++ for(const name of Object.keys(env))if(name.toUpperCase()==='OPENAI_API_KEY')delete env[name]
++ env.OPENAI_API_KEY=''
++ try {env.OPENAI_API_KEY=(parseEnv(readFileSync(file,'utf8').replace(/^\uFEFF/,'' )).OPENAI_API_KEY||'').trim()}
++ catch(error){if(error?.code!=='ENOENT')throw Error('LOCAL_API_ENV_LOAD_HOLD')}
++ return env
++}
++
++if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
++ // Populate the child environment BEFORE Vite imports/initializes the adapter.
++ const env=fatherApiEnvironment()
++ console.log(JSON.stringify({keyConfigured:Boolean(env.OPENAI_API_KEY)}))
++ const child=spawn(process.execPath,[resolve('node_modules/vite/bin/vite.js'),'--host','127.0.0.1','--port','5173','--strictPort'],{env,stdio:'inherit',windowsHide:true})
++ for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>child.kill(sig))
++ child.once('exit',code=>process.exit(code??1))
++}
+diff --git a/tests/verify-luna-env-isolation.mjs b/tests/verify-luna-env-isolation.mjs
+new file mode 100644
+index 0000000..8113e86
+--- /dev/null
++++ b/tests/verify-luna-env-isolation.mjs
+@@ -0,0 +1,34 @@
++// Backend-only verification. Secret values stay in memory; output is metadata.
++// No execute endpoint, model request, authorization writer or key-file fallback.
++import assert from 'node:assert/strict'
++import {readFileSync,readdirSync,writeFileSync,mkdirSync} from 'node:fs'
++import {join,resolve} from 'node:path'
++import {spawnSync} from 'node:child_process'
++import {randomUUID} from 'node:crypto'
++import {fatherApiEnvironment} from './start-father-api.mjs'
++const out='docs/evidence/api-env-2026-11-25',base='http://127.0.0.1:5173'
++mkdirSync(out,{recursive:true})
++const key=fatherApiEnvironment().OPENAI_API_KEY,keyConfigured=Boolean(key)
++const git=spawnSync('git',['ls-files','--error-unmatch','--','functions/.env.local'],{encoding:'utf8',windowsHide:true})
++assert.notEqual(git.status,0,'ENV_LOCAL_IS_TRACKED')
++const ignored=spawnSync('git',['check-ignore','--quiet','--','functions/.env.local'],{windowsHide:true})
++assert.equal(ignored.status,0,'ENV_LOCAL_NOT_IGNORED')
++const walk=d=>readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(join(d,e.name)):[join(d,e.name)])
++const hits=[],files=walk('dist'),canary='sk-offline_fixture_ENV_BUILD_CANARY_20261125'
++for(const file of files){const bytes=readFileSync(file);if([key,canary].filter(Boolean).some(value=>bytes.includes(Buffer.from(value))))hits.push(file)}
++assert.equal(hits.length,0,'CONFIGURATION_FOUND_IN_PUBLIC_BUILD')
++const status=await fetch(base+'/api/inspire-private-status').then(r=>r.json())
++assert.equal(status.modelAvailable,false);assert.equal(status.lunaApiPreview,true);assert.equal(status.chatgptPreview,false)
++const routes={}
++for(const path of ['/functions/.env.local','/functions/.env.local?raw','/functions/.env','/.env.local','/functions%2f.env.local','/@fs/'+resolve('functions/.env.local').replaceAll('\\','/')]){
++ const r=await fetch(base+path);await r.body?.cancel();routes[path]=r.status;assert.equal(r.status,403,'PRIVATE_ENV_HTTP_HOLD')
++}
++const auth=await fetch('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-only',{method:'POST',headers:{'Content-Type':'application/json'},body:'{"returnSecureToken":true}'}).then(r=>r.json())
++assert.equal(typeof auth.idToken,'string','DEMO_AUTH_REQUIRED')
++const post=async body=>{const r=await fetch(base+'/api/inspire-luna',{method:'POST',headers:{'Content-Type':'application/json',Origin:base,Authorization:'Bearer '+auth.idToken},body:JSON.stringify(body)});assert.equal(r.status,200,'LOCAL_PREVIEW_HOLD');return r.json()}
++const session=await post({kind:'session'})
++const preview=await post({kind:'preview',request:{kind:'send',epoch:session.epoch,sessionId:session.sessionId,operationId:randomUUID(),conversationId:randomUUID(),messages:[{id:'config-only',role:'user',text:'zconfigprobe'+randomUUID().replaceAll('-','')}]}})
++assert.equal(preview.keyConfigured,keyConfigured,'RESTART_CONFIG_MISMATCH');assert.equal(preview.payload,undefined);assert.equal(preview.instructions,undefined)
++if(key)assert.ok(!JSON.stringify(preview).includes(key),'CONFIGURATION_FOUND_IN_RECEIPT')
++const report={executed:true,keyConfigured,gitIgnored:true,gitTracked:false,publicBuildFiles:files.length,configurationHits:hits,envHTTP:routes,adapterInitializedWithSelectedConfiguration:true,clientReceiptContainsConfiguration:false,generation:'UNARMED',chatgptFallback:false,legacyFileFallback:false,inferenceCalls:0,grantsModified:false}
++writeFileSync(out+'/isolation.json',JSON.stringify(report,null,2));console.log(JSON.stringify({keyConfigured,configurationIsolation:'PASS',inferenceCalls:0}))
+diff --git a/vite.config.ts b/vite.config.ts
+index 965403a..9af59ad 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -38,7 +38,7 @@ export function inspirePrototype(serviceFactory = createLocalService, lunaFactor
+         catch { res.statusCode = 400; res.end(); return }
+         const parts = path.split('/')
+         const protectedFile = /(?:^|\/)(?:vite\.config\.[^/]*|[^/]*\.(?:log|patch|zip))$/.test(path)
+-        const denied = protectedFile || parts.some(x => ['.private.local','.tools.local','.vite-temp','tests'].includes(x)) ||
++        const denied = protectedFile || /(?:^|\/)\.env(?:\.[^/]*)?$/.test(path) || parts.some(x => ['.private.local','.tools.local','.vite-temp','tests'].includes(x)) ||
+           (parts.includes('docs') && !path.endsWith('/docs/counseling-topics-source.md')) ||
+           (parts.includes('functions') && !path.endsWith('/functions/src/inspirechatcontract.ts'))
+         if (denied) { res.statusCode = 403; res.setHeader('Cache-Control','no-store'); res.end(); return }

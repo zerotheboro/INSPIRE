@@ -1,0 +1,13 @@
+✔ private service connects existing retrieval to stable preview, ignores no controls, and refuses any dispatch (470.3702ms)
+✔ permitted synthetic passage reaches native Controller-bound adapter input; exact output is validated before return (4481.9527ms)
+✔ revoked permission invalidates a held preview; restart cannot recreate pending session or multiply owner attempts (67.5284ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7760.9367
+
+EXIT_CODE=0

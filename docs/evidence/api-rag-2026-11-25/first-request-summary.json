@@ -1,0 +1,96 @@
+{
+  "question": "Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm. Giúp tôi hiểu khoảng cách giữa ý định và hành động.",
+  "operationId": "api-first-attempt-20261125",
+  "model": "gpt-6-luna",
+  "endpoint": "https://api.openai.com/v1/responses",
+  "maxOutputTokens": 512,
+  "displayCharacters": 2000,
+  "tools": [],
+  "store": false,
+  "automaticRetries": false,
+  "payloadSHA": "ffff431ac3e1e8c485f145ccea1e6a23086bb57cf7af1da46a544c8a4e09067c",
+  "binding": "408a481775eb8562a9cbc1e7dda5e5f472fc87d6d63801cede316d77d83a5840",
+  "sourceCount": 3,
+  "sources": [
+    {
+      "documentId": "corpus-cef55cbb7beb4e5fce595063",
+      "version": 4,
+      "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+      "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+      "title": "INSPIRE-main/docs/counseling-topics-source.md",
+      "sourceStatus": "review-required",
+      "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 11564,
+      "endOffset": 12927,
+      "startLine": 366,
+      "endLine": 420,
+      "characters": 1363
+    },
+    {
+      "documentId": "bundle-aea2112b5da67f2962842a65",
+      "version": 2,
+      "hash": "31d5ee4a60f308ab6ea78747a7e75efcf99abb73e97f3b7828bd7a798f023529",
+      "sectionId": "bundle-aea2112b5da67f2962842a65-22",
+      "title": "Podcast_Mo-dun_2_Chuyen-tiep_Mat-mat_Thich-nghi.md",
+      "sourceStatus": "review-required",
+      "sectionHash": "3e5a6d6fe6ca1c9cda94bce2e678f31eaf2863835432ec0d8ecbd8262b1abd18",
+      "headingPath": [
+        "PODCAST — MÔ-ĐUN 2: CHUYỂN TIẾP, MẤT MÁT VÀ THÍCH NGHI",
+        "Phần tám — Mục tiêu làm việc của Mô-đun 2"
+      ],
+      "startOffset": 16690,
+      "endOffset": 17893,
+      "startLine": 281,
+      "endLine": 302,
+      "characters": 1203
+    },
+    {
+      "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+      "version": 2,
+      "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+      "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-14",
+      "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+      "sourceStatus": "review-required",
+      "sectionHash": "1f74548d9922a7ccd5bf77f94ebe10f8a0ccb1b075827fdc35eec745974ce142",
+      "headingPath": [
+        "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+        "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+        "4. NHẬN BIẾT — Tôi có thể nhìn thấy sự đồng nhất ấy khi nó đang diễn ra không?"
+      ],
+      "startOffset": 11764,
+      "endOffset": 12771,
+      "startLine": 371,
+      "endLine": 404,
+      "characters": 1007
+    }
+  ],
+  "inputByteBound": 12555,
+  "pricing": {
+    "checked": "2026-11-25",
+    "expires": "2026-12-02T00:00:00Z",
+    "inputUSDPerMillion": 0.1,
+    "outputUSDPerMillion": 0.5,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+  },
+  "conservativeReservationUSD": 0.00339475,
+  "estimatedAtUncachedInputBoundUSD": 0.0015115,
+  "estimateMethod": "UTF-8 request bytes + 4096 overhead as conservative offline token bound; not tokenizer count. Reservation allows higher input cache-write rate, no discounted cache assumption.",
+  "proposedSession": {
+    "approved": false,
+    "userQuestions": 50,
+    "maxResponses": 50,
+    "maxAttemptsIncludingFailures": 50,
+    "perRequestReservationMaxUSD": 0.01128,
+    "totalReservationProposalUSD": 0.564,
+    "noOldGrantReused": true,
+    "existingQuotasAndRatesUnchanged": true
+  },
+  "approved": false,
+  "keyConfigured": false,
+  "fullExactRequestPrivateFile": ".private.local\\api-rag\\first-preview.json",
+  "liveCalls": 0
+}

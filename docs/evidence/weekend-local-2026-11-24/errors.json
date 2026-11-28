@@ -1,0 +1,26 @@
+{
+  "executed": true,
+  "invalidRequest": {
+    "status": 400,
+    "data": {
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "Vai trò, thứ tự hoặc nội dung tin nhắn không hợp lệ (tối đa 2.000 ký tự).",
+        "retry": "none"
+      }
+    }
+  },
+  "unknownReplay": {
+    "status": 409,
+    "data": {
+      "error": {
+        "code": "RESULT_UNKNOWN",
+        "message": "Không còn kết quả để xác minh. Lượt gửi này sẽ không tự chạy lại; hãy mở cuộc trò chuyện mới.",
+        "retry": "none"
+      }
+    }
+  },
+  "pageStatus": 200,
+  "liveModelCalls": 0,
+  "note": "HTTP and conversation-store evidence; rendered browser unavailable."
+}

@@ -15,6 +15,18 @@ socket.socket.connect_ex = blocked
 socket.create_connection = blocked
 from inspire_research_controller import NativeResearchValidation
 
+# Explicit diagnostic codes only. No raw exception/prompt/packet is returned.
+SAFE_HOLDS = {
+    "CONTROLLER_MANIFEST_HOLD", "CONTROLLER_PATH_HOLD",
+    "CONTROLLER_SOURCE_INTEGRITY_HOLD", "CONTROLLER_STATE_BINDING_HOLD",
+    "RESEARCH_OUTPUT_LENGTH_OR_CONTROL_HOLD", "CONTROLLER_EXACT_OUTPUT_HOLD",
+    "NATIVE_SAFETY_GATE_HELD_CANDIDATE", "SOURCE_INTEGRITY_HOLD",
+    "OUTPUT_INVALID", "OUTPUT_SCOPE_HOLD", "OUTPUT_ARCHITECTURE_JARGON_HOLD",
+    "OUTPUT_LANGUAGE_REVIEW_REQUIRED", "OUTPUT_BINDING_HOLD",
+    "OUTPUT_BINDING_OR_EXPIRY_HOLD", "MOCK_POLICY_HOLD",
+    "INVALID_NATIVE_PACKET", "INVALID_NATIVE_PHASE",
+}
+
 try:
     packet = json.load(sys.stdin)
     if set(packet) != {"kind", "request", "previous", "binding", "text"}:
@@ -34,6 +46,7 @@ try:
                       "text": None if preflight else result["text"],
                       "state": None if preflight else result["state"],
                       "proof": result["proof"]}, ensure_ascii=False))
-except Exception:
+except Exception as exc:
     # No raw exception, prompt, private excerpt or profile is returned/logged.
-    print(json.dumps({"ok": False, "code": "NATIVE_CONTROLLER_HOLD"}))
+    reason = str(exc) if str(exc) in SAFE_HOLDS else "NATIVE_CONTROLLER_REJECTED"
+    print(json.dumps({"ok": False, "code": "NATIVE_CONTROLLER_HOLD", "reason": reason}))

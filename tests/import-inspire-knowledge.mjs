@@ -96,9 +96,19 @@ for (const original of new Map(sources.map(item=>[item.id,item])).values()) {
   const record = {collection: 'INSPIRE', documentId: item.id, title: item.title,
     status: item.status, permittedUse: item.use, rawFile: hash,
     ...(item.kind?{kind:item.kind}:{}),...(item.provenance?{provenance:item.provenance}:{}),
+    ...(item.extraction?{extraction:item.extraction}:{}),...(item.relations?{relations:item.relations}:{}),
+    ...(item.contentClass?{contentClass:item.contentClass}:{}),
     ...(item.permissions?{permissions:item.permissions}:{})}
   let extracted
   if(/\.(txt|md)$/i.test(item.path))extracted=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(raw)
+  if(item.extractedFile){
+    const extractionPath=resolve(item.extractedFile)
+    if(!extractionPath.startsWith(resolve('.private.local/knowledge/extracted')+sep))throw Error('Private extraction path required')
+    const result=JSON.parse(readFileSync(extractionPath,'utf8'))
+    if(result.sourceHash!==hash||createHash('sha256').update(result.text).digest('hex')!==result.textHash)throw Error('Extraction integrity hold')
+    extracted=result.text
+  }
+  if(item.noExtractedContent)extracted=''
   // Keep an immutable local metadata history as well as Firestore versions.
   // Emulator resets must not erase source history or restart version numbering.
   const historyDir=resolve('.private.local/knowledge/history',item.id)

@@ -1,0 +1,167 @@
+{
+  "executedAt": "2026-11-26T06:57:20.790Z",
+  "base": "http://127.0.0.1:5173",
+  "model": "gpt-6-luna",
+  "question": "Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm. Giúp tôi hiểu khoảng cách giữa ý định và hành động.",
+  "payloadSHA": "4ae3f7d25bea3c33ca1c094d6b74928d063d77fcb28bbd8e041137bca5620edb",
+  "binding": "e756d6827a4bfb5bade5638f2725957308aee6fd694db89d785c40fc51f4ba05",
+  "sourceReferences": [
+    {
+      "documentId": "corpus-cef55cbb7beb4e5fce595063",
+      "version": 6,
+      "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+      "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+      "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa"
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 6,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-18",
+      "sectionHash": "1c440ec8aa67669694690ff3b6464554f05c30a3b20aced6ea461de4dad87afe"
+    },
+    {
+      "documentId": "lesson-C04-06",
+      "version": 2,
+      "hash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+      "sectionId": "lesson-C04-06-2",
+      "sectionHash": "5829537a1e878619c5455543a1d0402072721ca8040ca2a39775aa0f9a22f62e"
+    }
+  ],
+  "privateInputTrace": "LocalAppData/INSPIRE-Luna/private-session/verification-plan.json",
+  "maximumReservationUSD": 0.007066,
+  "applicationRequests": [
+    "session",
+    "conversation",
+    "budget-status"
+  ],
+  "conversationStatus": "idle",
+  "error": null,
+  "diagnostics": {
+    "budget": {
+      "released": true,
+      "purpose": "verification",
+      "maxAttempts": 1,
+      "expiresAt": "2026-11-26T07:56:59.374Z",
+      "reservedAttempts": 1,
+      "generationDispatches": 1,
+      "budgetNanoUSD": 10000000,
+      "heldNanoUSD": 7066000,
+      "lastProvider": {
+        "type": "provider",
+        "operationId": "verify-operation-20261126",
+        "binding": "77cb62de908af39ed1a1d79846039d9abc18bafd4259305e56be0035074137fe",
+        "status": "completed",
+        "responseId": "resp_0fcd207952934f89016b07d847c14487d0ad18e093f5b76565",
+        "inputTokens": 2290,
+        "outputTokens": 175,
+        "cachedTokens": 0,
+        "cacheWriteTokens": 2287,
+        "candidateEnvelopeSHA": "9385d85ac58efd0fb82479ce377882ae21e6aff68e9133ff28fb2a8e37728314"
+      },
+      "lastValidation": {
+        "type": "validated",
+        "operationId": "verify-operation-20261126",
+        "binding": "77cb62de908af39ed1a1d79846039d9abc18bafd4259305e56be0035074137fe",
+        "outputSHA": "311b40afae212b58a39ba9ef6628633b0c7d03447b83d6193a7246026197c64d"
+      }
+    },
+    "operationId": "verify-operation-20261126",
+    "payloadSHA": "4ae3f7d25bea3c33ca1c094d6b74928d063d77fcb28bbd8e041137bca5620edb",
+    "binding": "77cb62de908af39ed1a1d79846039d9abc18bafd4259305e56be0035074137fe",
+    "sourceCount": 3,
+    "controller": [
+      {
+        "phase": "preflight",
+        "operationId": "verify-operation-20261126",
+        "binding": "77cb62de908af39ed1a1d79846039d9abc18bafd4259305e56be0035074137fe",
+        "payloadSHA": "4ae3f7d25bea3c33ca1c094d6b74928d063d77fcb28bbd8e041137bca5620edb",
+        "checksExecuted": [
+          "Source/excerpt integrity",
+          "Research triage",
+          "Quote-bound ledger",
+          "Non-MOCK ScopeGuard",
+          "PermissionInspector (actual execution held)",
+          "GeneratedValidator HMAC",
+          "MockSink exact bytes/source/policy recheck",
+          "Native receipt-bound Session.commit"
+        ],
+        "validatedSHA": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+        "actualExecutionEligible": false
+      },
+      {
+        "phase": "candidate",
+        "operationId": "verify-operation-20261126",
+        "binding": "77cb62de908af39ed1a1d79846039d9abc18bafd4259305e56be0035074137fe",
+        "payloadSHA": "4ae3f7d25bea3c33ca1c094d6b74928d063d77fcb28bbd8e041137bca5620edb",
+        "checksExecuted": [
+          "Source/excerpt integrity",
+          "Research triage",
+          "Quote-bound ledger",
+          "Non-MOCK ScopeGuard",
+          "PermissionInspector (actual execution held)",
+          "GeneratedValidator HMAC",
+          "MockSink exact bytes/source/policy recheck",
+          "Native receipt-bound Session.commit"
+        ],
+        "validatedSHA": "311b40afae212b58a39ba9ef6628633b0c7d03447b83d6193a7246026197c64d",
+        "actualExecutionEligible": false
+      }
+    ],
+    "references": [
+      {
+        "documentId": "corpus-cef55cbb7beb4e5fce595063",
+        "version": 6,
+        "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+        "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+        "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa"
+      },
+      {
+        "documentId": "website-counseling",
+        "version": 6,
+        "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+        "sectionId": "website-counseling-18",
+        "sectionHash": "1c440ec8aa67669694690ff3b6464554f05c30a3b20aced6ea461de4dad87afe"
+      },
+      {
+        "documentId": "lesson-C04-06",
+        "version": 2,
+        "hash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+        "sectionId": "lesson-C04-06-2",
+        "sectionHash": "5829537a1e878619c5455543a1d0402072721ca8040ca2a39775aa0f9a22f62e"
+      }
+    ]
+  },
+  "budget": {
+    "budget": {
+      "released": true,
+      "purpose": "verification",
+      "maxAttempts": 1,
+      "expiresAt": "2026-11-26T07:56:59.374Z",
+      "reservedAttempts": 1,
+      "generationDispatches": 1,
+      "budgetNanoUSD": 10000000,
+      "heldNanoUSD": 7066000,
+      "lastProvider": {
+        "type": "provider",
+        "operationId": "verify-operation-20261126",
+        "binding": "77cb62de908af39ed1a1d79846039d9abc18bafd4259305e56be0035074137fe",
+        "status": "completed",
+        "responseId": "resp_0fcd207952934f89016b07d847c14487d0ad18e093f5b76565",
+        "inputTokens": 2290,
+        "outputTokens": 175,
+        "cachedTokens": 0,
+        "cacheWriteTokens": 2287,
+        "candidateEnvelopeSHA": "9385d85ac58efd0fb82479ce377882ae21e6aff68e9133ff28fb2a8e37728314"
+      },
+      "lastValidation": {
+        "type": "validated",
+        "operationId": "verify-operation-20261126",
+        "binding": "77cb62de908af39ed1a1d79846039d9abc18bafd4259305e56be0035074137fe",
+        "outputSHA": "311b40afae212b58a39ba9ef6628633b0c7d03447b83d6193a7246026197c64d"
+      }
+    }
+  },
+  "browserRendering": "NOT VERIFIED; actual ConversationStore and transport over HTTP executed",
+  "publicGeneration": false
+}

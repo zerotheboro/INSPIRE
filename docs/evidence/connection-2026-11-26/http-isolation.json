@@ -1,0 +1,20 @@
+{
+  "executed": true,
+  "keyConfigured": true,
+  "paths": {
+    "/functions/.env.local": 403,
+    "/functions/.env.local?raw": 403,
+    "/.private.local/knowledge/receipts.json": 403,
+    "/functions/src/inspireLunaApi.ts?raw": 403,
+    "/docs/evidence/connection-2026-11-26/model-access.json": 403,
+    "/ai-inspire?thu-rieng=1": 200,
+    "/tham-van-tam-ly": 200,
+    "/nghi-duong-duong-sinh": 200,
+    "/src/pages/AIInspire.tsx": 200,
+    "/src/services/InspireAIconnect.ts": 200
+  },
+  "existingDistScanned": 17,
+  "buildRun": false,
+  "browserRendering": "NOT VERIFIED",
+  "inferenceCalls": 0
+}

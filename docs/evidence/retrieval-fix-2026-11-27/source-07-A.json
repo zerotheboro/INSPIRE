@@ -1,0 +1,44 @@
+{
+  "executed": true,
+  "exists": true,
+  "documentId": "original-8e9a8623b864c4282dc3d68c",
+  "title": "sources/recovered/INSPIRE-07-A.txt",
+  "version": 7,
+  "hash": "d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2",
+  "rawOriginalPresent": true,
+  "rawHashMatches": true,
+  "extractedCharacters": 12565,
+  "sections": 54,
+  "status": "review-required",
+  "kind": "reference",
+  "contentClass": "content",
+  "externalEligible": true,
+  "permissions": {
+    "sourceHashMatches": true,
+    "internalResearch": true,
+    "externalExport": true,
+    "runtimeUse": "private-reference-evaluation",
+    "sectionGrantCount": 54
+  },
+  "relations": null,
+  "provenance": {
+    "packageHash": "2a69642061f8dea4b3f96d8994180a8e27b0356d1855e7134415eb042f8e469c",
+    "relativePath": "private_payload/01_controller_sources/d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2.txt",
+    "declaredVersion": "v1.0",
+    "authority": "not_granted_by_packaging; reference-or-governance-as-labelled"
+  },
+  "identifierTokens": [
+    "inspire"
+  ],
+  "firstHeading": [
+    "INSPIRE-07-A"
+  ],
+  "modelCalls": 0,
+  "availability": "AVAILABLE_NOT_SOURCE_MISSING",
+  "relationshipCheck": {
+    "declaredType": "Amendment / Clarification",
+    "declaredParent": "INSPIRE-07 v1.0",
+    "basis": "Original source header and explicit link line, verified against indexed text; stored relations metadata is null.",
+    "authority": "Source claim only; review-required and private-reference-evaluation unchanged. No automatic supersession or operating permission."
+  }
+}

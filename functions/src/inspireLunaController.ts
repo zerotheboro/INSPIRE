@@ -22,6 +22,7 @@ export function createLunaController() {
     const preflight = text === undefined;
     const key = prepared.request.sessionId + ":" +
       prepared.request.conversationId;
+    let transportFailure: unknown;
     const packet: unknown = await new Promise((done, reject) => {
       const child = spawn(process.env.INSPIRE_CONTROLLER_PYTHON ||
         resolve(".tools.local/python312/python.exe"), ["-X", "utf8",
@@ -42,8 +43,9 @@ export function createLunaController() {
         else chunks.push(part);
       });
       child.stderr.resume();
-      child.on("error", () => {
-        clearTimeout(timer); reject(new Error("NATIVE_UNAVAILABLE"));
+      child.on("error", (error) => {
+        clearTimeout(timer);
+        reject(new ConfirmedNoReply("NATIVE_UNAVAILABLE", error));
       });
       child.on("close", (code) => {
         clearTimeout(timer);
@@ -51,8 +53,8 @@ export function createLunaController() {
           if (code !== 0 || size > 1000000) throw Error();
           done(JSON.parse(new TextDecoder("utf-8", {fatal: true})
             .decode(Buffer.concat(chunks))));
-        } catch {
-          reject(new Error("NATIVE_PROTOCOL_HOLD"));
+        } catch (error) {
+          reject(new ConfirmedNoReply("NATIVE_PROTOCOL_HOLD", error));
         }
       });
       child.stdin.on("error", () => {});
@@ -60,7 +62,10 @@ export function createLunaController() {
         kind: preflight ? "preflight" : "validate",
         request: prepared.request, previous: states.get(key) ?? null,
         binding: prepared.binding, text: text ?? null}));
-    }).catch(() => null);
+    }).catch((error) => {
+      transportFailure = error;
+      return null;
+    });
     if (!record(packet) || packet.ok !== true ||
         packet.binding !== prepared.binding ||
         packet.operationId !== prepared.request.operationId ||
@@ -69,10 +74,16 @@ export function createLunaController() {
         packet.proof.user_delivery !== false ||
         (!preflight && (packet.text !== text ||
           packet.proof.validated_sha256 !== lunaHash(text!)))) {
+      const reason = transportFailure ?? new Error(
+        record(packet) && packet.ok === false ?
+          packet.code === "NATIVE_CONTROLLER_HOLD" &&
+          typeof packet.reason === "string" &&
+          /^[A-Z_]{1,80}$/.test(packet.reason) ? packet.reason :
+            "NATIVE_CONTROLLER_REJECTED" : "NATIVE_RESPONSE_BINDING_HOLD");
       if (preflight) {
-        throw new ConfirmedNoReply("LUNA_CONTROLLER_PREFLIGHT_HOLD");
+        throw new ConfirmedNoReply("LUNA_CONTROLLER_PREFLIGHT_HOLD", reason);
       }
-      throw new UnknownReplyOutcome("LUNA_CONTROLLER_OUTPUT_HOLD");
+      throw new UnknownReplyOutcome("LUNA_CONTROLLER_OUTPUT_HOLD", reason);
     }
     receipts.push({phase: preflight ? "preflight" : "candidate",
       operationId: prepared.request.operationId, binding: prepared.binding,

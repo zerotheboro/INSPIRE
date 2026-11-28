@@ -1,0 +1,38 @@
+{
+  "results": {
+    "api": {
+      "exitCode": 1,
+      "error": null
+    },
+    "safeguards": {
+      "exitCode": 0,
+      "error": null
+    },
+    "conversation": {
+      "exitCode": 0,
+      "error": null
+    },
+    "retrieval": {
+      "exitCode": 1,
+      "error": null
+    },
+    "backend": {
+      "exitCode": 0,
+      "error": null
+    },
+    "website": {
+      "exitCode": 0,
+      "error": null
+    },
+    "lint": {
+      "exitCode": 0,
+      "error": null
+    },
+    "privacy": {
+      "exitCode": 0,
+      "error": null
+    }
+  },
+  "paidCalls": 0,
+  "scope": "Focused offline/emulator checks; historical 48/49 unchanged"
+}

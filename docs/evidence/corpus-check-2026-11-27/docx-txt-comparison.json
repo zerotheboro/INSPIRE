@@ -1,0 +1,30 @@
+{
+  "executed": true,
+  "readOnlySourceComparison": true,
+  "docx": {
+    "documentId": "bundle-a89c8851a5c86033eb487afa",
+    "receiptVersion": 2,
+    "sha256": "0fdfa8a9cd9b7d5c0339e341f719336adc2b2f81b7f3e80553856dc792ac27a7",
+    "bodyCharacters": 9988
+  },
+  "txt": {
+    "documentId": "bundle-ab98b70908c73d33467111e3",
+    "receiptVersion": 2,
+    "sha256": "37508003ca2eb70a8ef820301ed4da477ee887efba8296954c32c831308b019b",
+    "characters": 9989
+  },
+  "exactTextEqual": false,
+  "differenceOnlyOneTrailingNewline": true,
+  "bodyEqualAfterNFCAndWhitespace": true,
+  "normalizedBodySHA256": {
+    "docx": "37b44598be72f2d2f30ac963822e7b1c9743cfec08037c97293a3154dcd72933",
+    "txt": "37b44598be72f2d2f30ac963822e7b1c9743cfec08037c97293a3154dcd72933"
+  },
+  "additionalWordTextParts": [],
+  "trackedInsertions": 0,
+  "trackedDeletions": 0,
+  "relationship": "Main-body textual correspondence verified; this is not original-file/version/permission equivalence.",
+  "indexWrites": 0,
+  "permissionsChanged": false,
+  "sourceFilesChanged": false
+}

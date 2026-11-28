@@ -1,0 +1,10 @@
+✔ exact API preview retains both roles/corrections and omits private profiles and inherited operating text (8.6944ms)
+✔ meaningful sections preserve exact CRLF/source offsets, heading paths and bounded Unicode text (2.7992ms)
+✔ durable one-shot rejects missing/mismatched/expired authority, races, restart and accounting overflow (68.604ms)
+✔ SDK uses the fixed Responses endpoint, exact body and zero automatic 429 retries (intercepted fetch) (39.6423ms)
+✔ strict candidate parsing rejects wrong models, tools, reasoning-only, refusals and altered whitespace (2.5563ms)
+✔ conversation retrieval, permission isolation, incremental replacement and immediate revocation reach exact adapter input (10035.2536ms)
+✔ an exact excerpt grant exports only that section, while other sections remain internal (5577.2605ms)
+✔ 51 ineligible matching sources cannot consume the candidate limit before an eligible reference (7186.6922ms)
+
+EXIT_CODE=null

@@ -1,7 +1,7 @@
-import {spawn} from 'node:child_process'
 import {existsSync, readdirSync} from 'node:fs'
 import {resolve, join, delimiter, win32, posix} from 'node:path'
 import {pathToFileURL} from 'node:url'
+import {superviseEmulators,requestEmulatorStop} from './inspire-emulator-persistence.mjs'
 
 // Pure construction: platform/FS parameters permit meaningful POSIX tests here.
 export function launcherEnvironment(parent, {platform=process.platform, tools=resolve('.tools.local'),
@@ -21,8 +21,6 @@ export function launcherEnvironment(parent, {platform=process.platform, tools=re
 
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
   const env=launcherEnvironment(process.env)
-  const child=spawn(process.execPath,[resolve('node_modules/firebase-tools/lib/bin/firebase.js'),
-    'emulators:start','--only','auth,firestore','--project','demo-inspire'],{env,stdio:'inherit',windowsHide:true})
-  for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>child.kill(signal))
-  child.on('exit',code=>process.exit(code??0))
+  if(process.argv[2]==='--stop')await requestEmulatorStop()
+  else await superviseEmulators(env)
 }

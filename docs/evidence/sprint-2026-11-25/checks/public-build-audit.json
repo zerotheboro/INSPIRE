@@ -1,0 +1,20 @@
+{
+  "executed": true,
+  "scope": "All generated dist files, including static assets; synthetic private profile/knowledge canaries, restricted source identifiers and emulator-only auth markers.",
+  "scannedFiles": 17,
+  "forbiddenMarkers": [
+    "PRIVATE_KNOWLEDGE_REVIEW_CANARY",
+    "PRIVATE_PROFILE_REVIEW_CANARY",
+    "INSPIRE-CONTENT-PATCH-20261109-v0.1",
+    "mock_engine.pec_mock",
+    "Never infer P1/P2/P3, diagnoses or intervention permission",
+    "demo-inspire-local-only",
+    "127.0.0.1:9099",
+    "inspire-known-account",
+    "Trích nguồn làm việc MOI-01 v1.0",
+    "NETWORK_DISABLED_SCOPE_A_BRIDGE",
+    "931985119075683652b770b93f1f08c889b1acc3e74fa5dd6dcbd5caf22f8ef3"
+  ],
+  "hits": [],
+  "limitation": "Finite canary/identifier scan plus production browser/config checks. Not a proof against every possible transformed secret; no real user profile or private corpus is packaged."
+}

@@ -1,0 +1,961 @@
+{
+  "collectionId": "father-reference-concepts-v1",
+  "approved": false,
+  "sourceHashesVerified": true,
+  "verifiedReceiptCount": 71,
+  "scope": "8 sources, not the entire INSPIRE corpus; existing statuses unchanged",
+  "maximumPerTurn": {
+    "passages": 3,
+    "charactersPerPassage": 1400,
+    "totalCharacters": 4200
+  },
+  "unresolved": [
+    "Individual sources remain editorial proposals/review-required where recorded.",
+    "Owner has not permitted internal runtime research or external export for this collection.",
+    "Amendments and operating documents are not silently absorbed into the selected conceptual excerpts.",
+    "Actual Controller execution/user-delivery permission is not established by source permission."
+  ],
+  "selected": [
+    {
+      "documentId": "original-ec703307872ce4b819ed7a01",
+      "title": "sources/recovered/INSPIRE-02.txt",
+      "receiptVersion": 1,
+      "declaredVersion": "Not declared in header",
+      "sha256": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "permissions": null,
+      "editorialStatus": "**Trạng thái:** Tài liệu nền chuyên sâu  ",
+      "proposedRole": "reference only; never operating rules, classification or intervention permission",
+      "proposedUse": "private synthetic evaluation; external export of selected relevant sections only",
+      "sections": [
+        {
+          "documentId": "original-ec703307872ce4b819ed7a01",
+          "version": 1,
+          "hash": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+          "sectionId": "original-ec703307872ce4b819ed7a01-4",
+          "title": "sources/recovered/INSPIRE-02.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "a7fc89e00ef9884711e4226347ca4d65afe6044217b9aa75b6dffab74a364a7e",
+          "headingPath": [
+            "4. WHAT là dữ liệu trước khi là diễn giải"
+          ],
+          "startOffset": 2036,
+          "endOffset": 2656,
+          "startLine": 90,
+          "endLine": 121
+        },
+        {
+          "documentId": "original-ec703307872ce4b819ed7a01",
+          "version": 1,
+          "hash": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+          "sectionId": "original-ec703307872ce4b819ed7a01-5",
+          "title": "sources/recovered/INSPIRE-02.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "742f99b040a700f7f3f4baf96721ff54fdc014fa212a5dc7b80b2e7730030dae",
+          "headingPath": [
+            "5. WHAT không đồng nghĩa với “sự thật khách quan tuyệt đối”"
+          ],
+          "startOffset": 2656,
+          "endOffset": 3155,
+          "startLine": 122,
+          "endLine": 150
+        },
+        {
+          "documentId": "original-ec703307872ce4b819ed7a01",
+          "version": 1,
+          "hash": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+          "sectionId": "original-ec703307872ce4b819ed7a01-6",
+          "title": "sources/recovered/INSPIRE-02.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "926e13ffa352e631ebf7c84c73a40e13c2c7f194d7ec03c4d1bbb2e58789130c",
+          "headingPath": [
+            "6. Ba lớp cần tách trong dữ liệu WHAT"
+          ],
+          "startOffset": 3155,
+          "endOffset": 3235,
+          "startLine": 151,
+          "endLine": 154
+        },
+        {
+          "documentId": "original-ec703307872ce4b819ed7a01",
+          "version": 1,
+          "hash": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+          "sectionId": "original-ec703307872ce4b819ed7a01-7",
+          "title": "sources/recovered/INSPIRE-02.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "f20ee01236776d80b377788b92d26c4d29cbc4a59f93360895947cb2badbffae",
+          "headingPath": [
+            "6. Ba lớp cần tách trong dữ liệu WHAT",
+            "A. Sự kiện/bối cảnh"
+          ],
+          "startOffset": 3235,
+          "endOffset": 3321,
+          "startLine": 155,
+          "endLine": 158
+        },
+        {
+          "documentId": "original-ec703307872ce4b819ed7a01",
+          "version": 1,
+          "hash": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+          "sectionId": "original-ec703307872ce4b819ed7a01-8",
+          "title": "sources/recovered/INSPIRE-02.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "5d5e2e19a961e096c786db3e4faef712543fe9305b48e4066d91f8f2e68515bd",
+          "headingPath": [
+            "6. Ba lớp cần tách trong dữ liệu WHAT",
+            "A. Sự kiện/bối cảnh",
+            "B. Trải nghiệm"
+          ],
+          "startOffset": 3321,
+          "endOffset": 3375,
+          "startLine": 159,
+          "endLine": 162
+        },
+        {
+          "documentId": "original-ec703307872ce4b819ed7a01",
+          "version": 1,
+          "hash": "cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19",
+          "sectionId": "original-ec703307872ce4b819ed7a01-9",
+          "title": "sources/recovered/INSPIRE-02.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "745a7dc989479ef29496dea374d70926517d72408919692096d689a5974256f2",
+          "headingPath": [
+            "6. Ba lớp cần tách trong dữ liệu WHAT",
+            "A. Sự kiện/bối cảnh",
+            "C. Diễn giải"
+          ],
+          "startOffset": 3375,
+          "endOffset": 3474,
+          "startLine": 163,
+          "endLine": 170
+        }
+      ]
+    },
+    {
+      "documentId": "original-fb80fc08eb9d7e07fb89e503",
+      "title": "sources/recovered/INSPIRE-07.txt",
+      "receiptVersion": 1,
+      "declaredVersion": "1.0",
+      "sha256": "b12c3c31e089b8512052b5fce365addf882c3be987b7b213c18827a469aa027f",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "permissions": null,
+      "editorialStatus": "**Trạng thái:** Bản chuẩn hóa chuyên sâu để chủ hệ xem xét và phê duyệt. Những cấu trúc phân tích mới trong tài liệu này là đề xuất làm rõ; không tự động trở thành taxonomy cố định hoặc logic triển khai đã được duyệt.",
+      "proposedRole": "reference only; never operating rules, classification or intervention permission",
+      "proposedUse": "private synthetic evaluation; external export of selected relevant sections only",
+      "sections": [
+        {
+          "documentId": "original-fb80fc08eb9d7e07fb89e503",
+          "version": 1,
+          "hash": "b12c3c31e089b8512052b5fce365addf882c3be987b7b213c18827a469aa027f",
+          "sectionId": "original-fb80fc08eb9d7e07fb89e503-5",
+          "title": "sources/recovered/INSPIRE-07.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "c7c68ef48e78dded9c6f509811ecb2393afa9c6b36d5746529659389b6ad28ef",
+          "headingPath": [
+            "2. Định nghĩa chính thức đề xuất"
+          ],
+          "startOffset": 1332,
+          "endOffset": 1661,
+          "startLine": 47,
+          "endLine": 56
+        }
+      ]
+    },
+    {
+      "documentId": "original-75f25d7843039e680d6e3dbc",
+      "title": "sources/recovered/INSPIRE-08.txt",
+      "receiptVersion": 1,
+      "declaredVersion": "1.0",
+      "sha256": "23fe05cabd11c8ac95c9ac443f7345c0c793afb1420ed283b9698f0dd501e8fa",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "permissions": null,
+      "editorialStatus": "**Trạng thái:** Bản chuẩn hóa chuyên sâu để chủ hệ xem xét và phê duyệt. Các cấu trúc phân tích mới trong tài liệu này là đề xuất tổ chức tri thức, chưa tự động trở thành taxonomy cố định hoặc logic triển khai được phê duyệt.",
+      "proposedRole": "reference only; never operating rules, classification or intervention permission",
+      "proposedUse": "private synthetic evaluation; external export of selected relevant sections only",
+      "sections": [
+        {
+          "documentId": "original-75f25d7843039e680d6e3dbc",
+          "version": 1,
+          "hash": "23fe05cabd11c8ac95c9ac443f7345c0c793afb1420ed283b9698f0dd501e8fa",
+          "sectionId": "original-75f25d7843039e680d6e3dbc-5",
+          "title": "sources/recovered/INSPIRE-08.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "2f4c52a80b956856a34803cf58a659dcf424f9aaa94436697793c37766cd31b0",
+          "headingPath": [
+            "2. Định nghĩa chính thức đề xuất"
+          ],
+          "startOffset": 1473,
+          "endOffset": 1957,
+          "startLine": 47,
+          "endLine": 60
+        }
+      ]
+    },
+    {
+      "documentId": "original-791a3933fa528e77cdf2b9e3",
+      "title": "sources/recovered/INSPIRE-09.txt",
+      "receiptVersion": 1,
+      "declaredVersion": "1.0",
+      "sha256": "fc981006e2f443cc50d1178b165e9cf8ab56bfe3ab08b4c264e1d8c824878ac8",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "permissions": null,
+      "editorialStatus": "**Trạng thái:** Bản chuẩn hóa chuyên sâu để chủ hệ xem xét và phê duyệt. Các lăng kính và schema mới là đề xuất tổ chức tri thức, chưa tự động trở thành taxonomy cố định hoặc logic triển khai chatbot đã được duyệt.",
+      "proposedRole": "reference only; never operating rules, classification or intervention permission",
+      "proposedUse": "private synthetic evaluation; external export of selected relevant sections only",
+      "sections": [
+        {
+          "documentId": "original-791a3933fa528e77cdf2b9e3",
+          "version": 1,
+          "hash": "fc981006e2f443cc50d1178b165e9cf8ab56bfe3ab08b4c264e1d8c824878ac8",
+          "sectionId": "original-791a3933fa528e77cdf2b9e3-6",
+          "title": "sources/recovered/INSPIRE-09.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "6aa3d4c95ad6f0bb0c252555c6c02ac30a7a5b37ad55f955e69402b314b8ab67",
+          "headingPath": [
+            "II. ĐỊNH NGHĨA M3",
+            "2. Định nghĩa chính thức đề xuất"
+          ],
+          "startOffset": 1775,
+          "endOffset": 2294,
+          "startLine": 49,
+          "endLine": 58
+        }
+      ]
+    },
+    {
+      "documentId": "original-11d4a49158dd050dba3baac7",
+      "title": "sources/recovered/INSPIRE-10.txt",
+      "receiptVersion": 1,
+      "declaredVersion": "1.0",
+      "sha256": "bfc1cedd7f8f799eae914a5f056272c3a2857127ba4d0a5c9a4533339b48b49e",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "permissions": null,
+      "editorialStatus": "**Trạng thái:** Bản chuẩn hóa chuyên sâu để chủ hệ xem xét và phê duyệt. Các lăng kính, schema và phân biệt mới là đề xuất tổ chức tri thức, chưa tự động trở thành taxonomy cố định hoặc logic chatbot được phê duyệt.",
+      "proposedRole": "reference only; never operating rules, classification or intervention permission",
+      "proposedUse": "private synthetic evaluation; external export of selected relevant sections only",
+      "sections": [
+        {
+          "documentId": "original-11d4a49158dd050dba3baac7",
+          "version": 1,
+          "hash": "bfc1cedd7f8f799eae914a5f056272c3a2857127ba4d0a5c9a4533339b48b49e",
+          "sectionId": "original-11d4a49158dd050dba3baac7-6",
+          "title": "sources/recovered/INSPIRE-10.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "c16bb28f47aec6b145dc392f64dbff21890a1088ade93499fc0fb3081d8d966f",
+          "headingPath": [
+            "II. ĐỊNH NGHĨA M4",
+            "2. Định nghĩa chính thức đề xuất"
+          ],
+          "startOffset": 1706,
+          "endOffset": 2171,
+          "startLine": 63,
+          "endLine": 72
+        },
+        {
+          "documentId": "original-11d4a49158dd050dba3baac7",
+          "version": 1,
+          "hash": "bfc1cedd7f8f799eae914a5f056272c3a2857127ba4d0a5c9a4533339b48b49e",
+          "sectionId": "original-11d4a49158dd050dba3baac7-13",
+          "title": "sources/recovered/INSPIRE-10.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "e738eef41c1b11ca38513a40c7bca5fa36c05dc353c1155a74bc898d5e2ce988",
+          "headingPath": [
+            "V. ACTION GAP — KHOẢNG CÁCH Ý ĐỊNH–HÀNH ĐỘNG",
+            "6. Một lõi quan trọng của M4"
+          ],
+          "startOffset": 3299,
+          "endOffset": 3566,
+          "startLine": 151,
+          "endLine": 174
+        }
+      ]
+    },
+    {
+      "documentId": "original-4c3b435623e488695cefeb4b",
+      "title": "sources/recovered/INSPIRE-11_v2.txt",
+      "receiptVersion": 1,
+      "declaredVersion": "2.0",
+      "sha256": "5eda9958f6247f0de3f1161b10e5df5985dedb2c73159181c3ec51aeaf08dc60",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "permissions": null,
+      "editorialStatus": "**Trạng thái:** Bản chuyên sâu đề xuất để chủ hệ xem xét. Các lăng kính, cấu trúc và schema mới chưa tự động trở thành taxonomy cố định, database bắt buộc hoặc logic chatbot đã được phê duyệt.",
+      "proposedRole": "reference only; never operating rules, classification or intervention permission",
+      "proposedUse": "private synthetic evaluation; external export of selected relevant sections only",
+      "sections": [
+        {
+          "documentId": "original-4c3b435623e488695cefeb4b",
+          "version": 1,
+          "hash": "5eda9958f6247f0de3f1161b10e5df5985dedb2c73159181c3ec51aeaf08dc60",
+          "sectionId": "original-4c3b435623e488695cefeb4b-5",
+          "title": "sources/recovered/INSPIRE-11_v2.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "bbe5029bd4c826e7f273200510dedf5802600ee56f99dcad07104e65bd90e3f9",
+          "headingPath": [
+            "II. ĐỊNH NGHĨA CHÍNH THỨC ĐỀ XUẤT"
+          ],
+          "startOffset": 1551,
+          "endOffset": 1590,
+          "startLine": 37,
+          "endLine": 38
+        },
+        {
+          "documentId": "original-4c3b435623e488695cefeb4b",
+          "version": 1,
+          "hash": "5eda9958f6247f0de3f1161b10e5df5985dedb2c73159181c3ec51aeaf08dc60",
+          "sectionId": "original-4c3b435623e488695cefeb4b-6",
+          "title": "sources/recovered/INSPIRE-11_v2.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "fdba5cf4333669bdce3923551e110f8708b9ea0942a5fa647f441826e740743b",
+          "headingPath": [
+            "II. ĐỊNH NGHĨA CHÍNH THỨC ĐỀ XUẤT",
+            "2."
+          ],
+          "startOffset": 1590,
+          "endOffset": 2094,
+          "startLine": 39,
+          "endLine": 48
+        }
+      ]
+    },
+    {
+      "documentId": "original-26330e6d1e0fa0d5cc2b2f12",
+      "title": "sources/recovered/INSPIRE-12.txt",
+      "receiptVersion": 1,
+      "declaredVersion": "2.0",
+      "sha256": "1819bdcd39cfed6ee62c1f803c6fb296f6a36dbdaf57adfa919d836d799871e9",
+      "status": "review-required",
+      "permittedUse": "receipt-only",
+      "permissions": null,
+      "editorialStatus": "**Trạng thái:** Bản chuyên sâu đề xuất. Các cấu trúc, phân loại và schema mới là công cụ tổ chức tri thức chờ phê duyệt; không tự động trở thành taxonomy chính thức, protocol lâm sàng hay logic chatbot được phép triển khai.",
+      "proposedRole": "reference only; never operating rules, classification or intervention permission",
+      "proposedUse": "private synthetic evaluation; external export of selected relevant sections only",
+      "sections": [
+        {
+          "documentId": "original-26330e6d1e0fa0d5cc2b2f12",
+          "version": 1,
+          "hash": "1819bdcd39cfed6ee62c1f803c6fb296f6a36dbdaf57adfa919d836d799871e9",
+          "sectionId": "original-26330e6d1e0fa0d5cc2b2f12-6",
+          "title": "sources/recovered/INSPIRE-12.txt",
+          "sourceStatus": "review-required",
+          "sectionHash": "1f93376f75873ff2874a2a9bff71a0a6f4c5a3276b94aa95cf14c349a99a8fb0",
+          "headingPath": [
+            "III. ĐỊNH NGHĨA CHÍNH THỨC ĐỀ XUẤT"
+          ],
+          "startOffset": 2116,
+          "endOffset": 2609,
+          "startLine": 66,
+          "endLine": 75
+        }
+      ]
+    },
+    {
+      "documentId": "website-counseling",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "receiptVersion": 1,
+      "declaredVersion": "Not declared in header",
+      "sha256": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "status": "published-supporting",
+      "permittedUse": "supporting-retrieval",
+      "permissions": null,
+      "editorialStatus": "No editorial approval inferred",
+      "proposedRole": "reference only; never operating rules, classification or intervention permission",
+      "proposedUse": "private synthetic evaluation; external export of selected relevant sections only",
+      "sections": [
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-0",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "3a51753a5354584f8618ce3345cb045666230c1695eb78be2e9f63244fe2f305",
+          "headingPath": [
+            "QUAN HỆ VỚI CHÍNH MÌNH"
+          ],
+          "startOffset": 0,
+          "endOffset": 28,
+          "startLine": 1,
+          "endLine": 2
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-1",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "80cc62b652b0defbd2b116b70ac6196dfed7e160f6683a8c64ef1c3f291c570f",
+          "headingPath": [
+            "QUAN HỆ VỚI CHÍNH MÌNH"
+          ],
+          "startOffset": 28,
+          "endOffset": 56,
+          "startLine": 3,
+          "endLine": 3
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-2",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "78c26b45cf684782cf8fcf70490ef2ebd92f028a187e4dc38eb1c1e93abb9bfb",
+          "headingPath": [
+            "QUAN HỆ VỚI CHÍNH MÌNH",
+            "Có những lúc, người khiến ta mệt mỏi nhất lại chính là bản thân mình"
+          ],
+          "startOffset": 56,
+          "endOffset": 1071,
+          "startLine": 4,
+          "endLine": 27
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-3",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "2ee57e7dd8e790695f4b8c3d6cffefd123223993fd80858949b59c93220a09a2",
+          "headingPath": [
+            "QUAN HỆ VỚI CHÍNH MÌNH",
+            "Có những lúc, người khiến ta mệt mỏi nhất lại chính là bản thân mình"
+          ],
+          "startOffset": 1071,
+          "endOffset": 2351,
+          "startLine": 28,
+          "endLine": 57
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-4",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "c069991db742526d6fca6a55d889736745dfb0400b30fc7b600629fa9177e8c5",
+          "headingPath": [
+            "ĐỜI SỐNG NỘI TÂM"
+          ],
+          "startOffset": 2351,
+          "endOffset": 2373,
+          "startLine": 58,
+          "endLine": 59
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-5",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "eaafb2c1e7abee7f7577f45bde2d2379e4611f48ab3bc760da095173176ffeeb",
+          "headingPath": [
+            "ĐỜI SỐNG NỘI TÂM"
+          ],
+          "startOffset": 2373,
+          "endOffset": 2395,
+          "startLine": 60,
+          "endLine": 60
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-6",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "013f4c64d1f8a39bc984905d9145b623872c851750d452c2914175bda70b5f6f",
+          "headingPath": [
+            "ĐỜI SỐNG NỘI TÂM",
+            "Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày"
+          ],
+          "startOffset": 2395,
+          "endOffset": 3735,
+          "startLine": 61,
+          "endLine": 116
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-7",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "ae5e2ba11d9b5a6297844659cc704c8f5599203af556745e747070739a54df4b",
+          "headingPath": [
+            "ĐỜI SỐNG NỘI TÂM",
+            "Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày"
+          ],
+          "startOffset": 3735,
+          "endOffset": 5062,
+          "startLine": 117,
+          "endLine": 162
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-8",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "dcec7552687b5412342de35c89e7b1111ecd4a0c1b206827dd73f20ba54cef20",
+          "headingPath": [
+            "ĐỜI SỐNG NỘI TÂM",
+            "Có những điều không ai nhìn thấy, nhưng chúng vẫn âm thầm chi phối cách bạn sống mỗi ngày"
+          ],
+          "startOffset": 5062,
+          "endOffset": 6272,
+          "startLine": 163,
+          "endLine": 198
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-9",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "5eafb347b0df574a1cdbf9d982be75fe423a3398c434b850dd23bd4827d934b7",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC"
+          ],
+          "startOffset": 6272,
+          "endOffset": 6300,
+          "startLine": 199,
+          "endLine": 200
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-10",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "e2ead138f9a82c386e3aa1c46c2218ae31abf9d507e5a0240340dcc842209c42",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC"
+          ],
+          "startOffset": 6300,
+          "endOffset": 6328,
+          "startLine": 201,
+          "endLine": 201
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-11",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "a2ada57933a62986517631fe8b32a5d464ab842359824a65ed9b5bc0ab7b1188",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ],
+          "startOffset": 6328,
+          "endOffset": 7449,
+          "startLine": 202,
+          "endLine": 232
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-12",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "cb98fb03d35079b0bb00659c763d61ddee41d3c66e1cdee14ecc814a2264a8f6",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ],
+          "startOffset": 7449,
+          "endOffset": 8801,
+          "startLine": 233,
+          "endLine": 267
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-13",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "6719b683a9fa457b3f6cf52e918b7de3de738418fb858304613db8d9e7482805",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ],
+          "startOffset": 8801,
+          "endOffset": 10139,
+          "startLine": 268,
+          "endLine": 307
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-14",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "deed1a52c8f2bf4da64c67341020f82ec2c51dab947fc8e8b2e59716e56cc8f2",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ],
+          "startOffset": 10139,
+          "endOffset": 10505,
+          "startLine": 308,
+          "endLine": 316
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-15",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "814b47d043319b39a90d5a50099772d25e35f5af708e4855be511d18dc2018a2",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG"
+          ],
+          "startOffset": 10505,
+          "endOffset": 10532,
+          "startLine": 317,
+          "endLine": 318
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-16",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "6130144265bf46f72b3fe63e0c9be118566b9b66134d5cee20c14a982c00717e",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG"
+          ],
+          "startOffset": 10532,
+          "endOffset": 10559,
+          "startLine": 319,
+          "endLine": 319
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-17",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "f6f6cf67614db4c6a9beb5d6863c651d42cbd3ba4b086529eac859e3ca352895",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "startOffset": 10559,
+          "endOffset": 11929,
+          "startLine": 320,
+          "endLine": 365
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-18",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "1c440ec8aa67669694690ff3b6464554f05c30a3b20aced6ea461de4dad87afe",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "startOffset": 11929,
+          "endOffset": 13280,
+          "startLine": 366,
+          "endLine": 416
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-19",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "68e36a46ea9946db4e76fe212b634b39ad65a93021d60016d6e68005b54f544c",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "startOffset": 13280,
+          "endOffset": 14675,
+          "startLine": 417,
+          "endLine": 472
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-20",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "4945cac8935cd95d278275e5a3e3b918198539c9c7dc28626e32c9b3a45c8621",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "startOffset": 14675,
+          "endOffset": 15176,
+          "startLine": 473,
+          "endLine": 490
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-21",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "8969fd9ce5deeebed771cddf0bacdf04bd5e7fb01abb625e311ed694e95b5318",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN"
+          ],
+          "startOffset": 15176,
+          "endOffset": 15213,
+          "startLine": 491,
+          "endLine": 491
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-22",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "f49cd864c03152cfc5d2acec43dd86e5beab6bbb51c64ed91649ce07f43c9b90",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN"
+          ],
+          "startOffset": 15213,
+          "endOffset": 15252,
+          "startLine": 492,
+          "endLine": 492
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-23",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "f0348863d88df1bdf67372ebf9eb769ecce54662a034ab7f88ab640bb424ff92",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+            "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+          ],
+          "startOffset": 15252,
+          "endOffset": 16632,
+          "startLine": 493,
+          "endLine": 546
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-24",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "8369a14e45aa0fd1178fa0a938b1c028cde34ead8d692d865aa0f48dd6ba132d",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+            "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+          ],
+          "startOffset": 16632,
+          "endOffset": 17799,
+          "startLine": 547,
+          "endLine": 586
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-25",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "f31172808b223bd9cb93f5557d17507bdc64a99b6bcee66933a952f0466dbfb4",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+            "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+          ],
+          "startOffset": 17799,
+          "endOffset": 19069,
+          "startLine": 587,
+          "endLine": 638
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-26",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "f8f7c874a993a278c402e2715ca62370a8f7f6762c68c44213c85d7fa0c01a67",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+            "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+          ],
+          "startOffset": 19069,
+          "endOffset": 20091,
+          "startLine": 639,
+          "endLine": 678
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-27",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "2f86663b1e31d78a08a5bc90e36d05da1abdbe524f83d5bfe90eaef03099735d",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG"
+          ],
+          "startOffset": 20091,
+          "endOffset": 20115,
+          "startLine": 679,
+          "endLine": 679
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-28",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "e4b3a91b284717f865b676b01ba3349c8fcf4c9af2f60f116d064de4ad33f75e",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG"
+          ],
+          "startOffset": 20115,
+          "endOffset": 20141,
+          "startLine": 680,
+          "endLine": 680
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-29",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "76ca4d7383d10d3c2a8133c7b7575dc19b88ae203712618e747bbcab8e21610c",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "startOffset": 20141,
+          "endOffset": 21517,
+          "startLine": 681,
+          "endLine": 722
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-30",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "1ae4fd383bec98597806d130ab091b9e0c1978ca6824a673ded7979de9e592e8",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "startOffset": 21517,
+          "endOffset": 21968,
+          "startLine": 723,
+          "endLine": 738
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-31",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "785267a95eb4caa9edec604cecc79724c2d5bafba5125f62357bf5f83bee8e67",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "startOffset": 21968,
+          "endOffset": 23296,
+          "startLine": 739,
+          "endLine": 779
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-32",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "9d359685d78ea5b98c1f3120bcc23f7755054c887f5a46d465e5b6495c7f0ce3",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "startOffset": 23296,
+          "endOffset": 24625,
+          "startLine": 780,
+          "endLine": 829
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-33",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "f78e736fb8c1f82094c8cb121e3cb4b52ed244b76e8e855413973f9489f06770",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "startOffset": 24625,
+          "endOffset": 26021,
+          "startLine": 830,
+          "endLine": 873
+        },
+        {
+          "documentId": "website-counseling",
+          "version": 1,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-34",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "sourceStatus": "published-supporting",
+          "sectionHash": "0d8dbcb55551b29afe6861a46b04a140e3bde6d70b838407a447847e22e90eda",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "startOffset": 26021,
+          "endOffset": 26301,
+          "startLine": 874,
+          "endLine": 878
+        }
+      ]
+    }
+  ],
+  "operatingInstructions": {
+    "exportableCanonicalSourceSections": [],
+    "note": "Engineering safeguards only; original Controller remains server-side."
+  },
+  "collectionSHA": "9955cd10e074d304af11707d3e84d0c139c4fd867e4c0666a8b7fbdaf9e5c21d"
+}

@@ -1,0 +1,527 @@
+diff --git a/functions/src/inspireKnowledge.ts b/functions/src/inspireKnowledge.ts
+index 2e6bcb7..bd71dc6 100644
+--- a/functions/src/inspireKnowledge.ts
++++ b/functions/src/inspireKnowledge.ts
+@@ -1,4 +1,4 @@
+-import {getFirestore} from "firebase-admin/firestore";
++import {getFirestore, FieldPath} from "firebase-admin/firestore";
+ import {createHash} from "node:crypto";
+ import type {ChatMessage, ChatRequest} from "./inspireChatContract";
+ import type {Preferences} from "./inspireAccount";
+@@ -289,7 +289,17 @@ export async function retrieveKnowledge(
+   }
+   const key = JSON.stringify([external, reviewOnly, documentId ?? null,
+     [...weighted], revision]);
+-  if (cached.has(key)) return structuredClone(cached.get(key)!);
++  const unchanged = async () => {
++    const latest = await getFirestore().doc("inspireKnowledge/_index").get();
++    if ((latest.data()?.revision ?? 0) !== revision) {
++      cached.clear();
++      throw new ConfirmedNoReply("KNOWLEDGE_REVISION_CHANGED");
++    }
++  };
++  if (cached.has(key)) {
++    await unchanged();
++    return structuredClone(cached.get(key)!);
++  }
+   // All source eligibility is indexed BEFORE pagination. External
+   // terms come only from permitted excerpts, not restricted sibling sections.
+   const selection = getFirestore().collection("inspireKnowledge")
+@@ -298,15 +308,21 @@ export async function retrieveKnowledge(
+     reviewOnly ? "INSPIRE" : true)
+     .where(external ? "externalSearchTerms" : "searchTerms",
+       "array-contains-any", terms)
++    .orderBy(FieldPath.documentId())
+     .select("collection", "status", "permittedUse", "kind", "permissions",
+       "documentId", "hash", "version", "sections", "contentClass");
+   const scoped = documentId ? selection.where("documentId", "==",
+     documentId) : selection;
+   const candidates: {section: KnowledgeSection; score: number}[] = [];
++  let lastId = "";
+   let page = await scoped.limit(50).get();
+   for (;;) {
+     const docs = page;
+     for (const doc of docs.docs) {
++      if (doc.id <= lastId) {
++        throw new ConfirmedNoReply("KNOWLEDGE_PAGE_ORDER_HOLD");
++      }
++      lastId = doc.id;
+       const source = doc.data();
+       if (source.collection !== "INSPIRE" ||
+         (source.contentClass && source.contentClass !== "content") ||
+@@ -342,8 +358,10 @@ export async function retrieveKnowledge(
+     page = await scoped.startAfter(docs.docs[docs.docs.length - 1])
+       .limit(50).get();
+   }
++  await unchanged();
+   const result = candidates.sort((a, b) => b.score - a.score ||
+-    a.section.sectionId.localeCompare(b.section.sectionId))
++    (a.section.sectionId < b.section.sectionId ? -1 :
++      a.section.sectionId > b.section.sectionId ? 1 : 0))
+     .slice(0, 3).map((entry) => entry.section);
+   if (cached.size >= 64) cached.delete(cached.keys().next().value!);
+   cached.set(key, structuredClone(result));
+diff --git a/functions/src/inspireLunaApi.ts b/functions/src/inspireLunaApi.ts
+index cf0956d..b5790a7 100644
+--- a/functions/src/inspireLunaApi.ts
++++ b/functions/src/inspireLunaApi.ts
+@@ -287,11 +287,20 @@ export function decodeLunaApi(value: unknown) {
+  * @param {LunaPrepared} prepared Frozen server proposal.
+  */
+ export async function recheckLunaSources(prepared: LunaPrepared) {
+-  await assertKnowledgeExport(prepared.references);
++  let outbound: unknown;
++  try {
++    outbound = JSON.parse(prepared.payload.input[0].content);
++  } catch {
++    throw new ConfirmedNoReply("LUNA_PREVIEW_MUTATED");
++  }
+   if (lunaHash(prepared.body) !== prepared.payloadSHA ||
+       JSON.stringify(prepared.payload) !== prepared.body ||
+       lunaHash(JSON.stringify([prepared.request, prepared.payloadSHA])) !==
+-        prepared.binding) {
++        prepared.binding || !record(outbound) ||
++      JSON.stringify(outbound.references) !==
++        JSON.stringify(prepared.references)) {
+     throw new ConfirmedNoReply("LUNA_PREVIEW_MUTATED");
+   }
++  // Check the exact passages in the bound wire body, never a detached list.
++  await assertKnowledgeExport(prepared.references);
+ }
+diff --git a/tests/inspire-api-rag.test.mjs b/tests/inspire-api-rag.test.mjs
+index 9ade646..95824c7 100644
+--- a/tests/inspire-api-rag.test.mjs
++++ b/tests/inspire-api-rag.test.mjs
+@@ -18,6 +18,11 @@ test('mutating request identity or payload after preview fails exact binding',as
+  const plan=p();await recheckLunaSources(plan)
+  const changed=structuredClone(plan);changed.request.messages[0].id='modified';await assert.rejects(recheckLunaSources(changed),/MUTATED/)
+  const tool=structuredClone(plan);tool.payload.tools=[{type:'web_search'}];await assert.rejects(recheckLunaSources(tool),/MUTATED/)
++ const text='Đoạn giả định chỉ kiểm tra binding.',reference={documentId:'offline-reference',version:1,hash:'a'.repeat(64),sectionId:'offline-reference-0',title:'Synthetic',text,sourceStatus:'published-supporting',sectionHash:(await import('node:crypto')).createHash('sha256').update(text).digest('hex')}
++ const detached=prepareLunaApi({messages:request.messages,userStatedPreferences:emptyPreferences,operatingInstructions:[],supportingKnowledge:[reference]},request)
++ detached.references=[]
++ // Must reject before any source lookup: the wire still contains that passage.
++ await assert.rejects(recheckLunaSources(detached),/MUTATED/)
+ })
+ test('SDK safe errors use one attempt for 401, 404, 429 and transport abort; no raw provider text leaks',async()=>{
+  const saved=globalThis.fetch
+diff --git a/tests/inspire-emulator.test.mjs b/tests/inspire-emulator.test.mjs
+index 2a25422..8e45ed2 100644
+--- a/tests/inspire-emulator.test.mjs
++++ b/tests/inspire-emulator.test.mjs
+@@ -40,7 +40,10 @@ async function registered() {
+ function request(service, identity, session = service.session(identity), extra = {}) {
+   return {kind: 'send', epoch: session.epoch, sessionId: session.sessionId,
+     conversationId: randomUUID(), operationId: randomUUID(),
+-    messages: [{id: randomUUID(), role: 'user', text: 'Nội dung giả định về cảm xúc và mối quan hệ'}], ...extra}
++    // Quota/auth fixtures must not search the growing real corpus. Natural
++    // relevance is exercised separately; this suite overrides the text below
++    // for the explicit adapter/provenance case.
++    messages: [{id: randomUUID(), role: 'user', text: 'zaccountquotafixture'}], ...extra}
+ }
+ const noRate = async () => ({allowed: true})
+ const offline = {mode: 'simulation', reply: async () => 'Phản hồi mô phỏng cho kiểm thử.'}
+@@ -59,7 +62,7 @@ test('verified anonymous + email registration links same UID, login and signout
+   assert.deepEqual(verified.providers, ['password'])
+   assert.equal((await account.account(verified)).quota.remaining, 30)
+   const next = {...first, operationId:randomUUID(), messages:[...first.messages, answer.message,
+-    {id:randomUUID(),role:'user',text:'Đính chính giả định sau đăng ký',correctionOf:first.messages[0].id}]}
++    {id:randomUUID(),role:'user',text:'zaccountlinkcorrectionfixture',correctionOf:first.messages[0].id}]}
+   await service.handle(next, verified, 'quota-test')
+   assert.equal((await account.account(verified)).quota.remaining, 29)
+   await signOut(guest.auth)
+@@ -208,7 +211,10 @@ test('incremental knowledge provenance, review exclusion, Edulience isolation an
+   assert.deepEqual(await importSource(record, b, b.toString()), {changed:true,version:2})
+   await importSource({...record,documentId:id+'-review',status:'review-required',permittedUse:'receipt-only'}, a, a.toString())
+   await importSource({...record,collection:'Edulience',documentId:id+'-edulience'}, a, a.toString())
+-  const retrieved = await retrieveKnowledge('giấc ngủ nghỉ ngơi ' + needle)
++  // This checks exact provenance and receipt exclusion independently of the
++  // growing permitted draft corpus. Natural Vietnamese relevance has its own
++  // global-corpus follow-up/correction regression in inspire-pagination.
++  const retrieved = await retrieveKnowledge(needle)
+   assert.ok(retrieved.some((s) => s.documentId === id && s.version === 2 && s.hash.length === 64))
+   assert.ok(retrieved.every((s) => s.sourceStatus === 'published-supporting' && !s.documentId.endsWith('-review') && !s.documentId.endsWith('-edulience')))
+   assert.equal((await db.doc(`inspireKnowledge/${id}/versions/1`).get()).exists, true)
+@@ -216,7 +222,7 @@ test('incremental knowledge provenance, review exclusion, Edulience isolation an
+   let context
+   const service = createLocalService({mode:'simulation', reply: async (input) => { context = input; return 'Mô phỏng với ngữ cảnh có nguồn.' }}, Date.now, noRate)
+   const r = request(service, identity)
+-  r.messages[0].text = 'giấc ngủ nghỉ ngơi ' + needle
++  r.messages[0].text = needle
+   await service.handle(r, identity, 'quota-test')
+   assert.ok(context.operatingInstructions.some((s) => s.includes('WHAT → WHERE → WHY → TOWARD WHAT → HOW')))
+   assert.ok(context.supportingKnowledge.length)
+diff --git a/tests/inspire-luna-api.test.mjs b/tests/inspire-luna-api.test.mjs
+index baa5af5..2d9a7fc 100644
+--- a/tests/inspire-luna-api.test.mjs
++++ b/tests/inspire-luna-api.test.mjs
+@@ -182,18 +182,20 @@ test('actual native Controller + private service preserve multi-turn/corrections
+ test('authorization, cross-user access, outage, unknown outcome and restart reject without replacement calls',async t=>{
+  const identity=await member(t),other=await member(t);let calls=0,preflights=0
+  const controller={async preflight(){preflights++},async validate(){},evidence(){return[]}}
+- const service=createPrivateLunaService({store:{...fixtureStore(),authorized:()=>false},controller,rateCheck:noRate,send:async()=>{calls++;throw Error()}})
++ // Admission/restart checks are source-free; the separate retrieval and
++ // revocation regressions exercise the real knowledge path explicitly.
++ const service=createPrivateLunaService({sourceFree:true,store:{...fixtureStore(),authorized:()=>false},controller,rateCheck:noRate,send:async()=>{calls++;throw Error()}})
+  const request=makeRequest(service,identity)
+  await service.handlePrivate({kind:'preview',request},identity,'local')
+  await assert.rejects(service.handlePrivate({kind:'execute',request},identity,'local'),{code:'AUTHORIZATION_REQUIRED'})
+  await assert.rejects(service.handlePrivate({kind:'execute',request},other,'local'),{code:'OPERATION_CONFLICT'})
+  assert.equal(calls,0);assert.equal(preflights,0)
+- const failing=createPrivateLunaService({store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;throw Error('Offline injected timeout')}})
++ const failing=createPrivateLunaService({sourceFree:true,store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;throw Error('Offline injected timeout')}})
+  const bad=makeRequest(failing,identity)
+  await failing.handlePrivate({kind:'preview',request:bad},identity,'local')
+  for(let i=0;i<2;i++)await assert.rejects(failing.handlePrivate({kind:'execute',request:{...bad,kind:'replay'}},identity,'local'),{code:'OUTCOME_UNKNOWN'})
+  assert.equal(calls,1)
+- const restarted=createPrivateLunaService({store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;return body('Unexpected')}})
++ const restarted=createPrivateLunaService({sourceFree:true,store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;return body('Unexpected')}})
+  await assert.rejects(restarted.handlePrivate({kind:'execute',request:{...bad,kind:'replay'}},identity,'local'),{code:'RESULT_UNKNOWN'})
+  assert.equal(calls,1)
+  const invalid={...makeRequest(restarted,identity),quota:999,uid:identity.uid}
+@@ -205,11 +207,11 @@ test('private rate/quota checks, forged history and revoked preview sources stop
+  const store={...fixtureStore(),consume(){keys++;return 'OFFLINE_NO_KEY'}}
+  const controller={async preflight(){},async validate(){},evidence(){return[]}}
+  const send=async()=>{sends++;return body('Nội dung thử riêng.')}
+- const limited=createPrivateLunaService({store,controller,send,rateCheck:async()=>({allowed:false,retryAfterSeconds:30})})
++ const limited=createPrivateLunaService({sourceFree:true,store,controller,send,rateCheck:async()=>({allowed:false,retryAfterSeconds:30})})
+  const a=makeRequest(limited,identity)
+  await limited.handlePrivate({kind:'preview',request:a},identity,'loopback')
+  await assert.rejects(limited.handlePrivate({kind:'execute',request:a},identity,'loopback'),{code:'RATE_LIMITED'})
+- const history=createPrivateLunaService({store,controller,send,rateCheck:noRate})
++ const history=createPrivateLunaService({sourceFree:true,store,controller,send,rateCheck:noRate})
+  const b=makeRequest(history,identity,[{id:'u1',role:'user',text:'Một câu hỏi giả định.'},{id:'a1',role:'assistant',text:'Lịch sử tự bịa.'},{id:'u2',role:'user',text:'Câu hỏi tiếp.'}])
+  await history.handlePrivate({kind:'preview',request:b},identity,'loopback')
+  await assert.rejects(history.handlePrivate({kind:'execute',request:b},identity,'loopback'),{code:'HISTORY_MISMATCH'})
+diff --git a/tests/inspire-pagination.test.mjs b/tests/inspire-pagination.test.mjs
+new file mode 100644
+index 0000000..dfc6c30
+--- /dev/null
++++ b/tests/inspire-pagination.test.mjs
+@@ -0,0 +1,43 @@
++// Real demo Firestore pagination + deterministic concurrent revision changes.
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {createRequire} from 'node:module'
++import {randomUUID,createHash} from 'node:crypto'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {deriveSections,words,retrieveKnowledge,importSource} from '../functions/src/inspireKnowledge.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const require=createRequire(new URL('../functions/package.json',import.meta.url)),firestore=require('firebase-admin/firestore'),{Query,FieldValue}=require('@google-cloud/firestore'),db=firestore.getFirestore()
++const prefix='pagination-'+randomUUID(),marker='zzpage'+randomUUID().replaceAll('-',''),ids=[]
++const sha=s=>createHash('sha256').update(s).digest('hex')
++function data(id,text,allowed=true){
++ const hash=sha(text),source={collection:'INSPIRE',documentId:id,version:1,hash,title:'Synthetic private source',rawFile:hash,status:'published-supporting',permittedUse:'supporting-retrieval',kind:'reference',permissions:{sourceHash:hash,internalResearch:true,externalExport:allowed,evidence:'SYNTHETIC ONLY'}}
++ return {...source,sections:deriveSections(source,text),searchTerms:words(text),externalSearchTerms:allowed?words(text):[],externalEligible:allowed,internalEligible:true}
++}
++async function seed(){const batch=db.batch();for(let i=0;i<61;i++){const id=prefix+'-'+String(i).padStart(3,'0');ids.push(id);batch.set(db.doc('inspireKnowledge/'+id),data(id,marker+(i===60?' zlastpagebest zlastpagerare':' filler')))}const denied=prefix+'-denied';ids.push(denied);batch.set(db.doc('inspireKnowledge/'+denied),data(denied,marker+' zlastpagebest zlastpagerare',false));batch.set(db.doc('inspireKnowledge/_index'),{revision:FieldValue.increment(1)},{merge:true});await batch.commit()}
++test('eligible source after first page is selected; no repeats/skips and tied ranking is stable',async t=>{
++ await seed();const pages=[];const get=Query.prototype.get
++ t.mock.method(Query.prototype,'get',async function(...args){const result=await get.apply(this,args);if(result.docs.some(d=>d.id.startsWith(prefix)))pages.push(result.docs.map(d=>d.id));return result})
++ const query=marker+' zlastpagebest zlastpagerare',a=await retrieveKnowledge(query,true)
++ assert.equal(a[0].documentId,prefix+'-060');assert.equal(a.length,3);assert.ok(a.every(s=>!s.documentId.endsWith('-denied')))
++ const scanned=pages.flat();assert.equal(scanned.length,61);assert.equal(new Set(scanned).size,61);assert.deepEqual(scanned,[...scanned].sort())
++ assert.deepEqual(await retrieveKnowledge(query,true),a)
++ await db.doc('inspireKnowledge/_index').set({revision:FieldValue.increment(1)},{merge:true})
++ assert.deepEqual(await retrieveKnowledge(query,true),a)
++})
++test('permission update between pages rejects mixed revision and does not poison cache',async t=>{
++ const get=Query.prototype.get;let changed=false
++ t.mock.method(Query.prototype,'get',async function(...args){const result=await get.apply(this,args);if(!changed&&result.size===50&&result.docs.some(d=>d.id.startsWith(prefix))){changed=true;const id=prefix+'-060',text=marker+' zlastpagebest zlastpagerare';await importSource({collection:'INSPIRE',documentId:id,title:'Revoked fixture',rawFile:sha(text),status:'review-required',permittedUse:'receipt-only',kind:'reference'},Buffer.from(text),text)}return result})
++ await assert.rejects(retrieveKnowledge(marker+' zlastpagebest',true),/REVISION_CHANGED/)
++ assert.equal(changed,true)
++ const next=await retrieveKnowledge(marker+' zlastpagebest',true);assert.ok(next.every(s=>s.documentId!==prefix+'-060'));assert.ok(next.length<=3)
++})
++test('natural Vietnamese follow-up and explicit correction preserve topic relevance without query markers',async()=>{
++ const orchid=prefix+'-orchid',tomato=prefix+'-tomato';ids.push(orchid,tomato)
++ for(const [id,text] of [[orchid,'# Lan hồ điệp\nLan hồ điệp bị úng rễ khi tưới nhiều nước. Tưới ít lại và kiểm tra rễ giúp tránh úng rễ.'],[tomato,'# Cây cà chua\nCây cà chua có lá vàng do thiếu dinh dưỡng. Kiểm tra lá vàng và dinh dưỡng của cây cà chua.']]){const d=data(id,text);const {version,hash,sections,searchTerms,externalSearchTerms,externalEligible,internalEligible,...record}=d;await importSource(record,Buffer.from(text),text)}
++ const original='Lan hồ điệp bị úng rễ khi tưới nhiều nước thì nên làm gì?'
++ const messages=[{id:'u1',role:'user',text:original},{id:'a1',role:'assistant',text:'Bạn muốn nói rõ hơn không?'},{id:'u2',role:'user',text:'Vậy tưới ít lại có giúp tránh úng rễ không?'}]
++ assert.equal((await retrieveKnowledge(messages,true))[0].documentId,orchid)
++ const corrected=[...messages,{id:'a2',role:'assistant',text:'Có thêm chi tiết nào cần sửa không?'},{id:'u3',role:'user',text:'Đính chính: cây cà chua có lá vàng do thiếu dinh dưỡng.',correctionOf:'u1'},{id:'a3',role:'assistant',text:'Đã ghi nhận.'},{id:'u4',role:'user',text:'Đính chính: tôi hỏi về lá vàng và dinh dưỡng của cây cà chua.',correctionOf:'u2'}]
++ const found=await retrieveKnowledge(corrected,true);assert.equal(found[0].documentId,tomato);assert.ok(found.every(s=>s.documentId!==orchid));assert.equal(corrected[0].text,original)
++})
++test.after(async()=>{for(const id of ids)await db.recursiveDelete(db.doc('inspireKnowledge/'+id));await db.doc('inspireKnowledge/_index').set({revision:FieldValue.increment(1)},{merge:true});await db.terminate()})
+diff --git a/tests/package-api-rag-review.py b/tests/package-api-rag-review.py
+new file mode 100644
+index 0000000..6cc658b
+--- /dev/null
++++ b/tests/package-api-rag-review.py
+@@ -0,0 +1,87 @@
++"""Local review artifact only; never includes corpus, keys or runtime state."""
++from pathlib import Path
++import subprocess, json, hashlib, zipfile, re, tempfile
++
++ROOT = Path.cwd()
++OUT = ROOT/'docs/evidence/api-rag-2026-11-25'
++ARCHIVE = ROOT/'INSPIRE-review-api-rag-2026-11-25.zip'
++sha = lambda b: hashlib.sha256(b).hexdigest()
++names = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z']).decode().split('\0')
++
++
++def eligible(n):
++    p = Path(n)
++    if not n or not (ROOT/p).is_file():
++        return False
++    if any(x in {'.git', '.private.local', '.tools.local', 'node_modules', '__pycache__', 'lib', 'dist', '.codex', '.agents'} for x in p.parts):
++        return False
++    if p.suffix.lower() in {'.zip', '.db', '.sqlite', '.sqlite3', '.pyc', '.log', '.key', '.pem', '.pfx', '.tsbuildinfo'} or p.name.startswith('.env'):
++        return False
++    historical = {'docs/evidence/knowledge-conversation-2026-11-21/tests.txt',
++                  'docs/evidence/knowledge-conversation-2026-11-21/native-controller-recheck.txt'}
++    if n.startswith('docs/') and not (n == 'docs/counseling-topics-source.md' or n in historical or n.startswith('docs/evidence/api-rag-2026-11-25/')):
++        return False
++    return not n.endswith('archive-verification.json')
++
++
++files = sorted(set(n for n in names if eligible(n)))
++
++
++def diff(checkpoint, output):
++    baseline = ROOT/'.private.local'/checkpoint/'files'
++    if not baseline.is_dir():
++        raise RuntimeError('Required working-tree checkpoint missing')
++    stage = Path(tempfile.mkdtemp(prefix='api-review-diff-', dir=ROOT/'.private.local'))
++    (stage/'before').mkdir(); (stage/'after').mkdir()
++    changed = []
++    for n in files:
++        if n.startswith('docs/'):
++            continue
++        old = baseline/n
++        if old.is_file():
++            before = old.read_bytes()
++        else:
++            r = subprocess.run(['git', 'show', 'HEAD:'+n], capture_output=True)
++            before = r.stdout if r.returncode == 0 else None
++        current = (ROOT/n).read_bytes()
++        if before == current or (before is not None and before.replace(b'\r\n', b'\n') == current.replace(b'\r\n', b'\n')):
++            continue
++        changed.append(n)
++        p = stage/'after'/n; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(current)
++        if before is not None:
++            p = stage/'before'/n; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(before)
++    r = subprocess.run(['git', '-c', 'core.autocrlf=false', 'diff', '--no-index', '--binary', 'before', 'after'], cwd=stage, capture_output=True)
++    if r.returncode not in (0, 1):
++        raise RuntimeError('Diff construction failed')
++    patch = re.sub(rb'([ab])/(before|after)/', rb'\1/', r.stdout)
++    target = OUT/output; target.write_bytes(patch)
++    check = subprocess.run(['git', '-c', 'core.autocrlf=false', 'apply', '--check', str(target)], cwd=stage/'before', capture_output=True)
++    if check.returncode:
++        raise RuntimeError(check.stderr.decode())
++    return {'file': output, 'files': changed, 'baseline': checkpoint, 'applyCheckExit': 0, 'workspacePatchApplied': False}
++
++
++checks = [diff('api-rag-before-20261125', 'focused.patch'), diff('api-resume-before-20261125', 'resume.patch')]
++(OUT/'diff-check.json').write_text(json.dumps(checks, indent=2), 'utf-8')
++files = sorted(set(files + [str((OUT/n).relative_to(ROOT)).replace('\\', '/') for n in ['focused.patch', 'resume.patch', 'diff-check.json']]))
++manifest = []
++with zipfile.ZipFile(ARCHIVE, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
++    for n in files:
++        b = (ROOT/n).read_bytes()
++        if re.search(rb'-----BEGIN (?:RSA |EC )?PRIVATE KEY-----[\r\n]+[A-Za-z0-9+/=]{32,}', b):
++            raise RuntimeError('Secret material hold: '+n)
++        for key in re.findall(rb'\bsk-[A-Za-z0-9_-]{24,}', b):
++            if not any(w in key.lower() for w in [b'fixture', b'example', b'synthetic']):
++                raise RuntimeError('Possible credential hold: '+n)
++        target = 'source/'+n; z.writestr(target, b)
++        manifest.append({'path': target, 'sha256': sha(b), 'bytes': len(b)})
++    z.writestr('READ-FIRST.txt', 'Read source/docs/evidence/api-rag-2026-11-25/HANDOFF_VI.txt. Generation UNARMED. No real inference or owner approval issued. Current source plus focused and resume diffs; private originals/indexes, credentials, emulator databases, dependencies and portable runtimes excluded. Original local Controller installation required. Browser desktop/mobile NOT VERIFIED this turn.\n')
++    z.writestr('archive-manifest.json', json.dumps(manifest, indent=2))
++with zipfile.ZipFile(ARCHIVE) as z:
++    assert z.testzip() is None
++    for row in manifest:
++        assert sha(z.read(row['path'])) == row['sha256']
++    assert not any('/.private.local/' in n or '/node_modules/' in n or '/.tools.local/' in n for n in z.namelist())
++proof = {'file': ARCHIVE.name, 'sha256': sha(ARCHIVE.read_bytes()), 'bytes': ARCHIVE.stat().st_size, 'files': len(manifest), 'crcAndHashes': 'PASS', 'focusedDiffApplyCheck': 'PASS', 'privateOriginalsCredentialsDatabasesRuntimesExcluded': True, 'currentBrowserScreenshots': 'NOT VERIFIED: browser URL policy stopped CUA; no bypass', 'liveCalls': 0}
++(OUT/'archive-verification.json').write_text(json.dumps(proof, indent=2), 'utf-8')
++print(json.dumps(proof, indent=2))
+diff --git a/tests/prepare-api-rag-first.mjs b/tests/prepare-api-rag-first.mjs
+index ff1ec26..353e5b4 100644
+--- a/tests/prepare-api-rag-first.mjs
++++ b/tests/prepare-api-rag-first.mjs
+@@ -1,5 +1,5 @@
+ // Exact operator review only. No key read, login, send or approval writer.
+-import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs'
++import {readFileSync,writeFileSync,mkdirSync,existsSync,openSync,writeSync,fsyncSync,closeSync} from 'node:fs'
+ import {join} from 'node:path'
+ import {createRequire} from 'node:module'
+ import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
+@@ -7,18 +7,22 @@ import {retrieveKnowledge} from '../functions/src/inspireKnowledge.ts'
+ import {prepareLunaApi,recheckLunaSources,LUNA_API,lunaLocalDirectory} from '../functions/src/inspireLunaApi.ts'
+ import {emptyPreferences} from '../functions/src/inspireAccount.ts'
+ process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
+-const local='.private.local/api-rag',out='docs/evidence/api-rag-2026-11-25';mkdirSync(local,{recursive:true});mkdirSync(out,{recursive:true})
+-const request={kind:'send',epoch:'api-review-20261125',sessionId:'api-first-session-20261125',operationId:'api-first-attempt-20261125',conversationId:'api-first-conversation-20261125',messages:[{id:'api-first-user-message',role:'user',text:'Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm. Giúp tôi hiểu khoảng cách giữa ý định và hành động.'}]}
++const local='.private.local/api-rag-final-20261125',out='docs/evidence/api-rag-2026-11-25/final-preview';mkdirSync(local,{recursive:true});mkdirSync(out,{recursive:true})
++const request={kind:'send',epoch:'api-rag-final-review-20261125',sessionId:'api-rag-final-session-20261125',operationId:'api-rag-final-attempt-20261125',conversationId:'api-rag-final-conversation-20261125',messages:[{id:'api-rag-final-user-message',role:'user',text:'Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm. Giúp tôi hiểu khoảng cách giữa ý định và hành động.'}]}
+ const refs=await retrieveKnowledge(request.messages,true)
+ if(!refs.length)throw Error('FIRST_RAG_SOURCE_REQUIRED')
+ const plan=prepareLunaApi({messages:request.messages,operatingInstructions:[],userStatedPreferences:emptyPreferences,supportingKnowledge:refs},request)
+ await recheckLunaSources(plan)
+ const file=join(local,'first-preview.json'),bytes=JSON.stringify(plan,null,2)+'\n'
+ if(existsSync(file)&&readFileSync(file,'utf8')!==bytes)throw Error('FROZEN_FIRST_REQUEST_CHANGED: preserve previous review, require new decision')
+-writeFileSync(file,bytes)
+-writeFileSync(join(local,'first-outbound.json'),plan.body)
++if(!existsSync(file)){const fd=openSync(file,'wx',0o600);try{writeSync(fd,bytes);fsyncSync(fd)}finally{closeSync(fd)}}
++const outbound=join(local,'first-outbound.json')
++if(existsSync(outbound)&&readFileSync(outbound,'utf8')!==plan.body)throw Error('FROZEN_OUTBOUND_CHANGED')
++if(!existsSync(outbound)){const fd=openSync(outbound,'wx',0o600);try{writeSync(fd,plan.body);fsyncSync(fd)}finally{closeSync(fd)}}
+ const grant={schema:'inspire-luna-one-shot-v2',approved:false,model:LUNA_API.model,payloadSHA:plan.payloadSHA,binding:plan.binding,maxAttempts:1,maxCostNanoUSD:plan.reservedNanoUSD,expiresAt:'SET_AFTER_EXPLICIT_OWNER_APPROVAL_WITHIN_ONE_HOUR',ownerDecision:'PENDING_NEW_OWNER_DECISION',syntheticOnly:true,privateEvaluationOnly:true}
+-writeFileSync(join(out,'authorization-template.json'),JSON.stringify(grant,null,2))
++// Runtime-bound review is created once by prepare-api-rag-http.mjs. Do not
++// replace its identity/binding when reopening the offline source preview.
++if(!existsSync(join(local,'first-runtime-preview.json')))writeFileSync(join(out,'authorization-template.json'),JSON.stringify(grant,null,2))
+ const maxRequestReserve=(LUNA_API.maxWireBytes+4096)*LUNA_API.reserveInputNanoUSD+LUNA_API.maxOutputTokens*LUNA_API.outputNanoUSD
+ const summary={question:request.messages[0].text,operationId:request.operationId,model:LUNA_API.model,endpoint:LUNA_API.endpoint,maxOutputTokens:LUNA_API.maxOutputTokens,displayCharacters:2000,tools:[],store:false,automaticRetries:false,
+  payloadSHA:plan.payloadSHA,binding:plan.binding,sourceCount:refs.length,sources:refs.map(({text,...r})=>({...r,characters:text.length})),inputByteBound:plan.inputTokenBound,
+@@ -27,6 +31,6 @@ const summary={question:request.messages[0].text,operationId:request.operationId
+  estimateMethod:'UTF-8 request bytes + 4096 overhead as conservative offline token bound; not tokenizer count. Reservation allows higher input cache-write rate, no discounted cache assumption.',
+  proposedSession:{approved:false,userQuestions:50,maxResponses:50,maxAttemptsIncludingFailures:50,perRequestReservationMaxUSD:maxRequestReserve/1e9,totalReservationProposalUSD:50*maxRequestReserve/1e9,noOldGrantReused:true,existingQuotasAndRatesUnchanged:true},
+  approved:false,keyConfigured:existsSync(join(lunaLocalDirectory(),'api-key.txt')),fullExactRequestPrivateFile:file,liveCalls:0}
+-writeFileSync(join(out,'first-request-summary.json'),JSON.stringify(summary,null,2))
++if(!existsSync(join(local,'first-runtime-preview.json')))writeFileSync(join(out,'first-request-summary.json'),JSON.stringify(summary,null,2))
+ console.log(JSON.stringify({payloadSHA:plan.payloadSHA,sources:refs.length,estimateUSD:summary.estimatedAtUncachedInputBoundUSD,reserveUSD:summary.conservativeReservationUSD,keyConfigured:summary.keyConfigured,approved:false}))
+ const require=createRequire(new URL('../functions/package.json',import.meta.url));await require('firebase-admin/firestore').getFirestore().terminate()
+diff --git a/tests/prepare-api-rag-http.mjs b/tests/prepare-api-rag-http.mjs
+index 3d7cf90..908cb79 100644
+--- a/tests/prepare-api-rag-http.mjs
++++ b/tests/prepare-api-rag-http.mjs
+@@ -1,15 +1,25 @@
+ // Actual localhost preview/auth only. Never executes an inference request.
+ import assert from 'node:assert/strict'
+-import {readFileSync,writeFileSync,mkdirSync} from 'node:fs'
++import {readFileSync,writeFileSync,mkdirSync,existsSync,openSync,writeSync,fsyncSync,closeSync} from 'node:fs'
+ import {createHash} from 'node:crypto'
+-const base='http://127.0.0.1:5173',local='.private.local/api-rag',out='docs/evidence/api-rag-2026-11-25'
++const base='http://127.0.0.1:5173',local='.private.local/api-rag-final-20261125',out='docs/evidence/api-rag-2026-11-25/final-preview'
++const freeze=(file,value)=>{const bytes=JSON.stringify(value,null,2)+'\n';if(existsSync(file)){assert.equal(readFileSync(file,'utf8'),bytes,'FROZEN_RUNTIME_CHANGED: stop; do not renew/rebind approval')}else{const fd=openSync(file,'wx',0o600);try{writeSync(fd,bytes);fsyncSync(fd)}finally{closeSync(fd)}}}
+ const plan=JSON.parse(readFileSync(local+'/first-preview.json','utf8'))
+ const status=await fetch(base+'/api/inspire-private-status').then(r=>r.json())
+ assert.equal(status.lunaApiPreview,true);assert.equal(status.chatgptPreview,false);assert.equal(status.modelAvailable,false)
+-const auth=await fetch('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-only',{method:'POST',headers:{'Content-Type':'application/json'},body:'{"returnSecureToken":true}'}).then(r=>r.json())
+-const post=async(body,origin=base,path='/api/inspire-luna')=>{const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+auth.idToken,Origin:origin},body:JSON.stringify(body)});return {status:r.status,data:await r.json()}}
+-const session=await post({kind:'session'});assert.equal(session.status,200)
+-const request={...plan.request,epoch:session.data.epoch,sessionId:session.data.sessionId}
++const savedFile=local+'/synthetic-local-session.json'
++let saved=existsSync(savedFile)?JSON.parse(readFileSync(savedFile,'utf8')):null
++if(!saved){
++ const auth=await fetch('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-only',{method:'POST',headers:{'Content-Type':'application/json'},body:'{"returnSecureToken":true}'}).then(r=>r.json())
++ assert.equal(typeof auth.idToken,'string');saved={token:auth.idToken}
++}
++const post=async(body,origin=base,path='/api/inspire-luna')=>{const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+saved.token,Origin:origin},body:JSON.stringify(body)});return {status:r.status,data:await r.json()}}
++if(!saved.request){const session=await post({kind:'session'});assert.equal(session.status,200);saved.request={...plan.request,epoch:session.data.epoch,sessionId:session.data.sessionId};freeze(savedFile,saved)}
++const request=saved.request
++assert.deepEqual({...request,epoch:plan.request.epoch,sessionId:plan.request.sessionId},plan.request)
++// A restart may not silently renew the frozen operation's epoch/binding.
++const healthSession=await post({kind:'session'});assert.equal(healthSession.status,200)
++assert.equal(healthSession.data.epoch,request.epoch,'SERVER_RESTARTED: stop; frozen operation must not be rebound')
+ const preview=await post({kind:'preview',request});assert.equal(preview.status,200,JSON.stringify(preview.data));assert.equal(preview.data.payloadSHA,plan.payloadSHA);assert.equal(preview.data.sourceCount,3)
+ assert.equal(preview.data.payload,undefined);assert.equal(preview.data.instructions,undefined);assert.equal(typeof preview.data.keyConfigured,'boolean')
+ assert.deepEqual(await post({kind:'preview',request}),preview)
+@@ -21,10 +31,9 @@ for(const route of ['/ai-inspire?thu-rieng=1','/tham-van-tam-ly','/nghi-duong-du
+ const actual={...plan,request,binding:preview.data.binding}
+ assert.equal(actual.binding,createHash('sha256').update(JSON.stringify([request,actual.payloadSHA])).digest('hex'))
+ // This is a new, unapproved runtime-bound review, not permission to consume.
+-writeFileSync(local+'/first-runtime-preview.json',JSON.stringify(actual,null,2))
+-writeFileSync(local+'/synthetic-local-session.json',JSON.stringify({token:auth.idToken,request}))
++freeze(local+'/first-runtime-preview.json',actual)
+ const summary=JSON.parse(readFileSync(out+'/first-request-summary.json','utf8'))
+-summary.binding=actual.binding;summary.fullExactRequestPrivateFile=local+'/first-runtime-preview.json';summary.runtimeEpochBound=true
++summary.binding=actual.binding;summary.fullExactRequestPrivateFile=local+'/first-runtime-preview.json';summary.runtimeEpochBound=true;summary.request=request
+ writeFileSync(out+'/first-request-summary.json',JSON.stringify(summary,null,2))
+ const grant=JSON.parse(readFileSync(out+'/authorization-template.json','utf8'));grant.binding=actual.binding;writeFileSync(out+'/authorization-template.json',JSON.stringify(grant,null,2))
+ mkdirSync(out,{recursive:true});writeFileSync(out+'/http-checks.json',JSON.stringify({executed:true,preview:preview.data,unauthorizedExecute:'NOT SENT: do not risk any local owner grant',forgedAuthority:400,crossOrigin:403,chatgptClosed:403,privateFilesDenied:403,routesHTML:200,paidCalls:0,browserRendering:'NOT VERIFIED BY HTTP'},null,2))
+diff --git a/tests/verify-api-rag-corpus.mjs b/tests/verify-api-rag-corpus.mjs
+new file mode 100644
+index 0000000..d8610bc
+--- /dev/null
++++ b/tests/verify-api-rag-corpus.mjs
+@@ -0,0 +1,39 @@
++// Read-only corpus regression against the imported bundle; no inference.
++import assert from 'node:assert/strict'
++import {readFileSync,writeFileSync,mkdirSync} from 'node:fs'
++import {join} from 'node:path'
++import {createHash} from 'node:crypto'
++import {createRequire} from 'node:module'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const root='.private.local/inbox/INSPIRE_RAG_API_HANDOFF',sha=s=>createHash('sha256').update(s).digest('hex')
++const manifest=JSON.parse(readFileSync(join(root,'SOURCE_MANIFEST.json'),'utf8'))
++const parent=manifest.entries.find(e=>e.originalNames.includes('LESSON_CONTENT_458.jsonl'))
++const raw=readFileSync(join(root,parent.path));assert.equal(sha(raw),parent.sha256)
++const expected=raw.toString('utf8').trim().split(/\r?\n/).map(l=>JSON.parse(l))
++assert.equal(expected.length,458);assert.equal(new Set(expected.map(l=>l.lesson_id)).size,458)
++const require=createRequire(new URL('../functions/package.json',import.meta.url)),db=require('firebase-admin/firestore').getFirestore()
++try {
++ const docs=(await db.collection('inspireKnowledge').get()).docs.filter(d=>d.id!=='_index'),byId=new Map(docs.map(d=>[d.id,d.data()]))
++ const lessons=docs.filter(d=>d.data().lesson)
++ assert.equal(lessons.length,458);assert.equal(new Set(lessons.map(d=>d.data().lesson.lessonId)).size,458)
++ for(const l of expected){
++  const s=byId.get('lesson-'+l.lesson_id);assert.ok(s,l.lesson_id)
++  assert.equal(s.lesson.contentHash,sha(l.content));assert.equal(s.lesson.parentHash,parent.sha256)
++  assert.equal(s.hash,parent.sha256);assert.equal(s.lesson.status,'DRAFT');assert.equal(s.status,'review-required')
++  assert.equal(s.kind,'reference');assert.equal(s.permissions.runtimeUse,'private-reference-evaluation')
++  assert.equal(s.permissions.externalExport,true);assert.equal(s.permissions.sourceHash,s.hash)
++  assert.equal(s.extractedText,'# '+l.title+'\n'+l.content)
++  assert.ok(s.sections.length>0)
++  for(const section of s.sections){assert.equal(section.lesson.lessonId,l.lesson_id);assert.equal(section.sectionHash,sha(section.text));assert.ok(s.permissions.sectionHashes.includes(section.sectionHash))}
++ }
++ const receipts=JSON.parse(readFileSync('.private.local/knowledge/receipts.json','utf8'))
++ const volumes=manifest.entries.filter(e=>e.originalNames.some(n=>/^(CUM_\d+_|DON_VI_\d+_|INSPIRE_MOI_AND_CURRICULA_READABLE)/.test(n)))
++ assert.ok(volumes.length>0)
++ for(const v of [...volumes,parent]){
++  const receipt=receipts.find(r=>r.hash===v.sha256&&!r.lesson);assert.ok(receipt)
++  const s=byId.get(receipt.documentId);assert.ok(s);assert.deepEqual(s.sections,[]);assert.equal(s.externalEligible,false);assert.equal(s.internalEligible,false)
++ }
++ const report={executed:true,lessonIds:458,uniqueLessonIds:458,lessonBodiesAndHashesVerified:458,draftStatusPreserved:true,duplicateVolumeReceipts:volumes.length,duplicateVolumesIndexed:0,docs:docs.length,externallyEligibleDocuments:docs.filter(d=>d.data().externalEligible).length,heldDocuments:docs.filter(d=>!d.data().externalEligible).length,paidCalls:0}
++ const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/api-rag-2026-11-25/resume-final';mkdirSync(out,{recursive:true});writeFileSync(join(out,'corpus-check.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report))
++}finally{await db.terminate()}
+diff --git a/tests/verify-api-rag-preview.mjs b/tests/verify-api-rag-preview.mjs
+new file mode 100644
+index 0000000..4dd7e48
+--- /dev/null
++++ b/tests/verify-api-rag-preview.mjs
+@@ -0,0 +1,27 @@
++// Final exact RAG preview + original Controller; synthetic candidate, no model.
++import assert from 'node:assert/strict'
++import {readFileSync,writeFileSync} from 'node:fs'
++import {createHash} from 'node:crypto'
++import {createRequire} from 'node:module'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {recheckLunaSources} from '../functions/src/inspireLunaApi.ts'
++import {createLunaController} from '../functions/src/inspireLunaController.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const local='.private.local/api-rag-final-20261125',out='docs/evidence/api-rag-2026-11-25/final-preview'
++const p=JSON.parse(readFileSync(local+'/first-runtime-preview.json','utf8')),sha=s=>createHash('sha256').update(s).digest('hex')
++const data=JSON.parse(p.payload.input[0].content)
++assert.deepEqual(data.references,p.references);assert.equal(p.references.length,3);assert.equal(sha(p.body),p.payloadSHA)
++assert.deepEqual(p.payload.input.slice(1),p.request.messages.map(m=>({role:m.role,content:m.text})))
++assert.deepEqual(p.payload.tools,[]);assert.equal(p.payload.store,false);assert.equal(p.payload.max_output_tokens,512)
++await recheckLunaSources(p)
++const controller=createLunaController()
++await controller.preflight(p)
++const candidate='Đây là phản hồi giả lập chỉ dùng để kiểm tra kỹ thuật. Bạn có thể nói thêm về tình huống giả định nếu muốn.'
++await controller.validate(p,candidate)
++const evidence=controller.evidence()
++assert.equal(evidence.length,2)
++assert.ok(evidence.every(e=>e.binding===p.binding&&e.actual_execution_eligible===false&&e.user_delivery===false))
++assert.equal(evidence[1].validated_sha256,sha(candidate))
++writeFileSync(out+'/adapter-controller-trace.json',JSON.stringify({executed:true,liveCalls:0,candidate:'SYNTHETIC OFFLINE: NOT LUNA OUTPUT',payloadSHA:p.payloadSHA,binding:p.binding,exactOutboundPrivateFile:local+'/first-outbound.json',sourcesReachedAdapter:data.references.map(({text,...r})=>({...r,characters:text.length,textSHA:sha(text)})),checks:evidence,operatingRulesExported:false,permissionRechecked:true,publicDelivery:false},null,2))
++console.log('PASS: exact three permitted passages reach API input; original Controller preflight and synthetic output binding validated; zero model calls.')
++const require=createRequire(new URL('../functions/package.json',import.meta.url));await require('firebase-admin/firestore').getFirestore().terminate()
+diff --git a/tests/verify-api-rag.mjs b/tests/verify-api-rag.mjs
+index 949ee1e..4b1b658 100644
+--- a/tests/verify-api-rag.mjs
++++ b/tests/verify-api-rag.mjs
+@@ -2,9 +2,10 @@
+ import {spawnSync} from 'node:child_process'
+ import {mkdirSync,writeFileSync} from 'node:fs'
+ import {join,dirname} from 'node:path'
+-const out='docs/evidence/api-rag-2026-11-25/final-checks';mkdirSync(out,{recursive:true})
++// Keep earlier failing runs intact; choose a fresh directory explicitly.
++const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/api-rag-2026-11-25/resume-final';mkdirSync(out,{recursive:true})
+ const npm=join(dirname(process.execPath),'node_modules/npm/bin/npm-cli.js'),test=f=>['--import','./tests/register-ts.mjs','--test',f]
+-const tasks={api:test('tests/inspire-luna-api.test.mjs'),safeguards:test('tests/inspire-api-rag.test.mjs'),conversation:test('tests/inspire-chat.test.mjs'),retrieval:test('tests/inspire-knowledge-conversation.test.mjs'),backend:[npm,'--prefix','functions','run','build'],website:[npm,'run','build'],lint:['functions/lint.cjs','src/inspireLunaApi.ts','src/inspireLunaService.ts','src/inspireKnowledge.ts','src/inspireLocalService.ts','src/inspireReviewReceipt.ts'],privacy:['tests/inspire-build-audit.mjs']}
++const tasks={api:test('tests/inspire-luna-api.test.mjs'),safeguards:test('tests/inspire-api-rag.test.mjs'),conversation:test('tests/inspire-chat.test.mjs'),retrieval:test('tests/inspire-knowledge-conversation.test.mjs'),pagination:test('tests/inspire-pagination.test.mjs'),corpus:['--import','./tests/register-ts.mjs','tests/verify-api-rag-corpus.mjs'],quotas:test('tests/inspire-emulator.test.mjs'),backend:[npm,'--prefix','functions','run','build'],website:[npm,'run','build'],lint:['functions/lint.cjs','src/inspireLunaApi.ts','src/inspireLunaService.ts','src/inspireKnowledge.ts','src/inspireLocalService.ts','src/inspireReviewReceipt.ts'],privacy:['tests/inspire-build-audit.mjs']}
+ const results={};for(const name of process.argv.slice(2).length?process.argv.slice(2):Object.keys(tasks)){
+  if(!tasks[name])throw Error('OFFLINE_ALLOWLIST_ONLY')
+  const r=spawnSync(process.execPath,tasks[name],{encoding:'utf8',windowsHide:true,timeout:600000,maxBuffer:16000000,env:{...process.env,INSPIRE_REVIEW_EVIDENCE_DIR:out}})

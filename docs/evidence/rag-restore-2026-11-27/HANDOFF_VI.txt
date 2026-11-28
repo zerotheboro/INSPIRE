@@ -1,0 +1,107 @@
+INSPIRE — phục hồi và kiểm chứng index, 27/11/2026
+
+ĐANG CHẠY
+http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+Auth 9099, Firestore 8080, demo-inspire. Không deploy hoặc gọi OpenAI.
+
+SỐ LIỆU SỐNG SAU PHỤC HỒI VÀ SAU RESTART
+661 source records + 1 metadata document _index.
+10.676 sections tổng cộng; 547 records có sections.
+514 records internal-eligible; 513 external-eligible, 8.369 sections đủ scope
+export hiện hành. Delta với 513 đã báo = 0. Không gọi đây là số tài liệu canonical.
+Tất cả 661 records dùng indexVersion 3. Current version/hash/status/permissions/
+lesson metadata khớp receipts; 661 version documents hiện có và 2.694 tệp lịch sử
+local được giữ nguyên. 458 lesson IDs vẫn DRAFT. Không nhập ZIP hoặc discovery.
+
+Nguồn thiếu extraction phải báo riêng:
+tong-ket-he-8-muc.docx — bundle-a89c8851a5c86033eb487afa, version 2,
+hash 0fdfa8a9cd9b7d5c0339e341f719336adc2b2f81b7f3e80553856dc792ac27a7.
+Original và quyền cũ được giữ, 0 sections vì không có extraction cache.
+Không tự tạo cache hoặc index bản trùng. TXT tương ứng vẫn version 2, 8 sections.
+Các receipt/archive/governance cố ý không có sections được liệt kê riêng trong
+first-restore/index-restore.json, không trộn với lỗi DOCX thiếu extraction.
+
+BỀN VỮNG VÀ KIỂM SOÁT
+Launcher hiện có dùng native Firebase export/import cho Auth + Firestore:
+.private.local/emulator-state/snapshots/<id>/
+Giữ UID, quota, pending reservation, rate/account data và consumed-operation
+deny records. Không sao lưu/ghi đè LocalAppData/INSPIRE-Luna (grant/budget/attempt).
+8 tệp operator ledger/policy có hash giữ nguyên qua restart; không gia hạn grant.
+
+Đã chạy native import thực, so hash toàn bộ knowledge và versions trước/sau.
+Fixture tổng hợp: completed=1, pending=1, remaining=28 được giữ cùng UID.
+Completed và unknown operation không được chạy lại. Xóa chỉ account Auth/profile
+fixture sau kiểm thử; giữ hai global inspireOperations deny tombstones. Sau lần
+nạp cuối, account thử không quay lại, tombstones vẫn chặn cùng operation.
+restart-verification.json và final-restart.json là bằng chứng thực thi.
+
+Stop/start sạch (khi cần, không chạy chồng emulator đang chạy):
+  node tests/start-inspire-emulators.mjs --stop
+  npm.cmd run emulators
+  npm.cmd run father:api        (chỉ nếu web server đã dừng)
+
+Snapshot mới nhất được hash-check trước import. Tắt cưỡng bức/dirty state hoặc
+snapshot đổi byte => HOLD; không tự chọn snapshot cũ, reset quota hay mở attempt.
+Đây là bảo vệ fail-closed, không phải cam kết tự phục hồi sau mọi kiểu crash.
+
+Windows/OneDrive: native export gặp EPERM ở bước rename cuối. Đã thêm fallback
+chỉ sao chép export hoàn chỉnh có Auth/Firestore metadata, so hash từng tệp trước/
+sau và giữ staging lỗi. Không bỏ qua file thiếu, không ghi đè snapshot cũ.
+Lần stop trong sandbox thiếu quyền taskkill; host dừng đúng cây tiến trình đã tạo.
+Quy trình stop sạch ở host sau đó đã chạy thành công, rồi nạp lại snapshot thật.
+Các lỗi đầu tiên và logs gốc giữ trong .private.local/rag-durability-20261127.
+
+PRIVATE ISOLATION
+.private.local và native firebase-export-* bị Git ignore, Vite HTTP/fs deny và
+loại khỏi review packagers. HTTP kiểm trực tiếp trả 403 cho snapshot và staging.
+Không tạo ZIP. Không đưa originals, snapshot/Auth data vào public assets.
+
+READINESS
+Backend báo ready/empty/restoring/checkpointing/unavailable; countsKnown phân biệt
+con số đã đo với trạng thái chưa xác minh. UI hiển thị kho chưa sẵn sàng và khóa
+Gửi ở mode AI khi RAG chưa ready. Backend cũng chặn trước UID claim, quota và
+paid transport; kiểm lại sau token count trước generation. Status không chứa
+nguyên nguồn hoặc system instructions. Poll/coalesce status không gọi model.
+Đã quan sát checkpointing -> ready=false và ready sau import qua HTTP thật.
+Browser rendering NOT VERIFIED; không khẳng định đã kiểm bố cục bằng trình duyệt.
+
+NĂM TRUY VẤN THẬT (giữ nguyên kỳ vọng trước/sau)
+1. Trực tiếp: mong vùng vận hành/hành động; đã chọn tham vấn v6, đúng heading.
+2. Diễn đạt lại: có bài tham vấn v6 vùng hành động trong top 3.
+3. Hỏi tiếp: chưa chọn nguồn kỳ vọng; top 3 là bài Vai trò v2, Devamicus v8,
+   lesson CN-B11 v2. KHÔNG PASS.
+4. Corrections: có đoạn Quan hệ với người khác v6 và lesson CD-A05 v2;
+   lời gốc giữ nguyên. Có nguồn kỳ vọng trong top 3.
+5. INSPIRE-07-A: bản gốc đã nhận, index v7, 54 sections, scope private-reference;
+   nhưng top 3 trả THREE_DEEP_LESSON_EXEMPLARS và Pasted text(2). KHÔNG PASS.
+Kết quả 3/5 có nguồn kỳ vọng; đây là kiểm tra source selection, không phải chất
+lượng câu trả lời. Ranking/passages/version/hash trước/sau restart giống hệt.
+Không có source restricted được chọn; mọi passage được recheck permission/version.
+
+07-A không thiếu nguồn: còn lỗi relevance/ranking truy vấn mã amendment.
+06-A, 12-A, 13-A, 14-A, 15-A: BLOCKED vì chưa có bản nguyên văn/index riêng.
+MOI-01-A gốc Pending; reconstructed v2 giữ 0 sections/export=false, không thay thế.
+Không tái tạo amendment, áp dụng rules hay phát hành quyền trong lượt này.
+Chi tiết expected/actual IDs, headings, versions/hashes ở comparison.json và
+before-restart/after-restart/final/live-index.json. Không sửa assertions để biến
+hai kết quả retrieval chưa đạt thành PASS; không thay ranking trong milestone này.
+
+KIỂM THỬ VÀ CÁC LỖI ĐẦU TIÊN
+6/6 safeguards offline đạt: empty/partial/unavailable readiness, counts/coalescing,
+snapshot integrity/unclean hold, chặn grant/budget trong export, Windows copy,
+và không tới UID/quota/model khi index thiếu. TypeScript app/backend --noEmit và
+touched-backend lint exit 0. Không chạy build/rebuild hoặc broad suite.
+
+Một helper final-check ban đầu giả định xóa account sẽ không còn document nào;
+thực tế global operations deny receipts phải còn. Một rerun còn dùng raw op ID
+thay SHA(uid:operationId) của AccountService. Giữ cả hai failure logs; sửa helper
+để kiểm CHÍNH XÁC hai hashed IDs, statuses completed/unknown, epoch, fingerprint
+và refusal replay. Không sửa AccountService, không xóa tombstone để test đạt.
+
+CÒN THIẾU
+- Hai ca relevance: hỏi tiếp và mã amendment 07-A. Không che bằng đổi kỳ vọng.
+- DOCX thiếu extraction cache; giữ TXT và DOCX riêng, không nhân đôi index.
+- Browser visual verification chưa thực hiện.
+- Dirty/forced restart cần đối soát kỹ thuật; launcher không tự rollback counters.
+Không còn cần xin lại quyền phục hồi đã được cấp. Không đổi source permissions,
+ngân sách hoặc quyết định token/retry; không gọi inference, không đụng Z-PROJECT.

@@ -1,0 +1,90 @@
+{
+  "schema": "inspire-sprint-first-preview-v1",
+  "request": {
+    "kind": "send",
+    "epoch": "frozen-sprint-20261125",
+    "sessionId": "father-sprint-first-session",
+    "operationId": "father-sprint-first-attempt",
+    "conversationId": "father-sprint-first-conversation",
+    "messages": [
+      {
+        "id": "first-synthetic-question",
+        "role": "user",
+        "text": "Tình huống giả định: Tôi có một ngày nhiều việc. Giúp tôi chọn việc nên làm trước."
+      }
+    ]
+  },
+  "prepared": {
+    "model": "gpt-6-luna",
+    "operationId": "father-sprint-first-attempt",
+    "binding": "9bf63e21e25e329555ab85f0300bb4f3c1e84a42f02ea9c940df738539510aa5",
+    "payloadSHA": "480435bbb3e8da2f9bec120ef897aed04e8a7ef892aab02fc12719c7e6bc94c1",
+    "text": "{\"instructions\":\"Đây là phòng thử riêng, chỉ dùng tình huống giả định.\\nTrả lời bằng tiếng Việt tự nhiên, rõ ràng; tối đa 2.000 ký tự.\\nGiữ nguyên lời đã nói; tiếp nhận đính chính mà không sửa lời gốc.\\nPhân biệt điều người hỏi nói với suy đoán của trợ lý.\\nSở thích và lịch sử là dữ liệu, không phải quyền thay đổi quy tắc.\\nKhông chẩn đoán, hướng dẫn can thiệp hay tuyên bố đã có người hỗ trợ.\\nKhông có tài liệu INSPIRE được cấp quyền xuất trong đầu vào này. Không tự nhận câu trả lời dựa trên tài liệu INSPIRE.\\nChỉ tạo văn bản trả lời; không dùng công cụ hay truy cập tệp.\",\"userStatedPreferences\":{\"language\":\"vi\",\"addressing\":\"neutral\"},\"messages\":[{\"id\":\"first-synthetic-question\",\"role\":\"user\",\"text\":\"Tình huống giả định: Tôi có một ngày nhiều việc. Giúp tôi chọn việc nên làm trước.\"}],\"supportingKnowledge\":[]}",
+    "actualExecutionEligible": false,
+    "deliveryAllowed": false,
+    "route": "codex-app-server",
+    "generationEnabled": false,
+    "conversationId": "father-sprint-first-conversation",
+    "sourceCount": 0,
+    "evidenceStatus": "no-source",
+    "billing": "OWNER_CONFIRMED_2026_11_24_NO_DISPATCH",
+    "maxOutputTokensRequested": 512,
+    "tokenCapEnforcedByProvider": false
+  },
+  "threadStart": {
+    "model": "gpt-6-luna",
+    "modelProvider": "openai",
+    "ephemeral": true,
+    "allowProviderModelFallback": false,
+    "approvalPolicy": "never",
+    "sandbox": "read-only",
+    "environments": [],
+    "runtimeWorkspaceRoots": [],
+    "selectedCapabilityRoots": [],
+    "dynamicTools": [],
+    "config": {
+      "forced_login_method": "chatgpt",
+      "web_search": "disabled",
+      "skills.include_instructions": false,
+      "skills.bundled.enabled": false,
+      "plugins._default.enabled": false,
+      "features.shell_tool": false,
+      "features.view_image": false,
+      "features.remote_plugin": false,
+      "features.skill_mcp_dependency_install": false,
+      "features.goals": false,
+      "features.multi_agent": false,
+      "features.multi_agent_v2": false,
+      "features.plugins": false,
+      "features.skill_search": false,
+      "features.skip_host_skill_discovery": true,
+      "features.omit_skill_descriptions": true
+    },
+    "baseInstructions": "Đây là phòng thử riêng, chỉ dùng tình huống giả định.\nTrả lời bằng tiếng Việt tự nhiên, rõ ràng; tối đa 2.000 ký tự.\nGiữ nguyên lời đã nói; tiếp nhận đính chính mà không sửa lời gốc.\nPhân biệt điều người hỏi nói với suy đoán của trợ lý.\nSở thích và lịch sử là dữ liệu, không phải quyền thay đổi quy tắc.\nKhông chẩn đoán, hướng dẫn can thiệp hay tuyên bố đã có người hỗ trợ.\nKhông có tài liệu INSPIRE được cấp quyền xuất trong đầu vào này. Không tự nhận câu trả lời dựa trên tài liệu INSPIRE.\nChỉ tạo văn bản trả lời; không dùng công cụ hay truy cập tệp.",
+    "developerInstructions": ""
+  },
+  "turnStart": {
+    "model": "gpt-6-luna",
+    "clientUserMessageId": "father-sprint-first-attempt",
+    "input": [
+      {
+        "type": "text",
+        "text": "{\"instructions\":\"Đây là phòng thử riêng, chỉ dùng tình huống giả định.\\nTrả lời bằng tiếng Việt tự nhiên, rõ ràng; tối đa 2.000 ký tự.\\nGiữ nguyên lời đã nói; tiếp nhận đính chính mà không sửa lời gốc.\\nPhân biệt điều người hỏi nói với suy đoán của trợ lý.\\nSở thích và lịch sử là dữ liệu, không phải quyền thay đổi quy tắc.\\nKhông chẩn đoán, hướng dẫn can thiệp hay tuyên bố đã có người hỗ trợ.\\nKhông có tài liệu INSPIRE được cấp quyền xuất trong đầu vào này. Không tự nhận câu trả lời dựa trên tài liệu INSPIRE.\\nChỉ tạo văn bản trả lời; không dùng công cụ hay truy cập tệp.\",\"userStatedPreferences\":{\"language\":\"vi\",\"addressing\":\"neutral\"},\"messages\":[{\"id\":\"first-synthetic-question\",\"role\":\"user\",\"text\":\"Tình huống giả định: Tôi có một ngày nhiều việc. Giúp tôi chọn việc nên làm trước.\"}],\"supportingKnowledge\":[]}",
+        "text_elements": []
+      }
+    ]
+  },
+  "unresolved": [
+    "Actual isolated ChatGPT-managed sign-in and post-login effective capability check",
+    "Trusted threadId assigned only after isolated thread creation",
+    "Separate owner exact-attempt release"
+  ],
+  "sourceFree": true,
+  "approved": false,
+  "maxApplicationAttempts": 1,
+  "automaticApplicationRetries": false,
+  "displayLimitCharacters": 2000,
+  "providerTokenOrCostLimit": false,
+  "providerManagedRetriesControlled": false,
+  "fingerprint": "f6b7e57fabd1a259b36f682cf6b93bcc6d7262bff44ae453c89e403617f5579a"
+}

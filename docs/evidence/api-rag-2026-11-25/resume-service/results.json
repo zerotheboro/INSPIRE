@@ -1,0 +1,18 @@
+{
+  "results": {
+    "api": {
+      "exitCode": null,
+      "error": "ETIMEDOUT"
+    },
+    "retrieval": {
+      "exitCode": 0,
+      "error": null
+    },
+    "quotas": {
+      "exitCode": 1,
+      "error": null
+    }
+  },
+  "paidCalls": 0,
+  "scope": "Focused offline/emulator checks; historical 48/49 unchanged"
+}

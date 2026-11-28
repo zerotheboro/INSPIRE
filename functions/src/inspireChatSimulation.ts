@@ -188,5 +188,5 @@ export function createSimulationServer(
     operations.set(key, {fingerprint, result});
     return result;
   }
-  return {session, handle};
+  return {session, handle, epoch};
 }

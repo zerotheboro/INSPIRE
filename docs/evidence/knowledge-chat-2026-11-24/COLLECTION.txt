@@ -1,0 +1,68 @@
+BỘ NGUỒN ĐỀ XUẤT — CHƯA ĐƯỢC PHÉP
+Collection: father-reference-concepts-v1
+SHA-256: 9955cd10e074d304af11707d3e84d0c139c4fd867e4c0666a8b7fbdaf9e5c21d
+
+Đây là một bộ tham khảo giới hạn, không phải toàn bộ INSPIRE. Không gửi nguyên thư viện.
+Mỗi lượt: tối đa 3 đoạn liên quan, mỗi đoạn 1.400 ký tự, tổng 4.200; kèm ID, phiên bản, hash và vị trí.
+Cùng câu hỏi/lịch sử giả định và chỉ dẫn tiếng Việt của phần mềm, các đoạn đó sẽ sang OpenAI qua ChatGPT sign-in.
+Không gửi bản gốc, hồ sơ cá nhân, booking, tài liệu khác, hoặc quy tắc vận hành chưa được phép.
+Chấp thuận tham khảo không biến bản nháp thành canonical và không cấp quyền can thiệp.
+
+sources/recovered/INSPIRE-02.txt
+  ID original-ec703307872ce4b819ed7a01; bản biên nhận 1; phiên bản tài liệu Not declared in header
+  SHA-256 cbcf54e1a6ba1e474c45f5a0dde6a9b93777c66b15db4f00f31799874d222e19
+  Trạng thái giữ nguyên: review-required / receipt-only
+  **Trạng thái:** Tài liệu nền chuyên sâu  
+  6 đoạn được liệt kê chính xác trong proposed-source-collection.json
+
+sources/recovered/INSPIRE-07.txt
+  ID original-fb80fc08eb9d7e07fb89e503; bản biên nhận 1; phiên bản tài liệu 1.0
+  SHA-256 b12c3c31e089b8512052b5fce365addf882c3be987b7b213c18827a469aa027f
+  Trạng thái giữ nguyên: review-required / receipt-only
+  **Trạng thái:** Bản chuẩn hóa chuyên sâu để chủ hệ xem xét và phê duyệt. Những cấu trúc phân tích mới trong tài liệu này là đề xuất làm rõ; không tự động trở thành taxonomy cố định hoặc logic triển khai đã được duyệt.
+  1 đoạn được liệt kê chính xác trong proposed-source-collection.json
+
+sources/recovered/INSPIRE-08.txt
+  ID original-75f25d7843039e680d6e3dbc; bản biên nhận 1; phiên bản tài liệu 1.0
+  SHA-256 23fe05cabd11c8ac95c9ac443f7345c0c793afb1420ed283b9698f0dd501e8fa
+  Trạng thái giữ nguyên: review-required / receipt-only
+  **Trạng thái:** Bản chuẩn hóa chuyên sâu để chủ hệ xem xét và phê duyệt. Các cấu trúc phân tích mới trong tài liệu này là đề xuất tổ chức tri thức, chưa tự động trở thành taxonomy cố định hoặc logic triển khai được phê duyệt.
+  1 đoạn được liệt kê chính xác trong proposed-source-collection.json
+
+sources/recovered/INSPIRE-09.txt
+  ID original-791a3933fa528e77cdf2b9e3; bản biên nhận 1; phiên bản tài liệu 1.0
+  SHA-256 fc981006e2f443cc50d1178b165e9cf8ab56bfe3ab08b4c264e1d8c824878ac8
+  Trạng thái giữ nguyên: review-required / receipt-only
+  **Trạng thái:** Bản chuẩn hóa chuyên sâu để chủ hệ xem xét và phê duyệt. Các lăng kính và schema mới là đề xuất tổ chức tri thức, chưa tự động trở thành taxonomy cố định hoặc logic triển khai chatbot đã được duyệt.
+  1 đoạn được liệt kê chính xác trong proposed-source-collection.json
+
+sources/recovered/INSPIRE-10.txt
+  ID original-11d4a49158dd050dba3baac7; bản biên nhận 1; phiên bản tài liệu 1.0
+  SHA-256 bfc1cedd7f8f799eae914a5f056272c3a2857127ba4d0a5c9a4533339b48b49e
+  Trạng thái giữ nguyên: review-required / receipt-only
+  **Trạng thái:** Bản chuẩn hóa chuyên sâu để chủ hệ xem xét và phê duyệt. Các lăng kính, schema và phân biệt mới là đề xuất tổ chức tri thức, chưa tự động trở thành taxonomy cố định hoặc logic chatbot được phê duyệt.
+  2 đoạn được liệt kê chính xác trong proposed-source-collection.json
+
+sources/recovered/INSPIRE-11_v2.txt
+  ID original-4c3b435623e488695cefeb4b; bản biên nhận 1; phiên bản tài liệu 2.0
+  SHA-256 5eda9958f6247f0de3f1161b10e5df5985dedb2c73159181c3ec51aeaf08dc60
+  Trạng thái giữ nguyên: review-required / receipt-only
+  **Trạng thái:** Bản chuyên sâu đề xuất để chủ hệ xem xét. Các lăng kính, cấu trúc và schema mới chưa tự động trở thành taxonomy cố định, database bắt buộc hoặc logic chatbot đã được phê duyệt.
+  2 đoạn được liệt kê chính xác trong proposed-source-collection.json
+
+sources/recovered/INSPIRE-12.txt
+  ID original-26330e6d1e0fa0d5cc2b2f12; bản biên nhận 1; phiên bản tài liệu 2.0
+  SHA-256 1819bdcd39cfed6ee62c1f803c6fb296f6a36dbdaf57adfa919d836d799871e9
+  Trạng thái giữ nguyên: review-required / receipt-only
+  **Trạng thái:** Bản chuyên sâu đề xuất. Các cấu trúc, phân loại và schema mới là công cụ tổ chức tri thức chờ phê duyệt; không tự động trở thành taxonomy chính thức, protocol lâm sàng hay logic chatbot được phép triển khai.
+  1 đoạn được liệt kê chính xác trong proposed-source-collection.json
+
+Các chủ đề tham vấn trên website INSPIRE
+  ID website-counseling; bản biên nhận 1; phiên bản tài liệu Not declared in header
+  SHA-256 043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4
+  Trạng thái giữ nguyên: published-supporting / supporting-retrieval
+  No editorial approval inferred
+  35 đoạn được liệt kê chính xác trong proposed-source-collection.json
+
+Các amendment, bản cũ, MOI, DPM, OSP, RDS, content patch, 458 bài học và bản tái dựng không được xuất bởi đề xuất này.
+Các bản gốc và lịch sử vẫn được giữ. Xem source-eligibility.json để đối chiếu toàn bộ 71 biên nhận, không phải 71 nguồn đủ quyền.

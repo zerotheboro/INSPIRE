@@ -1,0 +1,14 @@
+{
+  "node": "v25.2.0",
+  "npm": "11.6.2",
+  "packages": {
+    "vite": "7.2.2",
+    "react": "19.3.0",
+    "firebase": "12.18.0",
+    "typescript": "7.0.2",
+    "firebaseTools": "15.35.0",
+    "openai": "7.10.0",
+    "firebaseAdmin": "13.10.0",
+    "backendTypescript": "6.0.3"
+  }
+}

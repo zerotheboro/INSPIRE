@@ -1,0 +1,38 @@
+{
+  "executed": true,
+  "nativeExportImportRestart": true,
+  "knowledgeAndVersionBytesPreserved": true,
+  "authUIDPreserved": true,
+  "quotaAndPendingReservationsPreserved": true,
+  "completedAndUnknownOperationsRejectReplay": true,
+  "originalsHistoryAndOperatorLedgersUnchanged": true,
+  "completed": 1,
+  "pending": 1,
+  "remaining": 28,
+  "fingerprints": {
+    "knowledge": {
+      "documents": 662,
+      "sha256": "68c7fd58f576d27a083b1d7977d8dc8ed3dfc73ad1a4edb44727571da9dc0e53"
+    },
+    "versions": {
+      "documents": 661,
+      "sha256": "f6d29af5711161abf8fc27777232b59602bb861c5c8046863e1109aef4ba9fb6"
+    },
+    "quotaAndOtherState": {
+      "documents": 5,
+      "sha256": "7beb280ad5b2307c6d1e9db39b962fd4859ce0abe2c2077052548632d0523451"
+    },
+    "protected": {
+      "sourceHistory": {
+        "files": 2694,
+        "sha256": "fdee35a90b23fb3d0db308a5ddca474d691b85b19e58a751d81fb2beb37809d2"
+      },
+      "receiptsSHA": "a12f6e5ee2c6713dacde5a01e42a5040e06edae1ef6404ccb2e37d752f234d4e",
+      "operatorLedger": {
+        "files": 8,
+        "sha256": "c1707f1474b6c8cb62c36660a56fad57a818d4ae061ec2f38ee10ba5c82dca32"
+      }
+    }
+  },
+  "modelCalls": 0
+}

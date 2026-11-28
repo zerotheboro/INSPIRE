@@ -1,0 +1,16 @@
+{
+  "baseline": "working tree before env-source migration",
+  "files": [
+    "tests/start-father-api.mjs",
+    "functions/src/inspireLunaApi.ts",
+    "vite.config.ts",
+    "tests/inspire-luna-api.test.mjs",
+    "tests/prepare-api-rag-first.mjs",
+    "functions/.env.example",
+    "tests/inspire-luna-env.test.mjs",
+    "tests/verify-luna-env-isolation.mjs"
+  ],
+  "applyCheckExit": 0,
+  "workspacePatchApplied": false,
+  "secretFileIncluded": false
+}

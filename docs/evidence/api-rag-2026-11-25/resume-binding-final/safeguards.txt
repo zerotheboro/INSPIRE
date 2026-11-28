@@ -1,0 +1,14 @@
+✔ v1 spending grant cannot authorize fresh API path; stale pricing is held (14.2558ms)
+✔ mutating request identity or payload after preview fails exact binding (2.6411ms)
+✔ SDK safe errors use one attempt for 401, 404, 429 and transport abort; no raw provider text leaks (29.7665ms)
+✔ malicious tool/refusal/incomplete/invalid usage responses cannot reach delivery (2.0533ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4907.9352
+
+EXIT_CODE=0

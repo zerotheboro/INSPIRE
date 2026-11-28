@@ -1,0 +1,36 @@
+INSPIRE weekend local integration — 2026-11-24
+
+URL: http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+Running: Auth emulator 127.0.0.1:9099; Firestore emulator 127.0.0.1:8080;
+Vite 127.0.0.1:5173. Final HTTP health checks: all four URLs returned 200.
+Mode: source-free simulation using the original local Controller.
+Live model delivery and API-key fallback remain disabled. No paid calls.
+
+Executed evidence:
+- http.txt: authenticated simulation question, follow-up, correction; private
+  paths blocked; source-free redacted preview; live dispatch held.
+- errors.json: malformed request 400; unknown replay 409 with no retry.
+- weekend.txt: 2/2 tests passed (synthetic fixtures/injected engine).
+- conversation.txt: 17/17 tests passed.
+- backend.txt / website.txt: both builds exited 0.
+- lint-initial.txt: initial 933 CRLF formatting errors retained.
+- lint.txt: six touched backend files pass after LF normalization (exit 0).
+- results.json: machine-readable execution results.
+- git diff --check: passed.
+
+NOT VERIFIED: rendered browser interactions, desktop/mobile layout and
+screenshots. Browser host was unavailable, and Windows Computer Use stopped
+because it could not establish the active browser URL safely. No UI bypass
+was attempted. HTTP checks are not claimed as rendered browser checks.
+
+Restart if needed, from the INSPIRE repository in two terminals:
+  npm.cmd run emulators
+  npm.cmd run father:weekend
+Use existing local dependencies and original Controller; no installation,
+deployment, permission grants or billing changes are needed for simulation.
+
+Integration: focused.patch applied after clean-tree checkpoint and successful
+git apply --check; all 431 ZIP payloads verified. Original Controller's 1,234
+manifest payloads verified. No repository replacement or unrelated edits.
+Recoverable checkpoint: .private.local/weekend-integration-20261124/
+The build also refreshed tracked tsconfig.node.tsbuildinfo.

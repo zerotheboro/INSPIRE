@@ -1,0 +1,118 @@
+{
+  "question": "Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm. Giúp tôi hiểu khoảng cách giữa ý định và hành động.",
+  "operationId": "api-rag-final-attempt-20261125",
+  "model": "gpt-6-luna",
+  "endpoint": "https://api.openai.com/v1/responses",
+  "maxOutputTokens": 512,
+  "displayCharacters": 2000,
+  "tools": [],
+  "store": false,
+  "automaticRetries": false,
+  "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+  "binding": "6135befb55f3b4447c115638f3f2bee7bfaa91aefc2d8d822c8f389b1b058916",
+  "sourceCount": 3,
+  "sources": [
+    {
+      "documentId": "corpus-cef55cbb7beb4e5fce595063",
+      "version": 6,
+      "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+      "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+      "title": "INSPIRE-main/docs/counseling-topics-source.md",
+      "sourceStatus": "review-required",
+      "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 11564,
+      "endOffset": 12927,
+      "startLine": 366,
+      "endLine": 420,
+      "characters": 1363
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 6,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-18",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "1c440ec8aa67669694690ff3b6464554f05c30a3b20aced6ea461de4dad87afe",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 11929,
+      "endOffset": 13280,
+      "startLine": 366,
+      "endLine": 416,
+      "characters": 1351
+    },
+    {
+      "documentId": "lesson-C04-06",
+      "version": 2,
+      "hash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+      "sectionId": "lesson-C04-06-2",
+      "title": "C04-06 · Động cơ và động lực",
+      "sourceStatus": "review-required",
+      "sectionHash": "5829537a1e878619c5455543a1d0402072721ca8040ca2a39775aa0f9a22f62e",
+      "headingPath": [
+        "Động cơ và động lực",
+        "Bài 4.6 — Động cơ và động lực"
+      ],
+      "startOffset": 624,
+      "endOffset": 2010,
+      "startLine": 10,
+      "endLine": 18,
+      "lesson": {
+        "lessonId": "C04-06",
+        "moduleId": "C04",
+        "kind": "CLUSTER",
+        "contentHash": "54af0c35ef1b4771fade53b735c6e1d2b9c344bcc8a1cedddbd4c1a3889f7890",
+        "parentHash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+        "status": "DRAFT"
+      },
+      "characters": 1386
+    }
+  ],
+  "inputByteBound": 13346,
+  "pricing": {
+    "checked": "2026-11-25",
+    "expires": "2026-12-02T00:00:00Z",
+    "inputUSDPerMillion": 0.1,
+    "outputUSDPerMillion": 0.5,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6-luna"
+  },
+  "conservativeReservationUSD": 0.0035925,
+  "estimatedAtUncachedInputBoundUSD": 0.0015906,
+  "estimateMethod": "UTF-8 request bytes + 4096 overhead as conservative offline token bound; not tokenizer count. Reservation allows higher input cache-write rate, no discounted cache assumption.",
+  "proposedSession": {
+    "approved": false,
+    "userQuestions": 50,
+    "maxResponses": 50,
+    "maxAttemptsIncludingFailures": 50,
+    "perRequestReservationMaxUSD": 0.01128,
+    "totalReservationProposalUSD": 0.564,
+    "noOldGrantReused": true,
+    "existingQuotasAndRatesUnchanged": true
+  },
+  "approved": false,
+  "keyConfigured": false,
+  "fullExactRequestPrivateFile": ".private.local/api-rag-final-20261125/first-runtime-preview.json",
+  "liveCalls": 0,
+  "runtimeEpochBound": true,
+  "request": {
+    "kind": "send",
+    "epoch": "90514858-8529-4701-ab07-ee15a7fde48a",
+    "sessionId": "7bbf5f86-655f-4241-832b-e1144e0bf2b6",
+    "operationId": "api-rag-final-attempt-20261125",
+    "conversationId": "api-rag-final-conversation-20261125",
+    "messages": [
+      {
+        "id": "api-rag-final-user-message",
+        "role": "user",
+        "text": "Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm. Giúp tôi hiểu khoảng cách giữa ý định và hành động."
+      }
+    ]
+  }
+}

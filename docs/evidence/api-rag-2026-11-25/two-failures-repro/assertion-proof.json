@@ -1,0 +1,9 @@
+{
+  "historicalAssertionCount": 87,
+  "historicalReproductionAssertionsUnchanged": true,
+  "currentAssertionCount": 87,
+  "currentBeforeSHA": "5a48a18d11d1b6104a02963e1789376df0b93c97aaf6a0895c24506316744128",
+  "currentAfterSHA": "5a48a18d11d1b6104a02963e1789376df0b93c97aaf6a0895c24506316744128",
+  "currentAssertionsUnchanged": true,
+  "controllerTestSourceFreeFlagRemoved": true
+}

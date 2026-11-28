@@ -1,0 +1,10 @@
+
+C:\Users\Admin\OneDrive\Desktop\web_develope\INSPIRE\functions\src\inspireLocalService.ts
+   95:16  error  Expected { after 'else'  curly
+  108:18  error  Expected { after 'else'  curly
+
+✖ 2 problems (2 errors, 0 warnings)
+  2 errors and 0 warnings potentially fixable with the `--fix` option.
+
+
+EXIT_CODE=1

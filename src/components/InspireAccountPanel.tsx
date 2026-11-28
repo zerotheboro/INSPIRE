@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from "react"
 import type {FormEvent} from "react"
-import {accountCall, emailIdentity, googleIdentity, leaveIdentity, watchIdentity} from "../services/inspireIdentity"
+import {accountCall, emailIdentity, googleIdentity, leaveIdentity, reconnectLocalGuest, watchIdentity} from "../services/inspireIdentity"
 import type {AccountView, Preferences} from "../services/inspireIdentity"
 
 const labels: Record<keyof Preferences, string> = {
@@ -83,7 +83,7 @@ export default function InspireAccountPanel({onIdentity}: {onIdentity: (key: str
           key === "context" || key === "desiredSupport" ? <textarea maxLength={1000} rows={3} value={preferences[key]} onChange={(event) => setPreferences({...preferences, [key]: event.target.value})} /> :
             <input maxLength={100} value={preferences[key]} onChange={(event) => setPreferences({...preferences, [key]: event.target.value})} />}</label>)}</div>
       <button disabled={busy} type="submit">{busy ? "Đang lưu…" : "Lưu tùy chọn"}</button></form>}
-    {error && <div className="ip-error" role="alert">{error}<button onClick={() => void refresh()}>Kết nối lại</button></div>}
+    {error && <div className="ip-error" role="alert">{error}<button disabled={busy} onClick={() => void act(reconnectLocalGuest)}>Kết nối lại</button></div>}
     {notice && <p role="status">{notice}</p>}
   </section>
 }

@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-11-25T13:34:48.779Z",
+  "providerDispatchSent": false,
+  "inferenceCalls": 0,
+  "authorizationChanged": false,
+  "grantWritten": false,
+  "previewRebuilt": false,
+  "newSessionCreated": false,
+  "frozenFilesUnchanged": true,
+  "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+  "reservationNanoUSD": 3592500,
+  "model": "gpt-6-luna",
+  "maxOutputTokens": 512,
+  "sourceCount": 3,
+  "frozenIdentity": {
+    "kind": "send",
+    "epoch": "90514858-8529-4701-ab07-ee15a7fde48a",
+    "sessionId": "7bbf5f86-655f-4241-832b-e1144e0bf2b6",
+    "operationId": "api-rag-final-attempt-20261125",
+    "conversationId": "api-rag-final-conversation-20261125",
+    "binding": "6135befb55f3b4447c115638f3f2bee7bfaa91aefc2d8d822c8f389b1b058916"
+  },
+  "savedAuthentication": {
+    "fields": [
+      "request",
+      "token"
+    ],
+    "idTokenExpired": true,
+    "sdkUserStatePresent": false,
+    "refreshCredentialPresent": false,
+    "realSameUIDRefresh": "NOT EXECUTED: saved record contains only an ID token and request; no restorable SDK User/refresh credential"
+  },
+  "ledger": {
+    "attemptPresent": false,
+    "grantPresent": false
+  },
+  "operationReservation": {
+    "exists": false
+  },
+  "sourcePermissionAndVersionCheck": "PASS",
+  "stopped": true,
+  "checkFailure": "FROZEN_PREFLIGHT_HOLD",
+  "ledgerAfter": {
+    "attemptPresent": false,
+    "grantPresent": false
+  }
+}

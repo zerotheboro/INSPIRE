@@ -1,0 +1,50 @@
+✔ verified anonymous + email registration links same UID, login and signout do not mint another identity (38115.0211ms)
+✔ Google emulator credentials create verified Google account (synthetic OAuth substitute) (82.4982ms)
+✔ guest 10 total, completion once, durable duplicate rejected, no periodic reset (1668.8585ms)
+✔ registered 30 replies, Vietnam midnight boundary, mid-month allowance and no rollover (4613.2175ms)
+✔ atomic reservations prevent overspending; midnight completion charges the completion month (11284.7288ms)
+✔ confirmed failure refunds; unknown adapter or completion outcome remains reserved after restart (629.0125ms)
+✔ account linking blocks old anonymous identity, adds no guest balance, and sessions reject another user (219.6708ms)
+[2026-11-25T05:22:54.781Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x853ea865 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-25T05:22:54.829Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x853ea866 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-25T05:22:54.857Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x853ea867 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-25T05:22:54.880Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x853ea868 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+[2026-11-25T05:22:54.915Z]  @firebase/firestore: Firestore (12.18.0): GrpcConnection RPC 'Write' stream 0x853ea869 error. Code: 7 Message: 7 PERMISSION_DENIED: 
+false for 'create' @ L6, false for 'update' @ L6
+✔ client quota manipulation, cross-user records and private sources are rejected (724.9654ms)
+✖ incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction (37073.0972ms)
+✔ existing shared IP request-rate limits remain separate and reject before quota reservation or adapter (81798.0071ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 179084.3333
+
+✖ failing tests:
+
+test at tests\inspire-emulator.test.mjs:196:1
+✖ incremental knowledge provenance, review exclusion, Edulience isolation and real adapter context construction (37073.0972ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(retrieved.every((s) => s.sourceStatus === 'published-supporting' && !s.documentId.endsWith('-review') && !s.documentId.endsWith('-edulience')))
+  
+      at TestContext.<anonymous> (file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/tests/inspire-emulator.test.mjs:213:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+EXIT_CODE=1

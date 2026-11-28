@@ -1,0 +1,13 @@
+{
+  "schema": "inspire-luna-one-shot-v2",
+  "approved": false,
+  "model": "gpt-6-luna",
+  "payloadSHA": "ffff431ac3e1e8c485f145ccea1e6a23086bb57cf7af1da46a544c8a4e09067c",
+  "binding": "408a481775eb8562a9cbc1e7dda5e5f472fc87d6d63801cede316d77d83a5840",
+  "maxAttempts": 1,
+  "maxCostNanoUSD": 3394750,
+  "expiresAt": "SET_AFTER_EXPLICIT_OWNER_APPROVAL_WITHIN_ONE_HOUR",
+  "ownerDecision": "PENDING_NEW_OWNER_DECISION",
+  "syntheticOnly": true,
+  "privateEvaluationOnly": true
+}

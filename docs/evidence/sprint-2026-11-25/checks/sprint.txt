@@ -1,0 +1,14 @@
+✔ real app-server summary is bound to completed bytes; standalone summary and mismatched bytes are refused (5.3319ms)
+✔ isolated process cannot inherit API keys or main profile/config (6.4108ms)
+✔ draft amendment and parent stay separate reference evidence; permission revocation invalidates adapter input (484.007ms)
+✔ private evaluation accounting preserves exhausted guest quota and still checks rate limiter (174.4423ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3800.0134
+
+EXIT_CODE=0

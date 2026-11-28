@@ -45,7 +45,7 @@ test('permitted synthetic passage reaches native Controller-bound adapter input;
  assert.equal(adapterInput.supportingKnowledge[0].documentId,sourceId)
  const evidence=run.controller.evidence();assert.equal(evidence.length,2)
  assert.equal(evidence[1].validated_sha256,createHash('sha256').update(output).digest('hex'))
- const out='docs/evidence/chatgpt-connection-2026-11-23';mkdirSync(out,{recursive:true})
+ const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/chatgpt-connection-2026-11-23';mkdirSync(out,{recursive:true})
  writeFileSync(out+'/retrieval-controller-trace.json',JSON.stringify({syntheticOnly:true,liveCalls:0,adapterInput,payloadSHA:prepared.payloadSHA,binding:prepared.binding,controller:evidence,validatedOutput:output},null,2))
 })
 test('revoked permission invalidates a held preview; restart cannot recreate pending session or multiply owner attempts',async()=>{

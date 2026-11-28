@@ -13,7 +13,7 @@
       {
         "id": "u1",
         "role": "user",
-        "text": "Tình huống giả định: tôi muốn tìm hiểu giấc ngủ và nghỉ ngơi."
+        "text": "Tình huống giả định: zzsleep0d3e11afa4fe4da1869843d90af7d24b"
       },
       {
         "id": "a1",
@@ -23,7 +23,7 @@
       {
         "id": "u2",
         "role": "user",
-        "text": "Điều đó áp dụng thế nào?"
+        "text": "Bạn nói rõ hơn được không?"
       }
     ]
   },
@@ -33,11 +33,11 @@
     "input": [
       {
         "role": "user",
-        "content": "{\"kind\":\"UNTRUSTED_REFERENCE_DATA_NOT_OPERATING_RULES\",\"preferences\":{\"language\":\"vi\",\"addressing\":\"neutral\"},\"references\":[{\"documentId\":\"luna-fixture-fe07ecee-8f39-4d85-b977-1650a0925419\",\"version\":1,\"hash\":\"adb267ed62cd9073f531213c672d884a80dbd519d5ba359545d20a27233f9e3b\",\"sectionId\":\"luna-fixture-fe07ecee-8f39-4d85-b977-1650a0925419-0\",\"title\":\"SYNTHETIC REFERENCE ONLY\",\"text\":\"# Giấc ngủ\\n\\nGiấc ngủ và nghỉ ngơi giúp sắp xếp thời gian nghỉ. Đây là nguồn giả định.\",\"sourceStatus\":\"published-supporting\",\"sectionHash\":\"adb267ed62cd9073f531213c672d884a80dbd519d5ba359545d20a27233f9e3b\",\"headingPath\":[\"Giấc ngủ\"],\"startOffset\":0,\"endOffset\":85,\"startLine\":1,\"endLine\":3}],\"messageReferences\":[{\"messageId\":\"u1\",\"role\":\"user\",\"inputIndex\":1},{\"messageId\":\"a1\",\"role\":\"assistant\",\"inputIndex\":2},{\"messageId\":\"u2\",\"role\":\"user\",\"inputIndex\":3}],\"corrections\":[]}"
+        "content": "{\"kind\":\"UNTRUSTED_REFERENCE_DATA_NOT_OPERATING_RULES\",\"preferences\":{\"language\":\"vi\",\"addressing\":\"neutral\"},\"references\":[{\"documentId\":\"luna-fixture-98de056b-7c64-44ea-b650-36484cb5cac5\",\"version\":1,\"hash\":\"b3f3fe9aaaea72aec3b182225949aedc250ed18e80a70d1f126551454ae8c8a3\",\"sectionId\":\"luna-fixture-98de056b-7c64-44ea-b650-36484cb5cac5-0\",\"title\":\"SYNTHETIC REFERENCE ONLY\",\"text\":\"# zzsleep0d3e11afa4fe4da1869843d90af7d24b Giấc ngủ\\n\\nGiấc ngủ và nghỉ ngơi giúp sắp xếp thời gian nghỉ. Đây là nguồn giả định.\",\"sourceStatus\":\"published-supporting\",\"sectionHash\":\"b3f3fe9aaaea72aec3b182225949aedc250ed18e80a70d1f126551454ae8c8a3\",\"headingPath\":[\"zzsleep0d3e11afa4fe4da1869843d90af7d24b Giấc ngủ\"],\"startOffset\":0,\"endOffset\":125,\"startLine\":1,\"endLine\":3}],\"messageReferences\":[{\"messageId\":\"u1\",\"role\":\"user\",\"inputIndex\":1},{\"messageId\":\"a1\",\"role\":\"assistant\",\"inputIndex\":2},{\"messageId\":\"u2\",\"role\":\"user\",\"inputIndex\":3}],\"corrections\":[]}"
       },
       {
         "role": "user",
-        "content": "Tình huống giả định: tôi muốn tìm hiểu giấc ngủ và nghỉ ngơi."
+        "content": "Tình huống giả định: zzsleep0d3e11afa4fe4da1869843d90af7d24b"
       },
       {
         "role": "assistant",
@@ -45,7 +45,7 @@
       },
       {
         "role": "user",
-        "content": "Điều đó áp dụng thế nào?"
+        "content": "Bạn nói rõ hơn được không?"
       }
     ],
     "reasoning": {
@@ -61,47 +61,47 @@
   },
   "selectedReferences": [
     {
-      "documentId": "luna-fixture-fe07ecee-8f39-4d85-b977-1650a0925419",
+      "documentId": "luna-fixture-98de056b-7c64-44ea-b650-36484cb5cac5",
       "version": 1,
-      "hash": "adb267ed62cd9073f531213c672d884a80dbd519d5ba359545d20a27233f9e3b",
-      "sectionId": "luna-fixture-fe07ecee-8f39-4d85-b977-1650a0925419-0",
+      "hash": "b3f3fe9aaaea72aec3b182225949aedc250ed18e80a70d1f126551454ae8c8a3",
+      "sectionId": "luna-fixture-98de056b-7c64-44ea-b650-36484cb5cac5-0",
       "title": "SYNTHETIC REFERENCE ONLY",
-      "text": "# Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi giúp sắp xếp thời gian nghỉ. Đây là nguồn giả định.",
+      "text": "# zzsleep0d3e11afa4fe4da1869843d90af7d24b Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi giúp sắp xếp thời gian nghỉ. Đây là nguồn giả định.",
       "sourceStatus": "published-supporting",
-      "sectionHash": "adb267ed62cd9073f531213c672d884a80dbd519d5ba359545d20a27233f9e3b",
+      "sectionHash": "b3f3fe9aaaea72aec3b182225949aedc250ed18e80a70d1f126551454ae8c8a3",
       "headingPath": [
-        "Giấc ngủ"
+        "zzsleep0d3e11afa4fe4da1869843d90af7d24b Giấc ngủ"
       ],
       "startOffset": 0,
-      "endOffset": 85,
+      "endOffset": 125,
       "startLine": 1,
       "endLine": 3
     }
   ],
   "correctionResult": [
     {
-      "documentId": "luna-fixture-81dd116b-4a1e-4e56-82f2-ec2bf17433d8",
+      "documentId": "luna-fixture-5c1eac90-16d7-49f9-9aa3-f43415ab2552",
       "version": 1,
-      "hash": "c7ffb22d51a5f0267bd7b27c3a843da2dd585e227051bb59a02e6529ef400212",
-      "sectionId": "luna-fixture-81dd116b-4a1e-4e56-82f2-ec2bf17433d8-0",
+      "hash": "1c5ca5a3f4e5830bd8237ddf4e4908d80ad6ef1cd0edbebd65fb4716895dd0bf",
+      "sectionId": "luna-fixture-5c1eac90-16d7-49f9-9aa3-f43415ab2552-0",
       "title": "SYNTHETIC REFERENCE ONLY",
-      "text": "# Trồng cây\n\nTrồng cây cần tưới nước và quan sát đất. Nguồn giả định cho kiểm thử.",
+      "text": "# zzplanta815089a5d1f45b79104aa66bd51c5e3 Trồng cây\n\nTrồng cây cần tưới nước và quan sát đất. Nguồn giả định cho kiểm thử.",
       "sourceStatus": "published-supporting",
-      "sectionHash": "c7ffb22d51a5f0267bd7b27c3a843da2dd585e227051bb59a02e6529ef400212",
+      "sectionHash": "1c5ca5a3f4e5830bd8237ddf4e4908d80ad6ef1cd0edbebd65fb4716895dd0bf",
       "headingPath": [
-        "Trồng cây"
+        "zzplanta815089a5d1f45b79104aa66bd51c5e3 Trồng cây"
       ],
       "startOffset": 0,
-      "endOffset": 82,
+      "endOffset": 122,
       "startLine": 1,
       "endLine": 3
     }
   ],
   "excluded": [
-    "luna-fixture-621d0415-e56b-460b-a6bf-eff521c27af6",
-    "luna-fixture-3f52659a-0178-4382-a29e-19c56a794e26",
-    "luna-fixture-03bac5a8-ae47-40bf-9cf9-44307b6cb4a7",
-    "luna-fixture-ac332b35-032d-4e24-8846-ef7307b86b94"
+    "luna-fixture-455843f6-eb6b-4481-89ec-3737409de50a",
+    "luna-fixture-2aa7fe59-5ecc-461c-9b65-4b465af16c73",
+    "luna-fixture-bd2e8125-bdaf-46d0-888e-ca688782fe3c",
+    "luna-fixture-fbbf12f1-fa03-458e-8eaa-d91c014297ba"
   ],
   "assertions": [
     "exact permitted text and hash reach adapter body",

@@ -3,7 +3,8 @@ import {getApp, getApps, initializeApp} from "firebase/app"
 import {connectAuthEmulator, getAuth, GoogleAuthProvider, EmailAuthProvider,
   linkWithCredential, linkWithPopup, onAuthStateChanged, signInAnonymously,
   signInWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth"
-import type {User} from "firebase/auth"
+import type {Auth, User} from "firebase/auth"
+import {ChatError} from "../../functions/src/inspireChatContract"
 import type {Preferences} from "../../functions/src/inspireAccount"
 
 export type AccountView = {
@@ -23,10 +24,20 @@ function localAuth() {
   if (!connected) { connectAuthEmulator(auth, "http://127.0.0.1:9099", {disableWarnings: true}); connected = true }
   return auth
 }
+// Refresh the SDK's existing user only. Never sign in or replace an identity to
+// recover authentication for an already-bound request.
+export async function currentIdentityToken(auth: Pick<Auth, "currentUser" | "authStateReady">) {
+  await auth.authStateReady()
+  const user = auth.currentUser
+  if (!user) throw new ChatError("UNAUTHENTICATED", "Vui lòng đăng nhập lại cùng tài khoản để kiểm tra lượt gửi.", "replay", 401)
+  let token: string
+  try { token = await user.getIdToken(true) }
+  catch { throw new ChatError("AUTH_REFRESH_FAILED", "Chưa làm mới được xác thực. Chưa gửi thêm yêu cầu tới AI; bạn có thể kiểm tra lại đúng lượt.", "replay", 401) }
+  if (auth.currentUser?.uid !== user.uid) throw new ChatError("IDENTITY_CHANGED", "Tài khoản đã thay đổi. Không gửi tiếp lượt của tài khoản trước.", "none", 403)
+  return token
+}
 export async function chatToken() {
-  const user = localAuth().currentUser
-  if (!user) throw Error("Vui lòng đăng nhập để tiếp tục.")
-  return user.getIdToken(true)
+  return currentIdentityToken(localAuth())
 }
 export async function accountCall<T>(kind: string, fields: Record<string, unknown> = {}): Promise<T> {
   const response = await fetch("/api/inspire-prototype", {method: "POST", headers: {
@@ -85,6 +96,23 @@ export async function leaveIdentity() {
   // A normal sign-out never automatically creates another anonymous identity.
   localStorage.setItem(marker, "1")
   await signOut(localAuth())
+}
+
+// Explicit operator recovery after an Auth Emulator reset. A healthy identity
+// is retained; network failure never creates a replacement or extra quota.
+export async function reconnectLocalGuest() {
+  const auth = localAuth()
+  await auth.authStateReady()
+  const user = auth.currentUser
+  if (user) {
+    try { await user.getIdToken(true); return }
+    catch (error) {
+      if (!user.isAnonymous || !["auth/user-not-found", "auth/user-token-expired", "auth/invalid-user-token"].includes((error as {code?: string}).code ?? "")) throw error
+    }
+  }
+  localStorage.setItem(marker, "1")
+  await signOut(auth)
+  await signInAnonymously(auth)
 }
 
 export type {Preferences}

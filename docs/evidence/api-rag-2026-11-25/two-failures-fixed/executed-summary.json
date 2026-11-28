@@ -1,0 +1,41 @@
+{
+  "executed": [
+    {
+      "name": "API with RAG",
+      "evidence": "two-failures-full-after/api.txt",
+      "pass": 13,
+      "fail": 0
+    },
+    {
+      "name": "Regression before",
+      "evidence": "two-failures-before-real-revision/tests.txt",
+      "pass": 0,
+      "fail": 4
+    },
+    {
+      "name": "Regression after",
+      "evidence": "two-failures-after-real-revision/tests.txt",
+      "pass": 4,
+      "fail": 0
+    },
+    {
+      "name": "Conversation/API units",
+      "evidence": "two-failures-fixed/unit-controls.txt",
+      "pass": 21,
+      "fail": 0
+    }
+  ],
+  "historicalRetrievalFailureReproduced": true,
+  "historicalNativeFailureReproduced": false,
+  "historicalNativeExactRootCause": "UNDETERMINED: old code discarded cause; old-input native/RAG control run passed before this fix",
+  "deterministicRevisionFailureReproducedAndFixed": true,
+  "existingAssertionsUnchanged": 87,
+  "backendBuildExit": 0,
+  "websiteBuildExit": 0,
+  "touchedBackendLintExit": 0,
+  "publicCanaryAuditExit": 0,
+  "realKeyRead": false,
+  "paidApiCalls": 0,
+  "generation": "UNARMED",
+  "frozenRequestOrGrantModified": false
+}

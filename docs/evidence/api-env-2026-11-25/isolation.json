@@ -1,0 +1,23 @@
+{
+  "executed": true,
+  "keyConfigured": true,
+  "gitIgnored": true,
+  "gitTracked": false,
+  "publicBuildFiles": 17,
+  "configurationHits": [],
+  "envHTTP": {
+    "/functions/.env.local": 403,
+    "/functions/.env.local?raw": 403,
+    "/functions/.env": 403,
+    "/.env.local": 403,
+    "/functions%2f.env.local": 403,
+    "/@fs/C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/functions/.env.local": 403
+  },
+  "adapterInitializedWithSelectedConfiguration": true,
+  "clientReceiptContainsConfiguration": false,
+  "generation": "UNARMED",
+  "chatgptFallback": false,
+  "legacyFileFallback": false,
+  "inferenceCalls": 0,
+  "grantsModified": false
+}

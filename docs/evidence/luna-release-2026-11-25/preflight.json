@@ -1,0 +1,144 @@
+{
+  "ownerAuthorized": true,
+  "authorizedPayloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+  "authorizedReservationNanoUSD": 3592500,
+  "authorizedMaxAttempts": 1,
+  "providerRequestSent": false,
+  "inferenceCalls": 0,
+  "grantCreated": false,
+  "stopped": true,
+  "previousAttempt": {
+    "present": false
+  },
+  "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+  "payloadMatches": true,
+  "reservationNanoUSD": 3592500,
+  "model": "gpt-6-luna",
+  "maxOutputTokens": 512,
+  "sourceCount": 3,
+  "sourcePermissionAndVersionCheck": "PASS",
+  "references": [
+    {
+      "documentId": "corpus-cef55cbb7beb4e5fce595063",
+      "version": 6,
+      "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+      "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+      "title": "INSPIRE-main/docs/counseling-topics-source.md",
+      "sourceStatus": "review-required",
+      "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 11564,
+      "endOffset": 12927,
+      "startLine": 366,
+      "endLine": 420,
+      "characters": 1363
+    },
+    {
+      "documentId": "website-counseling",
+      "version": 6,
+      "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+      "sectionId": "website-counseling-18",
+      "title": "Các chủ đề tham vấn trên website INSPIRE",
+      "sourceStatus": "published-supporting",
+      "sectionHash": "1c440ec8aa67669694690ff3b6464554f05c30a3b20aced6ea461de4dad87afe",
+      "headingPath": [
+        "VẬN HÀNH VÀ HÀNH ĐỘNG",
+        "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+      ],
+      "startOffset": 11929,
+      "endOffset": 13280,
+      "startLine": 366,
+      "endLine": 416,
+      "characters": 1351
+    },
+    {
+      "documentId": "lesson-C04-06",
+      "version": 2,
+      "hash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+      "sectionId": "lesson-C04-06-2",
+      "title": "C04-06 · Động cơ và động lực",
+      "sourceStatus": "review-required",
+      "sectionHash": "5829537a1e878619c5455543a1d0402072721ca8040ca2a39775aa0f9a22f62e",
+      "headingPath": [
+        "Động cơ và động lực",
+        "Bài 4.6 — Động cơ và động lực"
+      ],
+      "startOffset": 624,
+      "endOffset": 2010,
+      "startLine": 10,
+      "endLine": 18,
+      "lesson": {
+        "lessonId": "C04-06",
+        "moduleId": "C04",
+        "kind": "CLUSTER",
+        "contentHash": "54af0c35ef1b4771fade53b735c6e1d2b9c344bcc8a1cedddbd4c1a3889f7890",
+        "parentHash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+        "status": "DRAFT"
+      },
+      "characters": 1386
+    }
+  ],
+  "controllerPreflight": "PASS",
+  "controllerEvidence": [
+    {
+      "phase": "preflight",
+      "operationId": "api-rag-final-attempt-20261125",
+      "binding": "6135befb55f3b4447c115638f3f2bee7bfaa91aefc2d8d822c8f389b1b058916",
+      "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+      "origin": "LUNA_PREFLIGHT_PROBE",
+      "validated_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "candidate_sha256_before_native_strip": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "decision_fingerprint": "7da2460976528e445c47dcd47fa4e02a6b81ecdb507b6db37ebe32bfbbe42951",
+      "mock_control_receipt": {
+        "action_id": "api-rag-final-attempt-20261125",
+        "decision_fingerprint": "7da2460976528e445c47dcd47fa4e02a6b81ecdb507b6db37ebe32bfbbe42951",
+        "response_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "permission_observation": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "98f187617f029330d610a75ebceb201572aea7991b114a8b4c5674034ed7b300",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "70c6ba60cf8c0a00177e6ceb9cfb42e88c3f9baf6d53615a9e86accea66141f2",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1795604523.0692568,
+        "actual_execution_eligible": false
+      },
+      "actual_execution_eligible": false,
+      "user_delivery": false,
+      "checks_executed": [
+        "Source/excerpt integrity",
+        "Research triage",
+        "Quote-bound ledger",
+        "Non-MOCK ScopeGuard",
+        "PermissionInspector (actual execution held)",
+        "GeneratedValidator HMAC",
+        "MockSink exact bytes/source/policy recheck",
+        "Native receipt-bound Session.commit"
+      ],
+      "not_established": [
+        "Clinical validation",
+        "Actual model or user-delivery permission"
+      ]
+    }
+  ],
+  "frozenBinding": "6135befb55f3b4447c115638f3f2bee7bfaa91aefc2d8d822c8f389b1b058916",
+  "frozenEpoch": "90514858-8529-4701-ab07-ee15a7fde48a",
+  "frozenAuthExpired": true,
+  "localAuthenticationHTTP": 401,
+  "localAuthenticationError": "UNAUTHENTICATED",
+  "stopCode": "FROZEN_LOCAL_AUTHENTICATION_EXPIRED"
+}

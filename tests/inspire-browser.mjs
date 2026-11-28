@@ -121,7 +121,7 @@ try {
     await until(`document.querySelector('#inspire-message').disabled === false`)
     assert.equal(await evaluate(`document.querySelector('h1').textContent`),'Phòng thử riêng của bố')
     assert.equal(await evaluate(`document.querySelector('.ip-private-setup').open`),false)
-    assert.equal(await evaluate(`document.querySelector('.ip-private-modes button').disabled`),true)
+    assert.equal(await evaluate(`document.querySelector('.ip-private-modes button').getAttribute('aria-pressed')`),'true')
     assert.ok(await evaluate(`document.querySelector('.ip-mode').textContent.includes('Chưa dùng AI')`))
     await screenshot('father-welcome-desktop')
     await send('Một tình huống giả định: tôi muốn hiểu rõ điều mình vừa trải qua.',true)

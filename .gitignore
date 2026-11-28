@@ -2,6 +2,8 @@
 logs
 .tools.local/
 .private.local/
+# Firebase's native export staging directory (never a review/public asset).
+firebase-export-*/
 INSPIRE-review-*.zip
 *-debug.log
 *.log

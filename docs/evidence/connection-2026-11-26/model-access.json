@@ -1,0 +1,8 @@
+{
+  "keyConfigured": true,
+  "inferenceCalls": 0,
+  "endpoint": "GET /v1/models/gpt-6-luna",
+  "modelAccessible": true,
+  "model": "gpt-6-luna",
+  "status": 200
+}

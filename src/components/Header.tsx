@@ -39,7 +39,7 @@ export default function Header() {
     </NavLink>
 
     <NavLink
-        to="/ai-inspire"
+        to={import.meta.env.DEV && import.meta.env.INSPIRE_PRIVATE_LOCAL ? '/ai-inspire?thu-rieng=1' : '/ai-inspire'}
         viewTransition
         className={({ isActive }) =>
         isActive ? "nav-link active" : "nav-link"

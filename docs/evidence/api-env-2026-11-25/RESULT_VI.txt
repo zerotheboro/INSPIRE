@@ -1,0 +1,33 @@
+INSPIRE — nguồn cấu hình API key, 25/11/2026
+
+father:api nạp đúng functions/.env.local bằng parseEnv có sẵn của Node v25.2.0,
+chỉ chọn OPENAI_API_KEY. Environment được truyền trước khi tiến trình Vite
+import/khởi tạo adapter. Không dùng loadEnv/define để đưa env vào frontend.
+Adapter đọc process.env.OPENAI_API_KEY; không đọc api-key.txt hoặc functions/.env.
+File thiếu/rỗng không kế thừa key từ environment cũ và không chuyển qua ChatGPT.
+functions/.env.example có chỗ điền trống; functions/.env.local do Chủ hệ tự nhập.
+
+keyConfigured=true sau restart và đã đối chiếu qua actual backend preview.
+Không kiểm entitlement, không gọi inference, không in key/prefix/suffix/env/file.
+Giữ nguyên file api-key.txt cũ (metadata không đổi, không đọc nội dung file cũ).
+Ledger/grant/budget vẫn giữ nguyên; chưa cấp quyền generation.
+
+Đã chạy:
+- Loader/SDK: 10/10. Lượt đầu 9/10 do --import cần file URL trên Windows;
+  đã sửa harness và giữ riêng log đầu, không đổi assertion để bỏ ca kiểm.
+- One-shot/zero-SDK-retry: 2/2, dùng key/grant giả trong thư mục test.
+- Backend build, website build với key canary giả, touched-backend lint: PASS.
+- Public-build canary audit: PASS.
+- Kiểm giá trị cấu hình trong bundle tại backend, không xuất giá trị: 0 hits.
+- .env.local Git ignored, không tracked; 7 review ZIP không có file env riêng tư.
+- 6 URL dotenv/direct/raw/encoded/@fs bị HTTP 403, không đọc body response.
+- Receipt browser không có key, outbound payload hoặc instructions.
+
+father:api đã restart tại http://127.0.0.1:5173/ai-inspire?thu-rieng=1.
+Auth/Firestore emulators giữ chạy. Generation UNARMED, public AI đóng.
+Khi sửa key: lưu functions/.env.local rồi restart npm.cmd run father:api.
+Không đổi grant/budget, deploy, commit/push hoặc đụng Z-PROJECT.
+
+Evidence: env-sdk-tests.txt (đầu), env-sdk-tests-final.txt, one-shot-sdk.txt,
+backend-build.txt, backend-lint.txt, website-build.txt, public-build-audit.txt,
+isolation.json, review-zip-audit.json, legacy-file-preservation.json, focused.patch.

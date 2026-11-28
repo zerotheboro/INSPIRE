@@ -1,0 +1,92 @@
+INSPIRE — kết quả xử lý hai test, 25/11/2026
+
+KEY
+keyConfigured=true, chỉ kiểm existsSync trên đường dẫn đã thiết lập.
+Không đọc file key thật, không kiểm format/entitlement và không gọi OpenAI thật.
+Các test sử dụng sender/key/grant giả lập riêng, không chạm operator release.
+
+1. RETRIEVAL — ĐÃ TÁI HIỆN VÀ XÁC ĐỊNH NGUYÊN NHÂN
+Đối chứng dùng input/assertions của test cũ trên working tree trước sửa lượt này.
+Assertion found.some(s => s.documentId === sleep.id) thất bại như log bạn gửi.
+Fixture giấc ngủ đạt 4 điểm; 6 đoạn đủ quyền khác đồng hạng và có ID đứng trước.
+Giới hạn output top 3 khiến ID ngẫu nhiên của fixture không được chọn. Đây là
+fixture bị trộn với corpus mở rộng, không phải bằng chứng OpenAI hay key lỗi.
+Không thay ranking để ưu tiên test và không đổi assertion. Giữ fixture marker
+đã có để kiểm định danh, permission, version, correction và exact adapter input.
+Các ca relevance tiếng Việt tự nhiên đã thực thi ở milestone trước vẫn giữ nguyên.
+Chẩn đoán chỉ ghi IDs/điểm/tokens; không ghi raw passages:
+  two-failures-repro/ranking-explanation.json
+
+2. ATTEMPT_FAILED — PHÂN BIỆT LỖI CHỨNG MINH ĐƯỢC VÀ LOG LỊCH SỬ
+Ca Controller cũ chạy lại với RAG bật, transport giả và assertion nguyên bản đã
+PASS trước khi sửa backend, 3 synthetic generations, khoảng 665,9 giây.
+Vì lỗi cũ bị .catch(() => null) và hai lớp wrapper xóa cause, KHÔNG xác định
+được nguyên nhân chính xác của riêng lần ATTEMPT_FAILED trong log 11/13.
+Không có căn cứ kết luận timeout, thiếu key hay từ chối của provider là nguyên nhân.
+Đối chứng không khôi phục toàn bộ trạng thái repository/database tại thời điểm
+log cũ; không được dùng nó để khẳng định lỗi lịch sử đã được chẩn đoán hoàn toàn.
+
+Đã chứng minh và sửa các lỗi hiện hữu bằng hồi quy trước/sau:
+  a) Hai cold previews cùng operation cùng chạy retrieval. Preview đến muộn
+     ghi lại started=false sau khi attempt đã tiêu thụ; replay bị chặn sai bởi
+     AUTHORIZATION_REQUIRED dù kết quả đã tồn tại. Nay coalesce preparation,
+     kiểm owner/request cả trước và sau IO, giữ nguyên plan/started/binding.
+  b) Facade chạy thêm retrieval trước adapter, dù adapter chỉ dùng frozen plan.
+     Test làm revision thay đổi thật trong Query.get của truy vấn thừa:
+     retrieveKnowledge phát KNOWLEDGE_REVISION_CHANGED, bị bọc ATTEMPT_FAILED,
+     sends=0. Nay facade không tìm lại context bị bỏ đi; vẫn recheck đúng từng
+     source/version/hash trong payload đã duyệt ngay trước dispatch.
+  c) Giữ cause nội bộ xuyên facade -> pre-dispatch -> native controller -> lỗi gốc.
+     Test lỗi executable chứng minh chuỗi:
+       ATTEMPT_FAILED -> LUNA_PRE_DISPATCH_HOLD ->
+       LUNA_CONTROLLER_PREFLIGHT_HOLD -> NATIVE_UNAVAILABLE -> ENOENT.
+     Python bridge chỉ trả reason code trong allowlist; không trả exception/raw
+     prompt. Cause không enumerable và không serialize trong JSON cho browser.
+     Native safety hold được giữ nguyên, xác minh reason
+     NATIVE_SAFETY_GATE_HELD_CANDIDATE bằng Controller gốc.
+Những hồi quy này chứng minh lỗi hiện hữu; không chứng minh trigger của sự cố
+11/13 ban đầu chính là một trong các lỗi đó.
+
+KẾT QUẢ ĐÃ CHẠY
+- Đối chứng test cũ: retrieval FAIL, native/RAG PASS (1/2); log giữ nguyên.
+- Hồi quy trên snapshot trước sửa: 0/4, gồm ATTEMPT_FAILED do revision thật.
+- Cùng hồi quy sau sửa: 4/4.
+- Trọn nhóm API hiện hành: 13/13. Đã bỏ sourceFree:true khỏi test Controller;
+  preview thực sự retrieve corpus, adapter có references, native chạy thật,
+  sender giả lập. Không dùng source-free pass để thay bằng chứng RAG.
+  Toàn nhóm mất 615,27 giây; riêng native multi-turn 575,66 giây.
+  Harness chạy Node test trực tiếp với timeout offline 20 phút; không đổi
+  native timeout 20 giây, SDK timeout 30 giây, retry, token limit hay budget.
+- Unit conversation/API controls: 21/21.
+- Backend build, website build, touched-backend lint: PASS.
+- Public build audit: 17 files, 11 markers, 0 hits; finite scan, không phải chứng
+  minh tuyệt đối cho mọi biến đổi dữ liệu.
+- 87 assertion calls cũ giữ nguyên byte text (AST digest trước/sau bằng nhau).
+- File final-checks/api.txt 11/13 khớp byte với ZIP review trước, không ghi đè.
+- Broad suite lịch sử 48/49 không chạy lại và không đổi thành full PASS.
+
+EVIDENCE
+  two-failures-repro/historical.txt, phases.jsonl, ranking-explanation.json
+  two-failures-repro/assertion-proof.json
+  two-failures-before-real-revision/tests.txt, regression-trace.json
+  two-failures-after-real-revision/tests.txt, regression-trace.json, results.json
+  two-failures-full-after/api.txt
+  two-failures-fixed/unit-controls.txt, focused.patch, diff-proof.json
+  two-failures-build/backend.txt, website.txt, lint-final.txt, privacy.txt
+Các lần lint chưa qua trong lúc sửa cũng được giữ riêng, không thay log cuối.
+
+CHẠY LẠI NGOẠI TUYẾN
+Cần Auth/Firestore demo emulators đang chạy và Controller gốc hiện có.
+Không chạy các nhóm ghi fixture đồng thời vì revision guard sẽ giữ lỗi đúng thiết kế.
+  node --import ./tests/register-ts.mjs --test tests/inspire-luna-failure-regression.test.mjs
+  node --import ./tests/register-ts.mjs --test --test-timeout=1200000 tests/inspire-luna-api.test.mjs
+  node --import ./tests/register-ts.mjs --test tests/inspire-chat.test.mjs tests/inspire-api-rag.test.mjs
+Đặt INSPIRE_REVIEW_EVIDENCE_DIR vào thư mục mới để giữ nguyên các log cũ.
+Đối chứng snapshot trước sửa dùng loader riêng trong .private.local, không restore
+working tree hoặc coi Git HEAD là bản nền của toàn repository.
+
+GIỮ NGUYÊN
+Chưa chẩn đoán được trigger lịch sử của ATTEMPT_FAILED; cold retrieval còn chậm.
+Không có API call thật để chữa test, không thay grants/budget/frozen preview,
+không sửa nguồn hay quyền canonical. Generation UNARMED, public AI đóng.
+Không commit, push, deploy hoặc đụng Z-PROJECT.

@@ -1,0 +1,129 @@
+INSPIRE — 24/11/2026 — đường trò chuyện có tri thức, CHƯA đạt mục tiêu tạo sinh thật
+
+ĐANG CHẠY
+http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+Auth 127.0.0.1:9099; Firestore 127.0.0.1:8080; Vite 127.0.0.1:5173.
+Giao diện riêng mặc định ChatGPT · Chưa gửi tới AI. Mô phỏng là chế độ riêng
+trong “Dành cho con”. Không có phản hồi từ mô hình thật trong đợt này.
+Khởi động lại từ INSPIRE nếu cần, hai terminal:
+  npm.cmd run emulators
+  npm.cmd run father:weekend
+
+THAY ĐỔI MÃ
+- Đường ChatGPT không còn bị launcher cuối tuần ép source-free: tự truy xuất
+  bằng pipeline hiện có, chỉ lấy đoạn đủ quyền xuất. Mô phỏng vẫn tách riêng.
+- Nối frontend prepare/execute/replay với facade hiện có. Runtime chưa có sender
+  được release. Chỉ dependency kiểm thử ngoại tuyến được đi qua execute.
+- Adapter app-server có RPC/JSONL, giải mã UTF-8 phân mảnh, correlation thread/
+  turn, một turn/start, không vòng retry hoặc API fallback; fail closed với sự
+  kiện lỗi/tool/retry/không hỗ trợ. Code mở tiến trình gửi thật bị chặn trước spawn.
+- Kiểm lại quyền nguồn ngay trước turn/start, sau các bước metadata/thread.
+- Lịch sử gốc/corrections giữ nguyên. Query dẫn xuất bỏ wording đã được sửa.
+  Quotas, rate limit, ledger ba lần thử, Controller gốc và catalogue giữ nguyên.
+- Quyền private-reference-evaluation phải có bằng chứng và hash từng đoạn.
+  Nó cho phép phân biệt bản đang duyệt được cho phép thử tham khảo với bản đã
+  công bố; không đổi status, không biến draft thành canonical hay operating rule.
+  Chưa áp dụng quyền này cho nguồn INSPIRE thật nào.
+- Browser chỉ nhận biên nhận hash/count, không nhận văn bản nguồn/system prompt.
+- Công cụ kiểm thử ghi bằng chứng vào thư mục mới, không ghi đè log lịch sử.
+
+ĐÃ THỰC THI
+final-checks/executed-checks.json: 58/58 kiểm thử trong các bộ focused hoàn tất:
+  12 session; 6 boundary; 6 full-path; 17 conversation; 3 private-service;
+  4 retrieval; 10 quota/auth/emulator. Cả hai build, touched-backend lint và
+  quét canary/private markers trong public assets đều exit 0.
+final-checks/end-to-end-trace.json: frontend transport → service → retrieval →
+  RPC giả lập → Controller native gốc → validation → delivery vào store;
+  ba lượt hỏi/hỏi tiếp/đính chính, nguồn cụ thể và toàn bộ input, binding,
+  receipt và replay sau mất phản hồi. Đây là mock transport trong test, không
+  phải catalogue runtime hay bằng chứng chất lượng tạo sinh.
+final-checks/http-evidence.json: HTTP localhost thật, source synthetic đủ quyền
+  vào preview; repeat giữ hash; revoke làm held preview thất bại; execute 403,
+  API fallback 503; nguồn/server/evidence private bị chặn qua HTTP.
+Quyền, output binding, unknown outcome/restart, không tự retry, forged authority,
+  source injection không đổi quyền phần mềm, draft scoped grant và revocation đã
+  kiểm tra offline. Chưa chứng minh mô hình thật chống prompt injection.
+Lần chạy mới đầu tiên có 3 lỗi fixture do thiếu initializeApp (đã sửa); lần build
+  sandbox thất bại vì esbuild bị chặn đọc thư mục cha. Log lần build đó còn trong
+  website-build.txt. final-checks là lần chạy hoàn tất sau sửa/host access.
+Kết quả lịch sử 48/49 và isolated rerun được giữ nguyên, không đổi thành full pass.
+Build còn cảnh báo bundle >500 kB; không refactor ngoài phạm vi.
+
+CHƯA XÁC MINH / CHẶN KỸ THUẬT
+- Desktop/mobile rendered browser: NOT VERIFIED. Chrome được nhận diện nhưng
+  Computer Use dừng khi mở localhost do không xác minh được URL an toàn.
+  Không có screenshot mới, không dùng HTTP để thay cho kiểm tra hình ảnh.
+- Codex 0.171.0-alpha.13.2: schema turn/start không có trần output-token typed.
+  Chưa có bằng chứng áp được 512 provider tokens hoặc tắt mọi managed retry.
+  request_max_retries/stream_max_retries được tài liệu mô tả cho HTTP/SSE;
+  không đủ để khẳng định coverage mọi lớp của managed ChatGPT route.
+  Kiểm 2.000 ký tự sau sinh, prompt/cancel không thay được hai điều kiện này.
+- Đã chuẩn bị thread ephemeral/environment rỗng và reject instructionSources,
+  nhưng isolation toàn bộ tool/plugin/inherited config chưa được chứng minh.
+  Schema disabledPluginIds còn ghi rõ chưa lọc capabilities. Không coi read-only
+  sandbox là bảo đảm không đọc private files. Không mở thread/start thật.
+- Native Controller kiểm candidate tùy ý, không bắt exact catalogue fixture;
+  proof vẫn actual_execution_eligible=false, user_delivery=false. Các kiểm tra
+  native/quarantine không tự cấp permission cho thực thi hay dịch vụ lâm sàng.
+- Không có sender runtime được release, không gọi provider, không có câu trả
+  lời thật để đánh giá ngôn ngữ, chất lượng nội dung hay hiệu quả sử dụng nguồn.
+
+ĐĂNG NHẬP VÀ THANH TOÁN
+host-metadata/connection-inspection.json: account type chatgpt, planType team,
+gpt-6-luna có trong model/list; chỉ gọi initialize/account/read/model/list/
+account/rateLimits/read. Không đọc key, không thread/start hoặc turn/start.
+Owner xác nhận kiểm soát thanh toán ngày 24/11 được giữ. hasCredits=false tại
+lần đọc metadata; đây không phải kiểm định độc lập mọi chính sách thanh toán.
+Không yêu cầu kiểm tra lại, không đổi billing route, không tăng quyền chi cũ.
+
+NGUỒN
+71 bản gốc/biên nhận private đã đối chiếu byte/hash; importer hiện có nạp lại
+70 nguồn theo danh mục gốc vào emulator, không thay quyền. Bản đồ 14 định hướng
+còn là biên nhận đang duyệt, không tự đưa vào runtime. Không có số lượng nguồn
+cố định trong retrieval. Không có nguồn thật đủ quyền xuất.
+COLLECTION.txt / proposed-source-collection.json: đề xuất father-reference-
+concepts-v1, 8 nguồn, 49 đoạn có ID/version/source hash/section hash/vị trí.
+Đó là INSPIRE-02, các đoạn định nghĩa/khái niệm của 07–12 (11 bản 2.0), và nguồn
+tham vấn website. Không gọi đây là toàn bộ thư viện. Sáu tài liệu module vẫn có
+nhãn đề xuất/đang duyệt; bản cũ, amendments và tài liệu ngoài phạm vi vẫn giữ.
+Chi tiết đoạn nằm riêng .private.local/knowledge-chat-20261124/proposed-passages.json.
+Không export MOI, content patch, 458 bài học, bản tái dựng, hồ sơ cá nhân.
+
+MỘT QUYẾT ĐỊNH TỔNG HỢP CẦN CHỦ HỆ — CHƯA CÓ PHÊ DUYỆT
+Đề nghị quyết định một lần cho gói thử riêng, không duyệt từng tin:
+1. Giữ trần cứng 512 token và không managed retry (khuyến nghị an toàn: tiếp tục
+   khóa cho tới khi route chứng minh được); hoặc chủ hệ chủ động sửa hai điều
+   kiện này cho nghiên cứu riêng, chấp nhận không bảo đảm trần token/số inference
+   phía provider. Không có lựa chọn nào tự sửa quyền hay mở gửi trong bản này.
+2. Có cho dùng đúng collection/hash nêu trong COLLECTION.txt làm tham khảo thử
+   nội bộ và xuất các đoạn liên quan sang OpenAI qua ChatGPT sign-in không?
+   Mỗi lượt tối đa 3 đoạn/4.200 ký tự, kèm nguồn, câu hỏi/lịch sử giả định và
+   chỉ dẫn kỹ thuật tiếng Việt. Không gửi cả thư viện; không cấp quyền can thiệp.
+3. Phương án khoảng 100 tin: tối đa 50 câu hỏi của bố + 50 phản hồi, tức tối đa
+   50 generation attempts, chia 5 hội thoại, 10 câu hỏi/hội thoại. Lỗi/unknown
+   vẫn tính attempt nên có thể ít hơn 100 tin; unknown thì dừng, không bù lượt.
+   IP vẫn 10/10 phút, 30/24 giờ nên ít nhất hai ngày. Quota khách 10 tổng và
+   tài khoản 30/tháng hiện không đủ: cần quyết định allowance đánh giá riêng,
+   giới hạn 50 và không đổi quota public. CHƯA triển khai/cấp allowance đó.
+   Ledger hiện vẫn 3, chưa release; không dùng lại grant 1 hoặc 3 lần cũ.
+Nếu chủ hệ sửa điều kiện hoặc cho dùng nguồn, phải hoàn tất technical release
+và preview mới tương ứng rồi mới xin duyệt riêng attempt đầu. Không tự chạy.
+
+PREVIEW ĐẦU TIÊN ĐANG GIỮ
+first-attempt-preview.json giữ nguyên đề xuất source-free đã đóng băng:
+  gpt-6-luna / luna-first-attempt-20261124
+  “Tình huống giả định: Tôi có một ngày nhiều việc. Giúp tôi chọn việc nên làm trước.”
+  payload SHA 90b94250147b6f8c03f43e0cbc9169a3d5d3693d779be1e00a794126e4b1d637
+  fingerprint b138874e90e6bbc8e6747508c991811e099970a41ba2cea372962695a175291c
+first-attempt-input.txt chứa đúng toàn bộ application model input, không nguồn.
+Kiểm tra local owner store: approved=false; chỉ có proposal/authorization,
+không attempt marker. Chưa có threadId thật hoặc RPC isolation đã kiểm định;
+đây không phải lời khẳng định complete executable RPC đã sẵn sàng.
+Thêm nguồn được phép sẽ đổi payload và cần preview/duyệt mới, không tái dùng grant.
+
+TÁI CHẠY KIỂM THỬ (KHÔNG GỌI MODEL)
+  $env:INSPIRE_REVIEW_EVIDENCE_DIR='docs/evidence/knowledge-chat-2026-11-24/recheck'
+  node tests/verify-inspire-chatgpt.mjs
+  node --import ./tests/register-ts.mjs tests/inspire-private-knowledge-http.mjs
+  node --import ./tests/register-ts.mjs tests/prepare-father-reference-proposal.mjs
+Không commit/push/deploy, không đụng Z-PROJECT, không sửa Knowledge Core.

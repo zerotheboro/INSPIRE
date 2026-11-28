@@ -1,0 +1,128 @@
+{
+  "checkedAt": "2026-11-25T13:55:05.942Z",
+  "providerDispatchSent": false,
+  "inferenceCalls": 0,
+  "authorizationChanged": false,
+  "grantWritten": false,
+  "previewRebuilt": false,
+  "newSessionCreated": false,
+  "frozenFilesUnchanged": true,
+  "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+  "reservationNanoUSD": 3592500,
+  "model": "gpt-6-luna",
+  "maxOutputTokens": 512,
+  "sourceCount": 3,
+  "frozenIdentity": {
+    "kind": "send",
+    "epoch": "90514858-8529-4701-ab07-ee15a7fde48a",
+    "sessionId": "7bbf5f86-655f-4241-832b-e1144e0bf2b6",
+    "operationId": "api-rag-final-attempt-20261125",
+    "conversationId": "api-rag-final-conversation-20261125",
+    "binding": "6135befb55f3b4447c115638f3f2bee7bfaa91aefc2d8d822c8f389b1b058916"
+  },
+  "savedAuthentication": {
+    "fields": [
+      "request",
+      "token"
+    ],
+    "idTokenExpired": true,
+    "sdkUserStatePresent": false,
+    "refreshCredentialPresent": false,
+    "realSameUIDRefresh": "NOT EXECUTED: saved record contains only an ID token and request; no restorable SDK User/refresh credential"
+  },
+  "ledger": {
+    "attemptPresent": false,
+    "grantPresent": false
+  },
+  "serverRestart": {
+    "serverPid": 15228,
+    "serverStartedUTC": "2026-11-25T10:39:45.6945000Z",
+    "frozenFileCreatedUTC": "2026-11-25T05:45:59.5538947Z",
+    "serverStartedAfterFrozen": true,
+    "verifiedRepository": "INSPIRE"
+  },
+  "sessionStatus": "LOST: backend was started after the frozen preview; engine sessions and Luna plans are process-local Maps with no restoration path",
+  "requiredButNotPerformedChanges": [
+    "server epoch",
+    "sessionId",
+    "request binding (SHA-256 of request and payloadSHA)"
+  ],
+  "preserved": [
+    "operationId",
+    "conversationId",
+    "messageId",
+    "outbound payloadSHA",
+    "3 frozen source references and versions",
+    "max_output_tokens=512",
+    "reservationNanoUSD=3592500"
+  ],
+  "stopCode": "FROZEN_SERVER_SESSION_LOST",
+  "readyForAuthorizedAttempt": false,
+  "operationReservation": {
+    "exists": false
+  },
+  "sourcePermissionAndVersionCheck": "PASS",
+  "controllerPreflight": "PASS",
+  "controllerEvidence": [
+    {
+      "phase": "preflight",
+      "operationId": "api-rag-final-attempt-20261125",
+      "binding": "6135befb55f3b4447c115638f3f2bee7bfaa91aefc2d8d822c8f389b1b058916",
+      "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+      "origin": "LUNA_PREFLIGHT_PROBE",
+      "validated_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "candidate_sha256_before_native_strip": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+      "decision_fingerprint": "7da2460976528e445c47dcd47fa4e02a6b81ecdb507b6db37ebe32bfbbe42951",
+      "mock_control_receipt": {
+        "action_id": "api-rag-final-attempt-20261125",
+        "decision_fingerprint": "7da2460976528e445c47dcd47fa4e02a6b81ecdb507b6db37ebe32bfbbe42951",
+        "response_sha256": "ad450929c9d0d116a742ccc2a2d4a0aa3c520cf85f46b1bb92bdd8650991857a",
+        "event": "MOCK_DELIVERY_ACKNOWLEDGED"
+      },
+      "permission_observation": {
+        "lookup_status": "REGISTRY_UNAVAILABLE",
+        "source_state": null,
+        "classification": "SOURCE_UNAVAILABLE",
+        "evaluation_result": "HOLD_ACTUAL_EXECUTION",
+        "reason": "Registry access is unavailable; do not invent a record or Not Reviewed state.",
+        "action_scope": {
+          "identity_sha256": "98f187617f029330d610a75ebceb201572aea7991b114a8b4c5674034ed7b300",
+          "capability_id": "draft.generated_foundational_conversation",
+          "runtime_role": "SYNTHETIC_CONTROLLER",
+          "activity": "FOUNDATIONAL_SUPPORT",
+          "context_sha256": "70c6ba60cf8c0a00177e6ceb9cfb42e88c3f9baf6d53615a9e86accea66141f2",
+          "dose": "ONE_SYNTHETIC_GENERATED_MESSAGE"
+        },
+        "observation_sha256": "b8acbbedd73ca4508e6ae6ba26a170246905f3f8a88790ae11a68c72281d9ebd",
+        "evidence_domain": "NOT_VERIFIED",
+        "evaluated_at": 1795614910.4150295,
+        "actual_execution_eligible": false
+      },
+      "actual_execution_eligible": false,
+      "user_delivery": false,
+      "checks_executed": [
+        "Source/excerpt integrity",
+        "Research triage",
+        "Quote-bound ledger",
+        "Non-MOCK ScopeGuard",
+        "PermissionInspector (actual execution held)",
+        "GeneratedValidator HMAC",
+        "MockSink exact bytes/source/policy recheck",
+        "Native receipt-bound Session.commit"
+      ],
+      "not_established": [
+        "Clinical validation",
+        "Actual model or user-delivery permission"
+      ]
+    }
+  ],
+  "localhost": {
+    "status": 200,
+    "lunaApiPreview": true,
+    "modelAvailable": false
+  },
+  "ledgerAfter": {
+    "attemptPresent": false,
+    "grantPresent": false
+  }
+}

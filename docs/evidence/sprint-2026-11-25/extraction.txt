@@ -1,0 +1,3 @@
+{"manifest": "C:\\Users\\Admin\\OneDrive\\Desktop\\web_develope\\INSPIRE\\.private.local\\knowledge\\corpus-manifest.json", "results": {"archive-receipt": 5, "code-or-receipt": 3, "duplicate": 42, "extracted": 82}}
+
+EXIT_CODE=0

@@ -1,0 +1,22 @@
+✔ exact identity survives disk reopen; changed content, user and client authority are rejected; no raw text persisted (67.211ms)
+✔ three successful injected attempts survive runner restarts; fourth cannot send (130.2759ms)
+✔ concurrent duplicate and concurrent new operations cannot bypass an unresolved reservation (156.94ms)
+✔ network failure counts once; same request or replacement after restart never regenerates (66.5136ms)
+✔ actual child-process termination after reservation leaves a durable unknown outcome (1841.8641ms)
+✔ preflight and last permission recheck precede send; revoked source and rejected output hold conservatively (109.955ms)
+✔ protocol conversion preserves exact ordered history and correction; rejects cross-turn, partial, tool and managed-retry events (3.8232ms)
+✔ output must bind to the exact input before Controller validation or receipt (25.3485ms)
+✔ corrupt record, crash lock and synced storage cannot silently reset counters (34.6028ms)
+✔ default runner has no sender and ignores any prior grant; browser preview uses ChatGPT only without execute or automatic retry (14.7449ms)
+✔ lost preview response retries only same stable identity; ConversationStore prevents duplicate submission (2.6303ms)
+✔ native Controller validates injected ChatGPT-shaped final event and exact returned bytes (20408.4922ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 27430.0203
+
+EXIT_CODE=0

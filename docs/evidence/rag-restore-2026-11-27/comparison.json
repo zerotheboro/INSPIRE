@@ -1,0 +1,237 @@
+{
+  "executed": true,
+  "records": 661,
+  "sections": 10676,
+  "externalEligible": 513,
+  "externallyEligibleSections": 8369,
+  "deltaFrom513": 0,
+  "identicalBeforeAndAfterNativeRestarts": true,
+  "identicalRankedPassageReferences": true,
+  "metadataVersionHashPermissionProblems": 0,
+  "readOnlyRetrieval": true,
+  "expectedSourceHits": 3,
+  "totalCases": 5,
+  "cases": [
+    {
+      "case": "direct",
+      "status": "EXPECTED_SOURCE_FOUND",
+      "selected": [
+        {
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "version": 6,
+          "section": "corpus-cef55cbb7beb4e5fce595063-17",
+          "headings": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ]
+        },
+        {
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "section": "website-counseling-18",
+          "headings": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ]
+        },
+        {
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "version": 2,
+          "section": "bundle-b6e864712dcf2eecb4e42c0b-20",
+          "headings": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Điều bạn có thể hướng đến"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "paraphrase",
+      "status": "EXPECTED_SOURCE_FOUND",
+      "selected": [
+        {
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "section": "website-counseling-17",
+          "headings": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ]
+        },
+        {
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "section": "website-counseling-23",
+          "headings": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+            "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+          ]
+        },
+        {
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "section": "website-counseling-29",
+          "headings": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "follow-up",
+      "status": "EXPECTED_SOURCE_NOT_IN_TOP_3",
+      "selected": [
+        {
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "version": 2,
+          "section": "bundle-b6e864712dcf2eecb4e42c0b-17",
+          "headings": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Một tình huống: Người phụ nữ luôn phải giữ cho gia đình được bình yên"
+          ]
+        },
+        {
+          "title": "Devamicus INSPIRE original received; approval unverified",
+          "version": 8,
+          "section": "devamicus-inspire-original-3",
+          "headings": [
+            "Page 4"
+          ]
+        },
+        {
+          "title": "CN-B11 · Dựng một cảnh cụ thể và trục thời gian",
+          "version": 2,
+          "section": "lesson-CN-B11-3",
+          "headings": [
+            "Dựng một cảnh cụ thể và trục thời gian",
+            "CN-B11 — Dựng một cảnh cụ thể và trục thời gian"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "correction",
+      "status": "EXPECTED_SOURCE_FOUND",
+      "selected": [
+        {
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "version": 2,
+          "section": "bundle-b6e864712dcf2eecb4e42c0b-9",
+          "headings": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Khi nào bạn có thể cần dịch vụ này?"
+          ]
+        },
+        {
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "version": 6,
+          "section": "corpus-cef55cbb7beb4e5fce595063-13",
+          "headings": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ]
+        },
+        {
+          "title": "CD-A05 · Ranh giới, nhu cầu và sự khác biệt",
+          "version": 2,
+          "section": "lesson-CD-A05-2",
+          "headings": [
+            "Ranh giới, nhu cầu và sự khác biệt",
+            "CD-A05 — Ranh giới, nhu cầu và sự khác biệt"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "existing-amendment",
+      "status": "EXPECTED_SOURCE_NOT_IN_TOP_3",
+      "selected": [
+        {
+          "title": "THREE_DEEP_LESSON_EXEMPLARS.md",
+          "version": 2,
+          "section": "bundle-0c7e0a5d429106186d01faef-0",
+          "headings": [
+            "INSPIRE — BA BÀI MẪU CHUYÊN SÂU CHO NGƯỜI DẪN"
+          ]
+        },
+        {
+          "title": "Pasted text(2).txt",
+          "version": 2,
+          "section": "bundle-d1774aa65c72e8f5165ccb67-1",
+          "headings": [
+            "INSPIRE — MASTER SOURCE RECOVERY & COMPLETE DOCUMENT HANDOFF",
+            "Chỉ thị dành cho GPT-6 Pro — Thu hồi và bàn giao toàn bộ hệ tài liệu INSPIRE"
+          ]
+        },
+        {
+          "title": "Pasted text(2).txt",
+          "version": 2,
+          "section": "bundle-d1774aa65c72e8f5165ccb67-10",
+          "headings": [
+            "INSPIRE — MASTER SOURCE RECOVERY & COMPLETE DOCUMENT HANDOFF",
+            "Chỉ thị dành cho GPT-6 Pro — Thu hồi và bàn giao toàn bộ hệ tài liệu INSPIRE",
+            "IX. NGUYÊN TẮC BẢO TOÀN NGUỒN"
+          ]
+        }
+      ]
+    }
+  ],
+  "amendments": [
+    {
+      "claimedId": "INSPIRE-07-A",
+      "status": "INDEXED_PRIVATE_REFERENCE_ONLY",
+      "records": [
+        {
+          "id": "original-8e9a8623b864c4282dc3d68c",
+          "version": 7,
+          "hash": "d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2",
+          "sections": 54,
+          "externalEligible": true
+        }
+      ]
+    },
+    {
+      "claimedId": "INSPIRE-06-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-12-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-13-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-14-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-15-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": []
+    },
+    {
+      "claimedId": "INSPIRE-MOI-01-A",
+      "status": "BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING",
+      "records": [
+        {
+          "id": "bundle-a29f6838dd67d5a8a4bb6bad",
+          "version": 2,
+          "hash": "d8e442eff2f10e392419976c79847d6bdd34ee8e26004ab12e33bb9570b4e12f",
+          "sections": 0,
+          "externalEligible": false
+        }
+      ]
+    }
+  ],
+  "modelCalls": 0
+}

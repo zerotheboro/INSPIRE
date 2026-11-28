@@ -1,0 +1,39 @@
+Executed real codex-cli 0.171.0-alpha.13.2 against a synthetic loopback Responses
+provider. No Luna, inference service, credentials or private documents used.
+Reproduce: node tests/app-server-isolation.mjs
+The child has a fresh CODEX_HOME/USERPROFILE, allowlisted environment, separate
+config.toml and cwd inside INSPIRE. Existing Codex config remains untouched.
+
+probe-initial.json: initial configuration still advertised multi_agent_v1 and
+goal tools. probe.json: after disabling discovered features, only
+request_user_input is advertised. Both actual provider payloads, effective config,
+thread response, notifications, fake malicious reference and five forced tool
+calls are recorded. The provider returned SSE tool calls, not canned app-server
+notifications. App-server's own router returned unsupported-call outputs for
+exec_command, read_file, web_search, mcp__canary__read and functions.exec.
+All five rejection assertions passed. Shell marker absent; network canary hits
+zero; outside-work canary unchanged and absent from subsequent provider input.
+The second provider request is the app-server tool-result continuation to the
+same fake provider, not application retry and not real inference.
+
+Limited conclusion: those names were refused before handler execution by the
+real router in this clean-profile configuration. A missing side effect alone is
+not treated as proof of no read. No OS file-open/process audit was performed.
+MCP name was unregistered, not a registered malicious MCP server. No installed
+malicious plugin or inherited authenticated-profile capability was exercised.
+Native web-search response-item forms and all tool aliases were not tested.
+Do NOT claim exhaustive tool isolation or transfer this result to the normal
+ChatGPT-authenticated child, which still inherits the user's profile directory.
+
+Not connected to runtime; toolIsolationVerified remains false, run release false.
+Existing frozen proposal/authorization is unchanged. There is no new executable
+preview claimed ready. No source grants, Controller changes or quota changes.
+
+Remaining mechanism needed: a verified clean-profile capability boundary plus
+an official way to use existing managed ChatGPT authentication without loading
+normal-profile tools/plugins/settings or copying credentials. A possible path
+is the app-server external ChatGPT-token auth contract with a trusted in-memory
+host broker, but its availability and refresh/isolation behavior are NOT tested
+or implemented here. This would retain ChatGPT billing; it is not an API-key
+fallback. Registered-MCP/plugin and authenticated-boundary tests remain work,
+not owner decisions or a reason to weaken the isolation requirement.

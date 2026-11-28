@@ -1,0 +1,51 @@
+{
+  "executed": true,
+  "query": "Tình huống giả định: tôi muốn tìm hiểu giấc ngủ và nghỉ ngơi.",
+  "derivedTerms": [
+    "tim",
+    "giac",
+    "ngu",
+    "nghi",
+    "ngoi"
+  ],
+  "fixtureScore": 4,
+  "eligibleSectionsAheadOfFixture": 6,
+  "topThree": [
+    {
+      "documentId": "bundle-aea2112b5da67f2962842a65",
+      "sectionId": "bundle-aea2112b5da67f2962842a65-17",
+      "score": 4,
+      "matched": [
+        "tim",
+        "giac",
+        "ngu",
+        "nghi"
+      ]
+    },
+    {
+      "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+      "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-5",
+      "score": 4,
+      "matched": [
+        "tim",
+        "giac",
+        "nghi",
+        "ngoi"
+      ]
+    },
+    {
+      "documentId": "lesson-C01-01",
+      "sectionId": "lesson-C01-01-2",
+      "score": 4,
+      "matched": [
+        "tim",
+        "giac",
+        "ngu",
+        "nghi"
+      ]
+    }
+  ],
+  "reason": "The historical assertion assumes its arbitrary fixture ID must rank in the global top three. Other permitted passages score higher, or tie and precede luna-fixture by deterministic ID order. Current marker fixture isolates identity without weakening the assertion; natural Vietnamese relevance remains independently tested.",
+  "rawPassagesLogged": false,
+  "paidCalls": 0
+}

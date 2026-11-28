@@ -38,15 +38,20 @@ export function requireLocalEmulators() {
  * @param {function(): number} now Server clock, injectable in tests.
  * @param {Function} rateCheck Shared limiter, injectable in quota tests.
  * @param {boolean} privateEvaluation Explicit local research facade only.
+ * @param {boolean} sourceFree Keep the source store disconnected.
+ * @param {object} evaluation Separate private accounting; never public quotas.
  * @return {object} Authenticated local service facade.
  */
 export function createLocalService(
   adapter: ModelAdapter = createController040Adapter(),
   now: () => number = Date.now,
   rateCheck = async (ip: string) => checkRateLimit(getVisitorKey(ip), now()),
-  privateEvaluation = false,
+  privateEvaluation = false, sourceFree = false,
+  evaluation?: {reserve(identity: Identity): Promise<void>;
+    settle(identity: Identity): Promise<void>},
 ) {
   requireLocalEmulators();
+  if (evaluation && !privateEvaluation) throw Error("EVALUATION_PRIVATE_ONLY");
   if (adapter.mode !== "simulation" && !privateEvaluation) {
     throw new Error(
       "Controller model access is closed in this offline service.");
@@ -59,12 +64,13 @@ export function createLocalService(
     const context: ModelContext = {
       operatingInstructions: coreInstructions,
       messages, userStatedPreferences: account.preferences,
-      supportingKnowledge: await retrieveKnowledge(messages, privateEvaluation),
+      supportingKnowledge: sourceFree ? [] :
+        await retrieveKnowledge(messages, privateEvaluation),
     };
     return adapter.reply(context, request);
   }, now, privateEvaluation ? "private-model" : "simulation");
   return {
-    accounts, verify: verifiedIdentity,
+    accounts, verify: verifiedIdentity, epoch: engine.epoch,
     close: () => adapter.close?.(),
     session(identity: Identity) {
       return engine.session(identity.uid);
@@ -81,21 +87,32 @@ export function createLocalService(
               "Bạn gửi yêu cầu quá nhanh. Vui lòng thử lại sau.",
               "new-attempt", 429);
           }
-          await accounts.reserve(identity, request);
+          if (evaluation) await evaluation.reserve(identity);
+          else await accounts.reserve(identity, request);
         },
         async complete() {
-          await accounts.settle(identity, request.operationId, "completed");
+          if (evaluation) await evaluation.settle(identity);
+          else {
+            await accounts.settle(identity, request.operationId, "completed");
+          }
         },
         async fail(error, outputValidated): Promise<never> {
           if (error instanceof ConfirmedNoReply && !outputValidated) {
-            await accounts.settle(identity, request.operationId, "failed");
+            if (evaluation) await evaluation.settle(identity);
+            else await accounts.settle(identity, request.operationId, "failed");
             throw new ChatError("ATTEMPT_FAILED",
               "Lượt này chưa tạo phản hồi và đã được trả lại. " +
-              "Bạn có thể thử bằng lượt mới.", "new-attempt", 503);
+              "Bạn có thể thử bằng lượt mới.", "new-attempt", 503, error);
           }
           try {
-            await accounts.settle(identity, request.operationId, "unknown");
+            if (evaluation) await evaluation.settle(identity);
+            else {
+              await accounts.settle(identity, request.operationId, "unknown");
+            }
           } catch {/* Leave the durable reservation pending. */}
+          if (error instanceof ChatError && error.code.startsWith("OPENAI_")) {
+            throw error;
+          }
           throw new ChatError("OUTCOME_UNKNOWN",
             "Kết quả chưa thể xác minh. Lượt được giữ chờ đối soát; " +
             "không tự chạy lại hoặc hoàn lượt.", "none", 409);

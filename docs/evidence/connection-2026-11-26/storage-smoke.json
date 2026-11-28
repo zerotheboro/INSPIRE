@@ -1,0 +1,9 @@
+{
+  "executed": true,
+  "DPAPIStoreReadRestart": true,
+  "sanitizedEnvironment": true,
+  "syntheticOnly": true,
+  "inferenceCalls": 0,
+  "initialFailure": "helper used read transaction for a write; synthetic corrupt store archived, never repaired or reused",
+  "fix": "transaction(write=True) updates sealed durable anchor"
+}

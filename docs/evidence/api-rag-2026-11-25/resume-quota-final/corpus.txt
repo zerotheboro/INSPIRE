@@ -1,0 +1,3 @@
+{"executed":true,"lessonIds":458,"uniqueLessonIds":458,"lessonBodiesAndHashesVerified":458,"draftStatusPreserved":true,"duplicateVolumeReceipts":28,"duplicateVolumesIndexed":0,"docs":661,"externallyEligibleDocuments":514,"heldDocuments":147,"paidCalls":0}
+
+EXIT_CODE=0

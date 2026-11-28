@@ -122,5 +122,5 @@ test('native Controller validates injected ChatGPT-shaped final event and exact 
  const result=await run.execute('owner',request,p);assert.equal(result,text)
  const proof=run.controller.evidence();assert.equal(proof.length,2)
  assert.equal(proof[1].validated_sha256,hash(result));assert.equal(proof[1].actual_execution_eligible,false);assert.equal(proof[1].user_delivery,false)
- const out='docs/evidence/chatgpt-connection-2026-11-23';mkdirSync(out,{recursive:true});writeFileSync(out+'/synthetic-controller-trace.json',JSON.stringify({syntheticOnly:true,liveCalls:0,input:JSON.parse(p.text),payloadSHA:p.payloadSHA,binding:p.binding,protocolPreview:chatgptTurnInput(p,'thread'),event:event(p),controller:proof,validatedText:result,accounting:store.status()},null,2))
+ const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/chatgpt-connection-2026-11-23';mkdirSync(out,{recursive:true});writeFileSync(out+'/synthetic-controller-trace.json',JSON.stringify({syntheticOnly:true,liveCalls:0,input:JSON.parse(p.text),payloadSHA:p.payloadSHA,binding:p.binding,protocolPreview:chatgptTurnInput(p,'thread'),event:event(p),controller:proof,validatedText:result,accounting:store.status()},null,2))
 })

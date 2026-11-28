@@ -1,0 +1,3 @@
+PASS: 17 production files contain none of 11 private/source/emulator-auth markers.
+
+EXIT_CODE=0

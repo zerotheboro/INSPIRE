@@ -1,0 +1,652 @@
+--- a/tests/restore-inspire-knowledge.mjs
++++ b/tests/restore-inspire-knowledge.mjs
+@@ -6,17 +6,24 @@
+ import {TextDecoder} from 'node:util'
+ import {createRequire} from 'node:module'
+ import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
+-import {importSource} from '../functions/src/inspireKnowledge.ts'
++import {importSource,knowledgeReadiness} from '../functions/src/inspireKnowledge.ts'
+ process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
+-const root='.private.local/knowledge',rows=JSON.parse(readFileSync(join(root,'receipts.json'),'utf8')),sha=b=>createHash('sha256').update(b).digest('hex'),lessons=new Map()
++const root='.private.local/knowledge',rows=JSON.parse(readFileSync(join(root,'receipts.json'),'utf8')),sha=b=>createHash('sha256').update(b).digest('hex'),lessons=new Map(),rawCache=new Map()
+ const require=createRequire(new URL('../functions/package.json',import.meta.url)),db=require('firebase-admin/firestore').getFirestore()
+-const report={restored:0,unchanged:0,held:0,failures:[],permissionsChanged:false,versionsPromoted:false,providerCalls:0}
++const output=process.argv[2]??'docs/evidence/rag-restore-2026-11-27'
++const report={restored:0,unchanged:0,held:0,failures:[],missingExtraction:[],intentionalReceiptOnly:[],permissionsChanged:false,versionsPromoted:false,providerCalls:0}
++const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v
++const same=(a,b)=>JSON.stringify(canonical(a))===JSON.stringify(canonical(b))
+ try{
++ const prepared=[]
++ // Verify all existing files before starting the write phase. Never discover
++ // sources, reopen the ZIP, manufacture extraction, or replace a live version.
+  for(const row of rows){
+-  if(row.missing||!row.hash||!row.rawFile||row.collection!=='INSPIRE')continue
++  if(row.missing||!row.hash||!row.rawFile||row.collection!=='INSPIRE'){report.failures.push({id:row.documentId,reason:'RECEIPT_INCOMPLETE'});continue}
+   const path=join(root,'raw',row.rawFile)
+   if(!existsSync(path)){report.failures.push({id:row.documentId,reason:'RAW_MISSING'});continue}
+-  const raw=readFileSync(path);if(sha(raw)!==row.hash)throw Error('RAW_INTEGRITY_HOLD')
++  if(!rawCache.has(row.hash)){const bytes=readFileSync(path);if(sha(bytes)!==row.hash)throw Error('RAW_INTEGRITY_HOLD');rawCache.set(row.hash,bytes)}
++  const raw=rawCache.get(row.hash)
+   const {hash,version,changed,missing,...record}=row
+   let text=''
+   const extracted=join(root,'extracted',row.hash+'.json')
+@@ -33,9 +40,28 @@
+    const names=[row.title,...(row.aliases||[])]
+    if(names.some(name=>/\.(md|txt)$/i.test(name)))text=new TextDecoder('utf-8',{fatal:true}).decode(raw)
+   }
+-  const r=await importSource(record,raw,text,version||1)
+-  if(r.version!==(version||1))throw Error('UNEXPECTED_RESTORE_VERSION_CHANGE')
++  if(!text){
++   const warning={id:row.documentId,title:row.title,hash:row.hash,reason:'NO_CACHED_OR_DIRECT_TEXT; raw and metadata retained, no sections invented'}
++   if(row.permissions?.externalExport&&row.contentClass==='content'&&row.kind!=='operating-rules')report.missingExtraction.push(warning)
++   else report.intentionalReceiptOnly.push(warning)
++  }
++  prepared.push({row,record,raw,text})
++ }
++ const prior=(await db.collection('inspireKnowledge').get()).docs.filter(d=>d.id!=='_index')
++ const current=new Map(prior.map(d=>[d.id,d.data()]))
++ for(const {row}of prepared){const old=current.get(row.documentId);if(old&&(old.hash!==row.hash||old.version!==row.version||!same(old.permissions,row.permissions)))report.failures.push({id:row.documentId,reason:'LIVE_VERSION_OR_PERMISSION_CONFLICT'})}
++ if(report.failures.length)throw Error('RESTORE_PREFLIGHT_HOLD')
++ await db.doc('inspireKnowledge/_index').set({restoreStatus:'restoring',expectedRecords:prepared.length},{merge:true})
++ for(const {row,record,raw,text}of prepared){
++  const r=await importSource(record,raw,text,row.version||1)
++  if(r.version!==(row.version||1))throw Error('UNEXPECTED_RESTORE_VERSION_CHANGE')
+   r.changed?report.restored++:report.unchanged++
+   if(!row.permissions?.externalExport)report.held++
+  }
+-}finally{await db.terminate();mkdirSync('docs/evidence/connection-2026-11-26',{recursive:true});writeFileSync('docs/evidence/connection-2026-11-26/index-restore.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report))}
++ const actual=(await db.collection('inspireKnowledge').get()).docs.filter(d=>d.id!=='_index')
++ const byId=new Map(actual.map(d=>[d.id,d.data()]))
++ for(const row of rows){const s=byId.get(row.documentId);if(!s||s.hash!==row.hash||s.version!==row.version||s.status!==row.status||!same(s.permissions,row.permissions)||!same(s.lesson,row.lesson))throw Error('RESTORE_EXACT_METADATA_HOLD')}
++ await db.doc('inspireKnowledge/_index').set({restoreStatus:'ready',restoreCompletedAt:new Date().toISOString(),missingExtractionCount:report.missingExtraction.length},{merge:true})
++ report.live=await knowledgeReadiness()
++}catch(error){report.failures.push({reason:error.message});throw error}
++finally{await db.terminate();mkdirSync(output,{recursive:true});writeFileSync(join(output,'index-restore.json'),JSON.stringify(report,null,2));console.log(JSON.stringify({restored:report.restored,unchanged:report.unchanged,held:report.held,missingExtraction:report.missingExtraction,failures:report.failures,live:report.live,providerCalls:0}))}
+--- a/tests/start-inspire-emulators.mjs
++++ b/tests/start-inspire-emulators.mjs
+@@ -1,7 +1,7 @@
+-import {spawn} from 'node:child_process'
+ import {existsSync, readdirSync} from 'node:fs'
+ import {resolve, join, delimiter, win32, posix} from 'node:path'
+ import {pathToFileURL} from 'node:url'
++import {superviseEmulators,requestEmulatorStop} from './inspire-emulator-persistence.mjs'
+ 
+ // Pure construction: platform/FS parameters permit meaningful POSIX tests here.
+ export function launcherEnvironment(parent, {platform=process.platform, tools=resolve('.tools.local'),
+@@ -21,8 +21,6 @@
+ 
+ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
+   const env=launcherEnvironment(process.env)
+-  const child=spawn(process.execPath,[resolve('node_modules/firebase-tools/lib/bin/firebase.js'),
+-    'emulators:start','--only','auth,firestore','--project','demo-inspire'],{env,stdio:'inherit',windowsHide:true})
+-  for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>child.kill(signal))
+-  child.on('exit',code=>process.exit(code??0))
++  if(process.argv[2]==='--stop')await requestEmulatorStop()
++  else await superviseEmulators(env)
+ }
+--- a/tests/inspect-inspire-live-index.mjs
++++ b/tests/inspect-inspire-live-index.mjs
+@@ -26,6 +26,8 @@
+ }
+ const output=process.argv[2]??'docs/evidence/corpus-check-2026-11-27'
+ const hash=value=>createHash('sha256').update(value).digest('hex')
++const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v
++const same=(a,b)=>JSON.stringify(canonical(a))===JSON.stringify(canonical(b))
+ const summary=rows=>rows.map(({id,data})=>({id,hash:data.hash,version:data.version,
+  indexVersion:data.indexVersion,importSignature:data.importSignature,
+  sectionsHash:hash(JSON.stringify(data.sections??[])),permissions:data.permissions,
+@@ -45,7 +47,7 @@
+  for(const {id,data}of rows){const version=await db.doc('inspireKnowledge/'+id+'/versions/'+data.version).get();if(!version.exists||version.data().hash!==data.hash)versions.push(id)}
+  const sections=rows.flatMap(r=>r.data.sections??[]),bindingProblems=[]
+  for(const {id,data}of rows)for(const section of data.sections??[]){if(section.documentId!==id||section.version!==data.version||section.hash!==data.hash||section.sectionHash!==hash(section.text))bindingProblems.push(section.sectionId)}
+- const drift=receipts.filter(r=>ids.has(r.documentId)&&(r.hash!==ids.get(r.documentId).hash||r.version!==ids.get(r.documentId).version||JSON.stringify(r.permissions)!==JSON.stringify(ids.get(r.documentId).permissions))).map(r=>r.documentId)
++ const drift=receipts.filter(r=>ids.has(r.documentId)&&(r.hash!==ids.get(r.documentId).hash||r.version!==ids.get(r.documentId).version||r.status!==ids.get(r.documentId).status||!same(r.permissions,ids.get(r.documentId).permissions)||!same(r.lesson,ids.get(r.documentId).lesson))).map(r=>r.documentId)
+  const expectedWork=['website-counseling','corpus-cef55cbb7beb4e5fce595063','lesson-C04-06']
+  const cases=[
+   {name:'direct',messages:[{id:'u1',role:'user',text:'Khoảng cách giữa ý định và hành động là gì khi tôi trì hoãn công việc?'}],expected:expectedWork,reason:'Ít nhất một đoạn về vận hành/hành động hoặc động cơ, động lực.'},
+@@ -75,10 +77,16 @@
+  const report={executedAt:new Date().toISOString(),project:'demo-inspire',emulator:'127.0.0.1:8080',readOnly:true,
+   revision:before.revision,records:rows.length,sections:sections.length,recordsWithSections:rows.filter(r=>r.data.sections?.length).length,
+   internalEligible:rows.filter(r=>r.data.internalEligible).length,externalEligible:rows.filter(r=>r.data.externalEligible).length,
++  externallyEligibleSections:rows.filter(r=>r.data.externalEligible).reduce((n,r)=>n+(r.data.sections??[]).filter(s=>!r.data.permissions?.sectionHashes||r.data.permissions.sectionHashes.includes(s.sectionHash)).length,0),
+   versions:counter(rows.map(r=>r.data.version)),indexVersions:counter(rows.map(r=>r.data.indexVersion)),versionSnapshotProblems:versions,
+   sectionBindingProblems:bindingProblems,receiptDrift:drift,receiptRecords:receipts.length,receiptRecordsAbsent:receipts.filter(r=>!ids.has(r.documentId)).length,
+   baselineExternalEligible:513,deltaFrom513:rows.filter(r=>r.data.externalEligible).length-513,
+   explanation:!rows.length?'Services were stopped before this audit. No export snapshot found; existing launcher restarted a fresh empty emulator. No source import or index reconstruction was performed. 513 is historical (2026-11-26), not current.':'Compare current record/permission/version details with receipts.',
++  amendments:['INSPIRE-07-A','INSPIRE-06-A','INSPIRE-12-A','INSPIRE-13-A','INSPIRE-14-A','INSPIRE-15-A','INSPIRE-MOI-01-A'].map(name=>{
++   const matched=rows.filter(r=>[r.data.title,...r.data.aliases??[]].some(n=>new RegExp('(?:^|/)'+name+'(?:_|\\.)','i').test(n)))
++   const original=matched.filter(r=>!/(RECONSTRUCTED|PROPOSAL|CHAT_TRANSCRIPTION)/i.test(r.data.title))
++   return {claimedId:name,status:!original.length?'BLOCKED_ORIGINAL_NOT_RECEIVED_OR_PENDING':original.some(r=>r.data.externalEligible&&r.data.sections?.length)?'INDEXED_PRIVATE_REFERENCE_ONLY':'BLOCKED_NO_ELIGIBLE_INDEXED_PASSAGE',records:matched.map(r=>({id:r.id,version:r.data.version,hash:r.data.hash,sections:r.data.sections?.length??0,externalEligible:!!r.data.externalEligible}))}
++  }),
+   docx:ids.get('bundle-a89c8851a5c86033eb487afa')?{version:ids.get('bundle-a89c8851a5c86033eb487afa').version,sections:ids.get('bundle-a89c8851a5c86033eb487afa').sections?.length}:null,
+   txt:ids.get('bundle-ab98b70908c73d33467111e3')?{version:ids.get('bundle-ab98b70908c73d33467111e3').version,sections:ids.get('bundle-ab98b70908c73d33467111e3').sections?.length}:null,
+   retrieval:tests,restrictedSelections:excluded,writeAttempts,indexUnchangedDuringInspection:unchanged,
+--- a/functions/src/inspireKnowledge.ts
++++ b/functions/src/inspireKnowledge.ts
+@@ -269,10 +269,85 @@
+     }
+     tx.set(ref, stored);
+     tx.create(ref.collection("versions").doc(String(source.version)), stored);
+-    tx.set(index, {revision: (revision.data()?.revision ?? 0) + 1});
++    tx.set(index, {revision: (revision.data()?.revision ?? 0) + 1},
++      {merge: true});
+     cached.clear();
+     return {changed: true, version: source.version};
+   });
++}
++
++type KnowledgeReadiness = {
++  ready: boolean; state: string; records: number; sections: number;
++  externalEligible: number; revision: number | null; warnings: number;
++  countsKnown: boolean;
++};
++const readinessCache = new WeakMap<object, {
++  key: string; value: KnowledgeReadiness;
++}>();
++const readinessPending = new WeakMap<object, {
++  key: string; work: Promise<KnowledgeReadiness>;
++}>();
++
++/** Report live local index readiness without exposing passages or originals.
++ * @param {object} db Existing Firestore client; injectable for offline checks.
++ * @return {Promise<object>} Safe status; unavailable/partial indexes hold.
++ */
++export async function knowledgeReadiness(db = getFirestore()):
++  Promise<KnowledgeReadiness> {
++  const held = (state: string, revision: number | null = null) => ({
++    ready: false, state, records: 0, sections: 0,
++    externalEligible: 0, revision, warnings: 0,
++    countsKnown: state === "empty",
++  });
++  try {
++    const index = await db.doc("inspireKnowledge/_index").get();
++    const meta = index.data();
++    if (!index.exists) return held("empty");
++    const revision = meta?.revision ?? null;
++    if (meta?.restoreStatus !== "ready") {
++      return held(["restoring", "checkpointing"].includes(meta?.restoreStatus) ?
++        meta!.restoreStatus : "unverified", revision);
++    }
++    const key = JSON.stringify([revision, meta.restoreStatus,
++      meta.restoreCompletedAt]);
++    const previous = readinessCache.get(db);
++    if (previous?.key === key) return {...previous.value};
++    const pending = readinessPending.get(db);
++    if (pending?.key === key) return {...await pending.work};
++    const work = (async (): Promise<KnowledgeReadiness> => {
++      const rows = await db.collection("inspireKnowledge")
++        .select("sections", "externalEligible", "indexVersion").get();
++      const sources = rows.docs.filter((d) => d.id !== "_index");
++      const value: KnowledgeReadiness = {
++        ready: sources.length > 0 && sources.every((d) =>
++          d.data().indexVersion === 3),
++        state: "ready", records: sources.length,
++        sections: sources.reduce((n, d) =>
++          n + (d.data().sections?.length ?? 0), 0),
++        externalEligible: sources.filter((d) =>
++          d.data().externalEligible === true).length,
++        revision, warnings: meta.missingExtractionCount ?? 0,
++        countsKnown: true,
++      };
++      if (!value.records || !value.sections || !value.externalEligible) {
++        value.ready = false; value.state = "empty";
++      } else if (!value.ready) value.state = "invalid";
++      const latest = await db.doc("inspireKnowledge/_index").get();
++      if (JSON.stringify(latest.data()) !== JSON.stringify(meta)) {
++        return held("changing", revision);
++      }
++      readinessCache.set(db, {key, value});
++      return {...value};
++    })();
++    readinessPending.set(db, {key, work});
++    try {
++      return {...await work};
++    } finally {
++      if (readinessPending.get(db)?.work === work) readinessPending.delete(db);
++    }
++  } catch {
++    return held("unavailable");
++  }
+ }
+ 
+ /**
+--- a/functions/src/inspireLunaService.ts
++++ b/functions/src/inspireLunaService.ts
+@@ -5,7 +5,7 @@
+ import {emptyPreferences} from "./inspireAccount";
+ import {createLocalService} from "./inspireLocalService";
+ import {retrieveKnowledge, ConfirmedNoReply, UnknownReplyOutcome,
+-  assertKnowledgeExport} from "./inspireKnowledge";
++  assertKnowledgeExport, knowledgeReadiness} from "./inspireKnowledge";
+ import {createLunaController} from "./inspireLunaController";
+ import {decodeLunaApi, lunaOneShot, prepareLunaApi, recheckLunaSources,
+   sendLunaApi, countLunaInput} from "./inspireLunaApi";
+@@ -155,6 +155,10 @@
+   }>();
+   const facade = createLocalService({mode: "model",
+     async reply(_context, request) {
++      if (process.env.INSPIRE_PRIVATE_CONVERSATION === "1" &&
++          !(await knowledgeReadiness()).ready) {
++        throw new ConfirmedNoReply("KNOWLEDGE_NOT_READY");
++      }
+       const plan = plans.get(request!.operationId);
+       if (!plan) throw new UnknownReplyOutcome("LUNA_PLAN_LOST");
+       const p = plan.prepared;
+@@ -179,6 +183,11 @@
+       try {
+         if (plan.conversation) {
+           conversation!.counted(p, await countInput(p, key));
++          if (process.env.INSPIRE_PRIVATE_CONVERSATION === "1" &&
++              !(await knowledgeReadiness()).ready) {
++            throw new ChatError("KNOWLEDGE_NOT_READY",
++              "Kho tri thức đang tạm dừng. Chưa gọi tạo sinh.", "none", 503);
++          }
+           await recheckLunaSources(p);
+           conversation!.dispatch(p);
+         }
+@@ -224,6 +233,11 @@
+       if (automatic) {
+         exactKeys(data, ["kind", "request"]);
+         validateRequest(data.request);
++        if (process.env.INSPIRE_PRIVATE_CONVERSATION === "1" &&
++            !(await knowledgeReadiness()).ready) {
++          throw new ChatError("KNOWLEDGE_NOT_READY",
++            "Kho tri thức chưa sẵn sàng. Chưa gửi tới AI.", "none", 503);
++        }
+         if (!conversation) {
+           throw new ChatError("SESSION_NOT_RELEASED",
+             "Phiên AI riêng chưa được mở. Nhờ con kiểm tra giúp.", "none", 403);
+@@ -407,6 +421,11 @@
+       }
+       exactKeys(data, ["kind", "request"]);
+       validateRequest(data.request);
++      if (process.env.INSPIRE_PRIVATE_CONVERSATION === "1" &&
++          !(await knowledgeReadiness()).ready) {
++        throw new ChatError("KNOWLEDGE_NOT_READY",
++          "Kho tri thức chưa sẵn sàng. Chưa gửi tới AI.", "none", 503);
++      }
+       conversation?.permit(identity.uid, data.request);
+       const request = data.request;
+       const fingerprint = JSON.stringify({...request, kind: "send"});
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -8,6 +8,7 @@
+ import {createKnowledgePreviewAdapter} from './functions/src/inspireLuna'
+ import {createPrivateLunaService, createPrivateChatgptService} from './functions/src/inspireLunaService'
+ import {evaluationAllowance} from './functions/src/inspireEvaluationAllowance'
++import {knowledgeReadiness} from './functions/src/inspireKnowledge'
+ 
+ // Local development only. This middleware is absent from production builds.
+ export function inspirePrototype(serviceFactory = createLocalService, lunaFactory = createPrivateLunaService) {
+@@ -38,19 +39,19 @@
+         catch { res.statusCode = 400; res.end(); return }
+         const parts = path.split('/')
+         const protectedFile = /(?:^|\/)(?:vite\.config\.[^/]*|[^/]*\.(?:log|patch|zip))$/.test(path)
+-        const denied = protectedFile || /(?:^|\/)\.env(?:\.[^/]*)?$/.test(path) || parts.some(x => ['.private.local','.tools.local','.vite-temp','tests'].includes(x)) ||
++        const denied = protectedFile || /(?:^|\/)\.env(?:\.[^/]*)?$/.test(path) || parts.some(x => x.startsWith('firebase-export-') || ['.private.local','.tools.local','.vite-temp','tests'].includes(x)) ||
+           (parts.includes('docs') && !path.endsWith('/docs/counseling-topics-source.md')) ||
+           (parts.includes('functions') && !path.endsWith('/functions/src/inspirechatcontract.ts'))
+         if (denied) { res.statusCode = 403; res.setHeader('Cache-Control','no-store'); res.end(); return }
+         next()
+       })
+-      vite.middlewares.use('/api/inspire-private-status', (req, res) => {
++      vite.middlewares.use('/api/inspire-private-status', async (req, res) => {
+         res.setHeader('Content-Type', 'application/json; charset=utf-8')
+         res.setHeader('Cache-Control', 'no-store')
+         try {
+           requirePrivateTest(privateEnabled, req.socket.remoteAddress || '', req.headers.host || '', req.headers.origin)
+           if (req.method !== 'GET') throw new ChatError('METHOD', 'Chỉ hỗ trợ GET.', 'none', 405)
+-          res.end(JSON.stringify({mode: 'simulation', modelAvailable: false, chatgptPreview: !!chatgpt, ...(luna ? {lunaApiPreview: true, conversationTransport: process.env.INSPIRE_PRIVATE_CONVERSATION === '1'} : {})}))
++          res.end(JSON.stringify({mode: 'simulation', modelAvailable: false, rag: await knowledgeReadiness(), chatgptPreview: !!chatgpt, ...(luna ? {lunaApiPreview: true, conversationTransport: process.env.INSPIRE_PRIVATE_CONVERSATION === '1'} : {})}))
+         } catch (error) {
+           const safe = error instanceof ChatError ? error : new ChatError('PRIVATE_CLOSED', 'Phòng thử riêng chưa sẵn sàng.', 'none', 503)
+           res.statusCode = safe.status
+@@ -143,5 +144,5 @@
+ export default defineConfig(({command, mode, isPreview}) => ({
+   plugins: [react(), ...(command === 'serve' && mode === 'development' && !isPreview ? [inspirePrototype()] : [])],
+   base: "/",
+-  server: {fs: {deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '**/.private.local/**', '**/.tools.local/**', '**/docs/evidence/**', '**/docs/*.txt', '**/docs/!(counseling-topics-source.md)', '**/tests/**', '**/functions/**/*.py', '**/functions/src/!(inspireChatContract.ts)', '**/functions/lib/**', '**/node_modules/.vite-temp/**', '**/*.patch', '**/*.log', '**/*.zip', '**/vite.config.ts']}},
++  server: {fs: {deny: ['.env', '.env.*', '*.{crt,pem}', '**/.git/**', '**/.private.local/**', '**/firebase-export-*/**', '**/.tools.local/**', '**/docs/evidence/**', '**/docs/*.txt', '**/docs/!(counseling-topics-source.md)', '**/tests/**', '**/functions/**/*.py', '**/functions/src/!(inspireChatContract.ts)', '**/functions/lib/**', '**/node_modules/.vite-temp/**', '**/*.patch', '**/*.log', '**/*.zip', '**/vite.config.ts']}},
+ }))
+--- a/src/pages/AIInspire.tsx
++++ b/src/pages/AIInspire.tsx
+@@ -19,6 +19,7 @@
+   const [privateError, setPrivateError] = useState("")
+   const [apiReady, setApiReady] = useState(false)
+   const [conversationReady, setConversationReady] = useState(false)
++  const [rag, setRag] = useState<{ready: boolean; state: string; records?: number; sections?: number; warnings?: number}>()
+   const [apiRoute, setApiRoute] = useState<'chatgpt' | 'api'>('chatgpt')
+   const [apiMode, setApiMode] = useState(privateTest)
+   const [knowledgeTrace, setKnowledgeTrace] = useState<unknown>(null)
+@@ -30,16 +31,20 @@
+   useEffect(() => {
+     if (!privateTest) return
+     const abort = new AbortController()
+-    void fetch("/api/inspire-private-status", {cache: "no-store", signal: abort.signal})
++    const check = () => { void fetch("/api/inspire-private-status", {cache: "no-store", signal: abort.signal})
+       .then(async (response) => {
+         const value = await response.json()
+         if (!response.ok || value.mode !== "simulation" || value.modelAvailable !== false) throw Error()
+         setPrivateReady(true)
+         setApiReady(value.chatgptPreview === true || value.lunaApiPreview === true)
+         setConversationReady(value.conversationTransport === true)
++        setRag(value.rag ?? {ready:false,state:'unverified'})
+         setApiRoute(value.lunaApiPreview === true ? 'api' : 'chatgpt')
+-      }).catch(() => { if (!abort.signal.aborted) setPrivateError("Phòng thử riêng chưa mở. Nhờ con kiểm tra giúp bố.") })
+-    return () => abort.abort()
++        setPrivateError("")
++      }).catch(() => { if (!abort.signal.aborted) { setRag({ready:false,state:'unavailable'}); setPrivateError("Phòng thử riêng chưa mở. Nhờ con kiểm tra giúp bố.") } }) }
++    check()
++    const timer = setInterval(check,10000)
++    return () => { clearInterval(timer); abort.abort() }
+   }, [privateTest])
+   const makeStore = () => new ConversationStore(apiMode && privateTest ?
+     (conversationReady ? createPrivateConversationTransport(setKnowledgeTrace, fetch, chatToken, () => window.dispatchEvent(new Event("inspire-account-refresh"))) :
+@@ -63,7 +68,8 @@
+   const timeline = useRef<HTMLDivElement>(null)
+   const composer = useRef<HTMLTextAreaElement>(null)
+   const prototypeEnabled = import.meta.env.DEV && import.meta.env.MODE === "development"
+-  const available = prototypeEnabled && identityReady && (!privateTest || privateReady)
++  const available = prototypeEnabled && identityReady && (!privateTest || privateReady) &&
++    (!privateTest || !apiMode || !conversationReady || rag?.ready === true)
+   const locked = current.status !== "idle" || !available
+   const correction = current.messages.find((m) => m.id === current.correctionOf)
+   const userError = current.error ? !conversationReady ? current.error.message :
+@@ -110,9 +116,10 @@
+       <main className="ip-main">
+         <div className="ip-page-heading">
+           <div><span className="ip-kicker">{privateTest ? "INSPIRE · DÙNG RIÊNG" : "MỘT KHOẢNG DỪNG CHO BẠN"}</span><h1>Trò chuyện cùng INSPIRE</h1></div>
+-          <span className="ip-mode"><span /> {apiMode ? conversationReady ? 'AI · Bản thử riêng' : `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · ${current.messages.some(m => m.role === 'assistant') ? 'Phản hồi mô hình' : 'Chưa có phản hồi'}` : "Mô phỏng · Chưa dùng AI"}</span>
++          <span className="ip-mode"><span /> {apiMode ? conversationReady ? rag?.ready ? 'AI · Bản thử riêng' : 'AI · Kho tri thức chưa sẵn sàng' : `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · ${current.messages.some(m => m.role === 'assistant') ? 'Phản hồi mô hình' : 'Chưa có phản hồi'}` : "Mô phỏng · Chưa dùng AI"}</span>
+         </div>
+         {privateTest && !current.messages.length && <div className="ip-private-intro">
++          {apiMode && conversationReady && !rag?.ready && <p role="status">Kho tri thức đang chưa sẵn sàng. Hệ thống chưa gửi câu hỏi tới AI.</p>}
+           <p>Bạn cứ hỏi bằng tiếng Việt, theo cách tự nhiên của mình. Có thể hỏi tiếp hoặc đính chính điều vừa nói.</p>
+           {!apiMode && <p>Mô phỏng chỉ để thử cách sử dụng, chưa dùng mô hình AI.</p>}
+           {!conversationReady && <details className="ip-family-guide"><summary>Gợi ý thử cùng con</summary>
+@@ -126,7 +133,7 @@
+           <details className="ip-private-setup"><summary>Dành cho con · Thiết lập và tài khoản</summary><InspireAccountPanel onIdentity={onIdentity} />
+             <div className="ip-private-modes" aria-label="Chế độ thử"><button aria-pressed={!apiMode} onClick={() => setApiMode(false)}>Mô phỏng</button><button disabled={!apiReady} aria-pressed={apiMode} onClick={() => setApiMode(true)}>{conversationReady ? 'Trả lời bằng AI' : apiReady ? `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · Xem trước` : 'Chưa bật'}</button></div>
+             {!conversationReady && <p>{apiRoute === 'api' ? 'Đường đã chọn: OpenAI API trực tiếp, dùng billing API riêng. Chỉ attempt cố định đã được Chủ hệ cho phép mới có thể gửi.' : 'Đường ChatGPT chưa mở gửi tới mô hình.'} Mô phỏng vẫn dùng Controller hiện có.</p>}
+-            {conversationReady && <><p>Đường API thật dùng ngân sách phiên riêng, không dùng grant cũ. Mỗi lần Gửi tự truy xuất tối đa ba đoạn đủ quyền; không tự retry. Output mã hóa chỉ được đọc trong bảy ngày và được dọn khi kho hoạt động; lịch sử giao diện chỉ ở bộ nhớ tab.</p><pre>{JSON.stringify({connection:knowledgeTrace,error:current.error ? {code:current.error.code,message:current.error.message} : null},null,2)}</pre></>}
++            {conversationReady && <><p>Đường API thật dùng ngân sách phiên riêng, không dùng grant cũ. Mỗi lần Gửi tự truy xuất tối đa ba đoạn đủ quyền; không tự retry. Output mã hóa chỉ được đọc trong bảy ngày và được dọn khi kho hoạt động; lịch sử giao diện chỉ ở bộ nhớ tab.</p><pre>{JSON.stringify({rag,connection:knowledgeTrace,error:current.error ? {code:current.error.code,message:current.error.message} : null},null,2)}</pre></>}
+             {apiMode && apiRoute === 'api' && !conversationReady && <div className="ip-api-preview">
+               <h2>Một attempt thay thế đã được Chủ hệ cho phép</h2>
+               <p>Giữ đúng câu hỏi, ba đoạn nguồn, gpt-6-luna, 512 output tokens và dự phòng tối đa US$0.0035925. Bước chuẩn bị không gọi mô hình.</p>
+--- a/.gitignore
++++ b/.gitignore
+@@ -2,6 +2,8 @@
+ logs
+ .tools.local/
+ .private.local/
++# Firebase's native export staging directory (never a review/public asset).
++firebase-export-*/
+ INSPIRE-review-*.zip
+ *-debug.log
+ *.log
+--- a/tests/package-father-weekend.py
++++ b/tests/package-father-weekend.py
+@@ -11,7 +11,8 @@
+ files = []
+ for path in root.rglob("*"):
+     rel = path.relative_to(root)
+-    if any(part in exclude for part in rel.parts) or path.is_symlink():
++    if any(part in exclude or part.startswith("firebase-export-")
++           for part in rel.parts) or path.is_symlink():
+         continue
+     if not path.is_file():
+         continue
+--- /dev/null
++++ b/tests/inspire-emulator-persistence.mjs
+@@ -0,0 +1,120 @@
++// Native Firebase Auth/Firestore export only. Never copies operator grants,
++// API configuration, budget ledgers or any LocalAppData directory.
++import {spawn,spawnSync} from 'node:child_process'
++import {existsSync,mkdirSync,readFileSync,readdirSync,realpathSync,lstatSync,openSync,writeSync,fsyncSync,closeSync,renameSync,unlinkSync,cpSync} from 'node:fs'
++import {resolve,join,relative,sep} from 'node:path'
++import {createHash,randomUUID} from 'node:crypto'
++import {createRequire} from 'node:module'
++import {fileURLToPath} from 'node:url'
++const workspace=resolve(fileURLToPath(new URL('..',import.meta.url)))
++export const stateRoot=resolve(workspace,'.private.local/emulator-state')
++const sha=bytes=>createHash('sha256').update(bytes).digest('hex')
++const pause=ms=>new Promise(r=>setTimeout(r,ms))
++function directory(root){mkdirSync(root,{recursive:true,mode:0o700});if(realpathSync(root).toLowerCase()!==resolve(root).toLowerCase())throw Error('EMULATOR_STATE_PATH_HOLD')}
++function atomic(file,value){const temp=file+'.'+randomUUID()+'.pending',fd=openSync(temp,'wx',0o600);try{writeSync(fd,JSON.stringify(value,null,2));fsyncSync(fd)}finally{closeSync(fd)}renameSync(temp,file)}
++export function snapshotFiles(folder){
++ const files=[]
++ const scan=path=>{for(const entry of readdirSync(path,{withFileTypes:true})){const p=join(path,entry.name);if(lstatSync(p).isSymbolicLink())throw Error('SNAPSHOT_SYMLINK_HOLD');if(entry.isDirectory())scan(p);else{const name=relative(folder,p).split(sep).join('/');if(name!=='firebase-export-metadata.json'&&!name.startsWith('firestore_export/')&&!name.startsWith('auth_export/'))throw Error('UNEXPECTED_SNAPSHOT_FILE');files.push({name,sha256:sha(readFileSync(p))})}}}
++ scan(folder);return files.sort((a,b)=>a.name.localeCompare(b.name))
++}
++export function copyCompletedNativeExport(source,destination){
++ // Windows/OneDrive may deny HubExport's final directory rename AFTER both
++ // native exports and metadata are complete. Copy verified bytes, never retry
++ // inference or accept an incomplete export. Preserve the failed staging tree.
++ const files=snapshotFiles(source),meta=JSON.parse(readFileSync(join(source,'firebase-export-metadata.json'),'utf8'))
++ if(!meta.firestore||!meta.auth||Object.keys(meta).some(k=>!['version','firestore','auth'].includes(k)))throw Error('INCOMPLETE_NATIVE_EXPORT')
++ if(existsSync(destination)&&readdirSync(destination).length)throw Error('EXPORT_DESTINATION_NOT_EMPTY')
++ cpSync(source,destination,{recursive:true,force:false,errorOnExist:true})
++ if(JSON.stringify(files)!==JSON.stringify(snapshotFiles(destination))||JSON.stringify(files)!==JSON.stringify(snapshotFiles(source)))throw Error('NATIVE_EXPORT_COPY_CHANGED')
++ return files
++}
++const stagingDirectories=root=>readdirSync(root,{withFileTypes:true}).filter(d=>d.isDirectory()&&/^firebase-export-\d+[A-Za-z0-9]+$/.test(d.name)).map(d=>d.name)
++export function verifiedImport(root=stateRoot){
++ directory(root)
++ const file=join(root,'state.json');if(!existsSync(file))return null
++ const state=JSON.parse(readFileSync(file,'utf8'))
++ if(state.schema!=='inspire-emulator-state-v1'||state.status!=='clean')throw Error('UNCLEAN_EMULATOR_RESTART_HOLD: do not roll back quota or unknown attempts')
++ if(!/^[a-f0-9-]{36}$/.test(state.snapshotId))throw Error('SNAPSHOT_ID_HOLD')
++ const folder=join(root,'snapshots',state.snapshotId)
++ if(realpathSync(folder).toLowerCase()!==resolve(folder).toLowerCase())throw Error('SNAPSHOT_PATH_HOLD')
++ if(JSON.stringify(snapshotFiles(folder))!==JSON.stringify(state.files))throw Error('SNAPSHOT_INTEGRITY_HOLD')
++ const metadata=JSON.parse(readFileSync(join(folder,'firebase-export-metadata.json'),'utf8'))
++ if(!metadata.firestore||!metadata.auth||Object.keys(metadata).some(k=>!['version','firestore','auth'].includes(k)))throw Error('SNAPSHOT_SCOPE_HOLD')
++ return folder
++}
++function admin(){process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';process.env.METADATA_SERVER_DETECTION='none';const require=createRequire(new URL('../functions/package.json',import.meta.url));const sdk=require('firebase-admin/app');if(!sdk.getApps().length)sdk.initializeApp({projectId:'demo-inspire'});if(sdk.getApp().options.projectId!=='demo-inspire')throw Error('DEMO_ONLY');return require('firebase-admin/firestore').getFirestore()}
++async function endpoint(port){try{return (await fetch('http://127.0.0.1:'+port+'/',{signal:AbortSignal.timeout(1000)})).ok}catch{return false}}
++function childExit(child){return new Promise((done,reject)=>{child.once('error',reject);child.once('exit',code=>code===0?done():reject(Error('NATIVE_EXPORT_FAILED')))})}
++
++export async function superviseEmulators(env){
++ const root=stateRoot,importPath=verifiedImport(root)
++ for(const port of [8080,9099])if(await endpoint(port))throw Error('EXISTING_EMULATORS: do not replace running services')
++ const token=randomUUID(),stateFile=join(root,'state.json'),requestFile=join(root,'stop.json')
++ const state={schema:'inspire-emulator-state-v1',status:'running',token,pid:process.pid,startedAt:new Date().toISOString(),imported:!!importPath}
++ atomic(stateFile,state)
++ const child=spawn(process.execPath,[resolve(workspace,'node_modules/firebase-tools/lib/bin/firebase.js'),'emulators:start','--only','auth,firestore','--project','demo-inspire','--config',join(workspace,'firebase.json'),...(importPath?['--import',importPath]:[])],{cwd:root,env:{...env,OPENAI_API_KEY:''},stdio:'inherit',windowsHide:true})
++ state.childPid=child.pid;atomic(stateFile,state)
++ let stopping=false,ready=false
++ const bootstrap=(async()=>{
++  for(let i=0;i<180;i++){
++   if(await endpoint(8080)&&await endpoint(9099)){
++    const db=admin()
++    if(importPath){
++     const index=await db.doc('inspireKnowledge/_index').get()
++     if(index.data()?.restoreStatus==='checkpointing')await index.ref.set({restoreStatus:'ready'},{merge:true})
++    }
++    ready=true;console.log(JSON.stringify({emulatorPersistence:'ready',importedNativeSnapshot:!!importPath,grantsAndBudgetFilesImported:false}));return
++   }
++   await pause(1000)
++  }
++  throw Error('EMULATOR_START_TIMEOUT')
++ })()
++ const stop=async()=>{
++  if(stopping)return;stopping=true
++  let completedSnapshot
++  try{
++   await bootstrap
++   if(!ready)throw Error('EMULATOR_NOT_READY')
++   const db=admin(),index=db.doc('inspireKnowledge/_index'),previous=await index.get()
++   if(previous.exists&&previous.data().restoreStatus!=='ready')throw Error('INDEX_NOT_READY_TO_SNAPSHOT')
++   if(previous.exists)await index.set({restoreStatus:'checkpointing'},{merge:true})
++   const snapshotId=randomUUID(),folder=join(root,'snapshots',snapshotId)
++   directory(folder) // New immutable export target; never --force an old one.
++   const oldStaging=new Set(stagingDirectories(root))
++   const exporter=spawn(process.execPath,[resolve(workspace,'node_modules/firebase-tools/lib/bin/firebase.js'),'emulators:export',folder,'--only','auth,firestore','--project','demo-inspire','--config',join(workspace,'firebase.json')],{cwd:root,env:{...env,OPENAI_API_KEY:''},stdio:'inherit',windowsHide:true})
++   try{await childExit(exporter)}catch(error){
++    const candidates=stagingDirectories(root).filter(n=>!oldStaging.has(n))
++    if(candidates.length!==1)throw error
++    copyCompletedNativeExport(join(root,candidates[0]),folder)
++    console.log('Native export bytes recovered after Windows final-rename failure; staging preserved.')
++   }
++   const finalIndex=await index.get()
++   if(previous.exists&&finalIndex.data()?.revision!==previous.data().revision)throw Error('INDEX_CHANGED_DURING_EXPORT')
++   const clean={schema:'inspire-emulator-state-v1',status:'clean',snapshotId,files:snapshotFiles(folder),savedAt:new Date().toISOString()}
++   completedSnapshot=clean
++   atomic(stateFile,clean)
++   // Kill only the child tree started above, after a verified native export.
++   const kill=spawnSync('taskkill.exe',['/PID',String(child.pid),'/T','/F'],{windowsHide:true,encoding:'utf8'})
++   if(kill.status!==0){console.error('Owned emulator taskkill exit status: '+kill.status);throw Error('EMULATOR_STOP_FAILED')}
++   await db.terminate()
++   console.log(JSON.stringify({emulatorPersistence:'stopped-clean',snapshotId,grantsOrBudgetRewritten:false}))
++  }catch(error){
++   atomic(stateFile,{...state,status:'hold',reason:error.message,completedSnapshot})
++   console.error('EMULATOR_PERSISTENCE_HOLD: '+error.message)
++   stopping=false
++  }
++ }
++ const timer=setInterval(()=>{if(existsSync(requestFile)){const command=JSON.parse(readFileSync(requestFile,'utf8'));unlinkSync(requestFile);if(command.token===token)void stop()}},1000)
++ process.on('SIGINT',()=>{void stop()});process.on('SIGTERM',()=>{void stop()})
++ child.once('exit',()=>{clearInterval(timer);if(!stopping)console.error('EMULATOR_EXIT_UNCLEAN: next automatic import is held')})
++ bootstrap.catch(e=>{console.error(e.message)})
++}
++
++export async function requestEmulatorStop(){
++ directory(stateRoot);const state=JSON.parse(readFileSync(join(stateRoot,'state.json'),'utf8'))
++ if(state.status!=='running'||!state.token||!Number.isInteger(state.pid))throw Error('NO_MANAGED_EMULATOR_TO_STOP')
++ process.kill(state.pid,0)
++ atomic(join(stateRoot,'stop.json'),{token:state.token})
++ for(let i=0;i<180;i++){const after=JSON.parse(readFileSync(join(stateRoot,'state.json'),'utf8'));if(after.status==='hold')throw Error('PERSISTENCE_HOLD: '+after.reason);if(after.status==='clean'&&!(await endpoint(8080))&&!(await endpoint(9099)))return;await pause(1000)}
++ throw Error('CONTROLLED_STOP_TIMEOUT')
++}
+--- /dev/null
++++ b/tests/inspire-rag-readiness.test.mjs
+@@ -0,0 +1,56 @@
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {mkdtempSync,mkdirSync,readFileSync,writeFileSync,rmSync} from 'node:fs'
++import {tmpdir} from 'node:os'
++import {join,resolve} from 'node:path'
++import {knowledgeReadiness} from '../functions/src/inspireKnowledge.ts'
++import {verifiedImport,snapshotFiles} from './inspire-emulator-persistence.mjs'
++import {copyCompletedNativeExport} from './inspire-emulator-persistence.mjs'
++import {createRequire} from 'node:module'
++import {createPrivateLunaService} from '../functions/src/inspireLunaService.ts'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++function dbFixture(meta,docs=[]){let reads=0;return {doc:()=>({get:async()=>({exists:!!meta,data:()=>meta})}),collection:()=>({select:()=>({get:async()=>{reads++;return {docs:docs.map((d,i)=>({id:'document'+i,data:()=>d}))}}})}),reads:()=>reads}}
++test('empty, partial, unverified and unavailable index never report ready',async()=>{
++ for(const meta of [null,{revision:1},{revision:2,restoreStatus:'restoring'}])assert.equal((await knowledgeReadiness(dbFixture(meta))).ready,false)
++ assert.equal((await knowledgeReadiness({doc(){throw Error('OFFLINE')}})).state,'unavailable')
++ const invalid=dbFixture({revision:2,restoreStatus:'ready'},[{indexVersion:2,sections:[{}],externalEligible:true}])
++ assert.equal((await knowledgeReadiness(invalid)).ready,false)
++})
++test('ready status counts real sections, preserves warning and refreshes on revision change',async()=>{
++ const meta={revision:8,restoreStatus:'ready',missingExtractionCount:1},docs=[{indexVersion:3,sections:[{},{}],externalEligible:true},{indexVersion:3,sections:[],externalEligible:false}],db=dbFixture(meta,docs)
++ const [first,parallel]=await Promise.all([knowledgeReadiness(db),knowledgeReadiness(db)]);assert.deepEqual(first,parallel);assert.equal(db.reads(),1);assert.equal(first.ready,true);assert.equal(first.records,2);assert.equal(first.sections,2);assert.equal(first.externalEligible,1);assert.equal(first.warnings,1);assert.equal(first.countsKnown,true)
++ await knowledgeReadiness(db);assert.equal(db.reads(),1)
++ meta.restoreStatus='restoring';assert.equal((await knowledgeReadiness(db)).ready,false)
++ meta.restoreStatus='ready';meta.revision++;docs[0].sections.push({});assert.equal((await knowledgeReadiness(db)).sections,3)
++})
++function snapshot(t){const root=mkdtempSync(join(tmpdir(),'inspire-export-fixture-'));t.after(()=>{assert.ok(resolve(root).startsWith(resolve(tmpdir(),'inspire-export-fixture-')));rmSync(root,{recursive:true,force:true})});const id='12345678-1234-1234-1234-123456789abc',dir=join(root,'snapshots',id);mkdirSync(join(dir,'firestore_export'),{recursive:true});mkdirSync(join(dir,'auth_export'));writeFileSync(join(dir,'firebase-export-metadata.json'),JSON.stringify({version:'OFFLINE',firestore:{path:'firestore_export'},auth:{path:'auth_export'}}));writeFileSync(join(dir,'firestore_export','synthetic'), 'OFFLINE CORPUS AND QUOTA ONLY');writeFileSync(join(dir,'auth_export','accounts.json'),'[]');const state={schema:'inspire-emulator-state-v1',status:'clean',snapshotId:id,files:snapshotFiles(dir)};writeFileSync(join(root,'state.json'),JSON.stringify(state));return {root,dir,state}}
++test('native Auth/Firestore export scope is accepted; modified/unclean snapshots fail closed',t=>{
++ const f=snapshot(t);assert.equal(verifiedImport(f.root),f.dir)
++ f.state.status='running';writeFileSync(join(f.root,'state.json'),JSON.stringify(f.state));assert.throws(()=>verifiedImport(f.root),/UNCLEAN/)
++ f.state.status='clean';writeFileSync(join(f.root,'state.json'),JSON.stringify(f.state));writeFileSync(join(f.dir,'firestore_export','synthetic'),'ALTERED');assert.throws(()=>verifiedImport(f.root),/INTEGRITY/)
++})
++test('snapshot cannot include grants, budget files or escape its private snapshot directory',t=>{
++ const f=snapshot(t);writeFileSync(join(f.dir,'authorization.json'),'OFFLINE_FORGED_APPROVAL');assert.throws(()=>snapshotFiles(f.dir),/UNEXPECTED_SNAPSHOT_FILE/)
++ f.state.snapshotId='../outside';writeFileSync(join(f.root,'state.json'),JSON.stringify(f.state));assert.throws(()=>verifiedImport(f.root),/SNAPSHOT_ID/)
++ assert.equal(readFileSync(join(f.dir,'authorization.json'),'utf8'),'OFFLINE_FORGED_APPROVAL')
++})
++test('Windows export-copy fallback preserves exact native bytes and refuses incomplete or existing targets',t=>{
++ const f=snapshot(t),copy=join(f.root,'copied-export')
++ assert.deepEqual(copyCompletedNativeExport(f.dir,copy),snapshotFiles(f.dir))
++ assert.deepEqual(snapshotFiles(copy),snapshotFiles(f.dir))
++ assert.throws(()=>copyCompletedNativeExport(f.dir,copy),/DESTINATION_NOT_EMPTY/)
++ writeFileSync(join(f.dir,'firebase-export-metadata.json'),'{}')
++ assert.throws(()=>copyCompletedNativeExport(f.dir,join(f.root,'incomplete-copy')),/INCOMPLETE/)
++})
++test('live conversation rejects missing index before UID claim, quota, token counting or model dispatch',async t=>{
++ process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++ const old=process.env.INSPIRE_PRIVATE_CONVERSATION;process.env.INSPIRE_PRIVATE_CONVERSATION='1'
++ t.after(()=>{if(old===undefined)delete process.env.INSPIRE_PRIVATE_CONVERSATION;else process.env.INSPIRE_PRIVATE_CONVERSATION=old})
++ const require=createRequire(new URL('../functions/package.json',import.meta.url)),sdk=require('firebase-admin/firestore')
++ t.mock.method(sdk.DocumentReference.prototype,'get',async function(){assert.equal(this.path,'inspireKnowledge/_index');return {exists:false,data:()=>undefined}})
++ let claims=0,counts=0,sends=0
++ const service=createPrivateLunaService({conversation:{permit(){claims++;throw Error('NOT_ALLOWED')},status:()=>({released:true})},controller:{preflight:async()=>{},validate:async()=>{},evidence:()=>[]},countInput:async()=>{counts++;return 1},send:async()=>{sends++;throw Error('MUST_NOT_GENERATE')}})
++ await assert.rejects(service.handlePrivate({kind:'conversation',request:{kind:'send',epoch:'offline',sessionId:'offline',conversationId:'offline',operationId:'offline',messages:[{id:'u1',role:'user',text:'Dữ liệu giả kiểm tra thiếu index.'}]}},{uid:'synthetic',registered:false,email:null,providers:[],createdAt:new Date().toISOString()},'local'),{code:'KNOWLEDGE_NOT_READY',retry:'none'})
++ assert.equal(claims,0);assert.equal(counts,0);assert.equal(sends,0)
++ await sdk.getFirestore().terminate()
++})
+--- /dev/null
++++ b/tests/verify-inspire-rag-persistence.mjs
+@@ -0,0 +1,69 @@
++// Real local emulator restart evidence, synthetic quota fixture, NO model.
++import assert from 'node:assert/strict'
++import {readFileSync,writeFileSync,readdirSync,existsSync,mkdirSync} from 'node:fs'
++import {join,resolve,relative} from 'node:path'
++import {createHash} from 'node:crypto'
++import {createRequire} from 'node:module'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {AccountService} from '../functions/src/inspireAccount.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const require=createRequire(new URL('../functions/package.json',import.meta.url)),db=require('firebase-admin/firestore').getFirestore(),auth=require('firebase-admin/auth').getAuth()
++const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v
++const sha=v=>createHash('sha256').update(v).digest('hex'),digest=v=>sha(JSON.stringify(canonical(v)))
++const privateOut='.private.local/rag-durability-20261127',evidence='docs/evidence/rag-restore-2026-11-27'
++const uid='rag-restart-synthetic-20261127',identity={uid,email:'rag-restart@synthetic.invalid',registered:true,providers:['password'],createdAt:new Date().toISOString()}
++function treeDigest(root,accept){if(!existsSync(root))return {files:0,sha256:digest([])};const files=[];const walk=p=>{for(const d of readdirSync(p,{withFileTypes:true})){const f=join(p,d.name);if(d.isSymbolicLink())throw Error('PROTECTED_PATH_LINK');if(d.isDirectory())walk(f);else if(accept(f))files.push([relative(root,f),sha(readFileSync(f))])}};walk(root);files.sort((a,b)=>a[0].localeCompare(b[0]));return {files:files.length,sha256:digest(files)}}
++function protectedFiles(){const local=join(process.env.LOCALAPPDATA,'INSPIRE-Luna');return {sourceHistory:treeDigest(resolve('.private.local/knowledge/history'),p=>p.endsWith('.json')),receiptsSHA:sha(readFileSync('.private.local/knowledge/receipts.json')),operatorLedger:treeDigest(local,p=>/\.(json|jsonl)$/.test(p))}}
++async function fingerprints(){
++ const sources=await db.collection('inspireKnowledge').get(),versions=await db.collectionGroup('versions').get(),other=[]
++ const walk=async collection=>{for(const doc of (await collection.get()).docs){other.push([doc.ref.path,doc.data()]);for(const child of await doc.ref.listCollections())await walk(child)}}
++ for(const collection of await db.listCollections())if(collection.id!=='inspireKnowledge')await walk(collection)
++ const sorted=items=>items.sort((a,b)=>a[0].localeCompare(b[0]))
++ return {knowledge:{documents:sources.size,sha256:digest(sorted(sources.docs.map(d=>[d.id,d.data()])))},versions:{documents:versions.size,sha256:digest(sorted(versions.docs.map(d=>[d.ref.path,d.data()])))},quotaAndOtherState:{documents:other.length,sha256:digest(sorted(other))},protected:protectedFiles()}
++}
++const request=operationId=>({kind:'send',epoch:'offline-before-restart',sessionId:'offline-session',operationId,conversationId:'offline-conversation',messages:[{id:'synthetic-user',role:'user',text:'Dữ liệu giả kiểm tra bảo toàn quota qua restart; không gọi mô hình.'}]})
++try{
++ mkdirSync(privateOut,{recursive:true});mkdirSync(evidence,{recursive:true})
++ if(process.argv[2]==='before'){
++  assert.equal(existsSync(join(privateOut,'restart-before.json')),false,'BEFORE_ALREADY_CAPTURED')
++  const old=await db.doc('inspireAccounts/'+uid).get();assert.equal(old.exists,false,'EXISTING_FIXTURE_HOLD')
++  await auth.createUser({uid,email:identity.email,password:'Synthetic-no-real-user-20261127!'})
++  const account=new AccountService(),completed=request('synthetic-completed-20261127'),unknown=request('synthetic-unknown-20261127')
++  await account.account(identity);await account.reserve(identity,completed);await account.settle(identity,completed.operationId,'completed');await account.reserve(identity,unknown);await account.settle(identity,unknown.operationId,'unknown')
++  const view=await account.account(identity);assert.equal(view.quota.completed,1);assert.equal(view.quota.pending,1)
++  const record={...await fingerprints(),requests:{completed,unknown},uid}
++  writeFileSync(join(privateOut,'restart-before.json'),JSON.stringify(record,null,2),{flag:'wx'})
++  console.log(JSON.stringify({captured:true,knowledgeDocuments:record.knowledge.documents,versionDocuments:record.versions.documents,syntheticCompleted:1,syntheticPending:1,modelCalls:0}))
++ }else if(process.argv[2]==='after'){
++  const before=JSON.parse(readFileSync(join(privateOut,'restart-before.json'),'utf8')),after=await fingerprints()
++  for(const field of ['knowledge','versions','quotaAndOtherState','protected'])assert.deepEqual(after[field],before[field],field+' changed across native restart')
++  assert.equal((await auth.getUser(uid)).uid,uid)
++  const account=new AccountService()
++  for(const r of Object.values(before.requests))await assert.rejects(account.reserve(identity,r),{code:'RESULT_UNAVAILABLE'})
++  const view=await account.account(identity);assert.equal(view.quota.completed,1);assert.equal(view.quota.pending,1);assert.equal(view.quota.remaining,28)
++  const report={executed:true,nativeExportImportRestart:true,knowledgeAndVersionBytesPreserved:true,authUIDPreserved:true,quotaAndPendingReservationsPreserved:true,completedAndUnknownOperationsRejectReplay:true,originalsHistoryAndOperatorLedgersUnchanged:true,completed:1,pending:1,remaining:28,fingerprints:after,modelCalls:0}
++  writeFileSync(join(evidence,'restart-verification.json'),JSON.stringify(report,null,2))
++  // Only the synthetic fixture introduced above is removed. Snapshot again
++  // before final restart so no old test account returns on the next launch.
++  // Keep global inspireOperations tombstones: consumed/unknown operations
++  // must remain blocked even after account cleanup.
++  await db.recursiveDelete(db.doc('inspireAccounts/'+uid));await auth.deleteUser(uid)
++  console.log(JSON.stringify(report,null,2))
++ }else if(process.argv[2]==='final'){
++  const before=JSON.parse(readFileSync(join(privateOut,'restart-before.json'),'utf8')),after=await fingerprints()
++  for(const field of ['knowledge','versions','protected'])assert.deepEqual(after[field],before[field],field+' differs after final clean restart')
++  await assert.rejects(auth.getUser(uid),{code:'auth/user-not-found'})
++  const operations=(await db.collection('inspireOperations').get()).docs
++  assert.equal(after.quotaAndOtherState.documents,2,'Only the two deny tombstones must remain after synthetic account cleanup')
++  const operationKey=r=>sha(uid+':'+r.operationId)
++  assert.deepEqual(operations.map(d=>d.id).sort(),Object.values(before.requests).map(operationKey).sort())
++  for(const [kind,r]of Object.entries(before.requests)){
++   const op=operations.find(d=>d.id===operationKey(r)).data()
++   assert.equal(op.uid,uid);assert.equal(op.status,kind==='completed'?'completed':'unknown')
++   assert.equal(op.fingerprint,sha(JSON.stringify(r)));assert.equal(op.epoch,r.epoch)
++   await assert.rejects(new AccountService().reserve(identity,r),{code:'RESULT_UNAVAILABLE'})
++  }
++  const report={executed:true,finalCleanRestart:true,knowledgeAndVersionsIdentical:true,sourceHistoryAndOperatorLedgerIdentical:true,syntheticAccountDidNotReturn:true,consumedAndUnknownDenyTombstonesPreserved:2,replayStillRejected:true,initialFinalCheck:'Initial test expected zero documents after account cleanup; global operation tombstones correctly remain. Initial failure log preserved; corrected check verifies their exact IDs/status/fingerprints and replay refusal. No tombstone deleted.',modelCalls:0}
++  writeFileSync(join(evidence,'final-restart.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report))
++ }else throw Error('USE before OR after OR final')
++}finally{await db.terminate()}

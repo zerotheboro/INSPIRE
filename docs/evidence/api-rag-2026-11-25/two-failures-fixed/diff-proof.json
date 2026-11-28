@@ -1,0 +1,16 @@
+{
+  "applyCheckExit": 0,
+  "baseline": "working tree before this two-failure task, not HEAD",
+  "files": [
+    "functions/src/inspireChatContract.ts",
+    "functions/src/inspireKnowledge.ts",
+    "functions/src/inspireLocalService.ts",
+    "functions/src/inspireLunaService.ts",
+    "functions/src/inspireLunaController.ts",
+    "functions/inspire_luna_bridge.py",
+    "tests/inspire-luna-api.test.mjs",
+    "tests/inspire-luna-failure-regression.test.mjs"
+  ],
+  "workspacePatchApplied": false,
+  "historical11of13LogUnchangedFromPriorReviewZIP": true
+}

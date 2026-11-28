@@ -1,0 +1,535 @@
+diff --git a/functions/src/inspireLunaApi.ts b/functions/src/inspireLunaApi.ts
+index 45fb7e4..e5c9662 100644
+--- a/functions/src/inspireLunaApi.ts
++++ b/functions/src/inspireLunaApi.ts
+@@ -1,5 +1,5 @@
+ /** Private API evaluation. No transport runs during preview or on startup. */
+-import {createHash} from "node:crypto";
++import {createHash, randomUUID} from "node:crypto";
+ import {existsSync, readFileSync, openSync, writeSync, fsyncSync,
+   closeSync, realpathSync} from "node:fs";
+ import {join, resolve} from "node:path";
+@@ -133,8 +133,132 @@ export function lunaOneShot(directory = lunaLocalDirectory(), now = Date.now) {
+         expiry > now() + 3600000 ||
+         now() >= Date.parse(LUNA_API.pricingExpires)) throw Error();
+   };
++  // This file is installed by the operator from the owner's explicit decision,
++  // never by an HTTP request. It authorizes one replacement, not a session.
++  const ownerTemplate = (): LunaPrepared => {
++    assertDirectory();
++    if (existsSync(intentFile)) {
++      throw new ChatError("OWNER_ATTEMPT_USED",
++        "Attempt đã bắt đầu hoặc chưa rõ kết quả. Không gửi lại.", "none", 409);
++    }
++    let decision: unknown;
++    try {
++      decision = JSON.parse(readFileSync(
++        join(directory, "replacement-owner-approval.json"), "utf8"));
++    } catch {
++      throw new ChatError("OWNER_APPROVAL_MISSING",
++        "Chưa nạp được quyết định một attempt của Chủ hệ.", "none", 403);
++    }
++    if (!record(decision)) throw Error("OWNER_RECORD_INVALID");
++    exactKeys(decision, ["schema", "ownerDecision", "template",
++      "maxAttempts", "maxCostNanoUSD", "supersededBinding"]);
++    const template = decision.template as LunaPrepared;
++    if (decision.schema !== "inspire-owner-replacement-v1" ||
++        typeof decision.ownerDecision !== "string" ||
++        !decision.ownerDecision.trim() || decision.maxAttempts !== 1 ||
++        decision.maxCostNanoUSD !== template?.reservedNanoUSD ||
++        decision.supersededBinding !== template?.binding ||
++        template?.payload.model !== LUNA_API.model ||
++        template.payload.max_output_tokens !== LUNA_API.maxOutputTokens ||
++        template.references.length !== 3 ||
++        lunaHash(template.body) !== template.payloadSHA ||
++        JSON.stringify(template.payload) !== template.body ||
++        now() >= Date.parse(LUNA_API.pricingExpires)) {
++      throw new ChatError("OWNER_RECORD_INVALID",
++        "Quyết định, nội dung hoặc bảng giá không còn khớp.", "none", 409);
++    }
++    validateRequest(template.request);
++    return template;
++  };
++  const claimFile = join(directory, "replacement-binding.json");
++  const readClaim = (uid: string, template: LunaPrepared) => {
++    const claim = JSON.parse(readFileSync(claimFile, "utf8")) as {
++      uid: string; request: ChatRequest;
++    };
++    exactKeys(claim, ["uid", "request"]);
++    validateRequest(claim.request);
++    if (claim.uid !== uid) {
++      throw new ChatError("IDENTITY_CHANGED",
++        "Attempt đã gắn với tài khoản thử khác.", "none", 403);
++    }
++    if (claim.request.operationId === template.request.operationId ||
++        JSON.stringify(claim.request.messages) !==
++        JSON.stringify(template.request.messages)) {
++      throw new ChatError("OWNER_BINDING_INVALID",
++        "Hồ sơ thay thế không khớp quyết định đã cấp.", "none", 409);
++    }
++    return claim.request;
++  };
+   return {
+     configured: () => Boolean(process.env.OPENAI_API_KEY?.trim()),
++    ownerRequest(uid: string,
++      session: () => {epoch: string; sessionId: string}) {
++      const template = ownerTemplate();
++      if (!existsSync(claimFile)) {
++        const current = session();
++        const request: ChatRequest = {kind: "send", epoch: current.epoch,
++          sessionId: current.sessionId,
++          operationId: randomUUID(), conversationId: randomUUID(),
++          messages: structuredClone(template.request.messages)};
++        try {
++          const fd = openSync(claimFile, "wx", 0o600);
++          try {
++            writeSync(fd, JSON.stringify({uid, request})); fsyncSync(fd);
++          } finally {
++            closeSync(fd);
++          }
++        } catch (error) {
++          if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error;
++        }
++      }
++      return readClaim(uid, template);
++    },
++    authorizeOwner(prepared: LunaPrepared, uid: string) {
++      const template = ownerTemplate();
++      const claim = readClaim(uid, template);
++      const differences: string[] = [];
++      if (JSON.stringify(prepared.references) !==
++          JSON.stringify(template.references)) {
++        differences.push("nguồn/version");
++      }
++      if (prepared.payloadSHA !== template.payloadSHA ||
++          prepared.body !== template.body) differences.push("payload SHA-256");
++      if (prepared.reservedNanoUSD !== template.reservedNanoUSD) {
++        differences.push("reservation");
++      }
++      if (JSON.stringify(prepared.request) !== JSON.stringify(claim) ||
++          prepared.binding === template.binding ||
++          prepared.binding !== lunaHash(JSON.stringify([
++            prepared.request, prepared.payloadSHA]))) {
++        differences.push("identity/binding");
++      }
++      if (differences.length) {
++        throw new ChatError("OWNER_PREVIEW_MISMATCH",
++          "Giữ lại, chưa gửi. Phần khác: " + differences.join(", ") +
++          ". SHA hiện tại: " + prepared.payloadSHA +
++          "; reservation nanoUSD: " + prepared.reservedNanoUSD + ".",
++          "none", 409);
++      }
++      const file = join(directory, "authorization.json");
++      if (!existsSync(file)) {
++        const fd = openSync(file, "wx", 0o600);
++        try {
++          writeSync(fd, JSON.stringify({schema: "inspire-luna-one-shot-v2",
++            approved: true, model: LUNA_API.model,
++            payloadSHA: prepared.payloadSHA, binding: prepared.binding,
++            maxAttempts: 1, maxCostNanoUSD: prepared.reservedNanoUSD,
++            expiresAt: new Date(now() + 30 * 60000).toISOString(),
++            ownerDecision: "Explicit owner replacement decision 2026-11-25; " +
++              "one exact request only; previous binding superseded",
++            syntheticOnly: true, privateEvaluationOnly: true}));
++          fsyncSync(fd);
++        } finally {
++          closeSync(fd);
++        }
++      }
++      // Reopening never extends expiry or replaces an existing grant.
++      authorized(prepared);
++    },
+     freeze(prepared: LunaPrepared) {
+       assertDirectory();
+       const file = join(directory, "approved-preview.json");
+diff --git a/functions/src/inspireLunaService.ts b/functions/src/inspireLunaService.ts
+index 8991476..d052f97 100644
+--- a/functions/src/inspireLunaService.ts
++++ b/functions/src/inspireLunaService.ts
+@@ -138,6 +138,7 @@ export function createPrivateLunaService(dependencies: {
+   const send = dependencies.send ?? sendLunaApi;
+   const plans = new Map<string, {
+     uid: string; prepared: LunaPrepared; started: boolean; at: number;
++    ownerReleased?: boolean;
+   }>();
+   const preparing = new Map<string, {
+     uid: string; request: ChatRequest;
+@@ -182,12 +183,25 @@ export function createPrivateLunaService(dependencies: {
+         await facade.accounts.account(identity);
+         return facade.session(identity);
+       }
+-      exactKeys(data, ["kind", "request"]);
+-      if (!["preview", "execute"].includes(String(data.kind))) {
++      const ownerPreview = data.kind === "owner-preview";
++      let input = data;
++      if (ownerPreview) {
++        exactKeys(data, ["kind"]);
++        const claim = store.ownerRequest(identity.uid,
++          () => facade.session(identity));
++        if (claim.epoch !== facade.epoch) {
++          throw new ChatError("SESSION_LOST",
++            "Backend đã đổi phiên sau khi chuẩn bị. Không tự đổi binding.",
++            "none", 409);
++        }
++        input = {kind: "preview", request: claim};
++      }
++      exactKeys(input, ["kind", "request"]);
++      if (!["preview", "execute"].includes(String(input.kind))) {
+         throw new ChatError("INVALID_REQUEST", "Thao tác chưa được hỗ trợ.");
+       }
+-      validateRequest(data.request);
+-      const request: ChatRequest = {...data.request, kind: "send"};
++      validateRequest(input.request);
++      const request: ChatRequest = {...input.request, kind: "send"};
+       const existing = plans.get(request.operationId);
+       if (existing && (existing.uid !== identity.uid ||
+           JSON.stringify(existing.prepared.request) !==
+@@ -199,8 +213,8 @@ export function createPrivateLunaService(dependencies: {
+           JSON.stringify(pending.request) !== JSON.stringify(request))) {
+         throw new ChatError("OPERATION_CONFLICT", "Lượt gửi không khớp.");
+       }
+-      if (data.kind === "preview") {
+-        if (data.request.kind !== "send") {
++      if (input.kind === "preview") {
++        if (input.request.kind !== "send") {
+           throw new ChatError("REPLAY_ONLY",
+             "Không tạo lại đầu vào khi phát lại.");
+         }
+@@ -257,6 +271,17 @@ export function createPrivateLunaService(dependencies: {
+           }
+         }
+         await recheckLunaSources(prepared);
++        if (ownerPreview) {
++          const plan = plans.get(request.operationId)!;
++          if (plan.started) {
++            throw new ChatError("OWNER_ATTEMPT_STARTED",
++              "Attempt đã bắt đầu. Không chuẩn bị hoặc gửi lại.", "none", 409);
++          }
++          await controller.preflight(prepared);
++          // Only the server-installed owner record can issue this exact grant.
++          store.authorizeOwner(prepared, identity.uid);
++          plan.ownerReleased = true;
++        }
+         return {mode: "private-model", previewOnly: true,
+           operationId: request.operationId,
+           conversationId: request.conversationId,
+@@ -266,7 +291,9 @@ export function createPrivateLunaService(dependencies: {
+           sourceCount: prepared.references.length,
+           keyConfigured: store.configured(),
+           authorizationRequired: true, automaticRetries: false,
+-          actualExecutionEligible: false, publicDelivery: false};
++          actualExecutionEligible: false, publicDelivery: false,
++          ...(ownerPreview ? {ownerAuthorized: true, executionAvailable: true,
++            ownerRequest: request} : {})};
+       }
+       if (!existing || now() - existing.at > 1800000) {
+         throw new ChatError("RESULT_UNKNOWN",
+@@ -280,7 +307,14 @@ export function createPrivateLunaService(dependencies: {
+       }
+       const kind = existing.started ? "replay" : "send";
+       existing.started = true;
+-      return facade.handle({...request, kind}, identity, ip);
++      try {
++        return await facade.handle({...request, kind}, identity, ip);
++      } catch (error) {
++        if (existing.ownerReleased && error instanceof ChatError) {
++          throw new ChatError(error.code, error.message, "none", error.status);
++        }
++        throw error;
++      }
+     },
+   };
+ }
+diff --git a/functions/src/inspireKnowledge.ts b/functions/src/inspireKnowledge.ts
+index a566c17..dd01b63 100644
+--- a/functions/src/inspireKnowledge.ts
++++ b/functions/src/inspireKnowledge.ts
+@@ -324,15 +324,22 @@ export async function retrieveKnowledge(
+   }
+   // All source eligibility is indexed BEFORE pagination. External
+   // terms come only from permitted excerpts, not restricted sibling sections.
+-  const selection = getFirestore().collection("inspireKnowledge")
++  // Emulator OR queries with many terms can take >10 s per page even for
++  // metadata-only projections. Keep eligibility indexed and apply the same
++  // lexical filter locally for that case; cloud query behavior is unchanged.
++  const termField = external ? "externalSearchTerms" : "searchTerms";
++  const localWide = process.env.FIRESTORE_EMULATOR_HOST === "127.0.0.1:8080" &&
++    terms.length > 3;
++  const eligible = getFirestore().collection("inspireKnowledge")
+     .where(reviewOnly ? "collection" :
+       external ? "externalEligible" : "internalEligible", "==",
+-    reviewOnly ? "INSPIRE" : true)
+-    .where(external ? "externalSearchTerms" : "searchTerms",
+-      "array-contains-any", terms)
++    reviewOnly ? "INSPIRE" : true);
++  const selection = (localWide ? eligible :
++    eligible.where(termField, "array-contains-any", terms))
+     .orderBy(FieldPath.documentId())
+     .select("collection", "status", "permittedUse", "kind", "permissions",
+-      "documentId", "hash", "version", "sections", "contentClass");
++      "documentId", "hash", "version", "sections", "contentClass",
++      ...(localWide ? [termField] : []));
+   const scoped = documentId ? selection.where("documentId", "==",
+     documentId) : selection;
+   const candidates: {section: KnowledgeSection; score: number}[] = [];
+@@ -346,6 +353,10 @@ export async function retrieveKnowledge(
+       }
+       lastId = doc.id;
+       const source = doc.data();
++      if (localWide && (!Array.isArray(source[termField]) ||
++          !source[termField].some((term: string) => terms.includes(term)))) {
++        continue;
++      }
+       if (source.collection !== "INSPIRE" ||
+         (source.contentClass && source.contentClass !== "content") ||
+         (reviewOnly ? source.kind === "operating-rules" :
+diff --git a/functions/src/inspireLocalService.ts b/functions/src/inspireLocalService.ts
+index cc2b5ab..dcb8ef1 100644
+--- a/functions/src/inspireLocalService.ts
++++ b/functions/src/inspireLocalService.ts
+@@ -70,7 +70,7 @@ export function createLocalService(
+     return adapter.reply(context, request);
+   }, now, privateEvaluation ? "private-model" : "simulation");
+   return {
+-    accounts, verify: verifiedIdentity,
++    accounts, verify: verifiedIdentity, epoch: engine.epoch,
+     close: () => adapter.close?.(),
+     session(identity: Identity) {
+       return engine.session(identity.uid);
+diff --git a/functions/src/inspireChatSimulation.ts b/functions/src/inspireChatSimulation.ts
+index 446a47c..409493c 100644
+--- a/functions/src/inspireChatSimulation.ts
++++ b/functions/src/inspireChatSimulation.ts
+@@ -188,5 +188,5 @@ export function createSimulationServer(
+     operations.set(key, {fingerprint, result});
+     return result;
+   }
+-  return {session, handle};
++  return {session, handle, epoch};
+ }
+diff --git a/functions/src/inspireReviewReceipt.ts b/functions/src/inspireReviewReceipt.ts
+index 3d02a6f..174e89c 100644
+--- a/functions/src/inspireReviewReceipt.ts
++++ b/functions/src/inspireReviewReceipt.ts
+@@ -1,4 +1,6 @@
+-/** Browser boundary: never serialize a model envelope, passage or free text.
++import {validateRequest} from "./inspireChatContract";
++
++/** Browser boundary: never serialize a model envelope or source passage.
+  * @param {unknown} value Server-produced held preview (or missing trace).
+  * @return {object|null} Only validated scalar identifiers, counts and hashes.
+  */
+@@ -14,12 +16,15 @@ export function browserReceipt(value: unknown) {
+     throw Error("BROWSER_RECEIPT_HOLD");
+   }
+   const accounting = r.accounting as Record<string, unknown> | undefined;
++  if (r.ownerAuthorized === true) validateRequest(r.ownerRequest);
+   return {mode: "private-model", previewOnly: true, operationId: r.operationId,
+     executionAvailable: r.executionAvailable === true,
+     conversationId: r.conversationId, sourceCount: r.sourceCount,
+     payloadSHA: r.payloadSHA, binding: r.binding,
+     actualExecutionEligible: false,
+     publicDelivery: false, automaticRetries: false,
++    ...(r.ownerAuthorized === true ? {ownerAuthorized: true,
++      ownerRequest: structuredClone(r.ownerRequest)} : {}),
+     ...(typeof r.keyConfigured === "boolean" ?
+       {keyConfigured: r.keyConfigured} : {}),
+     ...(accounting && Number.isInteger(accounting.used) ?
+diff --git a/src/services/InspireAIconnect.ts b/src/services/InspireAIconnect.ts
+index ec90a62..1088985 100644
+--- a/src/services/InspireAIconnect.ts
++++ b/src/services/InspireAIconnect.ts
+@@ -1,26 +1,47 @@
+-import { ChatError, record, validateResponse } from "../../functions/src/inspireChatContract"
++import { ChatError, record, validateRequest, validateResponse } from "../../functions/src/inspireChatContract"
+ import type { ChatRequest, ChatResponse, ChatMode } from "../../functions/src/inspireChatContract"
+ 
+ export type ChatSession = { epoch: string; sessionId: string; mode: ChatMode }
+ export interface ChatTransport {
+   connect(): Promise<ChatSession>
+   send(request: ChatRequest): Promise<ChatResponse>
++  prepareApproved?(): Promise<{request: ChatRequest; preview: LunaPreview}>
+ }
+ 
+-export type LunaPreview = { payloadSHA: string; binding: string; operationId: string; conversationId: string; reservedNanoUSD?: number; inputTokenBound?: number; sourceCount: number; keyConfigured?: boolean; controls?: unknown; accounting?: unknown}
++export type LunaPreview = { payloadSHA: string; binding: string; operationId: string; conversationId: string; reservedNanoUSD?: number; inputTokenBound?: number; sourceCount: number; keyConfigured?: boolean; ownerAuthorized?: boolean; executionAvailable?: boolean; controls?: unknown; accounting?: unknown}
+ // Sending first prepares a preview. Only a later manual action can request the
+ // already-reviewed operation; authorization is checked on the server.
+ export function createPrivateLunaTransport(preview: (value: LunaPreview) => void,
+-  fetcher: typeof fetch = fetch, token: () => Promise<string>, changed?: () => void, route: 'api' | 'chatgpt' = 'api'): ChatTransport {
++  fetcher: typeof fetch = fetch, token: () => Promise<string>, changed?: () => void, route: 'api' | 'chatgpt' = 'api',
++  timing: {authentication?: number; http?: number} = {}): ChatTransport {
+   const prepared = new Set<string>()
+   const unauthenticatedPreviews = new Set<string>()
+   async function call(body: unknown): Promise<unknown> {
+     const serialized = JSON.stringify(body)
+-    const abort = new AbortController(), timer = setTimeout(() => abort.abort(), 95000)
++    const abort = new AbortController()
++    let timer: ReturnType<typeof setTimeout> | undefined
++    let authTimer: ReturnType<typeof setTimeout> | undefined
+     try {
++      let bearer: string
++      try {
++        bearer = await Promise.race([token(), new Promise<never>((_resolve, reject) => {
++          authTimer = setTimeout(() => reject(new ChatError('AUTH_TOKEN_TIMEOUT', 'Lấy token Firebase quá thời gian. Chưa gửi HTTP tới backend AI.', 'replay', 401)), timing.authentication ?? 20000)
++        })])
++      } catch (error) {
++        if (error instanceof ChatError) throw error
++        throw new ChatError('AUTH_TOKEN_FAILED', 'Firebase SDK chưa cung cấp được token hiện hành. Chưa gửi HTTP tới backend AI.', 'replay', 401)
++      }
++      clearTimeout(authTimer)
++      // The HTTP deadline begins after SDK authentication, not before it.
++      timer = setTimeout(() => abort.abort(), timing.http ?? 95000)
+       const response = await fetcher(route === 'chatgpt' ? '/api/inspire-chatgpt' : '/api/inspire-luna', {method: 'POST', cache: 'no-store', signal: abort.signal,
+-        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${await token()}`}, body: serialized})
+-      const data: unknown = await response.json()
++        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${bearer}`}, body: serialized})
++      let data: unknown
++      try { data = await response.json() }
++      catch (error) {
++        if (abort.signal.aborted) throw error
++        throw new ChatError('INVALID_HTTP_RESPONSE', 'Backend trả nội dung không phải JSON hợp lệ. Chưa xác minh được kết quả; không tự gửi lại.', 'none', 502)
++      }
+       if (!response.ok) {
+         if (record(data) && record(data.error) && typeof data.error.code === 'string' && typeof data.error.message === 'string' && ['replay','new-attempt','none'].includes(String(data.error.retry))) {
+           // This local 401 precedes handlePrivate/provider dispatch. A manual
+@@ -33,10 +54,21 @@ export function createPrivateLunaTransport(preview: (value: LunaPreview) => void
+       return data
+     } catch (error) {
+       if (error instanceof ChatError) throw error
++      if (abort.signal.aborted) throw new ChatError('HTTP_TIMEOUT', 'HTTP tới backend quá thời gian. Chưa xác định kết quả; chỉ kiểm tra lại đúng operation, không tạo attempt mới.', 'replay', 504)
+       throw new ChatError('CONNECTION', 'Kết nối gián đoạn. Chỉ kiểm tra lại đúng lượt gửi; không tự tạo lượt mới.', 'replay', 503)
+-    } finally { clearTimeout(timer); changed?.() }
++    } finally { clearTimeout(authTimer); clearTimeout(timer); changed?.() }
+   }
+   return {
++    async prepareApproved() {
++      if (route !== 'api') throw new ChatError('OWNER_ROUTE_CLOSED', 'Attempt này chỉ dùng đường API đã được chọn.', 'none', 403)
++      const data = await call({kind:'owner-preview'})
++      if (!record(data) || data.previewOnly !== true || data.ownerAuthorized !== true || data.executionAvailable !== true ||
++          typeof data.payloadSHA !== 'string' || typeof data.binding !== 'string' || typeof data.reservedNanoUSD !== 'number' || data.sourceCount !== 3) throw new ChatError('PREVIEW_INVALID', 'Chưa xác minh được preview đã được Chủ hệ cho phép.')
++      validateRequest(data.ownerRequest)
++      if (data.operationId !== data.ownerRequest.operationId || data.conversationId !== data.ownerRequest.conversationId) throw new ChatError('PREVIEW_INVALID', 'Preview không khớp identity của request.')
++      preview(data as unknown as LunaPreview)
++      return {request:data.ownerRequest, preview:data as unknown as LunaPreview}
++    },
+     async connect() {
+       const data = await call({kind:'session'})
+       if (!record(data) || data.mode !== 'private-model' || typeof data.epoch !== 'string' || typeof data.sessionId !== 'string') throw new ChatError('INVALID_SESSION','Phiên thử riêng chưa hợp lệ.')
+@@ -48,7 +80,7 @@ export function createPrivateLunaTransport(preview: (value: LunaPreview) => void
+         unauthenticatedPreviews.delete(request.operationId)
+         try { data = await call({kind:'preview',request: {...request, kind: 'send'}}) }
+         catch (error) {
+-          if (error instanceof ChatError && error.status === 401 && ['UNAUTHENTICATED', 'AUTH_REFRESH_FAILED'].includes(error.code)) unauthenticatedPreviews.add(request.operationId)
++          if (error instanceof ChatError && error.status === 401 && ['UNAUTHENTICATED', 'AUTH_REFRESH_FAILED', 'AUTH_TOKEN_TIMEOUT', 'AUTH_TOKEN_FAILED'].includes(error.code)) unauthenticatedPreviews.add(request.operationId)
+           throw error
+         }
+         if (!record(data) || data.previewOnly !== true || typeof data.payloadSHA !== 'string' || typeof data.binding !== 'string' || (route === 'api' && typeof data.reservedNanoUSD !== 'number') || data.operationId !== request.operationId || data.conversationId !== request.conversationId) throw new ChatError('PREVIEW_INVALID','Chưa xác minh được bản xem trước.')
+diff --git a/src/services/inspireConversation.ts b/src/services/inspireConversation.ts
+index 6fd60cf..86969d5 100644
+--- a/src/services/inspireConversation.ts
++++ b/src/services/inspireConversation.ts
+@@ -19,6 +19,7 @@ type Workspace = { activeId: string; conversations: Conversation[] }
+ export class ConversationStore {
+   private listeners = new Set<() => void>()
+   private state: Workspace
++  private preparingApproved = false
+   constructor(private transport: ChatTransport, private id = () => crypto.randomUUID()) {
+     const first = this.makeConversation()
+     this.state = { activeId: first.id, conversations: [first] }
+@@ -51,6 +52,22 @@ export class ConversationStore {
+     if (messageId && !c.messages.some((m) => m.id === messageId && m.role === "user")) return
+     this.update(id, { correctionOf: messageId })
+   }
++  async prepareApproved() {
++    if (this.preparingApproved) return
++    if (!this.transport.prepareApproved) throw new ChatError('OWNER_ROUTE_CLOSED', 'Chưa mở bước chuẩn bị attempt đã duyệt.')
++    this.preparingApproved = true
++    try {
++      const {request} = await this.transport.prepareApproved()
++      const conversation: Conversation = {id: request.conversationId, title: request.messages[0].text.slice(0,48),
++        messages: structuredClone(request.messages), draft: '', status: 'error',
++        session: {epoch: request.epoch, sessionId: request.sessionId, mode: 'private-model'}, pending: {request},
++        error: new ChatError('OWNER_APPROVED_READY', 'Backend đã đối chiếu quyền một attempt. Chưa gọi OpenAI. Gửi bằng nút trong “Dành cho con”.', 'replay', 403)}
++      const others = this.state.conversations.filter(c=>c.id !== conversation.id)
++      if (others.length >= 20) throw new ChatError('CAPACITY', 'Đã đủ số cuộc trò chuyện trong bộ nhớ.')
++      this.state = {activeId: conversation.id, conversations:[...others,conversation]}
++      this.listeners.forEach(listener=>listener())
++    } finally { this.preparingApproved = false }
++  }
+   async send(id: string) {
+     const c = this.conversation(id)
+     if (c.status !== "idle" || !c.draft.trim()) return
+diff --git a/src/pages/AIInspire.tsx b/src/pages/AIInspire.tsx
+index e131cee..02035e2 100644
+--- a/src/pages/AIInspire.tsx
++++ b/src/pages/AIInspire.tsx
+@@ -22,6 +22,9 @@ export default function AIInspire() {
+   const [apiMode, setApiMode] = useState(privateTest)
+   const [knowledgeTrace, setKnowledgeTrace] = useState<unknown>(null)
+   const [apiPreview, setApiPreview] = useState<LunaPreview>()
++  const [ownerBusy, setOwnerBusy] = useState(false)
++  const [ownerError, setOwnerError] = useState('')
++  const ownerPreparing = useRef(false)
+   const [feedback, setFeedback] = useState<Record<string, {rating: string; note: string}>>({})
+   useEffect(() => {
+     if (!privateTest) return
+@@ -77,6 +80,13 @@ export default function AIInspire() {
+     event?.preventDefault()
+     if (!locked) { setKnowledgeTrace(null); void store.send(current.id) }
+   }
++  async function prepareOwnerAttempt() {
++    if (ownerPreparing.current) return
++    ownerPreparing.current = true; setOwnerBusy(true); setOwnerError('')
++    try { await store.prepareApproved() }
++    catch (error) { setOwnerError(error instanceof Error ? error.message : 'Chưa chuẩn bị được attempt. Chưa gửi tới OpenAI.') }
++    finally { ownerPreparing.current = false; setOwnerBusy(false) }
++  }
+   function keyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+     if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+       event.preventDefault()
+@@ -90,7 +100,7 @@ export default function AIInspire() {
+       <main className="ip-main">
+         <div className="ip-page-heading">
+           <div><span className="ip-kicker">{privateTest ? "INSPIRE · CHỈ TRÊN MÁY NÀY" : "MỘT KHOẢNG DỪNG CHO BẠN"}</span><h1>{privateTest ? "Phòng thử riêng của bố" : "Trò chuyện cùng INSPIRE"}</h1></div>
+-          <span className="ip-mode"><span /> {apiMode ? `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · ${current.messages.some(m => m.role === 'assistant') ? 'Phản hồi mô hình' : 'Chưa gửi tới AI'}` : privateTest ? "Mô phỏng · Chưa dùng AI" : "Bản thử nghiệm · Mô phỏng"}</span>
++          <span className="ip-mode"><span /> {apiMode ? `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · ${current.messages.some(m => m.role === 'assistant') ? 'Phản hồi mô hình' : current.status === 'sending' ? 'Đang xử lý' : current.error && !['AUTHORIZATION_REQUIRED','OWNER_APPROVED_READY'].includes(current.error.code) ? 'Chưa có phản hồi được xác minh' : 'Chưa gửi tới AI'}` : privateTest ? "Mô phỏng · Chưa dùng AI" : "Bản thử nghiệm · Mô phỏng"}</span>
+         </div>
+         {privateTest && !current.messages.length && <div className="ip-private-intro">
+           <p>Bố cứ hỏi bằng tiếng Việt, hỏi tiếp hoặc đính chính điều vừa nói. Chỉ dùng tình huống giả định.</p>
+@@ -105,12 +115,23 @@ export default function AIInspire() {
+         {prototypeEnabled && (!privateTest || privateReady) && (privateTest ?
+           <details className="ip-private-setup"><summary>Dành cho con · Thiết lập và tài khoản</summary><InspireAccountPanel onIdentity={onIdentity} />
+             <div className="ip-private-modes" aria-label="Chế độ thử"><button aria-pressed={!apiMode} onClick={() => setApiMode(false)}>Mô phỏng</button><button disabled={!apiReady} aria-pressed={apiMode} onClick={() => setApiMode(true)} title="Chỉ chuẩn bị nội dung; chưa gọi mô hình.">{apiReady ? `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · Xem trước` : "Luna · Chưa bật"}</button></div>
+-            <p>{apiRoute === 'api' ? 'Đường đã chọn: OpenAI API trực tiếp, dùng billing API riêng. Chưa duyệt inference tính phí.' : 'Đường ChatGPT chưa mở gửi tới mô hình.'} Mô phỏng vẫn dùng Controller hiện có.</p>
++            <p>{apiRoute === 'api' ? 'Đường đã chọn: OpenAI API trực tiếp, dùng billing API riêng. Chỉ attempt cố định đã được Chủ hệ cho phép mới có thể gửi.' : 'Đường ChatGPT chưa mở gửi tới mô hình.'} Mô phỏng vẫn dùng Controller hiện có.</p>
++            {apiMode && apiRoute === 'api' && <div className="ip-api-preview">
++              <h2>Một attempt thay thế đã được Chủ hệ cho phép</h2>
++              <p>Giữ đúng câu hỏi, ba đoạn nguồn, gpt-6-luna, 512 output tokens và dự phòng tối đa US$0.0035925. Bước chuẩn bị không gọi mô hình.</p>
++              <button disabled={!identityReady || ownerBusy || current.status === 'sending'} onClick={() => void prepareOwnerAttempt()}>{ownerBusy ? 'Đang đối chiếu preview…' : 'Chuẩn bị attempt đã được duyệt'}</button>
++              {ownerError && <p role="alert">{ownerError}</p>}
++              {apiPreview?.ownerAuthorized && apiPreview.operationId === current.pending?.request?.operationId && <>
++                <p>Backend đã xác minh quyết định và bind vào đúng preview. Không cần cấp quyền lại.</p>
++                <button disabled={ownerBusy || current.status !== 'error' || current.error?.code !== 'OWNER_APPROVED_READY' || !identityReady || !apiPreview.keyConfigured}
++                  onClick={() => void store.retry(current.id)}>Gửi đúng một attempt đã được duyệt</button>
++              </>}
++            </div>}
+             {knowledgeTrace != null && (knowledgeTrace as {conversationId?: string}).conversationId === current.id && <details><summary>Biên nhận chuẩn bị · không hiển thị văn bản nguồn</summary><pre>{JSON.stringify(knowledgeTrace, null, 2)}</pre></details>}
+             {apiMode && apiPreview && apiPreview.operationId === current.pending?.request?.operationId && apiPreview.conversationId === current.id && <div className="ip-api-preview">
+               <h2>Biên nhận xem trước · chưa gửi</h2>
+-              <p>Chưa gửi. Ứng dụng không tự thử lại. Chỉ nhận phản hồi hợp lệ tối đa 2.000 ký tự. {apiRoute === 'api' ? 'API không cấp công cụ, có trần output token trong request và cần duyệt chi phí riêng.' : 'Chưa xác minh cô lập công cụ app-server.'} {apiPreview.sourceCount} đoạn nguồn đủ quyền xuất.</p>
+-              <p>{apiRoute === 'api' ? `Khóa API đã cấu hình: ${apiPreview.keyConfigured ? 'có' : 'chưa'}. Dự phòng lượt này: US$${((apiPreview.reservedNanoUSD ?? 0) / 1e9).toFixed(7)}. Khóa chỉ ở phía server ngoài repository.` : 'Chỉ dùng đường đăng nhập ChatGPT.'} Nội dung trò chuyện chỉ ở bộ nhớ.</p>
++              <p>Chưa gửi. Ứng dụng không tự thử lại. Chỉ nhận phản hồi hợp lệ tối đa 2.000 ký tự. {apiRoute === 'api' ? apiPreview.ownerAuthorized ? 'API không cấp công cụ, có trần output token; chi phí một attempt này đã được Chủ hệ cho phép.' : 'API không cấp công cụ, có trần output token trong request và cần quyền đúng nội dung, chi phí.' : 'Chưa xác minh cô lập công cụ app-server.'} {apiPreview.sourceCount} đoạn nguồn đủ quyền xuất.</p>
++              <p>{apiRoute === 'api' ? `Khóa API đã cấu hình: ${apiPreview.keyConfigured ? 'có' : 'chưa'}. Dự phòng lượt này: US$${((apiPreview.reservedNanoUSD ?? 0) / 1e9).toFixed(7)}. Khóa từ functions/.env.local chỉ ở backend, được Git ignore.` : 'Chỉ dùng đường đăng nhập ChatGPT.'} {apiPreview.ownerAuthorized ? 'Request tổng hợp này có hồ sơ cục bộ để giữ đúng binding; không bật lưu lịch sử hội thoại thường.' : 'Nội dung trò chuyện chỉ ở bộ nhớ.'}</p>
+               <pre>{JSON.stringify({controls: apiPreview.controls, accounting: apiPreview.accounting}, null, 2)}</pre>
+ 
+               <p>Mã nội dung: <code>{apiPreview.payloadSHA}</code></p>
+@@ -168,7 +189,7 @@ export default function AIInspire() {
+             <div className="ip-operation" aria-live="polite">
+               {current.status === "sending" && <p className="ip-loading" role="status"><span className="ip-loading-dot" /> {apiMode ? "Đang xử lý lượt thử riêng…" : "Đang chuẩn bị phản hồi mô phỏng…"}</p>}
+               {current.error && <div className="ip-error" role="alert"><p>{current.error.message}</p>
+-                {current.status === "error" && current.error.retry !== "none" && <button onClick={() => void store.retry(current.id)}>{apiMode && current.error.code === "AUTHORIZATION_REQUIRED" ? "Kiểm tra quyền và gửi lượt này" : current.error.retry === "new-attempt" ? "Thử lại bằng lượt mới" : "Kiểm tra lại lượt gửi"}<Icon name="arrow" size={18} /></button>}
++                {current.status === "error" && current.error.retry !== "none" && current.error.code !== 'OWNER_APPROVED_READY' && <button onClick={() => void store.retry(current.id)}>{apiMode && current.error.code === "AUTHORIZATION_REQUIRED" ? "Kiểm tra quyền và gửi lượt này" : current.error.retry === "new-attempt" ? "Thử lại bằng lượt mới" : "Kiểm tra lại lượt gửi"}<Icon name="arrow" size={18} /></button>}
+                 {current.error.retry === "none" && <button onClick={() => store.newConversation()}>Mở cuộc trò chuyện mới <Icon name="arrow" size={18} /></button>}
+               </div>}
+             </div>

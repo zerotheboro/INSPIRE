@@ -1,0 +1,26 @@
+{
+  "executed": true,
+  "preview": {
+    "mode": "private-model",
+    "previewOnly": true,
+    "operationId": "api-rag-final-attempt-20261125",
+    "executionAvailable": false,
+    "conversationId": "api-rag-final-conversation-20261125",
+    "sourceCount": 3,
+    "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+    "binding": "6135befb55f3b4447c115638f3f2bee7bfaa91aefc2d8d822c8f389b1b058916",
+    "actualExecutionEligible": false,
+    "publicDelivery": false,
+    "automaticRetries": false,
+    "keyConfigured": false,
+    "reservedNanoUSD": 3592500
+  },
+  "unauthorizedExecute": "NOT SENT: do not risk any local owner grant",
+  "forgedAuthority": 400,
+  "crossOrigin": 403,
+  "chatgptClosed": 403,
+  "privateFilesDenied": 403,
+  "routesHTML": 200,
+  "paidCalls": 0,
+  "browserRendering": "NOT VERIFIED BY HTTP"
+}

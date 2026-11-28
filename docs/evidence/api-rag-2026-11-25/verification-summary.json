@@ -1,0 +1,72 @@
+{
+  "executedFocusedChecks": {
+    "api": {
+      "result": "PASS",
+      "tests": 13,
+      "evidence": "resume-binding-final/api.txt"
+    },
+    "safeguards": {
+      "result": "PASS",
+      "tests": 4,
+      "evidence": "resume-binding-final/safeguards.txt"
+    },
+    "conversation": {
+      "result": "PASS",
+      "tests": 17,
+      "evidence": "resume-unit/conversation.txt"
+    },
+    "retrieval": {
+      "result": "PASS",
+      "tests": 4,
+      "evidence": "resume-service/retrieval.txt"
+    },
+    "quotas": {
+      "result": "PASS",
+      "tests": 10,
+      "evidence": "resume-quota-final/quotas.txt"
+    },
+    "corpus": {
+      "result": "PASS",
+      "tests": null,
+      "evidence": "resume-quota-final/corpus.txt"
+    },
+    "backend": {
+      "result": "PASS",
+      "tests": null,
+      "evidence": "resume-binding-final/backend.txt"
+    },
+    "lint": {
+      "result": "PASS",
+      "tests": null,
+      "evidence": "resume-binding-final/lint.txt"
+    },
+    "website": {
+      "result": "PASS",
+      "tests": null,
+      "evidence": "resume-public-final/website.txt"
+    },
+    "privacy": {
+      "result": "PASS",
+      "tests": null,
+      "evidence": "resume-public-final/privacy.txt"
+    },
+    "pagination": {
+      "result": "PASS",
+      "tests": 3,
+      "evidence": "resume/pagination-isolated.txt",
+      "durationMs": 506329,
+      "latencyWarning": true
+    }
+  },
+  "historicalBroadSuite": "48/49 and separate isolated 1/1; not relabelled as complete pass",
+  "retainedInitialResults": [
+    "final-checks/results.json",
+    "final-fixed/api.txt",
+    "resume-service/results.json",
+    "resume-build/results.json",
+    "resume/freeze-final.txt"
+  ],
+  "currentBrowser": "NOT VERIFIED: CUA could not determine URL on Windows and stopped; no bypass",
+  "realInferenceCalls": 0,
+  "generation": "UNARMED"
+}

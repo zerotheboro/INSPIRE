@@ -1,0 +1,126 @@
+{
+  "scope": "Exact previously authorized replacement attempt; private manual SDK interface only",
+  "diagnosis": {
+    "reproduced": true,
+    "cause": "Cold many-term Firestore Emulator array-contains-any query takes 12-22 seconds per 50-document page, beyond the frontend HTTP deadline; not CUA, token expiry, or JSON parsing.",
+    "before": {
+      "coldRetrievalMS": 171853,
+      "provenance": "Captured from executed trace-retrieval.mjs console output; original pages measured 20113,22507,14683,15621,13865,12930,13887,15853,14449,15223,12087 ms.",
+      "httpFailures": [
+        "final-live-localhost-preview.json",
+        "preview-timeout-isolated-rerun.json"
+      ]
+    },
+    "after": {
+      "coldRetrievalMS": 1149,
+      "httpPreviewMS": 2163,
+      "frontendTransportMS": 182
+    },
+    "comparison": [
+      "old-query-shape-benchmark.txt",
+      "eligibility-query-benchmark.txt"
+    ],
+    "fix": "Only for the local emulator with more than three query terms: page all eligible documents by ID, apply the identical lexical membership filter server-side, then use unchanged ranking and section permission checks. Cloud query unchanged; maximum three sections unchanged."
+  },
+  "tests": {
+    "authAndHTTPDiagnostics": {
+      "pass": 9,
+      "fail": 0,
+      "log": "auth-and-diagnostics-final.txt"
+    },
+    "ownerLedgerAndOfficialSDKHTTP": {
+      "pass": 7,
+      "fail": 0,
+      "log": "owner-tests-after-query-fix.txt"
+    },
+    "conversation": {
+      "pass": 17,
+      "fail": 0,
+      "log": "existing-conversation.txt"
+    },
+    "existingAPIControls": {
+      "pass": 8,
+      "fail": 0,
+      "log": "existing-api-controls-final.txt"
+    },
+    "paginationAndRevocation": {
+      "pass": 4,
+      "fail": 0,
+      "log": "pagination-and-revocation-final.txt"
+    },
+    "scope": "45 focused tests executed, not a full repository-suite claim; old pagination assertions unchanged."
+  },
+  "builds": {
+    "backend": "PASS",
+    "website": "PASS",
+    "websiteLog": "website-build-handoff.txt",
+    "warning": "Existing large client chunk"
+  },
+  "lint": {
+    "touchedBackend": "PASS",
+    "log": "touched-backend-lint-final.txt",
+    "initialFailure": "One introduced 81-character line; fixed. Initial lint log retained."
+  },
+  "preservedInitialEvidence": [
+    "initial-http.json",
+    "frontend-transport-http.json",
+    "final-live-localhost-preview.json",
+    "preview-timeout-isolated-rerun.json",
+    "touched-backend-lint-initial.txt"
+  ],
+  "approved": {
+    "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+    "model": "gpt-6-luna",
+    "maxOutputTokens": 512,
+    "sourceCount": 3,
+    "maxAttempts": 1,
+    "reservationNanoUSD": 3592500
+  },
+  "runtime": {
+    "ownerDecisionInstalled": true,
+    "runtimeBindingExists": false,
+    "runtimeGrantExists": false,
+    "providerIntentExists": false,
+    "keyConfigured": true,
+    "providerInferenceCallsByAgent": 0,
+    "publicGenerationEnabled": false,
+    "oldRecordSuperseded": true
+  },
+  "privacy": {
+    "dotenvIgnored": true,
+    "dotenvTracked": false,
+    "envHTTP": 403,
+    "privateOutboundHTTP": 403,
+    "publicBundleCanaryScan": "PASS; 17 files, 11 forbidden markers, zero hits"
+  },
+  "browserAutomation": "NOT VERIFIED; not attempted in this task",
+  "liveModelResponse": "NOT VERIFIED; owner will dispatch using the approved button",
+  "newOwnerDecisionsRequired": [],
+  "localhost": "http://127.0.0.1:5173/ai-inspire?thu-rieng=1",
+  "userSteps": [
+    "Reload localhost once, retaining the Firebase SDK login.",
+    "Open D?nh cho con ? Thi?t l?p v? t?i kho?n, choose Luna API ? Xem tr??c.",
+    "Click Chu?n b? attempt ?? ???c duy?t. Server binds the existing owner decision to the exact preview and verified UID.",
+    "Click G?i ??ng m?t attempt ?? ???c duy?t once. Keep the backend running; do not restart between the two buttons."
+  ],
+  "diff": "focused-source.patch",
+  "modifiedSource": [
+    "functions/src/inspireLunaApi.ts",
+    "functions/src/inspireLunaService.ts",
+    "functions/src/inspireKnowledge.ts",
+    "functions/src/inspireLocalService.ts",
+    "functions/src/inspireChatSimulation.ts",
+    "functions/src/inspireReviewReceipt.ts",
+    "src/services/InspireAIconnect.ts",
+    "src/services/inspireConversation.ts",
+    "src/pages/AIInspire.tsx"
+  ],
+  "newTests": [
+    "tests/inspire-owner-attempt.test.mjs",
+    "tests/inspire-preview-http.mjs"
+  ],
+  "extendedTests": [
+    "tests/inspire-auth-recovery.test.mjs",
+    "tests/inspire-pagination.test.mjs"
+  ]
+}

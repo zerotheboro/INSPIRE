@@ -1,0 +1,34 @@
+✖ automatic relevant retrieval, follow-up, correction, conflict preservation and exact adapter input (130697.2566ms)
+✔ content and permission updates revoke cached inputs and adapter traces (6112.7143ms)
+✔ conversation transport keeps exact pending operation on technical failure and replay; no new adapter call (4296.3877ms)
+✔ private receipt version survives rebuilding an empty emulator index (144.4498ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 146781.4566
+
+✖ failing tests:
+
+test at tests\inspire-knowledge-conversation.test.mjs:26:1
+✖ automatic relevant retrieval, follow-up, correction, conflict preservation and exact adapter input (130697.2566ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(input.supportingKnowledge.every(s=>s.documentId.startsWith(prefix)))
+  
+      at TestContext.<anonymous> (file:///C:/Users/Admin/OneDrive/Desktop/web_develope/INSPIRE/tests/inspire-knowledge-conversation.test.mjs:38:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+EXIT_CODE=1

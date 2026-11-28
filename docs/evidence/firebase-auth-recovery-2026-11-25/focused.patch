@@ -1,0 +1,287 @@
+diff --git a/src/services/inspireIdentity.ts b/src/services/inspireIdentity.ts
+index e5001d1..99bc0bb 100644
+--- a/src/services/inspireIdentity.ts
++++ b/src/services/inspireIdentity.ts
+@@ -3,7 +3,8 @@ import {getApp, getApps, initializeApp} from "firebase/app"
+ import {connectAuthEmulator, getAuth, GoogleAuthProvider, EmailAuthProvider,
+   linkWithCredential, linkWithPopup, onAuthStateChanged, signInAnonymously,
+   signInWithEmailAndPassword, signInWithPopup, signOut} from "firebase/auth"
+-import type {User} from "firebase/auth"
++import type {Auth, User} from "firebase/auth"
++import {ChatError} from "../../functions/src/inspireChatContract"
+ import type {Preferences} from "../../functions/src/inspireAccount"
+ 
+ export type AccountView = {
+@@ -23,10 +24,20 @@ function localAuth() {
+   if (!connected) { connectAuthEmulator(auth, "http://127.0.0.1:9099", {disableWarnings: true}); connected = true }
+   return auth
+ }
++// Refresh the SDK's existing user only. Never sign in or replace an identity to
++// recover authentication for an already-bound request.
++export async function currentIdentityToken(auth: Pick<Auth, "currentUser" | "authStateReady">) {
++  await auth.authStateReady()
++  const user = auth.currentUser
++  if (!user) throw new ChatError("UNAUTHENTICATED", "Vui lòng đăng nhập lại cùng tài khoản để kiểm tra lượt gửi.", "replay", 401)
++  let token: string
++  try { token = await user.getIdToken(true) }
++  catch { throw new ChatError("AUTH_REFRESH_FAILED", "Chưa làm mới được xác thực. Chưa gửi thêm yêu cầu tới AI; bạn có thể kiểm tra lại đúng lượt.", "replay", 401) }
++  if (auth.currentUser?.uid !== user.uid) throw new ChatError("IDENTITY_CHANGED", "Tài khoản đã thay đổi. Không gửi tiếp lượt của tài khoản trước.", "none", 403)
++  return token
++}
+ export async function chatToken() {
+-  const user = localAuth().currentUser
+-  if (!user) throw Error("Vui lòng đăng nhập để tiếp tục.")
+-  return user.getIdToken(true)
++  return currentIdentityToken(localAuth())
+ }
+ export async function accountCall<T>(kind: string, fields: Record<string, unknown> = {}): Promise<T> {
+   const response = await fetch("/api/inspire-prototype", {method: "POST", headers: {
+diff --git a/src/services/InspireAIconnect.ts b/src/services/InspireAIconnect.ts
+index dcc43d4..ec90a62 100644
+--- a/src/services/InspireAIconnect.ts
++++ b/src/services/InspireAIconnect.ts
+@@ -13,14 +13,19 @@ export type LunaPreview = { payloadSHA: string; binding: string; operationId: st
+ export function createPrivateLunaTransport(preview: (value: LunaPreview) => void,
+   fetcher: typeof fetch = fetch, token: () => Promise<string>, changed?: () => void, route: 'api' | 'chatgpt' = 'api'): ChatTransport {
+   const prepared = new Set<string>()
++  const unauthenticatedPreviews = new Set<string>()
+   async function call(body: unknown): Promise<unknown> {
++    const serialized = JSON.stringify(body)
+     const abort = new AbortController(), timer = setTimeout(() => abort.abort(), 95000)
+     try {
+       const response = await fetcher(route === 'chatgpt' ? '/api/inspire-chatgpt' : '/api/inspire-luna', {method: 'POST', cache: 'no-store', signal: abort.signal,
+-        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${await token()}`}, body: JSON.stringify(body)})
++        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${await token()}`}, body: serialized})
+       const data: unknown = await response.json()
+       if (!response.ok) {
+         if (record(data) && record(data.error) && typeof data.error.code === 'string' && typeof data.error.message === 'string' && ['replay','new-attempt','none'].includes(String(data.error.retry))) {
++          // This local 401 precedes handlePrivate/provider dispatch. A manual
++          // replay may refresh authentication; it never creates a new attempt.
++          if (response.status === 401 && data.error.code === 'UNAUTHENTICATED') throw new ChatError('UNAUTHENTICATED', 'Xác thực đã hết hạn. Bạn có thể kiểm tra lại đúng lượt gửi; chưa gọi thêm AI.', 'replay', 401)
+           throw new ChatError(data.error.code, data.error.message, data.error.retry as 'replay'|'new-attempt'|'none', response.status)
+         }
+         throw Error()
+@@ -38,8 +43,14 @@ export function createPrivateLunaTransport(preview: (value: LunaPreview) => void
+       return data as ChatSession
+     },
+     async send(request) {
+-      if (request.kind === 'send' || (route === 'chatgpt' && !prepared.has(request.operationId))) {
+-        const data = await call({kind:'preview',request: {...request, kind: 'send'}})
++      if (request.kind === 'send' || unauthenticatedPreviews.has(request.operationId) || (route === 'chatgpt' && !prepared.has(request.operationId))) {
++        let data: unknown
++        unauthenticatedPreviews.delete(request.operationId)
++        try { data = await call({kind:'preview',request: {...request, kind: 'send'}}) }
++        catch (error) {
++          if (error instanceof ChatError && error.status === 401 && ['UNAUTHENTICATED', 'AUTH_REFRESH_FAILED'].includes(error.code)) unauthenticatedPreviews.add(request.operationId)
++          throw error
++        }
+         if (!record(data) || data.previewOnly !== true || typeof data.payloadSHA !== 'string' || typeof data.binding !== 'string' || (route === 'api' && typeof data.reservedNanoUSD !== 'number') || data.operationId !== request.operationId || data.conversationId !== request.conversationId) throw new ChatError('PREVIEW_INVALID','Chưa xác minh được bản xem trước.')
+         preview(data as unknown as LunaPreview)
+         if (route === 'chatgpt') {
+@@ -65,17 +76,19 @@ export function createPrivateChatgptTransport(preview: (value: LunaPreview) => v
+ // Only the local Vite simulation endpoint is connected. No Firebase/model fallback.
+ export function createSimulationTransport(fetcher: typeof fetch = fetch, token?: () => Promise<string>, changed?: () => void, diagnostic?: (value: unknown) => void): ChatTransport {
+   async function call(payload: unknown): Promise<unknown> {
++    const serialized = JSON.stringify(payload)
+     const abort = new AbortController()
+     const timeout = setTimeout(() => abort.abort(), 12000)
+     try {
+       const response = await fetcher("/api/inspire-prototype", {
+         method: "POST", headers: { "Content-Type": "application/json", ...(token ? {Authorization: `Bearer ${await token()}`} : {}) },
+-        body: JSON.stringify(payload), signal: abort.signal, cache: "no-store",
++        body: serialized, signal: abort.signal, cache: "no-store",
+       })
+       const data: unknown = await response.json()
+       if (!response.ok) {
+         if (record(data) && record(data.error) && typeof data.error.message === "string" &&
+             typeof data.error.code === "string" && ["replay", "new-attempt", "none"].includes(String(data.error.retry))) {
++          if (response.status === 401 && data.error.code === "UNAUTHENTICATED") throw new ChatError("UNAUTHENTICATED", "Xác thực đã hết hạn. Bạn có thể kiểm tra lại đúng lượt gửi; chưa gọi thêm AI.", "replay", 401)
+           throw new ChatError(data.error.code, data.error.message, data.error.retry as "replay" | "new-attempt" | "none", response.status)
+         }
+         throw new Error("Invalid error envelope")
+diff --git a/tests/inspire-auth-recovery.test.mjs b/tests/inspire-auth-recovery.test.mjs
+new file mode 100644
+--- /dev/null
++++ b/tests/inspire-auth-recovery.test.mjs
+@@ -0,0 +1,181 @@
++// Offline only: fake Firebase Users and local HTTP transport, no credentials,
++// account creation, emulator writes or provider requests.
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {currentIdentityToken} from '../src/services/inspireIdentity.ts'
++import {createPrivateLunaTransport, createSimulationTransport} from '../src/services/InspireAIconnect.ts'
++import {ConversationStore} from '../src/services/inspireConversation.ts'
++
++const request = {kind:'send',epoch:'frozen-epoch',sessionId:'frozen-session',operationId:'frozen-operation',conversationId:'frozen-conversation',messages:[{id:'frozen-message',role:'user',text:'Câu hỏi giả định.'}]}
++const unauthorized = () => Response.json({error:{code:'UNAUTHENTICATED',message:'Expired token',retry:'none'}},{status:401})
++const receipt = r => Response.json({previewOnly:true,payloadSHA:'a'.repeat(64),binding:'b'.repeat(64),reservedNanoUSD:3592500,sourceCount:3,operationId:r.operationId,conversationId:r.conversationId})
++const reply = (r,mode='private-model') => ({mode,epoch:r.epoch,sessionId:r.sessionId,operationId:r.operationId,conversationId:r.conversationId,replyTo:r.messages.at(-1).id,message:{id:'answer',role:'assistant',text:'Phản hồi giả định, không gọi mô hình.'}})
++const active = store => store.getSnapshot().conversations[0]
++
++test('official SDK User is restored before force-refresh; every request gets a current token for the same UID',async()=>{
++ const steps=[],uid='existing-user'
++ let counter=0
++ const user={uid,getIdToken:async force=>{steps.push(['getIdToken',force]);return 'fake-current-'+(++counter)}}
++ const auth={currentUser:null,authStateReady:async()=>{steps.push(['authStateReady']);auth.currentUser=user}}
++ const packets=[]
++ const transport=createPrivateLunaTransport(()=>{},async(_url,options)=>{
++  packets.push(options)
++  const body=JSON.parse(options.body)
++  if(body.kind==='session')return Response.json({mode:'private-model',epoch:request.epoch,sessionId:request.sessionId})
++  if(body.kind==='preview')return receipt(body.request)
++  return Response.json(reply(body.request))
++ },()=>currentIdentityToken(auth))
++ await transport.connect()
++ await assert.rejects(transport.send(request),{code:'AUTHORIZATION_REQUIRED'})
++ const replay={...request,kind:'replay'}
++ await transport.send(replay)
++ assert.deepEqual(steps,Array.from({length:3},()=>[['authStateReady'],['getIdToken',true]]).flat())
++ assert.deepEqual(packets.map(p=>p.headers.Authorization),['Bearer fake-current-1','Bearer fake-current-2','Bearer fake-current-3'])
++ assert.deepEqual(JSON.parse(packets[1].body),{kind:'preview',request})
++ assert.deepEqual(JSON.parse(packets[2].body),{kind:'execute',request:replay})
++ assert.equal(auth.currentUser.uid,uid)
++})
++
++test('missing SDK user and failed refresh do not create accounts or reach HTTP',async()=>{
++ let http=0
++ const fetcher=async()=>{http++;throw Error('must not dispatch')}
++ const missing={currentUser:null,authStateReady:async()=>{}}
++ const absent=createPrivateLunaTransport(()=>{},fetcher,()=>currentIdentityToken(missing))
++ await assert.rejects(absent.send(request),{code:'UNAUTHENTICATED',retry:'replay'})
++ const failing={currentUser:{uid:'existing-user',getIdToken:async()=>{throw Error('do not expose token/SDK details')}},authStateReady:async()=>{}}
++ const transport=createPrivateLunaTransport(()=>{},fetcher,()=>currentIdentityToken(failing))
++ await assert.rejects(transport.send(request),error=>{
++  assert.equal(error.code,'AUTH_REFRESH_FAILED');assert.equal(error.retry,'replay')
++  assert.ok(!error.message.includes('SDK details'));return true
++ })
++ assert.equal(http,0)
++})
++
++test('account switch or sign-out during refresh blocks the old user request before HTTP',async()=>{
++ for(const next of [null,{uid:'other-user'}]){
++  let http=0,auth
++  const original={uid:'existing-user',getIdToken:async()=>{auth.currentUser=next;return 'fake-original-token'}}
++  auth={currentUser:original,authStateReady:async()=>{}}
++  const transport=createPrivateLunaTransport(()=>{},async()=>{http++;throw Error('must not dispatch')},()=>currentIdentityToken(auth))
++  await assert.rejects(transport.send(request),{code:'IDENTITY_CHANGED',retry:'none'})
++  assert.equal(http,0)
++ }
++})
++
++test('preview 401 permits explicit authentication recovery with byte-identical body, never automatic execution',async()=>{
++ let preview=0,tokens=0
++ const packets=[]
++ const transport=createPrivateLunaTransport(()=>{preview++},async(_url,options)=>{
++  packets.push(options)
++  assert.equal(JSON.parse(options.body).kind,'preview')
++  return packets.length===1?unauthorized():receipt(request)
++ },async()=> 'fake-token-'+(++tokens))
++ await assert.rejects(transport.send(request),{code:'UNAUTHENTICATED',retry:'replay',status:401})
++ assert.equal(packets.length,1)
++ await assert.rejects(transport.send({...request,kind:'replay'}),{code:'AUTHORIZATION_REQUIRED'})
++ assert.equal(packets.length,2);assert.equal(preview,1)
++ assert.equal(packets[0].body,packets[1].body)
++ assert.notEqual(packets[0].headers.Authorization,packets[1].headers.Authorization)
++})
++
++test('execute 401 refreshes only authentication on manual replay, retaining every binding field and preventing duplicate clicks',async()=>{
++ let serial=0,executeCalls=0,generations=0,tokens=0
++ const packets=[]
++ const transport=createPrivateLunaTransport(()=>{},async(_url,options)=>{
++  packets.push(options)
++  const body=JSON.parse(options.body)
++  if(body.kind==='session')return Response.json({mode:'private-model',epoch:request.epoch,sessionId:request.sessionId})
++  if(body.kind==='preview')return receipt(body.request)
++  executeCalls++
++  if(executeCalls===1)return unauthorized()
++  generations++
++  return Response.json(reply(body.request))
++ },async()=> 'fake-token-'+(++tokens))
++ const store=new ConversationStore(transport,()=> 'stable-id-'+(++serial)),id=active(store).id
++ store.draft(id,'Câu hỏi giả định.')
++ await store.send(id)
++ const original=structuredClone(active(store).pending.request)
++ assert.equal(active(store).error.code,'AUTHORIZATION_REQUIRED')
++ await store.retry(id)
++ assert.equal(active(store).error.code,'UNAUTHENTICATED')
++ assert.equal(generations,0)
++ assert.equal(active(store).messages.length,1)
++ await Promise.all([store.retry(id),store.retry(id)])
++ const executions=packets.filter(p=>JSON.parse(p.body).kind==='execute')
++ assert.equal(executions.length,2)
++ assert.equal(executions[0].body,executions[1].body)
++ assert.notEqual(executions[0].headers.Authorization,executions[1].headers.Authorization)
++ assert.deepEqual(JSON.parse(executions[1].body).request,{...original,kind:'replay'})
++ assert.equal(generations,1)
++ assert.equal(active(store).messages.length,2)
++ assert.equal(serial,3) // conversation, original user message, original operation
++})
++
++test('unknown outcome, provider auth failure and lost server plan do not cause automatic retry or rebuilt preview',async()=>{
++ for(const failure of ['network','OPENAI_AUTH','RESULT_UNKNOWN']){
++  let previews=0,executes=0
++  const transport=createPrivateLunaTransport(()=>{},async(_url,options)=>{
++   const body=JSON.parse(options.body)
++   if(body.kind==='preview'){previews++;return receipt(body.request)}
++   executes++
++   if(failure==='network')throw Error('unknown after dispatch')
++   return Response.json({error:{code:failure,message:'Synthetic held error',retry:'none'}},{status:failure==='OPENAI_AUTH'?503:409})
++  },async()=> 'fake-token')
++  await assert.rejects(transport.send(request),{code:'AUTHORIZATION_REQUIRED'})
++  await assert.rejects(transport.send({...request,kind:'replay'}),{code:failure==='network'?'CONNECTION':failure})
++  assert.equal(previews,1);assert.equal(executes,1)
++ }
++ // A new transport cannot recover a lost approved plan by creating a preview.
++ const packets=[]
++ const restarted=createPrivateLunaTransport(()=>{throw Error('must not rebuild preview')},async(_url,options)=>{
++  packets.push(JSON.parse(options.body))
++  return Response.json({error:{code:'RESULT_UNKNOWN',message:'Plan lost',retry:'none'}},{status:409})
++ },async()=> 'fake-token')
++ await assert.rejects(restarted.send({...request,kind:'replay'}),{code:'RESULT_UNKNOWN',retry:'none'})
++ assert.deepEqual(packets,[{kind:'execute',request:{...request,kind:'replay'}}])
++ // A network failure during auth recovery must not leave a persistent right to
++ // reconstruct the preview on a subsequent replay.
++ const recoveryPackets=[]
++ const recovery=createPrivateLunaTransport(()=>{},async(_url,options)=>{
++  recoveryPackets.push(JSON.parse(options.body))
++  if(recoveryPackets.length===1)return unauthorized()
++  if(recoveryPackets.length===2)throw Error('lost response during authentication recovery')
++  return Response.json({error:{code:'RESULT_UNKNOWN',message:'Plan lost',retry:'none'}},{status:409})
++ },async()=> 'fake-token')
++ await assert.rejects(recovery.send(request),{code:'UNAUTHENTICATED'})
++ await assert.rejects(recovery.send({...request,kind:'replay'}),{code:'CONNECTION'})
++ await assert.rejects(recovery.send({...request,kind:'replay'}),{code:'RESULT_UNKNOWN'})
++ assert.deepEqual(recoveryPackets.map(p=>p.kind),['preview','preview','execute'])
++})
++
++test('simulation auth recovery also keeps request bytes and never silently creates a new operation',async()=>{
++ let token=0
++ const packets=[]
++ const transport=createSimulationTransport(async(_url,options)=>{
++  packets.push(options)
++  return packets.length===1?unauthorized():Response.json(reply(JSON.parse(options.body),'simulation'))
++ },async()=> 'fake-token-'+(++token))
++ await assert.rejects(transport.send(request),{code:'UNAUTHENTICATED',retry:'replay'})
++ assert.equal(packets.length,1)
++ const replay={...request,kind:'replay'}
++ await transport.send(replay)
++ assert.deepEqual(JSON.parse(packets[0].body),request)
++ assert.deepEqual(JSON.parse(packets[1].body),replay)
++ assert.notEqual(packets[0].headers.Authorization,packets[1].headers.Authorization)
++})
++
++test('request body is captured before asynchronous token refresh, for both transports',async()=>{
++ for(const privateMode of [true,false]){
++  const r=structuredClone(request),original=structuredClone(r)
++  let body
++  const token=async()=>{r.messages[0].text='Changed while refreshing';return 'fake-token'}
++  const fetcher=async(_url,options)=>{
++   body=JSON.parse(options.body)
++   return privateMode?receipt(original):Response.json(reply(original,'simulation'))
++  }
++  const transport=privateMode?createPrivateLunaTransport(()=>{},fetcher,token):createSimulationTransport(fetcher,token)
++  if(privateMode)await assert.rejects(transport.send(r),{code:'AUTHORIZATION_REQUIRED'})
++  else await transport.send(r)
++  assert.deepEqual(privateMode?body.request:body,original)
++ }
++})

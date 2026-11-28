@@ -1,0 +1,13 @@
+✔ default/pending, wrong owner, wrong scope, expiry and forged fields fail closed (28.0389ms)
+✔ fifty bound attempts survive reopening; exhaustion and replay cannot multiply allowance (4442.7909ms)
+✔ unknown crash reservation blocks replacement after restart; grant revocation stops admission (79.3469ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7748.7857
+
+EXIT_CODE=0

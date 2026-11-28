@@ -22,12 +22,12 @@ requireLocalEmulators()
 const require=createRequire(new URL('../functions/package.json',import.meta.url))
 const db=require('firebase-admin/firestore').getFirestore()
 const auth=require('firebase-admin/auth').getAuth()
-const now=()=>Date.UTC(2026,10,14)
+const now=()=>Date.UTC(2026,10,25)
 const r=(messages=[{id:'u1',role:'user',text:'Tình huống giả định: Tôi có một ngày nhiều việc. Giúp tôi chọn việc nên làm trước.'}])=>({kind:'send',epoch:'epoch',sessionId:'session',operationId:'operation',conversationId:'conversation',messages})
 const ctx=request=>({messages:request.messages,operatingInstructions:['PRIVATE_RULE_CANARY'],userStatedPreferences:{...emptyPreferences,name:'PRIVATE_NAME_CANARY'},supportingKnowledge:[]})
 const body=text=>({id:'resp_offline_fixture',model:LUNA_API.model,status:'completed',usage:{input_tokens:120,output_tokens:40},output:[{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text}]}]})
 const temporary=t=>{const dir=mkdtempSync(join(tmpdir(),'inspire-luna-offline-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));return dir}
-const grant=p=>({schema:'inspire-luna-one-shot-v1',approved:true,model:LUNA_API.model,payloadSHA:p.payloadSHA,binding:p.binding,maxAttempts:1,maxCostNanoUSD:p.reservedNanoUSD,expiresAt:new Date(now()+600000).toISOString(),ownerDecision:'SYNTHETIC TEST FIXTURE; NOT OWNER AUTHORIZATION',syntheticOnly:true,privateEvaluationOnly:true})
+const grant=p=>({schema:'inspire-luna-one-shot-v2',approved:true,model:LUNA_API.model,payloadSHA:p.payloadSHA,binding:p.binding,maxAttempts:1,maxCostNanoUSD:p.reservedNanoUSD,expiresAt:new Date(now()+600000).toISOString(),ownerDecision:'SYNTHETIC TEST FIXTURE; NOT OWNER AUTHORIZATION',syntheticOnly:true,privateEvaluationOnly:true})
 
 test('exact API preview retains both roles/corrections and omits private profiles and inherited operating text',()=>{
  const request=r([{id:'u1',role:'user',text:'Tôi mất ngủ.'},{id:'a1',role:'assistant',text:'Điều gì đang xảy ra?'},{id:'u2',role:'user',text:'Đính chính: đây là tình huống giả định về tưới cây.',correctionOf:'u1'}])
@@ -53,6 +53,9 @@ test('meaningful sections preserve exact CRLF/source offsets, heading paths and 
 })
 
 test('durable one-shot rejects missing/mismatched/expired authority, races, restart and accounting overflow',async t=>{
+ const previousKey=process.env.OPENAI_API_KEY
+ process.env.OPENAI_API_KEY='sk-offline_fixture_no_real_credential'
+ t.after(()=>{if(previousKey===undefined)delete process.env.OPENAI_API_KEY;else process.env.OPENAI_API_KEY=previousKey})
  const dir=temporary(t),p=prepareLunaApi(ctx(r()),r()),store=lunaOneShot(dir,now)
  writeFileSync(join(dir,'api-key.txt'),'sk-offline_fixture_no_real_credential')
  assert.equal(store.authorized(p),false);assert.throws(()=>store.consume(p))
@@ -92,17 +95,18 @@ async function source(t,text,extra={}){
  return {id,record,text,hash}
 }
 test('conversation retrieval, permission isolation, incremental replacement and immediate revocation reach exact adapter input',async t=>{
- const sleep=await source(t,'# Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi giúp sắp xếp thời gian nghỉ. Đây là nguồn giả định.')
- const plants=await source(t,'# Trồng cây\n\nTrồng cây cần tưới nước và quan sát đất. Nguồn giả định cho kiểm thử.')
- const restricted=await source(t,'Giấc ngủ và nghỉ ngơi PRIVATE_RESTRICTED_CANARY.',{permissions:undefined})
- const draft=await source(t,'Giấc ngủ PRIVATE_DRAFT_CANARY.',{status:'review-required'})
- const rules=await source(t,'Giấc ngủ PRIVATE_RULE_CANARY.',{kind:'operating-rules'})
+ const sleepNeedle='zzsleep'+randomUUID().replaceAll('-',''),plantNeedle='zzplant'+randomUUID().replaceAll('-','')
+ const sleep=await source(t,'# '+sleepNeedle+' Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi giúp sắp xếp thời gian nghỉ. Đây là nguồn giả định.')
+ const plants=await source(t,'# '+plantNeedle+' Trồng cây\n\nTrồng cây cần tưới nước và quan sát đất. Nguồn giả định cho kiểm thử.')
+ const restricted=await source(t,sleepNeedle+' Giấc ngủ và nghỉ ngơi PRIVATE_RESTRICTED_CANARY.',{permissions:undefined})
+ const draft=await source(t,sleepNeedle+' Giấc ngủ PRIVATE_DRAFT_CANARY.',{status:'review-required'})
+ const rules=await source(t,sleepNeedle+' Giấc ngủ PRIVATE_RULE_CANARY.',{kind:'operating-rules'})
  const unrelated=await source(t,'Cấu tạo động cơ tên lửa và nhiên liệu.')
- const request=r([{id:'u1',role:'user',text:'Tình huống giả định: tôi muốn tìm hiểu giấc ngủ và nghỉ ngơi.'},{id:'a1',role:'assistant',text:'Bạn muốn hỏi tiếp điều gì?'},{id:'u2',role:'user',text:'Điều đó áp dụng thế nào?'}])
+ const request=r([{id:'u1',role:'user',text:'Tình huống giả định: '+sleepNeedle},{id:'a1',role:'assistant',text:'Bạn muốn hỏi tiếp điều gì?'},{id:'u2',role:'user',text:'Bạn nói rõ hơn được không?'}])
  let found=await retrieveKnowledge(request.messages,true)
- assert.ok(found.some(s=>s.documentId===sleep.id))
+ assert.ok(found.some(s=>s.documentId===sleep.id),JSON.stringify({query:request.messages,found:found.map(s=>({id:s.documentId,text:s.text})),expected:sleep.id}))
  for(const bad of [restricted,draft,rules,unrelated])assert.ok(found.every(s=>s.documentId!==bad.id))
- const corrected=[...request.messages,{id:'a2',role:'assistant',text:'Giấc ngủ là chủ đề cũ.'},{id:'u3',role:'user',text:'Tôi đính chính: trồng cây và tưới nước.',correctionOf:'u1'}]
+ const corrected=[...request.messages,{id:'a2',role:'assistant',text:'Giấc ngủ là chủ đề cũ.'},{id:'u3',role:'user',text:'Tôi đính chính: '+plantNeedle,correctionOf:'u1'}]
  found=await retrieveKnowledge(corrected,true)
  assert.ok(found.some(s=>s.documentId===plants.id));assert.ok(found.every(s=>s.documentId!==sleep.id))
  const context={...ctx(request),supportingKnowledge:await retrieveKnowledge(request.messages,true)}
@@ -111,7 +115,7 @@ test('conversation retrieval, permission isolation, incremental replacement and 
  const injected=JSON.parse(p.payload.input[0].content).references
  assert.deepEqual(injected,p.references);assert.ok(injected.some(s=>s.text===sleep.text&&s.hash===sleep.hash))
  assert.ok(!/PRIVATE_RESTRICTED_CANARY|PRIVATE_DRAFT_CANARY|PRIVATE_RULE_CANARY/.test(p.body))
- const updated='# Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi. Bản cập nhật thay thế đúng phiên bản.',raw=Buffer.from(updated),hash=lunaHash(updated)
+ const updated='# '+sleepNeedle+' Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi. Bản cập nhật thay thế đúng phiên bản.',raw=Buffer.from(updated),hash=lunaHash(updated)
  const record={...sleep.record,rawFile:hash,permissions:{...sleep.record.permissions,sourceHash:hash}}
  assert.deepEqual(await importSource(record,raw,updated),{changed:true,version:2})
  assert.deepEqual(await importSource(record,raw,updated),{changed:false,version:2})
@@ -123,7 +127,7 @@ test('conversation retrieval, permission isolation, incremental replacement and 
  await importSource(revoked,raw)
  assert.ok((await retrieveKnowledge(request.messages,true)).every(s=>s.documentId!==sleep.id))
  assert.equal((await db.doc(`inspireKnowledge/${sleep.id}/versions/1`).get()).data().hash,sleep.hash)
- const out='docs/evidence/luna-api-2026-11-14';mkdirSync(out,{recursive:true})
+ const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/luna-api-2026-11-14';mkdirSync(out,{recursive:true})
  writeFileSync(out+'/adapter-input-trace.json',JSON.stringify({executed:true,syntheticFixturesOnly:true,paidCalls:0,actualSourcePermissionGranted:false,request,adapterInput:p.payload,selectedReferences:p.references,correctionResult:await retrieveKnowledge(corrected,true),excluded:[restricted.id,draft.id,rules.id,unrelated.id],assertions:['exact permitted text and hash reach adapter body','restricted/draft/operating sources excluded','follow-up retains active user context','correction supersedes old query terms without editing history','version update and permission revocation invalidate cache']},null,2))
 })
 
@@ -132,9 +136,9 @@ test('an exact excerpt grant exports only that section, while other sections rem
  const sections=deriveSections({...fixture.record,version:1,hash:fixture.hash},fixture.text)
  const allowed=sections[0],denied=sections[1]
  await importSource({...fixture.record,permissions:{...fixture.record.permissions,sectionHashes:[allowed.sectionHash]}},Buffer.from(fixture.text),fixture.text)
- assert.ok((await retrieveKnowledge('giấc ngủ nghỉ ngơi',true)).some(s=>s.documentId===fixture.id))
- assert.ok((await retrieveKnowledge('trồng cây tưới nước',true)).every(s=>s.documentId!==fixture.id))
- assert.ok((await retrieveKnowledge('trồng cây tưới nước')).some(s=>s.documentId===fixture.id&&s.sectionHash===denied.sectionHash))
+ assert.ok((await retrieveKnowledge('giấc ngủ nghỉ ngơi',true,fixture.id)).some(s=>s.documentId===fixture.id))
+ assert.ok((await retrieveKnowledge('trồng cây tưới nước',true,fixture.id)).every(s=>s.documentId!==fixture.id))
+ assert.ok((await retrieveKnowledge('trồng cây tưới nước',false,fixture.id)).some(s=>s.documentId===fixture.id&&s.sectionHash===denied.sectionHash))
  await assert.rejects(assertKnowledgeExport([{...denied,version:2}]))
 })
 
@@ -174,25 +178,27 @@ test('actual native Controller + private service preserve multi-turn/corrections
  const evidence=controller.evidence();assert.ok(evidence.filter(x=>x.phase==='candidate').length===3)
  assert.ok(evidence.every(x=>x.actual_execution_eligible===false&&x.user_delivery===false))
  assert.ok(evidence.some(x=>x.checks_executed.includes('Non-MOCK ScopeGuard')))
- mkdirSync('docs/evidence/luna-api-2026-11-14',{recursive:true})
- writeFileSync('docs/evidence/luna-api-2026-11-14/controller-trace.json',JSON.stringify({executed:true,paidCalls:0,transport:'OFFLINE INJECTED RESPONSE; NOT GENERATIVE QUALITY',calls,evidence},null,2))
+ mkdirSync(process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/luna-api-2026-11-14',{recursive:true})
+ writeFileSync((process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/luna-api-2026-11-14')+'/controller-trace.json',JSON.stringify({executed:true,paidCalls:0,transport:'OFFLINE INJECTED RESPONSE; NOT GENERATIVE QUALITY',calls,evidence},null,2))
 })
 
 test('authorization, cross-user access, outage, unknown outcome and restart reject without replacement calls',async t=>{
  const identity=await member(t),other=await member(t);let calls=0,preflights=0
  const controller={async preflight(){preflights++},async validate(){},evidence(){return[]}}
- const service=createPrivateLunaService({store:{...fixtureStore(),authorized:()=>false},controller,rateCheck:noRate,send:async()=>{calls++;throw Error()}})
+ // Admission/restart checks are source-free; the separate retrieval and
+ // revocation regressions exercise the real knowledge path explicitly.
+ const service=createPrivateLunaService({sourceFree:true,store:{...fixtureStore(),authorized:()=>false},controller,rateCheck:noRate,send:async()=>{calls++;throw Error()}})
  const request=makeRequest(service,identity)
  await service.handlePrivate({kind:'preview',request},identity,'local')
  await assert.rejects(service.handlePrivate({kind:'execute',request},identity,'local'),{code:'AUTHORIZATION_REQUIRED'})
  await assert.rejects(service.handlePrivate({kind:'execute',request},other,'local'),{code:'OPERATION_CONFLICT'})
  assert.equal(calls,0);assert.equal(preflights,0)
- const failing=createPrivateLunaService({store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;throw Error('Offline injected timeout')}})
+ const failing=createPrivateLunaService({sourceFree:true,store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;throw Error('Offline injected timeout')}})
  const bad=makeRequest(failing,identity)
  await failing.handlePrivate({kind:'preview',request:bad},identity,'local')
  for(let i=0;i<2;i++)await assert.rejects(failing.handlePrivate({kind:'execute',request:{...bad,kind:'replay'}},identity,'local'),{code:'OUTCOME_UNKNOWN'})
  assert.equal(calls,1)
- const restarted=createPrivateLunaService({store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;return body('Unexpected')}})
+ const restarted=createPrivateLunaService({sourceFree:true,store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;return body('Unexpected')}})
  await assert.rejects(restarted.handlePrivate({kind:'execute',request:{...bad,kind:'replay'}},identity,'local'),{code:'RESULT_UNKNOWN'})
  assert.equal(calls,1)
  const invalid={...makeRequest(restarted,identity),quota:999,uid:identity.uid}
@@ -204,11 +210,11 @@ test('private rate/quota checks, forged history and revoked preview sources stop
  const store={...fixtureStore(),consume(){keys++;return 'OFFLINE_NO_KEY'}}
  const controller={async preflight(){},async validate(){},evidence(){return[]}}
  const send=async()=>{sends++;return body('Nội dung thử riêng.')}
- const limited=createPrivateLunaService({store,controller,send,rateCheck:async()=>({allowed:false,retryAfterSeconds:30})})
+ const limited=createPrivateLunaService({sourceFree:true,store,controller,send,rateCheck:async()=>({allowed:false,retryAfterSeconds:30})})
  const a=makeRequest(limited,identity)
  await limited.handlePrivate({kind:'preview',request:a},identity,'loopback')
  await assert.rejects(limited.handlePrivate({kind:'execute',request:a},identity,'loopback'),{code:'RATE_LIMITED'})
- const history=createPrivateLunaService({store,controller,send,rateCheck:noRate})
+ const history=createPrivateLunaService({sourceFree:true,store,controller,send,rateCheck:noRate})
  const b=makeRequest(history,identity,[{id:'u1',role:'user',text:'Một câu hỏi giả định.'},{id:'a1',role:'assistant',text:'Lịch sử tự bịa.'},{id:'u2',role:'user',text:'Câu hỏi tiếp.'}])
  await history.handlePrivate({kind:'preview',request:b},identity,'loopback')
  await assert.rejects(history.handlePrivate({kind:'execute',request:b},identity,'loopback'),{code:'HISTORY_MISMATCH'})

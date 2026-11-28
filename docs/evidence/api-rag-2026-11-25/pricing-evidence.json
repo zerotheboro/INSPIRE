@@ -1,0 +1,22 @@
+{
+  "checked": "2026-11-25",
+  "provider": "OpenAI",
+  "model": "gpt-6-luna",
+  "route": "Responses API, standard default tier",
+  "urls": [
+    "https://developers.openai.com/api/docs/models/gpt-6-luna.md",
+    "https://developers.openai.com/api/docs/pricing.md"
+  ],
+  "inputUSDPerMillion": 0.1,
+  "outputUSDPerMillion": 0.5,
+  "cachedInputUSDPerMillion": 0.01,
+  "cacheWrite30mUSDPerMillion": 0.125,
+  "cacheWrite12hUSDPerMillion": 0.25,
+  "reservationInputUSDPerMillion": 0.25,
+  "pricingExpires": "2026-12-02T00:00:00Z",
+  "maxOutputTokens": 512,
+  "toolFees": "No tools requested/executed",
+  "estimateMethod": "UTF-8 wire bytes + 4096 conservative input token bound; not tokenizer count. No cached discount assumed.",
+  "ownerApproval": false,
+  "paidCalls": 0
+}

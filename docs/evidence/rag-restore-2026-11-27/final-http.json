@@ -1,0 +1,62 @@
+{
+  "at": "2026-11-27T12:39:46.584Z",
+  "url": "http://127.0.0.1:5173/ai-inspire?thu-rieng=1",
+  "results": [
+    {
+      "path": "/api/inspire-private-status",
+      "status": 200,
+      "ms": 247,
+      "configuration": {
+        "mode": "simulation",
+        "modelAvailable": false,
+        "rag": {
+          "ready": true,
+          "state": "ready",
+          "records": 661,
+          "sections": 10676,
+          "externalEligible": 513,
+          "revision": 661,
+          "warnings": 1,
+          "countsKnown": true
+        },
+        "chatgptPreview": false,
+        "lunaApiPreview": true,
+        "conversationTransport": true
+      }
+    },
+    {
+      "path": "/ai-inspire?thu-rieng=1",
+      "status": 200,
+      "ms": 128
+    },
+    {
+      "path": "/.private.local/emulator-state/state.json",
+      "status": 403,
+      "ms": 96
+    },
+    {
+      "path": "/.private.local/emulator-state/snapshots/d29bee75-52a6-4afb-bd0c-e3c3d87557b1/firebase-export-metadata.json",
+      "status": 403,
+      "ms": 111
+    },
+    {
+      "path": "/firebase-export-1795781821863QHGW3F/firebase-export-metadata.json",
+      "status": 403,
+      "ms": 112
+    }
+  ],
+  "services": [
+    {
+      "port": 8080,
+      "status": 200
+    },
+    {
+      "port": 9099,
+      "status": 200
+    }
+  ],
+  "modelCalls": 0,
+  "browserRendering": "NOT VERIFIED",
+  "reviewZIPCreated": false,
+  "initialShortDeadlineChecks": "One initial status call timed out at 10s; a later HTML probe timed out at 3s. Retested local GET only; no inference was used."
+}

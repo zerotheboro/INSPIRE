@@ -1,0 +1,39 @@
+{
+  "executed": true,
+  "model": "INJECTED OFFLINE ONLY",
+  "realKeyRead": false,
+  "paidCalls": 0,
+  "trace": [
+    {
+      "case": "cold duplicate/late preview",
+      "queries": 1,
+      "sends": 1,
+      "identicalBinding": true,
+      "replayWithoutAnotherAuthorization": true
+    },
+    {
+      "case": "frozen exact source after unrelated revision",
+      "queries": 0,
+      "sends": 1
+    },
+    {
+      "case": "missing native executable",
+      "causeCodes": [
+        "ATTEMPT_FAILED",
+        "LUNA_PRE_DISPATCH_HOLD",
+        "LUNA_CONTROLLER_PREFLIGHT_HOLD",
+        "NATIVE_UNAVAILABLE",
+        "ENOENT"
+      ],
+      "browserJSONRedacted": true
+    },
+    {
+      "case": "original native safety hold",
+      "causeCodes": [
+        "LUNA_CONTROLLER_PREFLIGHT_HOLD",
+        "NATIVE_SAFETY_GATE_HELD_CANDIDATE"
+      ],
+      "rawPromptSerialized": false
+    }
+  ]
+}

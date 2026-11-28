@@ -1,0 +1,37 @@
+{
+  "inferenceCalls": 0,
+  "spendingAuthorizationCreated": false,
+  "browserAutomation": "NOT VERIFIED",
+  "steps": [
+    {
+      "kind": "session",
+      "status": 200,
+      "ms": 75,
+      "contentType": "application/json; charset=utf-8",
+      "json": true
+    },
+    {
+      "kind": "preview",
+      "status": 200,
+      "ms": 184,
+      "contentType": "application/json; charset=utf-8",
+      "json": true,
+      "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+      "sourceCount": 3,
+      "reservedNanoUSD": 3592500
+    }
+  ],
+  "auth": {
+    "officialSDK": true,
+    "inMemoryFixture": true,
+    "ms": 37
+  },
+  "previewMatches": true,
+  "frontendTransport": {
+    "code": "AUTHORIZATION_REQUIRED",
+    "ms": 208,
+    "payloadSHA": "cb8c554dd8c315e7f314ca3bdfba068c64b5bf5f933173210c0d46733520ad0f",
+    "reservedNanoUSD": 3592500,
+    "sourceCount": 3
+  }
+}

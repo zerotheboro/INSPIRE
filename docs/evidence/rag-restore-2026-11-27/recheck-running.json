@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-11-27T12:58:17.876Z",
+  "url": "http://127.0.0.1:5173/ai-inspire?thu-rieng=1",
+  "HTTP": 200,
+  "liveRAG": {
+    "ready": true,
+    "state": "ready",
+    "records": 661,
+    "sections": 10676,
+    "externalEligible": 513,
+    "revision": 661,
+    "warnings": 1,
+    "countsKnown": true
+  },
+  "priorNativeRestartEvidence": true,
+  "priorRecordCount": 661,
+  "priorSectionCount": 10676,
+  "restoreRepeated": false,
+  "modelCalls": 0
+}

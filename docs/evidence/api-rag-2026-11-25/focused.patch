@@ -1,0 +1,1152 @@
+diff --git a/functions/src/inspireKnowledge.ts b/functions/src/inspireKnowledge.ts
+index 9984d37..bd71dc6 100644
+--- a/functions/src/inspireKnowledge.ts
++++ b/functions/src/inspireKnowledge.ts
+@@ -1,4 +1,4 @@
+-import {getFirestore} from "firebase-admin/firestore";
++import {getFirestore, FieldPath} from "firebase-admin/firestore";
+ import {createHash} from "node:crypto";
+ import type {ChatMessage, ChatRequest} from "./inspireChatContract";
+ import type {Preferences} from "./inspireAccount";
+@@ -11,6 +11,10 @@ export type SourceRecord = {
+   rawFile: string;
+   kind?: "reference" | "operating-rules";
+   contentClass?: "content" | "engineering" | "archive" | "receipt";
++  aliases?: string[];
++  origins?: string[];
++  lesson?: {lessonId: string; moduleId: string; kind: string;
++    contentHash: string; parentHash: string; status: "DRAFT"};
+   extraction?: {engine: string; textHash: string; format: string};
+   relations?: {family: string; amendment: boolean; relatedIds: string[];
+     authority: string};
+@@ -31,6 +35,7 @@ export type KnowledgeSection = {
+   startLine?: number; endLine?: number;
+   page?: number;
+   sourceRelations?: SourceRecord["relations"];
++  lesson?: SourceRecord["lesson"];
+ };
+ export const coreInstructions = Object.freeze([
+   "INSPIRE: WHAT → WHERE → WHY → TOWARD WHAT → HOW. M1–M6 belong within WHERE.",
+@@ -75,7 +80,8 @@ export function words(text: string): string[] {
+ const digest = (text: string | Buffer) =>
+   createHash("sha256").update(text).digest("hex");
+ const stop = new Set(words("tôi bạn mình cháu bác không những một các của " +
+-  "được đang trong này vậy thì thế sao với muốn thêm hiểu điều hãy có thể"));
++  "được đang trong này vậy thì thế sao với muốn thêm hiểu điều hãy có thể " +
++  "nói rõ hơn áp dụng thế nào"));
+ const cached = new Map<string, KnowledgeSection[]>();
+ let cacheRevision = -1;
+ 
+@@ -89,7 +95,7 @@ function referencePermitted(source: SourceRecord): boolean {
+     (!source.contentClass || source.contentClass === "content") &&
+     source.permittedUse === "supporting-retrieval" &&
+     (source.status === "published-supporting" ||
+-      (source.status === "review-required" &&
++      (["review-required", "unverified"].includes(source.status) &&
+         grant?.runtimeUse === "private-reference-evaluation" &&
+         grant.sourceHash === source.hash && grant.internalResearch === true &&
+         !!grant.evidence.trim() && !!grant.sectionHashes?.length));
+@@ -160,6 +166,7 @@ export function deriveSections(
+             {page: Number(headings[i].path.find((s) =>
+               /^Page \d+$/.test(s))?.split(" ")[1] ?? 1)} : {}),
+           ...(source.relations ? {sourceRelations: source.relations} : {}),
++          ...(source.lesson ? {lesson: source.lesson} : {}),
+         });
+       }
+       start = end;
+@@ -215,7 +222,7 @@ export async function importSource(
+     const data = old.data();
+     const extracted = text ?? (data?.hash === hash ? data?.extractedText : "");
+     const signature = digest(JSON.stringify([record, hash, extracted ?? ""]));
+-    if (data?.importSignature === signature && data?.indexVersion === 2) {
++    if (data?.importSignature === signature && data?.indexVersion === 3) {
+       return {changed: false, version: data.version};
+     }
+     const source: SourceRecord = {
+@@ -231,7 +238,7 @@ export async function importSource(
+       exportable.map((s) => s.text).join(" ")) : [];
+     if (searchTerms.length > 5000) throw new Error("Source index too large.");
+     // Full extracted text is kept once, privately, for permission-only updates.
+-    const stored = {...source, sections, searchTerms, indexVersion: 2,
++    const stored = {...source, sections, searchTerms, indexVersion: 3,
+       internalEligible, externalEligible: exportable.length > 0,
+       externalSearchTerms,
+       extractedText: extracted ?? "", importSignature: signature};
+@@ -282,21 +289,42 @@ export async function retrieveKnowledge(
+   }
+   const key = JSON.stringify([external, reviewOnly, documentId ?? null,
+     [...weighted], revision]);
+-  if (cached.has(key)) return structuredClone(cached.get(key)!);
+-  // All source eligibility is indexed BEFORE the candidate bound. External
++  const unchanged = async () => {
++    const latest = await getFirestore().doc("inspireKnowledge/_index").get();
++    if ((latest.data()?.revision ?? 0) !== revision) {
++      cached.clear();
++      throw new ConfirmedNoReply("KNOWLEDGE_REVISION_CHANGED");
++    }
++  };
++  if (cached.has(key)) {
++    await unchanged();
++    return structuredClone(cached.get(key)!);
++  }
++  // All source eligibility is indexed BEFORE pagination. External
+   // terms come only from permitted excerpts, not restricted sibling sections.
+   const selection = getFirestore().collection("inspireKnowledge")
+     .where(reviewOnly ? "collection" :
+       external ? "externalEligible" : "internalEligible", "==",
+     reviewOnly ? "INSPIRE" : true)
+     .where(external ? "externalSearchTerms" : "searchTerms",
+-      "array-contains-any", terms);
+-  const docs = await (documentId ? selection.where("documentId", "==",
+-    documentId) : selection).limit(50).get();
++      "array-contains-any", terms)
++    .orderBy(FieldPath.documentId())
++    .select("collection", "status", "permittedUse", "kind", "permissions",
++      "documentId", "hash", "version", "sections", "contentClass");
++  const scoped = documentId ? selection.where("documentId", "==",
++    documentId) : selection;
+   const candidates: {section: KnowledgeSection; score: number}[] = [];
+-  for (const doc of docs.docs) {
+-    const source = doc.data();
+-    if (source.collection !== "INSPIRE" ||
++  let lastId = "";
++  let page = await scoped.limit(50).get();
++  for (;;) {
++    const docs = page;
++    for (const doc of docs.docs) {
++      if (doc.id <= lastId) {
++        throw new ConfirmedNoReply("KNOWLEDGE_PAGE_ORDER_HOLD");
++      }
++      lastId = doc.id;
++      const source = doc.data();
++      if (source.collection !== "INSPIRE" ||
+         (source.contentClass && source.contentClass !== "content") ||
+         (reviewOnly ? source.kind === "operating-rules" :
+           !referencePermitted(source as SourceRecord)) ||
+@@ -305,28 +333,35 @@ export async function retrieveKnowledge(
+         source.documentId !== doc.id ||
+         !/^[a-f0-9]{64}$/.test(source.hash) ||
+         !Number.isInteger(source.version)) continue;
+-    for (const section of source.sections ?? []) {
+-      if (section.documentId !== source.documentId ||
++      for (const section of source.sections ?? []) {
++        if (section.documentId !== source.documentId ||
+           section.version !== source.version || section.hash !== source.hash ||
+           section.sourceStatus !== source.status ||
+           typeof section.text !== "string" ||
+           section.text.length > 1400 ||
+           section.sectionHash !== digest(section.text)) continue;
+-      if (external &&
++        if (external &&
+           !exportPermitted(source as SourceRecord, section)) continue;
+-      if (source.permissions?.sectionHashes &&
++        if ((external || source.status !== "published-supporting") &&
++          source.permissions?.sectionHashes &&
+           !source.permissions.sectionHashes.includes(section.sectionHash)) {
+-        continue;
+-      }
+-      const tokens = words(section.title + " " +
++          continue;
++        }
++        const tokens = words(section.title + " " +
+         (section.headingPath ?? []).join(" ") + " " + section.text);
+-      const score = terms.filter((term) => tokens.includes(term))
+-        .reduce((n, t) => n + weighted.get(t)!, 0);
+-      if (score) candidates.push({section, score});
++        const score = terms.filter((term) => tokens.includes(term))
++          .reduce((n, t) => n + weighted.get(t)!, 0);
++        if (score) candidates.push({section, score});
++      }
+     }
++    if (docs.size < 50) break;
++    page = await scoped.startAfter(docs.docs[docs.docs.length - 1])
++      .limit(50).get();
+   }
++  await unchanged();
+   const result = candidates.sort((a, b) => b.score - a.score ||
+-    a.section.sectionId.localeCompare(b.section.sectionId))
++    (a.section.sectionId < b.section.sectionId ? -1 :
++      a.section.sectionId > b.section.sectionId ? 1 : 0))
+     .slice(0, 3).map((entry) => entry.section);
+   if (cached.size >= 64) cached.delete(cached.keys().next().value!);
+   cached.set(key, structuredClone(result));
+diff --git a/functions/src/inspireLocalService.ts b/functions/src/inspireLocalService.ts
+index 6ea0951..545625e 100644
+--- a/functions/src/inspireLocalService.ts
++++ b/functions/src/inspireLocalService.ts
+@@ -110,6 +110,9 @@ export function createLocalService(
+               await accounts.settle(identity, request.operationId, "unknown");
+             }
+           } catch {/* Leave the durable reservation pending. */}
++          if (error instanceof ChatError && error.code.startsWith("OPENAI_")) {
++            throw error;
++          }
+           throw new ChatError("OUTCOME_UNKNOWN",
+             "Kết quả chưa thể xác minh. Lượt được giữ chờ đối soát; " +
+             "không tự chạy lại hoặc hoàn lượt.", "none", 409);
+diff --git a/functions/src/inspireLunaApi.ts b/functions/src/inspireLunaApi.ts
+index a0a4332..b5790a7 100644
+--- a/functions/src/inspireLunaApi.ts
++++ b/functions/src/inspireLunaApi.ts
+@@ -14,9 +14,10 @@ import type {ModelContext} from "./inspireKnowledge";
+ export const LUNA_API = Object.freeze({
+   model: "gpt-6-luna", endpoint: "https://api.openai.com/v1/responses",
+   maxOutputTokens: 512, maxWireBytes: 40000,
+-  pricingDate: "2026-11-14", pricingExpires: "2026-11-21T00:00:00Z",
++  pricingDate: "2026-11-25", pricingExpires: "2026-12-02T00:00:00Z",
+   inputNanoUSD: 100, outputNanoUSD: 500, reserveInputNanoUSD: 250,
+   pricingURL: "https://developers.openai.com/api/docs/pricing",
++  modelURL: "https://developers.openai.com/api/docs/models/gpt-6-luna",
+ });
+ const instruction = [
+   "Đây là thử nghiệm hội thoại riêng, chỉ dùng tình huống giả định.",
+@@ -112,6 +113,8 @@ export function lunaOneShot(directory = lunaLocalDirectory(), now = Date.now) {
+       throw Error();
+     }
+     const text = readFileSync(join(directory, "authorization.json"), "utf8");
++    if (realpathSync(join(directory, "authorization.json")).toLowerCase() !==
++        resolve(directory, "authorization.json").toLowerCase()) throw Error();
+     if (text.length > 8192) throw Error();
+     const grant: unknown = JSON.parse(text);
+     if (!record(grant)) throw Error();
+@@ -119,7 +122,7 @@ export function lunaOneShot(directory = lunaLocalDirectory(), now = Date.now) {
+       "binding", "maxAttempts", "maxCostNanoUSD", "expiresAt",
+       "ownerDecision", "syntheticOnly", "privateEvaluationOnly"]);
+     const expiry = Date.parse(String(grant.expiresAt));
+-    if (grant.schema !== "inspire-luna-one-shot-v1" ||
++    if (grant.schema !== "inspire-luna-one-shot-v2" ||
+         grant.approved !== true || grant.model !== LUNA_API.model ||
+         grant.payloadSHA !== prepared.payloadSHA ||
+         grant.binding !== prepared.binding || grant.maxAttempts !== 1 ||
+@@ -133,6 +136,22 @@ export function lunaOneShot(directory = lunaLocalDirectory(), now = Date.now) {
+   };
+   return {
+     configured: () => existsSync(keyFile),
++    freeze(prepared: LunaPrepared) {
++      assertDirectory();
++      const file = join(directory, "approved-preview.json");
++      if (existsSync(file)) {
++        if (readFileSync(file, "utf8") !== JSON.stringify(prepared)) {
++          throw Error("FROZEN_PREVIEW_CONFLICT");
++        }
++      } else {
++        const fd = openSync(file, "wx", 0o600);
++        try {
++          writeSync(fd, JSON.stringify(prepared)); fsyncSync(fd);
++        } finally {
++          closeSync(fd);
++        }
++      }
++    },
+     authorized(prepared: LunaPrepared) {
+       try {
+         authorized(prepared); return true;
+@@ -201,7 +220,24 @@ export async function sendLunaApi(prepared: LunaPrepared, key: string) {
+     baseURL: "https://api.openai.com/v1", maxRetries: 0, timeout: 30000,
+     logLevel: "off", organization: null, project: null,
+     fetchOptions: {redirect: "error"}});
+-  return client.responses.create(prepared.payload);
++  try {
++    return await client.responses.create(prepared.payload);
++  } catch (error) {
++    const status = record(error) ? error.status : undefined;
++    const code = record(error) ? error.code : undefined;
++    const safe = status === 401 ? "OPENAI_AUTH" : status === 429 ?
++      code === "insufficient_quota" ? "OPENAI_BILLING" : "OPENAI_RATE" :
++      status === 404 ? "OPENAI_MODEL" : "OPENAI_TRANSPORT";
++    const messages: Record<string, string> = {
++      OPENAI_AUTH: "Khóa API chưa được chấp nhận. Nhờ con kiểm tra cấu hình.",
++      OPENAI_BILLING: "Tài khoản API chưa đủ hạn mức thanh toán.",
++      OPENAI_RATE: "OpenAI đang giới hạn yêu cầu. Không tự thử lại.",
++      OPENAI_MODEL: "Tài khoản API chưa truy cập được model đã chọn.",
++      OPENAI_TRANSPORT: "Kết nối OpenAI gián đoạn; " +
++        "kết quả chưa xác định. Không tự gửi lại.",
++    };
++    throw new ChatError(safe, messages[safe], "none", 503);
++  }
+ }
+ 
+ /** Strict generated candidate parsing, excluding reasoning, tools and refusals.
+@@ -213,7 +249,12 @@ export function decodeLunaApi(value: unknown) {
+       value.model !== LUNA_API.model || typeof value.id !== "string" ||
+       !Array.isArray(value.output) || !record(value.usage) ||
+       typeof value.usage.input_tokens !== "number" ||
+-      typeof value.usage.output_tokens !== "number") {
++      typeof value.usage.output_tokens !== "number" ||
++      !Number.isSafeInteger(value.usage.input_tokens) ||
++      Number(value.usage.input_tokens) < 0 ||
++      !Number.isSafeInteger(value.usage.output_tokens) ||
++      Number(value.usage.output_tokens) < 0 ||
++      Number(value.usage.output_tokens) > LUNA_API.maxOutputTokens) {
+     throw new UnknownReplyOutcome("LUNA_OUTPUT_HOLD");
+   }
+   const texts: string[] = [];
+@@ -246,9 +287,20 @@ export function decodeLunaApi(value: unknown) {
+  * @param {LunaPrepared} prepared Frozen server proposal.
+  */
+ export async function recheckLunaSources(prepared: LunaPrepared) {
+-  await assertKnowledgeExport(prepared.references);
++  let outbound: unknown;
++  try {
++    outbound = JSON.parse(prepared.payload.input[0].content);
++  } catch {
++    throw new ConfirmedNoReply("LUNA_PREVIEW_MUTATED");
++  }
+   if (lunaHash(prepared.body) !== prepared.payloadSHA ||
+-      JSON.stringify(prepared.payload) !== prepared.body) {
++      JSON.stringify(prepared.payload) !== prepared.body ||
++      lunaHash(JSON.stringify([prepared.request, prepared.payloadSHA])) !==
++        prepared.binding || !record(outbound) ||
++      JSON.stringify(outbound.references) !==
++        JSON.stringify(prepared.references)) {
+     throw new ConfirmedNoReply("LUNA_PREVIEW_MUTATED");
+   }
++  // Check the exact passages in the bound wire body, never a detached list.
++  await assertKnowledgeExport(prepared.references);
+ }
+diff --git a/functions/src/inspireLunaService.ts b/functions/src/inspireLunaService.ts
+index 63a0f63..5f18195 100644
+--- a/functions/src/inspireLunaService.ts
++++ b/functions/src/inspireLunaService.ts
+@@ -125,6 +125,7 @@ export function createPrivateChatgptService(dependencies: {
+  * @return {object} Private endpoint facade using existing auth/quotas/epochs.
+  */
+ export function createPrivateLunaService(dependencies: {
++  sourceFree?: boolean;
+   store?: ReturnType<typeof lunaOneShot>;
+   controller?: ReturnType<typeof createLunaController>;
+   send?: typeof sendLunaApi;
+@@ -154,7 +155,8 @@ export function createPrivateLunaService(dependencies: {
+       let raw: unknown;
+       try {
+         raw = await send(p, key);
+-      } catch {
++      } catch (error) {
++        if (error instanceof ChatError) throw error;
+         throw new UnknownReplyOutcome("LUNA_PROVIDER_OUTCOME_UNKNOWN");
+       }
+       const candidate = decodeLunaApi(raw);
+@@ -163,7 +165,7 @@ export function createPrivateLunaService(dependencies: {
+       // This is a quarantined private evaluation surface, not actual execution
+       // or public delivery permission. Native observations stay held.
+       return candidate.text;
+-    }}, now, dependencies.rateCheck, true);
++    }}, now, dependencies.rateCheck, true, dependencies.sourceFree);
+ 
+   return {...facade, controller,
+     async handlePrivate(data: unknown, identity: Identity, ip: string) {
+@@ -203,8 +205,10 @@ export function createPrivateLunaService(dependencies: {
+         const prepared = existing?.prepared ?? prepareLunaApi({
+           messages: request.messages, operatingInstructions: [],
+           userStatedPreferences: {...emptyPreferences},
+-          supportingKnowledge: await retrieveKnowledge(request.messages, true),
++          supportingKnowledge: dependencies.sourceFree ? [] :
++            await retrieveKnowledge(request.messages, true),
+         }, request);
++        await recheckLunaSources(prepared);
+         if (!existing) {
+           plans.set(request.operationId, {
+             uid: identity.uid, prepared, started: false, at: now(),
+diff --git a/functions/src/inspireReviewReceipt.ts b/functions/src/inspireReviewReceipt.ts
+index 39f010d..3d02a6f 100644
+--- a/functions/src/inspireReviewReceipt.ts
++++ b/functions/src/inspireReviewReceipt.ts
+@@ -20,6 +20,8 @@ export function browserReceipt(value: unknown) {
+     payloadSHA: r.payloadSHA, binding: r.binding,
+     actualExecutionEligible: false,
+     publicDelivery: false, automaticRetries: false,
++    ...(typeof r.keyConfigured === "boolean" ?
++      {keyConfigured: r.keyConfigured} : {}),
+     ...(accounting && Number.isInteger(accounting.used) ?
+       {accounting: {used: Number(accounting.used),
+         maxAttempts: accounting.maxAttempts === 50 ? 50 : 3}} : {}),
+diff --git a/package.json b/package.json
+index 23f45dd..4458b98 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,8 @@
+     "knowledge:import": "node --import ./tests/register-ts.mjs tests/import-inspire-knowledge.mjs",
+     "predeploy": "npm run build",
+     "deploy": "gh-pages -d dist",
+-    "father:weekend": "node tests/start-father-weekend.mjs"
++    "father:weekend": "node tests/start-father-weekend.mjs",
++    "father:api": "node tests/start-father-api.mjs"
+   },
+   "dependencies": {
+     "@vitejs/plugin-react": "latest",
+diff --git a/src/pages/AIInspire.tsx b/src/pages/AIInspire.tsx
+index e230f93..be16113 100644
+--- a/src/pages/AIInspire.tsx
++++ b/src/pages/AIInspire.tsx
+@@ -6,7 +6,7 @@ import Header from "../components/Header"
+ import Icon from "../components/Icon"
+ import InspireAccountPanel from "../components/InspireAccountPanel"
+ import {chatToken} from "../services/inspireIdentity"
+-import { createSimulationTransport, createPrivateChatgptTransport } from "../services/InspireAIconnect"
++import { createSimulationTransport, createPrivateChatgptTransport, createPrivateLunaTransport } from "../services/InspireAIconnect"
+ import type {LunaPreview} from "../services/InspireAIconnect"
+ import { CHAT_LIMITS, ConversationStore } from "../services/inspireConversation"
+ 
+@@ -18,6 +18,7 @@ export default function AIInspire() {
+   const [privateReady, setPrivateReady] = useState(false)
+   const [privateError, setPrivateError] = useState("")
+   const [apiReady, setApiReady] = useState(false)
++  const [apiRoute, setApiRoute] = useState<'chatgpt' | 'api'>('chatgpt')
+   const [apiMode, setApiMode] = useState(privateTest)
+   const [knowledgeTrace, setKnowledgeTrace] = useState<unknown>(null)
+   const [apiPreview, setApiPreview] = useState<LunaPreview>()
+@@ -30,12 +31,13 @@ export default function AIInspire() {
+         const value = await response.json()
+         if (!response.ok || value.mode !== "simulation" || value.modelAvailable !== false) throw Error()
+         setPrivateReady(true)
+-        setApiReady(value.chatgptPreview === true)
++        setApiReady(value.chatgptPreview === true || value.lunaApiPreview === true)
++        setApiRoute(value.lunaApiPreview === true ? 'api' : 'chatgpt')
+       }).catch(() => { if (!abort.signal.aborted) setPrivateError("Phòng thử riêng chưa mở. Nhờ con kiểm tra giúp bố.") })
+     return () => abort.abort()
+   }, [privateTest])
+   const makeStore = () => new ConversationStore(apiMode && privateTest ?
+-    createPrivateChatgptTransport(setApiPreview, fetch, chatToken, () => window.dispatchEvent(new Event("inspire-account-refresh"))) :
++    (apiRoute === 'api' ? createPrivateLunaTransport : createPrivateChatgptTransport)(setApiPreview, fetch, chatToken, () => window.dispatchEvent(new Event("inspire-account-refresh"))) :
+     createSimulationTransport(fetch, chatToken, () => window.dispatchEvent(new Event("inspire-account-refresh")), setKnowledgeTrace))
+   const [store, setStore] = useState(makeStore)
+   const identityKey = useRef<string | null>(null)
+@@ -44,8 +46,8 @@ export default function AIInspire() {
+     const uid = key?.split(":")[0] ?? null
+     if (identityKey.current !== uid) { identityKey.current = uid; setStore(makeStore()); setFeedback({}); setApiPreview(undefined); setKnowledgeTrace(null) }
+     setIdentityReady(!!key)
+-  }, [apiMode])
+-  useEffect(() => { setStore(makeStore()); setFeedback({}); setApiPreview(undefined); setKnowledgeTrace(null) }, [apiMode])
++  }, [apiMode, apiRoute])
++  useEffect(() => { setStore(makeStore()); setFeedback({}); setApiPreview(undefined); setKnowledgeTrace(null) }, [apiMode, apiRoute])
+   const workspace = useSyncExternalStore(store.subscribe, store.getSnapshot)
+   const current = workspace.conversations.find((c) => c.id === workspace.activeId)!
+   const [showConversations, setShowConversations] = useState(false)
+@@ -88,7 +90,7 @@ export default function AIInspire() {
+       <main className="ip-main">
+         <div className="ip-page-heading">
+           <div><span className="ip-kicker">{privateTest ? "INSPIRE · CHỈ TRÊN MÁY NÀY" : "MỘT KHOẢNG DỪNG CHO BẠN"}</span><h1>{privateTest ? "Phòng thử riêng của bố" : "Trò chuyện cùng INSPIRE"}</h1></div>
+-          <span className="ip-mode"><span /> {apiMode ? (current.messages.some(m => m.role === "assistant") ? "ChatGPT · Phản hồi mô hình" : "ChatGPT · Chưa gửi tới AI") : privateTest ? "Mô phỏng · Chưa dùng AI" : "Bản thử nghiệm · Mô phỏng"}</span>
++          <span className="ip-mode"><span /> {apiMode ? `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · ${current.messages.some(m => m.role === 'assistant') ? 'Phản hồi mô hình' : 'Chưa gửi tới AI'}` : privateTest ? "Mô phỏng · Chưa dùng AI" : "Bản thử nghiệm · Mô phỏng"}</span>
+         </div>
+         {privateTest && !current.messages.length && <div className="ip-private-intro">
+           <p>Bố cứ hỏi bằng tiếng Việt, hỏi tiếp hoặc đính chính điều vừa nói. Chỉ dùng tình huống giả định.</p>
+@@ -102,13 +104,13 @@ export default function AIInspire() {
+         </div>}
+         {prototypeEnabled && (!privateTest || privateReady) && (privateTest ?
+           <details className="ip-private-setup"><summary>Dành cho con · Thiết lập và tài khoản</summary><InspireAccountPanel onIdentity={onIdentity} />
+-            <div className="ip-private-modes" aria-label="Chế độ thử"><button aria-pressed={!apiMode} onClick={() => setApiMode(false)}>Mô phỏng</button><button disabled={!apiReady} aria-pressed={apiMode} onClick={() => setApiMode(true)} title="Chỉ chuẩn bị nội dung; chưa gọi mô hình.">{apiReady ? "ChatGPT · Xem trước" : "Luna · Chưa bật"}</button></div>
+-            <p>Đường ưu tiên: đăng nhập ChatGPT. Chủ hệ đã kiểm tra thanh toán. Chưa mở gửi tới mô hình. Mô phỏng vẫn dùng Controller hiện có.</p>
++            <div className="ip-private-modes" aria-label="Chế độ thử"><button aria-pressed={!apiMode} onClick={() => setApiMode(false)}>Mô phỏng</button><button disabled={!apiReady} aria-pressed={apiMode} onClick={() => setApiMode(true)} title="Chỉ chuẩn bị nội dung; chưa gọi mô hình.">{apiReady ? `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · Xem trước` : "Luna · Chưa bật"}</button></div>
++            <p>{apiRoute === 'api' ? 'Đường đã chọn: OpenAI API trực tiếp, dùng billing API riêng. Chưa duyệt inference tính phí.' : 'Đường ChatGPT chưa mở gửi tới mô hình.'} Mô phỏng vẫn dùng Controller hiện có.</p>
+             {knowledgeTrace != null && (knowledgeTrace as {conversationId?: string}).conversationId === current.id && <details><summary>Biên nhận chuẩn bị · không hiển thị văn bản nguồn</summary><pre>{JSON.stringify(knowledgeTrace, null, 2)}</pre></details>}
+             {apiMode && apiPreview && apiPreview.operationId === current.pending?.request?.operationId && apiPreview.conversationId === current.id && <div className="ip-api-preview">
+               <h2>Biên nhận xem trước · chưa gửi</h2>
+-              <p>Chưa gửi. Chủ hệ đã cho phép thử riêng không có trần token cứng; ứng dụng không tự thử lại và không kiểm soát được mọi retry nội bộ của nhà cung cấp. Chỉ hiển thị phản hồi hợp lệ tối đa 2.000 ký tự; đây không phải trần token hay chi phí. Còn chờ kiểm chứng cô lập công cụ và duyệt chạy riêng. {apiPreview.sourceCount} đoạn nguồn đủ quyền xuất.</p>
+-              <p>Chỉ dùng đường đăng nhập ChatGPT, không chuyển sang khóa API. Mã lượt và mã nội dung được lưu riêng trên máy; nội dung trò chuyện chỉ ở bộ nhớ.</p>
++              <p>Chưa gửi. Ứng dụng không tự thử lại. Chỉ nhận phản hồi hợp lệ tối đa 2.000 ký tự. {apiRoute === 'api' ? 'API không cấp công cụ, có trần output token trong request và cần duyệt chi phí riêng.' : 'Chưa xác minh cô lập công cụ app-server.'} {apiPreview.sourceCount} đoạn nguồn đủ quyền xuất.</p>
++              <p>{apiRoute === 'api' ? `Khóa API đã cấu hình: ${apiPreview.keyConfigured ? 'có' : 'chưa'}. Dự phòng lượt này: US$${((apiPreview.reservedNanoUSD ?? 0) / 1e9).toFixed(7)}. Khóa chỉ ở phía server ngoài repository.` : 'Chỉ dùng đường đăng nhập ChatGPT.'} Nội dung trò chuyện chỉ ở bộ nhớ.</p>
+               <pre>{JSON.stringify({controls: apiPreview.controls, accounting: apiPreview.accounting}, null, 2)}</pre>
+ 
+               <p>Mã nội dung: <code>{apiPreview.payloadSHA}</code></p>
+@@ -138,7 +140,7 @@ export default function AIInspire() {
+               <div><strong>INSPIRE</strong><span>Chậm lại một chút. Bắt đầu từ điều bạn muốn.</span></div>
+               <button className="ip-mobile-toggle" aria-expanded={showConversations} onClick={() => setShowConversations(!showConversations)} aria-label="Danh sách cuộc trò chuyện"><Icon name="message" /></button>
+             </header>
+-            <div className="ip-disclosure"><Icon name="spark" size={20} /><p>{apiMode ? "ChatGPT · Bản nháp chỉ để đánh giá riêng, chưa được kiểm định. Chưa tự gửi hoặc tự thử lại." : privateTest ? "Mô phỏng · Chưa dùng AI. Nhận xét chỉ giữ trong phiên này." : available ? "Bạn đang trải nghiệm mô phỏng cục bộ có xác thực và hạn mức, chưa kết nối mô hình AI. Chỉ dùng nội dung giả định." : prototypeEnabled ? "Đang chờ kết nối danh tính khách hoặc tài khoản với trình mô phỏng cục bộ. Mô hình AI chưa được bật." : "Bản xem trước đang đóng kết nối. Chạy ứng dụng cục bộ để trải nghiệm mô phỏng; mô hình AI chưa được bật."}</p></div>
++            <div className="ip-disclosure"><Icon name="spark" size={20} /><p>{apiMode ? "Luna · Đánh giá riêng, chưa được kiểm định. Chưa tự gửi hoặc tự thử lại." : privateTest ? "Mô phỏng · Chưa dùng AI. Nhận xét chỉ giữ trong phiên này." : available ? "Bạn đang trải nghiệm mô phỏng cục bộ có xác thực và hạn mức, chưa kết nối mô hình AI. Chỉ dùng nội dung giả định." : prototypeEnabled ? "Đang chờ kết nối danh tính khách hoặc tài khoản với trình mô phỏng cục bộ. Mô hình AI chưa được bật." : "Bản xem trước đang đóng kết nối. Chạy ứng dụng cục bộ để trải nghiệm mô phỏng; mô hình AI chưa được bật."}</p></div>
+             <div ref={timeline} className="ip-timeline" role="log" aria-label="Nội dung trò chuyện" aria-live="polite" aria-relevant="additions">
+               {!current.messages.length && <div className="ip-welcome">
+                 <div className="ip-welcome-leaf"><Icon name="garden" size={44} /></div>
+@@ -148,7 +150,7 @@ export default function AIInspire() {
+                 {!privateTest && <div className="ip-starters">{starters.map((text) => <button key={text} disabled={!available} onClick={() => { store.draft(current.id, text); composer.current?.focus() }}>{text}<Icon name="arrow" size={19} /></button>)}</div>}
+               </div>}
+               {current.messages.map((m) => <article key={m.id} className={`ip-message ip-message-${m.role}`} data-message-role={m.role}>
+-                <div className="ip-message-label">{m.role === "user" ? "Bạn" : <><Icon name="leaf" size={18} /> INSPIRE <span>· {apiMode ? "ChatGPT · Đánh giá riêng" : "Mô phỏng"}</span></>}</div>
++                <div className="ip-message-label">{m.role === "user" ? "Bạn" : <><Icon name="leaf" size={18} /> INSPIRE <span>· {apiMode ? `${apiRoute === 'api' ? 'Luna API' : 'ChatGPT'} · Đánh giá riêng` : "Mô phỏng"}</span></>}</div>
+                 <div className="ip-message-body">
+                   {m.correctionOf && <div className="ip-correction-reference">Đính chính tin nhắn: “{current.messages.find((original) => original.id === m.correctionOf)?.text}”</div>}
+                   <p>{m.text}</p>
+diff --git a/tests/import-api-rag-bundle.mjs b/tests/import-api-rag-bundle.mjs
+new file mode 100644
+index 0000000..fd4c551
+--- /dev/null
++++ b/tests/import-api-rag-bundle.mjs
+@@ -0,0 +1,81 @@
++// Operator-only owner-directed private RAG merge. No inference or live release.
++import {readFileSync,writeFileSync,existsSync,mkdirSync} from 'node:fs'
++import {resolve,join,sep} from 'node:path'
++import {createHash} from 'node:crypto'
++import {spawnSync} from 'node:child_process'
++import {TextDecoder} from 'node:util'
++import {createRequire} from 'node:module'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {importSource,deriveSections} from '../functions/src/inspireKnowledge.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const root=resolve('.private.local/inbox/INSPIRE_RAG_API_HANDOFF'),privateRoot=resolve('.private.local/knowledge')
++const sha=b=>createHash('sha256').update(b).digest('hex')
++const manifestBytes=readFileSync(join(root,'SOURCE_MANIFEST.json')),manifest=JSON.parse(manifestBytes),taskHash=sha(readFileSync(join(root,'CODEX_API_RAG_TASK.md')))
++const receiptsPath=join(privateRoot,'receipts.json'),old=JSON.parse(readFileSync(receiptsPath,'utf8')),merged=new Map(old.map(r=>[r.documentId,r])),byHash=new Map(old.filter(r=>r.hash).map(r=>[r.hash,r]))
++const require=createRequire(new URL('../functions/package.json',import.meta.url)),db=require('firebase-admin/firestore').getFirestore()
++const report={verifiedPayloads:0,imported:0,unchanged:0,lessons:0,eligible:0,held:[],errors:[],references:[],decision:{authority:'Owner request 2026-11-25: execute CODEX_API_RAG_TASK.md section 2; private reference research/export only',taskHash,manifestHash:sha(manifestBytes),actualPermissionIssued:false,liveAllowanceIssued:false}}
++const evidence=JSON.stringify(report.decision)
++const rawDir=join(privateRoot,'raw');mkdirSync(rawDir,{recursive:true})
++const historyDir=join(privateRoot,'history');mkdirSync(historyDir,{recursive:true})
++async function put(record,raw,text,grant){
++ const hash=sha(raw),prior=merged.get(record.documentId)
++ const source={...record,hash,version:prior?.version||1}
++ const sections=text?deriveSections(source,text):[]
++ if(grant&&sections.length){record.permittedUse='supporting-retrieval';record.permissions={sourceHash:hash,internalResearch:true,externalExport:true,evidence,runtimeUse:'private-reference-evaluation',sectionHashes:sections.map(s=>s.sectionHash)}}
++ const minimum=prior?.version||1
++ const result=await importSource(record,raw,text,minimum)
++ const row={...record,hash,...result};merged.set(record.documentId,row)
++ const dir=join(historyDir,record.documentId);mkdirSync(dir,{recursive:true});for(const r of [prior,row].filter(Boolean)){const bytes=JSON.stringify(r,null,2);const file=join(dir,sha(bytes)+'.json');if(!existsSync(file))writeFileSync(file,bytes,{flag:'wx'})}
++ result.changed?report.imported++:report.unchanged++
++ if(grant&&sections.length){report.eligible++;report.references.push({documentId:record.documentId,hash,version:result.version,sections:sections.length})}
++}
++const entries=manifest.entries
++for(const row of entries){
++ const file=resolve(root,row.path);if(!file.startsWith(root+sep))throw Error('BUNDLE_PATH_HOLD')
++ const raw=readFileSync(file);if(sha(raw)!==row.sha256||raw.length!==row.bytes)throw Error('BUNDLE_INTEGRITY_HOLD')
++ report.verifiedPayloads++
++ const rawFile=join(rawDir,row.sha256);if(!existsSync(rawFile))writeFileSync(rawFile,raw,{flag:'wx'})
++ const prior=byHash.get(row.sha256),name=row.originalNames[0],title=name
++ const id=prior?.documentId||'bundle-'+sha(row.origins[0]).slice(0,24)
++ const record={collection:'INSPIRE',documentId:id,title:prior?.title||title,status:prior?.status||'review-required',permittedUse:'receipt-only',rawFile:row.sha256,kind:'reference',contentClass:'content',aliases:[...new Set([...(prior?.aliases||[]),...row.originalNames])],origins:[...new Set([...(prior?.origins||[]),...row.origins])],provenance:{packageHash:sha(manifestBytes),relativePath:row.path,declaredVersion:(row.headerVersionMentions||[]).join('; ')||'Original bytes/header retained',authority:row.semanticApproval+'; '+row.role}}
++ const isLesson=row.originalNames.includes('LESSON_CONTENT_458.jsonl')
++ const volume=/^(CUM_\d+_|DON_VI_\d+_|INSPIRE_MOI_AND_CURRICULA_READABLE)/.test(name)
++ const governance=/MOI|OSP|RDS|CSS|DPC|PEC|WORK|OWNER_|GENESIS|POLICY|QUY_TAC|QUYEN|CAPABILITY|SAFETY|APPROVAL|RUNTIME|CONTRACT/i.test(name)
++ const management=/REGISTER|REGISTRY|MANIFEST|INDEX|CATALOG|COVERAGE|README|SHA256|PROVENANCE|MISSING|DUPLICATE|HANDOFF|PASTE_INTO|WORK_NHAN|QUYEN|SCORER|SYNTHETIC_CASE|TEXT_TRANSFER|RECOVERY|STATUS|PENDING|SEARCH_SCOPE|HISTORICAL|SOURCE_INTEGRITY|EXCLUDED|BATCH_INTAKE|VERSION_MATRIX|CHAT_TRANSCRIPTION_CHECKS|^0[1-9]_|^1[0-4]_/i.test(name)
++ if(isLesson){
++  const lessons=raw.toString('utf8').split(/\r?\n/).filter(Boolean).map(l=>JSON.parse(l)),seen=new Set()
++  for(const lesson of lessons){
++   if(seen.has(lesson.lesson_id)||!/^[A-Z0-9-]+$/.test(lesson.lesson_id)||typeof lesson.content!=='string'||sha(lesson.content)!==lesson.content_sha256)throw Error('LESSON_INTEGRITY_HOLD')
++   seen.add(lesson.lesson_id)
++   const lr={...record,documentId:'lesson-'+lesson.lesson_id,title:lesson.lesson_id+' · '+lesson.title,status:'review-required',lesson:{lessonId:lesson.lesson_id,moduleId:lesson.module_id,kind:lesson.kind,contentHash:lesson.content_sha256,parentHash:row.sha256,status:'DRAFT'}}
++   await put(lr,raw,'# '+lesson.title+'\n'+lesson.content,true);report.lessons++
++  }
++  report.held.push({documentId:id,reason:'JSONL parent preserved; individual lessons indexed'});await put({...record,contentClass:'receipt'},raw,'',false);continue
++ }
++ let text=''
++ try{
++  if(!volume&&!management&&!governance){
++   if(/\.(md|txt)$/i.test(row.path))text=new TextDecoder('utf-8',{fatal:true}).decode(raw)
++   else if(/\.docx$/i.test(row.path)){
++    const code="import sys,importlib.util; from pathlib import Path; s=importlib.util.spec_from_file_location('x',Path('tests/extract-inspire-corpus.py')); m=importlib.util.module_from_spec(s);s.loader.exec_module(m);print(m.extract(Path(sys.argv[1]).read_bytes(),'.docx')[0],end='')"
++    const r=spawnSync(resolve('.tools.local/python312/python.exe'),['-X','utf8','-c',code,file],{encoding:'utf8',maxBuffer:1000000,env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'}});if(r.status!==0)throw Error('DOCX_EXTRACTION_FAILED');text=r.stdout
++   }
++  }
++  if(governance){record.kind='operating-rules';report.held.push({documentId:id,reason:'Governance/operating text retained; not authorized operating instructions'})}
++  else if(volume||management||!text){record.contentClass='receipt';report.held.push({documentId:id,reason:volume?'Duplicate curriculum volume; lesson records indexed':'Management/register/non-content receipt'})}
++  await put(record,raw,text,!!text&&!governance&&!management&&!volume)
++ }catch(e){report.errors.push({documentId:id,error:e.message});throw e}
++}
++// Existing local content outside the bundle remains part of the owner scope.
++for(const prior of old){
++ if(entries.some(r=>r.sha256===prior.hash)||!prior.hash||prior.kind==='operating-rules'||(prior.contentClass&&prior.contentClass!=='content'))continue
++ const snapshot=await db.doc('inspireKnowledge/'+prior.documentId).get(),s=snapshot.data()
++ if(!s?.sections?.length||/CONTENT.PATCH|MOI.*RECONSTRUCT/i.test(prior.title)){report.held.push({documentId:prior.documentId,reason:'Specific draft/proposal restriction or no index content'});continue}
++ const {version,hash,changed,...record}=prior;void version;void hash;void changed
++ await put(record,readFileSync(join(rawDir,prior.rawFile)),s.extractedText,true)
++}
++writeFileSync(receiptsPath,JSON.stringify([...merged.values()],null,2))
++writeFileSync(join(privateRoot,'api-rag-import-report.json'),JSON.stringify(report,null,2))
++writeFileSync(join(privateRoot,'owner-api-rag-scope.json'),JSON.stringify(report.decision,null,2))
++console.log(JSON.stringify({verified:report.verifiedPayloads,changed:report.imported,unchanged:report.unchanged,lessons:report.lessons,eligible:report.eligible,held:report.held.length,errors:report.errors.length}))
++await db.terminate()
+diff --git a/tests/inspire-api-rag.test.mjs b/tests/inspire-api-rag.test.mjs
+new file mode 100644
+index 0000000..95824c7
+--- /dev/null
++++ b/tests/inspire-api-rag.test.mjs
+@@ -0,0 +1,40 @@
++// No production key is read. SDK fetch is intercepted before any network call.
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {mkdtempSync,writeFileSync} from 'node:fs'
++import {tmpdir} from 'node:os'
++import {join} from 'node:path'
++import {LUNA_API,prepareLunaApi,recheckLunaSources,sendLunaApi,decodeLunaApi,lunaOneShot} from '../functions/src/inspireLunaApi.ts'
++import {emptyPreferences} from '../functions/src/inspireAccount.ts'
++const request={kind:'send',epoch:'e',sessionId:'s',operationId:'o',conversationId:'c',messages:[{id:'u',role:'user',text:'Tình huống giả định: chọn việc làm trước.'}]}
++const p=()=>prepareLunaApi({messages:request.messages,userStatedPreferences:emptyPreferences,operatingInstructions:[],supportingKnowledge:[]},request)
++test('v1 spending grant cannot authorize fresh API path; stale pricing is held',()=>{
++ const root=mkdtempSync(join(tmpdir(),'inspire-api-v2-')),plan=p(),now=Date.UTC(2026,10,25)
++ const grant={schema:'inspire-luna-one-shot-v1',approved:true,model:LUNA_API.model,payloadSHA:plan.payloadSHA,binding:plan.binding,maxAttempts:1,maxCostNanoUSD:plan.reservedNanoUSD,expiresAt:new Date(now+60000).toISOString(),ownerDecision:'SYNTHETIC ONLY',syntheticOnly:true,privateEvaluationOnly:true}
++ writeFileSync(join(root,'authorization.json'),JSON.stringify(grant));assert.equal(lunaOneShot(root,()=>now).authorized(plan),false)
++ writeFileSync(join(root,'authorization.json'),JSON.stringify({...grant,schema:'inspire-luna-one-shot-v2',expiresAt:new Date(Date.parse(LUNA_API.pricingExpires)+60000).toISOString()}));assert.equal(lunaOneShot(root,()=>Date.parse(LUNA_API.pricingExpires)).authorized(plan),false)
++})
++test('mutating request identity or payload after preview fails exact binding',async()=>{
++ const plan=p();await recheckLunaSources(plan)
++ const changed=structuredClone(plan);changed.request.messages[0].id='modified';await assert.rejects(recheckLunaSources(changed),/MUTATED/)
++ const tool=structuredClone(plan);tool.payload.tools=[{type:'web_search'}];await assert.rejects(recheckLunaSources(tool),/MUTATED/)
++ const text='Đoạn giả định chỉ kiểm tra binding.',reference={documentId:'offline-reference',version:1,hash:'a'.repeat(64),sectionId:'offline-reference-0',title:'Synthetic',text,sourceStatus:'published-supporting',sectionHash:(await import('node:crypto')).createHash('sha256').update(text).digest('hex')}
++ const detached=prepareLunaApi({messages:request.messages,userStatedPreferences:emptyPreferences,operatingInstructions:[],supportingKnowledge:[reference]},request)
++ detached.references=[]
++ // Must reject before any source lookup: the wire still contains that passage.
++ await assert.rejects(recheckLunaSources(detached),/MUTATED/)
++})
++test('SDK safe errors use one attempt for 401, 404, 429 and transport abort; no raw provider text leaks',async()=>{
++ const saved=globalThis.fetch
++ try{
++  for(const [status,code,expected] of [[401,'invalid_api_key','OPENAI_AUTH'],[404,'model_not_found','OPENAI_MODEL'],[429,'insufficient_quota','OPENAI_BILLING'],[429,'rate_limit','OPENAI_RATE'],[0,'abort','OPENAI_TRANSPORT']]){
++   let calls=0;globalThis.fetch=async()=>{calls++;if(!status)throw new DOMException('RAW_PROVIDER_SECRET','AbortError');return Response.json({error:{message:'RAW_PROVIDER_SECRET',code}},{status})}
++   await assert.rejects(sendLunaApi(p(),'sk-offline_fixture_not_a_real_key'),e=>e.code===expected&&e.retry==='none'&&!e.message.includes('RAW_PROVIDER_SECRET'));assert.equal(calls,1)
++  }
++ }finally{globalThis.fetch=saved}
++})
++test('malicious tool/refusal/incomplete/invalid usage responses cannot reach delivery',()=>{
++ const valid={id:'fake',status:'completed',model:LUNA_API.model,usage:{input_tokens:10,output_tokens:20},output:[{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text:'Một câu trả lời giả lập.'}]}]}
++ assert.deepEqual(p().payload.tools,[])
++ for(const change of [{output:[{type:'function_call',name:'exec',arguments:'malicious'}]},{output:[{type:'web_search_call'}]},{status:'incomplete'},{usage:{input_tokens:-1,output_tokens:20}},{usage:{input_tokens:10,output_tokens:513}},{output:[{type:'message',role:'assistant',status:'completed',content:[{type:'refusal',refusal:'No'}]}]}])assert.throws(()=>decodeLunaApi({...valid,...change}))
++})
+diff --git a/tests/inspire-emulator.test.mjs b/tests/inspire-emulator.test.mjs
+index 2a25422..8e45ed2 100644
+--- a/tests/inspire-emulator.test.mjs
++++ b/tests/inspire-emulator.test.mjs
+@@ -40,7 +40,10 @@ async function registered() {
+ function request(service, identity, session = service.session(identity), extra = {}) {
+   return {kind: 'send', epoch: session.epoch, sessionId: session.sessionId,
+     conversationId: randomUUID(), operationId: randomUUID(),
+-    messages: [{id: randomUUID(), role: 'user', text: 'Nội dung giả định về cảm xúc và mối quan hệ'}], ...extra}
++    // Quota/auth fixtures must not search the growing real corpus. Natural
++    // relevance is exercised separately; this suite overrides the text below
++    // for the explicit adapter/provenance case.
++    messages: [{id: randomUUID(), role: 'user', text: 'zaccountquotafixture'}], ...extra}
+ }
+ const noRate = async () => ({allowed: true})
+ const offline = {mode: 'simulation', reply: async () => 'Phản hồi mô phỏng cho kiểm thử.'}
+@@ -59,7 +62,7 @@ test('verified anonymous + email registration links same UID, login and signout
+   assert.deepEqual(verified.providers, ['password'])
+   assert.equal((await account.account(verified)).quota.remaining, 30)
+   const next = {...first, operationId:randomUUID(), messages:[...first.messages, answer.message,
+-    {id:randomUUID(),role:'user',text:'Đính chính giả định sau đăng ký',correctionOf:first.messages[0].id}]}
++    {id:randomUUID(),role:'user',text:'zaccountlinkcorrectionfixture',correctionOf:first.messages[0].id}]}
+   await service.handle(next, verified, 'quota-test')
+   assert.equal((await account.account(verified)).quota.remaining, 29)
+   await signOut(guest.auth)
+@@ -208,7 +211,10 @@ test('incremental knowledge provenance, review exclusion, Edulience isolation an
+   assert.deepEqual(await importSource(record, b, b.toString()), {changed:true,version:2})
+   await importSource({...record,documentId:id+'-review',status:'review-required',permittedUse:'receipt-only'}, a, a.toString())
+   await importSource({...record,collection:'Edulience',documentId:id+'-edulience'}, a, a.toString())
+-  const retrieved = await retrieveKnowledge('giấc ngủ nghỉ ngơi ' + needle)
++  // This checks exact provenance and receipt exclusion independently of the
++  // growing permitted draft corpus. Natural Vietnamese relevance has its own
++  // global-corpus follow-up/correction regression in inspire-pagination.
++  const retrieved = await retrieveKnowledge(needle)
+   assert.ok(retrieved.some((s) => s.documentId === id && s.version === 2 && s.hash.length === 64))
+   assert.ok(retrieved.every((s) => s.sourceStatus === 'published-supporting' && !s.documentId.endsWith('-review') && !s.documentId.endsWith('-edulience')))
+   assert.equal((await db.doc(`inspireKnowledge/${id}/versions/1`).get()).exists, true)
+@@ -216,7 +222,7 @@ test('incremental knowledge provenance, review exclusion, Edulience isolation an
+   let context
+   const service = createLocalService({mode:'simulation', reply: async (input) => { context = input; return 'Mô phỏng với ngữ cảnh có nguồn.' }}, Date.now, noRate)
+   const r = request(service, identity)
+-  r.messages[0].text = 'giấc ngủ nghỉ ngơi ' + needle
++  r.messages[0].text = needle
+   await service.handle(r, identity, 'quota-test')
+   assert.ok(context.operatingInstructions.some((s) => s.includes('WHAT → WHERE → WHY → TOWARD WHAT → HOW')))
+   assert.ok(context.supportingKnowledge.length)
+diff --git a/tests/inspire-knowledge-conversation.test.mjs b/tests/inspire-knowledge-conversation.test.mjs
+index 2c22db3..a557c96 100644
+--- a/tests/inspire-knowledge-conversation.test.mjs
++++ b/tests/inspire-knowledge-conversation.test.mjs
+@@ -30,8 +30,8 @@ test('automatic relevant retrieval, follow-up, correction, conflict preservation
+  await source('restricted','# Bản nháp\nzgardenbeta PRIVATE_RESTRICTED',false)
+  await source('rules','# Quy tắc\nzgardenbeta PRIVATE_OPERATING',true,'operating-rules')
+  await source('unrelated','# Chủ đề khác\nzunrelatedomega')
+- let messages=[{id:'u1',role:'user',text:'Tình huống giả định zworkalpha, tôi nên bắt đầu thế nào?'}]
+- for(const [i,next] of [[0,null],[1,{id:'u2',role:'user',text:'Bạn nói rõ hơn được không?'}],[2,{id:'u3',role:'user',text:'Đính chính: đây là zgardenbeta, chuyện chăm cây.',correctionOf:'u1'}]]){
++ let messages=[{id:'u1',role:'user',text:'Tình huống giả định zworkalpha'}]
++ for(const [i,next] of [[0,null],[1,{id:'u2',role:'user',text:'Bạn nói rõ hơn được không?'}],[2,{id:'u3',role:'user',text:'Đính chính: zgardenbeta',correctionOf:'u1'}]]){
+   if(next)messages=[...messages,{id:'a'+i,role:'assistant',text:'Phản hồi mô phỏng dùng riêng cho kiểm thử.'},next]
+   const r=request(messages),p=await prepareLunaKnowledgeInput(context(r),r),input=JSON.parse(p.text)
+   assert.deepEqual(input.messages,messages);assert.ok(input.supportingKnowledge.length>0)
+diff --git a/tests/inspire-luna-api.test.mjs b/tests/inspire-luna-api.test.mjs
+index e74a889..2d9a7fc 100644
+--- a/tests/inspire-luna-api.test.mjs
++++ b/tests/inspire-luna-api.test.mjs
+@@ -22,12 +22,12 @@ requireLocalEmulators()
+ const require=createRequire(new URL('../functions/package.json',import.meta.url))
+ const db=require('firebase-admin/firestore').getFirestore()
+ const auth=require('firebase-admin/auth').getAuth()
+-const now=()=>Date.UTC(2026,10,14)
++const now=()=>Date.UTC(2026,10,25)
+ const r=(messages=[{id:'u1',role:'user',text:'Tình huống giả định: Tôi có một ngày nhiều việc. Giúp tôi chọn việc nên làm trước.'}])=>({kind:'send',epoch:'epoch',sessionId:'session',operationId:'operation',conversationId:'conversation',messages})
+ const ctx=request=>({messages:request.messages,operatingInstructions:['PRIVATE_RULE_CANARY'],userStatedPreferences:{...emptyPreferences,name:'PRIVATE_NAME_CANARY'},supportingKnowledge:[]})
+ const body=text=>({id:'resp_offline_fixture',model:LUNA_API.model,status:'completed',usage:{input_tokens:120,output_tokens:40},output:[{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text}]}]})
+ const temporary=t=>{const dir=mkdtempSync(join(tmpdir(),'inspire-luna-offline-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));return dir}
+-const grant=p=>({schema:'inspire-luna-one-shot-v1',approved:true,model:LUNA_API.model,payloadSHA:p.payloadSHA,binding:p.binding,maxAttempts:1,maxCostNanoUSD:p.reservedNanoUSD,expiresAt:new Date(now()+600000).toISOString(),ownerDecision:'SYNTHETIC TEST FIXTURE; NOT OWNER AUTHORIZATION',syntheticOnly:true,privateEvaluationOnly:true})
++const grant=p=>({schema:'inspire-luna-one-shot-v2',approved:true,model:LUNA_API.model,payloadSHA:p.payloadSHA,binding:p.binding,maxAttempts:1,maxCostNanoUSD:p.reservedNanoUSD,expiresAt:new Date(now()+600000).toISOString(),ownerDecision:'SYNTHETIC TEST FIXTURE; NOT OWNER AUTHORIZATION',syntheticOnly:true,privateEvaluationOnly:true})
+ 
+ test('exact API preview retains both roles/corrections and omits private profiles and inherited operating text',()=>{
+  const request=r([{id:'u1',role:'user',text:'Tôi mất ngủ.'},{id:'a1',role:'assistant',text:'Điều gì đang xảy ra?'},{id:'u2',role:'user',text:'Đính chính: đây là tình huống giả định về tưới cây.',correctionOf:'u1'}])
+@@ -92,17 +92,18 @@ async function source(t,text,extra={}){
+  return {id,record,text,hash}
+ }
+ test('conversation retrieval, permission isolation, incremental replacement and immediate revocation reach exact adapter input',async t=>{
+- const sleep=await source(t,'# Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi giúp sắp xếp thời gian nghỉ. Đây là nguồn giả định.')
+- const plants=await source(t,'# Trồng cây\n\nTrồng cây cần tưới nước và quan sát đất. Nguồn giả định cho kiểm thử.')
+- const restricted=await source(t,'Giấc ngủ và nghỉ ngơi PRIVATE_RESTRICTED_CANARY.',{permissions:undefined})
+- const draft=await source(t,'Giấc ngủ PRIVATE_DRAFT_CANARY.',{status:'review-required'})
+- const rules=await source(t,'Giấc ngủ PRIVATE_RULE_CANARY.',{kind:'operating-rules'})
++ const sleepNeedle='zzsleep'+randomUUID().replaceAll('-',''),plantNeedle='zzplant'+randomUUID().replaceAll('-','')
++ const sleep=await source(t,'# '+sleepNeedle+' Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi giúp sắp xếp thời gian nghỉ. Đây là nguồn giả định.')
++ const plants=await source(t,'# '+plantNeedle+' Trồng cây\n\nTrồng cây cần tưới nước và quan sát đất. Nguồn giả định cho kiểm thử.')
++ const restricted=await source(t,sleepNeedle+' Giấc ngủ và nghỉ ngơi PRIVATE_RESTRICTED_CANARY.',{permissions:undefined})
++ const draft=await source(t,sleepNeedle+' Giấc ngủ PRIVATE_DRAFT_CANARY.',{status:'review-required'})
++ const rules=await source(t,sleepNeedle+' Giấc ngủ PRIVATE_RULE_CANARY.',{kind:'operating-rules'})
+  const unrelated=await source(t,'Cấu tạo động cơ tên lửa và nhiên liệu.')
+- const request=r([{id:'u1',role:'user',text:'Tình huống giả định: tôi muốn tìm hiểu giấc ngủ và nghỉ ngơi.'},{id:'a1',role:'assistant',text:'Bạn muốn hỏi tiếp điều gì?'},{id:'u2',role:'user',text:'Điều đó áp dụng thế nào?'}])
++ const request=r([{id:'u1',role:'user',text:'Tình huống giả định: '+sleepNeedle},{id:'a1',role:'assistant',text:'Bạn muốn hỏi tiếp điều gì?'},{id:'u2',role:'user',text:'Bạn nói rõ hơn được không?'}])
+  let found=await retrieveKnowledge(request.messages,true)
+- assert.ok(found.some(s=>s.documentId===sleep.id))
++ assert.ok(found.some(s=>s.documentId===sleep.id),JSON.stringify({query:request.messages,found:found.map(s=>({id:s.documentId,text:s.text})),expected:sleep.id}))
+  for(const bad of [restricted,draft,rules,unrelated])assert.ok(found.every(s=>s.documentId!==bad.id))
+- const corrected=[...request.messages,{id:'a2',role:'assistant',text:'Giấc ngủ là chủ đề cũ.'},{id:'u3',role:'user',text:'Tôi đính chính: trồng cây và tưới nước.',correctionOf:'u1'}]
++ const corrected=[...request.messages,{id:'a2',role:'assistant',text:'Giấc ngủ là chủ đề cũ.'},{id:'u3',role:'user',text:'Tôi đính chính: '+plantNeedle,correctionOf:'u1'}]
+  found=await retrieveKnowledge(corrected,true)
+  assert.ok(found.some(s=>s.documentId===plants.id));assert.ok(found.every(s=>s.documentId!==sleep.id))
+  const context={...ctx(request),supportingKnowledge:await retrieveKnowledge(request.messages,true)}
+@@ -111,7 +112,7 @@ test('conversation retrieval, permission isolation, incremental replacement and
+  const injected=JSON.parse(p.payload.input[0].content).references
+  assert.deepEqual(injected,p.references);assert.ok(injected.some(s=>s.text===sleep.text&&s.hash===sleep.hash))
+  assert.ok(!/PRIVATE_RESTRICTED_CANARY|PRIVATE_DRAFT_CANARY|PRIVATE_RULE_CANARY/.test(p.body))
+- const updated='# Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi. Bản cập nhật thay thế đúng phiên bản.',raw=Buffer.from(updated),hash=lunaHash(updated)
++ const updated='# '+sleepNeedle+' Giấc ngủ\n\nGiấc ngủ và nghỉ ngơi. Bản cập nhật thay thế đúng phiên bản.',raw=Buffer.from(updated),hash=lunaHash(updated)
+  const record={...sleep.record,rawFile:hash,permissions:{...sleep.record.permissions,sourceHash:hash}}
+  assert.deepEqual(await importSource(record,raw,updated),{changed:true,version:2})
+  assert.deepEqual(await importSource(record,raw,updated),{changed:false,version:2})
+@@ -123,7 +124,7 @@ test('conversation retrieval, permission isolation, incremental replacement and
+  await importSource(revoked,raw)
+  assert.ok((await retrieveKnowledge(request.messages,true)).every(s=>s.documentId!==sleep.id))
+  assert.equal((await db.doc(`inspireKnowledge/${sleep.id}/versions/1`).get()).data().hash,sleep.hash)
+- const out='docs/evidence/luna-api-2026-11-14';mkdirSync(out,{recursive:true})
++ const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/luna-api-2026-11-14';mkdirSync(out,{recursive:true})
+  writeFileSync(out+'/adapter-input-trace.json',JSON.stringify({executed:true,syntheticFixturesOnly:true,paidCalls:0,actualSourcePermissionGranted:false,request,adapterInput:p.payload,selectedReferences:p.references,correctionResult:await retrieveKnowledge(corrected,true),excluded:[restricted.id,draft.id,rules.id,unrelated.id],assertions:['exact permitted text and hash reach adapter body','restricted/draft/operating sources excluded','follow-up retains active user context','correction supersedes old query terms without editing history','version update and permission revocation invalidate cache']},null,2))
+ })
+ 
+@@ -132,9 +133,9 @@ test('an exact excerpt grant exports only that section, while other sections rem
+  const sections=deriveSections({...fixture.record,version:1,hash:fixture.hash},fixture.text)
+  const allowed=sections[0],denied=sections[1]
+  await importSource({...fixture.record,permissions:{...fixture.record.permissions,sectionHashes:[allowed.sectionHash]}},Buffer.from(fixture.text),fixture.text)
+- assert.ok((await retrieveKnowledge('giấc ngủ nghỉ ngơi',true)).some(s=>s.documentId===fixture.id))
+- assert.ok((await retrieveKnowledge('trồng cây tưới nước',true)).every(s=>s.documentId!==fixture.id))
+- assert.ok((await retrieveKnowledge('trồng cây tưới nước')).some(s=>s.documentId===fixture.id&&s.sectionHash===denied.sectionHash))
++ assert.ok((await retrieveKnowledge('giấc ngủ nghỉ ngơi',true,fixture.id)).some(s=>s.documentId===fixture.id))
++ assert.ok((await retrieveKnowledge('trồng cây tưới nước',true,fixture.id)).every(s=>s.documentId!==fixture.id))
++ assert.ok((await retrieveKnowledge('trồng cây tưới nước',false,fixture.id)).some(s=>s.documentId===fixture.id&&s.sectionHash===denied.sectionHash))
+  await assert.rejects(assertKnowledgeExport([{...denied,version:2}]))
+ })
+ 
+@@ -159,7 +160,7 @@ const noRate=async()=>({allowed:true})
+ const makeRequest=(s,identity,messages)=>{const {epoch,sessionId}=s.session(identity);return {...r(messages),epoch,sessionId,operationId:randomUUID(),conversationId:randomUUID(),kind:'send'}}
+ test('actual native Controller + private service preserve multi-turn/corrections, duplicate/replay identity and quotas',async t=>{
+  const identity=await member(t),controller=createLunaController();let calls=0
+- const service=createPrivateLunaService({store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;return body('Bạn có thể chọn việc có thời hạn gần nhất, rồi cân nhắc sức lực của mình. Đây là phản hồi giả định để kiểm tra kỹ thuật.')}})
++ const service=createPrivateLunaService({store:fixtureStore(),controller,sourceFree:true,rateCheck:noRate,send:async()=>{calls++;return body('Bạn có thể chọn việc có thời hạn gần nhất, rồi cân nhắc sức lực của mình. Đây là phản hồi giả định để kiểm tra kỹ thuật.')}})
+  const request=makeRequest(service,identity)
+  const run=async q=>{await service.handlePrivate({kind:'preview',request:q},identity,'local');return service.handlePrivate({kind:'execute',request:{...q,kind:'replay'}},identity,'local')}
+  const first=await run(request)
+@@ -174,25 +175,27 @@ test('actual native Controller + private service preserve multi-turn/corrections
+  const evidence=controller.evidence();assert.ok(evidence.filter(x=>x.phase==='candidate').length===3)
+  assert.ok(evidence.every(x=>x.actual_execution_eligible===false&&x.user_delivery===false))
+  assert.ok(evidence.some(x=>x.checks_executed.includes('Non-MOCK ScopeGuard')))
+- mkdirSync('docs/evidence/luna-api-2026-11-14',{recursive:true})
+- writeFileSync('docs/evidence/luna-api-2026-11-14/controller-trace.json',JSON.stringify({executed:true,paidCalls:0,transport:'OFFLINE INJECTED RESPONSE; NOT GENERATIVE QUALITY',calls,evidence},null,2))
++ mkdirSync(process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/luna-api-2026-11-14',{recursive:true})
++ writeFileSync((process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/luna-api-2026-11-14')+'/controller-trace.json',JSON.stringify({executed:true,paidCalls:0,transport:'OFFLINE INJECTED RESPONSE; NOT GENERATIVE QUALITY',calls,evidence},null,2))
+ })
+ 
+ test('authorization, cross-user access, outage, unknown outcome and restart reject without replacement calls',async t=>{
+  const identity=await member(t),other=await member(t);let calls=0,preflights=0
+  const controller={async preflight(){preflights++},async validate(){},evidence(){return[]}}
+- const service=createPrivateLunaService({store:{...fixtureStore(),authorized:()=>false},controller,rateCheck:noRate,send:async()=>{calls++;throw Error()}})
++ // Admission/restart checks are source-free; the separate retrieval and
++ // revocation regressions exercise the real knowledge path explicitly.
++ const service=createPrivateLunaService({sourceFree:true,store:{...fixtureStore(),authorized:()=>false},controller,rateCheck:noRate,send:async()=>{calls++;throw Error()}})
+  const request=makeRequest(service,identity)
+  await service.handlePrivate({kind:'preview',request},identity,'local')
+  await assert.rejects(service.handlePrivate({kind:'execute',request},identity,'local'),{code:'AUTHORIZATION_REQUIRED'})
+  await assert.rejects(service.handlePrivate({kind:'execute',request},other,'local'),{code:'OPERATION_CONFLICT'})
+  assert.equal(calls,0);assert.equal(preflights,0)
+- const failing=createPrivateLunaService({store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;throw Error('Offline injected timeout')}})
++ const failing=createPrivateLunaService({sourceFree:true,store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;throw Error('Offline injected timeout')}})
+  const bad=makeRequest(failing,identity)
+  await failing.handlePrivate({kind:'preview',request:bad},identity,'local')
+  for(let i=0;i<2;i++)await assert.rejects(failing.handlePrivate({kind:'execute',request:{...bad,kind:'replay'}},identity,'local'),{code:'OUTCOME_UNKNOWN'})
+  assert.equal(calls,1)
+- const restarted=createPrivateLunaService({store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;return body('Unexpected')}})
++ const restarted=createPrivateLunaService({sourceFree:true,store:fixtureStore(),controller,rateCheck:noRate,send:async()=>{calls++;return body('Unexpected')}})
+  await assert.rejects(restarted.handlePrivate({kind:'execute',request:{...bad,kind:'replay'}},identity,'local'),{code:'RESULT_UNKNOWN'})
+  assert.equal(calls,1)
+  const invalid={...makeRequest(restarted,identity),quota:999,uid:identity.uid}
+@@ -204,11 +207,11 @@ test('private rate/quota checks, forged history and revoked preview sources stop
+  const store={...fixtureStore(),consume(){keys++;return 'OFFLINE_NO_KEY'}}
+  const controller={async preflight(){},async validate(){},evidence(){return[]}}
+  const send=async()=>{sends++;return body('Nội dung thử riêng.')}
+- const limited=createPrivateLunaService({store,controller,send,rateCheck:async()=>({allowed:false,retryAfterSeconds:30})})
++ const limited=createPrivateLunaService({sourceFree:true,store,controller,send,rateCheck:async()=>({allowed:false,retryAfterSeconds:30})})
+  const a=makeRequest(limited,identity)
+  await limited.handlePrivate({kind:'preview',request:a},identity,'loopback')
+  await assert.rejects(limited.handlePrivate({kind:'execute',request:a},identity,'loopback'),{code:'RATE_LIMITED'})
+- const history=createPrivateLunaService({store,controller,send,rateCheck:noRate})
++ const history=createPrivateLunaService({sourceFree:true,store,controller,send,rateCheck:noRate})
+  const b=makeRequest(history,identity,[{id:'u1',role:'user',text:'Một câu hỏi giả định.'},{id:'a1',role:'assistant',text:'Lịch sử tự bịa.'},{id:'u2',role:'user',text:'Câu hỏi tiếp.'}])
+  await history.handlePrivate({kind:'preview',request:b},identity,'loopback')
+  await assert.rejects(history.handlePrivate({kind:'execute',request:b},identity,'loopback'),{code:'HISTORY_MISMATCH'})
+diff --git a/tests/inspire-pagination.test.mjs b/tests/inspire-pagination.test.mjs
+new file mode 100644
+index 0000000..dfc6c30
+--- /dev/null
++++ b/tests/inspire-pagination.test.mjs
+@@ -0,0 +1,43 @@
++// Real demo Firestore pagination + deterministic concurrent revision changes.
++import test from 'node:test'
++import assert from 'node:assert/strict'
++import {createRequire} from 'node:module'
++import {randomUUID,createHash} from 'node:crypto'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {deriveSections,words,retrieveKnowledge,importSource} from '../functions/src/inspireKnowledge.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const require=createRequire(new URL('../functions/package.json',import.meta.url)),firestore=require('firebase-admin/firestore'),{Query,FieldValue}=require('@google-cloud/firestore'),db=firestore.getFirestore()
++const prefix='pagination-'+randomUUID(),marker='zzpage'+randomUUID().replaceAll('-',''),ids=[]
++const sha=s=>createHash('sha256').update(s).digest('hex')
++function data(id,text,allowed=true){
++ const hash=sha(text),source={collection:'INSPIRE',documentId:id,version:1,hash,title:'Synthetic private source',rawFile:hash,status:'published-supporting',permittedUse:'supporting-retrieval',kind:'reference',permissions:{sourceHash:hash,internalResearch:true,externalExport:allowed,evidence:'SYNTHETIC ONLY'}}
++ return {...source,sections:deriveSections(source,text),searchTerms:words(text),externalSearchTerms:allowed?words(text):[],externalEligible:allowed,internalEligible:true}
++}
++async function seed(){const batch=db.batch();for(let i=0;i<61;i++){const id=prefix+'-'+String(i).padStart(3,'0');ids.push(id);batch.set(db.doc('inspireKnowledge/'+id),data(id,marker+(i===60?' zlastpagebest zlastpagerare':' filler')))}const denied=prefix+'-denied';ids.push(denied);batch.set(db.doc('inspireKnowledge/'+denied),data(denied,marker+' zlastpagebest zlastpagerare',false));batch.set(db.doc('inspireKnowledge/_index'),{revision:FieldValue.increment(1)},{merge:true});await batch.commit()}
++test('eligible source after first page is selected; no repeats/skips and tied ranking is stable',async t=>{
++ await seed();const pages=[];const get=Query.prototype.get
++ t.mock.method(Query.prototype,'get',async function(...args){const result=await get.apply(this,args);if(result.docs.some(d=>d.id.startsWith(prefix)))pages.push(result.docs.map(d=>d.id));return result})
++ const query=marker+' zlastpagebest zlastpagerare',a=await retrieveKnowledge(query,true)
++ assert.equal(a[0].documentId,prefix+'-060');assert.equal(a.length,3);assert.ok(a.every(s=>!s.documentId.endsWith('-denied')))
++ const scanned=pages.flat();assert.equal(scanned.length,61);assert.equal(new Set(scanned).size,61);assert.deepEqual(scanned,[...scanned].sort())
++ assert.deepEqual(await retrieveKnowledge(query,true),a)
++ await db.doc('inspireKnowledge/_index').set({revision:FieldValue.increment(1)},{merge:true})
++ assert.deepEqual(await retrieveKnowledge(query,true),a)
++})
++test('permission update between pages rejects mixed revision and does not poison cache',async t=>{
++ const get=Query.prototype.get;let changed=false
++ t.mock.method(Query.prototype,'get',async function(...args){const result=await get.apply(this,args);if(!changed&&result.size===50&&result.docs.some(d=>d.id.startsWith(prefix))){changed=true;const id=prefix+'-060',text=marker+' zlastpagebest zlastpagerare';await importSource({collection:'INSPIRE',documentId:id,title:'Revoked fixture',rawFile:sha(text),status:'review-required',permittedUse:'receipt-only',kind:'reference'},Buffer.from(text),text)}return result})
++ await assert.rejects(retrieveKnowledge(marker+' zlastpagebest',true),/REVISION_CHANGED/)
++ assert.equal(changed,true)
++ const next=await retrieveKnowledge(marker+' zlastpagebest',true);assert.ok(next.every(s=>s.documentId!==prefix+'-060'));assert.ok(next.length<=3)
++})
++test('natural Vietnamese follow-up and explicit correction preserve topic relevance without query markers',async()=>{
++ const orchid=prefix+'-orchid',tomato=prefix+'-tomato';ids.push(orchid,tomato)
++ for(const [id,text] of [[orchid,'# Lan hồ điệp\nLan hồ điệp bị úng rễ khi tưới nhiều nước. Tưới ít lại và kiểm tra rễ giúp tránh úng rễ.'],[tomato,'# Cây cà chua\nCây cà chua có lá vàng do thiếu dinh dưỡng. Kiểm tra lá vàng và dinh dưỡng của cây cà chua.']]){const d=data(id,text);const {version,hash,sections,searchTerms,externalSearchTerms,externalEligible,internalEligible,...record}=d;await importSource(record,Buffer.from(text),text)}
++ const original='Lan hồ điệp bị úng rễ khi tưới nhiều nước thì nên làm gì?'
++ const messages=[{id:'u1',role:'user',text:original},{id:'a1',role:'assistant',text:'Bạn muốn nói rõ hơn không?'},{id:'u2',role:'user',text:'Vậy tưới ít lại có giúp tránh úng rễ không?'}]
++ assert.equal((await retrieveKnowledge(messages,true))[0].documentId,orchid)
++ const corrected=[...messages,{id:'a2',role:'assistant',text:'Có thêm chi tiết nào cần sửa không?'},{id:'u3',role:'user',text:'Đính chính: cây cà chua có lá vàng do thiếu dinh dưỡng.',correctionOf:'u1'},{id:'a3',role:'assistant',text:'Đã ghi nhận.'},{id:'u4',role:'user',text:'Đính chính: tôi hỏi về lá vàng và dinh dưỡng của cây cà chua.',correctionOf:'u2'}]
++ const found=await retrieveKnowledge(corrected,true);assert.equal(found[0].documentId,tomato);assert.ok(found.every(s=>s.documentId!==orchid));assert.equal(corrected[0].text,original)
++})
++test.after(async()=>{for(const id of ids)await db.recursiveDelete(db.doc('inspireKnowledge/'+id));await db.doc('inspireKnowledge/_index').set({revision:FieldValue.increment(1)},{merge:true});await db.terminate()})
+diff --git a/tests/package-api-rag-review.py b/tests/package-api-rag-review.py
+new file mode 100644
+index 0000000..6cc658b
+--- /dev/null
++++ b/tests/package-api-rag-review.py
+@@ -0,0 +1,87 @@
++"""Local review artifact only; never includes corpus, keys or runtime state."""
++from pathlib import Path
++import subprocess, json, hashlib, zipfile, re, tempfile
++
++ROOT = Path.cwd()
++OUT = ROOT/'docs/evidence/api-rag-2026-11-25'
++ARCHIVE = ROOT/'INSPIRE-review-api-rag-2026-11-25.zip'
++sha = lambda b: hashlib.sha256(b).hexdigest()
++names = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z']).decode().split('\0')
++
++
++def eligible(n):
++    p = Path(n)
++    if not n or not (ROOT/p).is_file():
++        return False
++    if any(x in {'.git', '.private.local', '.tools.local', 'node_modules', '__pycache__', 'lib', 'dist', '.codex', '.agents'} for x in p.parts):
++        return False
++    if p.suffix.lower() in {'.zip', '.db', '.sqlite', '.sqlite3', '.pyc', '.log', '.key', '.pem', '.pfx', '.tsbuildinfo'} or p.name.startswith('.env'):
++        return False
++    historical = {'docs/evidence/knowledge-conversation-2026-11-21/tests.txt',
++                  'docs/evidence/knowledge-conversation-2026-11-21/native-controller-recheck.txt'}
++    if n.startswith('docs/') and not (n == 'docs/counseling-topics-source.md' or n in historical or n.startswith('docs/evidence/api-rag-2026-11-25/')):
++        return False
++    return not n.endswith('archive-verification.json')
++
++
++files = sorted(set(n for n in names if eligible(n)))
++
++
++def diff(checkpoint, output):
++    baseline = ROOT/'.private.local'/checkpoint/'files'
++    if not baseline.is_dir():
++        raise RuntimeError('Required working-tree checkpoint missing')
++    stage = Path(tempfile.mkdtemp(prefix='api-review-diff-', dir=ROOT/'.private.local'))
++    (stage/'before').mkdir(); (stage/'after').mkdir()
++    changed = []
++    for n in files:
++        if n.startswith('docs/'):
++            continue
++        old = baseline/n
++        if old.is_file():
++            before = old.read_bytes()
++        else:
++            r = subprocess.run(['git', 'show', 'HEAD:'+n], capture_output=True)
++            before = r.stdout if r.returncode == 0 else None
++        current = (ROOT/n).read_bytes()
++        if before == current or (before is not None and before.replace(b'\r\n', b'\n') == current.replace(b'\r\n', b'\n')):
++            continue
++        changed.append(n)
++        p = stage/'after'/n; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(current)
++        if before is not None:
++            p = stage/'before'/n; p.parent.mkdir(parents=True, exist_ok=True); p.write_bytes(before)
++    r = subprocess.run(['git', '-c', 'core.autocrlf=false', 'diff', '--no-index', '--binary', 'before', 'after'], cwd=stage, capture_output=True)
++    if r.returncode not in (0, 1):
++        raise RuntimeError('Diff construction failed')
++    patch = re.sub(rb'([ab])/(before|after)/', rb'\1/', r.stdout)
++    target = OUT/output; target.write_bytes(patch)
++    check = subprocess.run(['git', '-c', 'core.autocrlf=false', 'apply', '--check', str(target)], cwd=stage/'before', capture_output=True)
++    if check.returncode:
++        raise RuntimeError(check.stderr.decode())
++    return {'file': output, 'files': changed, 'baseline': checkpoint, 'applyCheckExit': 0, 'workspacePatchApplied': False}
++
++
++checks = [diff('api-rag-before-20261125', 'focused.patch'), diff('api-resume-before-20261125', 'resume.patch')]
++(OUT/'diff-check.json').write_text(json.dumps(checks, indent=2), 'utf-8')
++files = sorted(set(files + [str((OUT/n).relative_to(ROOT)).replace('\\', '/') for n in ['focused.patch', 'resume.patch', 'diff-check.json']]))
++manifest = []
++with zipfile.ZipFile(ARCHIVE, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
++    for n in files:
++        b = (ROOT/n).read_bytes()
++        if re.search(rb'-----BEGIN (?:RSA |EC )?PRIVATE KEY-----[\r\n]+[A-Za-z0-9+/=]{32,}', b):
++            raise RuntimeError('Secret material hold: '+n)
++        for key in re.findall(rb'\bsk-[A-Za-z0-9_-]{24,}', b):
++            if not any(w in key.lower() for w in [b'fixture', b'example', b'synthetic']):
++                raise RuntimeError('Possible credential hold: '+n)
++        target = 'source/'+n; z.writestr(target, b)
++        manifest.append({'path': target, 'sha256': sha(b), 'bytes': len(b)})
++    z.writestr('READ-FIRST.txt', 'Read source/docs/evidence/api-rag-2026-11-25/HANDOFF_VI.txt. Generation UNARMED. No real inference or owner approval issued. Current source plus focused and resume diffs; private originals/indexes, credentials, emulator databases, dependencies and portable runtimes excluded. Original local Controller installation required. Browser desktop/mobile NOT VERIFIED this turn.\n')
++    z.writestr('archive-manifest.json', json.dumps(manifest, indent=2))
++with zipfile.ZipFile(ARCHIVE) as z:
++    assert z.testzip() is None
++    for row in manifest:
++        assert sha(z.read(row['path'])) == row['sha256']
++    assert not any('/.private.local/' in n or '/node_modules/' in n or '/.tools.local/' in n for n in z.namelist())
++proof = {'file': ARCHIVE.name, 'sha256': sha(ARCHIVE.read_bytes()), 'bytes': ARCHIVE.stat().st_size, 'files': len(manifest), 'crcAndHashes': 'PASS', 'focusedDiffApplyCheck': 'PASS', 'privateOriginalsCredentialsDatabasesRuntimesExcluded': True, 'currentBrowserScreenshots': 'NOT VERIFIED: browser URL policy stopped CUA; no bypass', 'liveCalls': 0}
++(OUT/'archive-verification.json').write_text(json.dumps(proof, indent=2), 'utf-8')
++print(json.dumps(proof, indent=2))
+diff --git a/tests/prepare-api-rag-first.mjs b/tests/prepare-api-rag-first.mjs
+new file mode 100644
+index 0000000..353e5b4
+--- /dev/null
++++ b/tests/prepare-api-rag-first.mjs
+@@ -0,0 +1,36 @@
++// Exact operator review only. No key read, login, send or approval writer.
++import {readFileSync,writeFileSync,mkdirSync,existsSync,openSync,writeSync,fsyncSync,closeSync} from 'node:fs'
++import {join} from 'node:path'
++import {createRequire} from 'node:module'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {retrieveKnowledge} from '../functions/src/inspireKnowledge.ts'
++import {prepareLunaApi,recheckLunaSources,LUNA_API,lunaLocalDirectory} from '../functions/src/inspireLunaApi.ts'
++import {emptyPreferences} from '../functions/src/inspireAccount.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const local='.private.local/api-rag-final-20261125',out='docs/evidence/api-rag-2026-11-25/final-preview';mkdirSync(local,{recursive:true});mkdirSync(out,{recursive:true})
++const request={kind:'send',epoch:'api-rag-final-review-20261125',sessionId:'api-rag-final-session-20261125',operationId:'api-rag-final-attempt-20261125',conversationId:'api-rag-final-conversation-20261125',messages:[{id:'api-rag-final-user-message',role:'user',text:'Tình huống giả định: Tôi trì hoãn một việc dù đã biết cần làm. Giúp tôi hiểu khoảng cách giữa ý định và hành động.'}]}
++const refs=await retrieveKnowledge(request.messages,true)
++if(!refs.length)throw Error('FIRST_RAG_SOURCE_REQUIRED')
++const plan=prepareLunaApi({messages:request.messages,operatingInstructions:[],userStatedPreferences:emptyPreferences,supportingKnowledge:refs},request)
++await recheckLunaSources(plan)
++const file=join(local,'first-preview.json'),bytes=JSON.stringify(plan,null,2)+'\n'
++if(existsSync(file)&&readFileSync(file,'utf8')!==bytes)throw Error('FROZEN_FIRST_REQUEST_CHANGED: preserve previous review, require new decision')
++if(!existsSync(file)){const fd=openSync(file,'wx',0o600);try{writeSync(fd,bytes);fsyncSync(fd)}finally{closeSync(fd)}}
++const outbound=join(local,'first-outbound.json')
++if(existsSync(outbound)&&readFileSync(outbound,'utf8')!==plan.body)throw Error('FROZEN_OUTBOUND_CHANGED')
++if(!existsSync(outbound)){const fd=openSync(outbound,'wx',0o600);try{writeSync(fd,plan.body);fsyncSync(fd)}finally{closeSync(fd)}}
++const grant={schema:'inspire-luna-one-shot-v2',approved:false,model:LUNA_API.model,payloadSHA:plan.payloadSHA,binding:plan.binding,maxAttempts:1,maxCostNanoUSD:plan.reservedNanoUSD,expiresAt:'SET_AFTER_EXPLICIT_OWNER_APPROVAL_WITHIN_ONE_HOUR',ownerDecision:'PENDING_NEW_OWNER_DECISION',syntheticOnly:true,privateEvaluationOnly:true}
++// Runtime-bound review is created once by prepare-api-rag-http.mjs. Do not
++// replace its identity/binding when reopening the offline source preview.
++if(!existsSync(join(local,'first-runtime-preview.json')))writeFileSync(join(out,'authorization-template.json'),JSON.stringify(grant,null,2))
++const maxRequestReserve=(LUNA_API.maxWireBytes+4096)*LUNA_API.reserveInputNanoUSD+LUNA_API.maxOutputTokens*LUNA_API.outputNanoUSD
++const summary={question:request.messages[0].text,operationId:request.operationId,model:LUNA_API.model,endpoint:LUNA_API.endpoint,maxOutputTokens:LUNA_API.maxOutputTokens,displayCharacters:2000,tools:[],store:false,automaticRetries:false,
++ payloadSHA:plan.payloadSHA,binding:plan.binding,sourceCount:refs.length,sources:refs.map(({text,...r})=>({...r,characters:text.length})),inputByteBound:plan.inputTokenBound,
++ pricing:{checked:'2026-11-25',expires:LUNA_API.pricingExpires,inputUSDPerMillion:0.1,outputUSDPerMillion:0.5,source:LUNA_API.modelURL},
++ conservativeReservationUSD:plan.reservedNanoUSD/1e9,estimatedAtUncachedInputBoundUSD:(plan.inputTokenBound*LUNA_API.inputNanoUSD+LUNA_API.maxOutputTokens*LUNA_API.outputNanoUSD)/1e9,
++ estimateMethod:'UTF-8 request bytes + 4096 overhead as conservative offline token bound; not tokenizer count. Reservation allows higher input cache-write rate, no discounted cache assumption.',
++ proposedSession:{approved:false,userQuestions:50,maxResponses:50,maxAttemptsIncludingFailures:50,perRequestReservationMaxUSD:maxRequestReserve/1e9,totalReservationProposalUSD:50*maxRequestReserve/1e9,noOldGrantReused:true,existingQuotasAndRatesUnchanged:true},
++ approved:false,keyConfigured:existsSync(join(lunaLocalDirectory(),'api-key.txt')),fullExactRequestPrivateFile:file,liveCalls:0}
++if(!existsSync(join(local,'first-runtime-preview.json')))writeFileSync(join(out,'first-request-summary.json'),JSON.stringify(summary,null,2))
++console.log(JSON.stringify({payloadSHA:plan.payloadSHA,sources:refs.length,estimateUSD:summary.estimatedAtUncachedInputBoundUSD,reserveUSD:summary.conservativeReservationUSD,keyConfigured:summary.keyConfigured,approved:false}))
++const require=createRequire(new URL('../functions/package.json',import.meta.url));await require('firebase-admin/firestore').getFirestore().terminate()
+diff --git a/tests/prepare-api-rag-http.mjs b/tests/prepare-api-rag-http.mjs
+new file mode 100644
+index 0000000..908cb79
+--- /dev/null
++++ b/tests/prepare-api-rag-http.mjs
+@@ -0,0 +1,40 @@
++// Actual localhost preview/auth only. Never executes an inference request.
++import assert from 'node:assert/strict'
++import {readFileSync,writeFileSync,mkdirSync,existsSync,openSync,writeSync,fsyncSync,closeSync} from 'node:fs'
++import {createHash} from 'node:crypto'
++const base='http://127.0.0.1:5173',local='.private.local/api-rag-final-20261125',out='docs/evidence/api-rag-2026-11-25/final-preview'
++const freeze=(file,value)=>{const bytes=JSON.stringify(value,null,2)+'\n';if(existsSync(file)){assert.equal(readFileSync(file,'utf8'),bytes,'FROZEN_RUNTIME_CHANGED: stop; do not renew/rebind approval')}else{const fd=openSync(file,'wx',0o600);try{writeSync(fd,bytes);fsyncSync(fd)}finally{closeSync(fd)}}}
++const plan=JSON.parse(readFileSync(local+'/first-preview.json','utf8'))
++const status=await fetch(base+'/api/inspire-private-status').then(r=>r.json())
++assert.equal(status.lunaApiPreview,true);assert.equal(status.chatgptPreview,false);assert.equal(status.modelAvailable,false)
++const savedFile=local+'/synthetic-local-session.json'
++let saved=existsSync(savedFile)?JSON.parse(readFileSync(savedFile,'utf8')):null
++if(!saved){
++ const auth=await fetch('http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-only',{method:'POST',headers:{'Content-Type':'application/json'},body:'{"returnSecureToken":true}'}).then(r=>r.json())
++ assert.equal(typeof auth.idToken,'string');saved={token:auth.idToken}
++}
++const post=async(body,origin=base,path='/api/inspire-luna')=>{const r=await fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+saved.token,Origin:origin},body:JSON.stringify(body)});return {status:r.status,data:await r.json()}}
++if(!saved.request){const session=await post({kind:'session'});assert.equal(session.status,200);saved.request={...plan.request,epoch:session.data.epoch,sessionId:session.data.sessionId};freeze(savedFile,saved)}
++const request=saved.request
++assert.deepEqual({...request,epoch:plan.request.epoch,sessionId:plan.request.sessionId},plan.request)
++// A restart may not silently renew the frozen operation's epoch/binding.
++const healthSession=await post({kind:'session'});assert.equal(healthSession.status,200)
++assert.equal(healthSession.data.epoch,request.epoch,'SERVER_RESTARTED: stop; frozen operation must not be rebound')
++const preview=await post({kind:'preview',request});assert.equal(preview.status,200,JSON.stringify(preview.data));assert.equal(preview.data.payloadSHA,plan.payloadSHA);assert.equal(preview.data.sourceCount,3)
++assert.equal(preview.data.payload,undefined);assert.equal(preview.data.instructions,undefined);assert.equal(typeof preview.data.keyConfigured,'boolean')
++assert.deepEqual(await post({kind:'preview',request}),preview)
++assert.equal((await post({kind:'preview',request:{...request,authority:'owner',quota:999}})).status,400)
++assert.equal((await post({kind:'session'},'https://untrusted.invalid')).status,403)
++assert.equal((await post({kind:'session'},base,'/api/inspire-chatgpt')).status,403)
++for(const path of ['/.private.local/inbox/INSPIRE_RAG_API_HANDOFF/SOURCE_MANIFEST.json','/.private.local/api-rag/first-preview.json','/functions/src/inspireLunaApi.ts?raw'])assert.equal((await fetch(base+path)).status,403)
++for(const route of ['/ai-inspire?thu-rieng=1','/tham-van-tam-ly','/nghi-duong-duong-sinh'])assert.equal((await fetch(base+route)).status,200)
++const actual={...plan,request,binding:preview.data.binding}
++assert.equal(actual.binding,createHash('sha256').update(JSON.stringify([request,actual.payloadSHA])).digest('hex'))
++// This is a new, unapproved runtime-bound review, not permission to consume.
++freeze(local+'/first-runtime-preview.json',actual)
++const summary=JSON.parse(readFileSync(out+'/first-request-summary.json','utf8'))
++summary.binding=actual.binding;summary.fullExactRequestPrivateFile=local+'/first-runtime-preview.json';summary.runtimeEpochBound=true;summary.request=request
++writeFileSync(out+'/first-request-summary.json',JSON.stringify(summary,null,2))
++const grant=JSON.parse(readFileSync(out+'/authorization-template.json','utf8'));grant.binding=actual.binding;writeFileSync(out+'/authorization-template.json',JSON.stringify(grant,null,2))
++mkdirSync(out,{recursive:true});writeFileSync(out+'/http-checks.json',JSON.stringify({executed:true,preview:preview.data,unauthorizedExecute:'NOT SENT: do not risk any local owner grant',forgedAuthority:400,crossOrigin:403,chatgptClosed:403,privateFilesDenied:403,routesHTML:200,paidCalls:0,browserRendering:'NOT VERIFIED BY HTTP'},null,2))
++console.log('PASS: actual API localhost route; stable RAG preview, redaction, origin/authority/private paths; runtime-bound request held without execute.')
+diff --git a/tests/start-father-api.mjs b/tests/start-father-api.mjs
+new file mode 100644
+index 0000000..0e5c4a8
+--- /dev/null
++++ b/tests/start-father-api.mjs
+@@ -0,0 +1,9 @@
++// Explicit owner-selected direct API route. Startup/preview never generates.
++import {spawn} from 'node:child_process'
++import {resolve} from 'node:path'
++if(!process.env.LOCALAPPDATA)throw Error('LOCALAPPDATA required for external key configuration')
++const env={...process.env,INSPIRE_FATHER_WEEKEND:'0',INSPIRE_PRIVATE_TEST:'1',INSPIRE_LUNA_API_PREVIEW:'1',INSPIRE_BILLING_ROUTE:'api-key'}
++delete env.OPENAI_API_KEY // This route reads only the established external file.
++const child=spawn(process.execPath,[resolve('node_modules/vite/bin/vite.js'),'--host','127.0.0.1','--port','5173','--strictPort'],{env,stdio:'inherit',windowsHide:true})
++for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>child.kill(sig))
++child.once('exit',code=>process.exit(code??1))
+diff --git a/tests/verify-api-rag-corpus.mjs b/tests/verify-api-rag-corpus.mjs
+new file mode 100644
+index 0000000..d8610bc
+--- /dev/null
++++ b/tests/verify-api-rag-corpus.mjs
+@@ -0,0 +1,39 @@
++// Read-only corpus regression against the imported bundle; no inference.
++import assert from 'node:assert/strict'
++import {readFileSync,writeFileSync,mkdirSync} from 'node:fs'
++import {join} from 'node:path'
++import {createHash} from 'node:crypto'
++import {createRequire} from 'node:module'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const root='.private.local/inbox/INSPIRE_RAG_API_HANDOFF',sha=s=>createHash('sha256').update(s).digest('hex')
++const manifest=JSON.parse(readFileSync(join(root,'SOURCE_MANIFEST.json'),'utf8'))
++const parent=manifest.entries.find(e=>e.originalNames.includes('LESSON_CONTENT_458.jsonl'))
++const raw=readFileSync(join(root,parent.path));assert.equal(sha(raw),parent.sha256)
++const expected=raw.toString('utf8').trim().split(/\r?\n/).map(l=>JSON.parse(l))
++assert.equal(expected.length,458);assert.equal(new Set(expected.map(l=>l.lesson_id)).size,458)
++const require=createRequire(new URL('../functions/package.json',import.meta.url)),db=require('firebase-admin/firestore').getFirestore()
++try {
++ const docs=(await db.collection('inspireKnowledge').get()).docs.filter(d=>d.id!=='_index'),byId=new Map(docs.map(d=>[d.id,d.data()]))
++ const lessons=docs.filter(d=>d.data().lesson)
++ assert.equal(lessons.length,458);assert.equal(new Set(lessons.map(d=>d.data().lesson.lessonId)).size,458)
++ for(const l of expected){
++  const s=byId.get('lesson-'+l.lesson_id);assert.ok(s,l.lesson_id)
++  assert.equal(s.lesson.contentHash,sha(l.content));assert.equal(s.lesson.parentHash,parent.sha256)
++  assert.equal(s.hash,parent.sha256);assert.equal(s.lesson.status,'DRAFT');assert.equal(s.status,'review-required')
++  assert.equal(s.kind,'reference');assert.equal(s.permissions.runtimeUse,'private-reference-evaluation')
++  assert.equal(s.permissions.externalExport,true);assert.equal(s.permissions.sourceHash,s.hash)
++  assert.equal(s.extractedText,'# '+l.title+'\n'+l.content)
++  assert.ok(s.sections.length>0)
++  for(const section of s.sections){assert.equal(section.lesson.lessonId,l.lesson_id);assert.equal(section.sectionHash,sha(section.text));assert.ok(s.permissions.sectionHashes.includes(section.sectionHash))}
++ }
++ const receipts=JSON.parse(readFileSync('.private.local/knowledge/receipts.json','utf8'))
++ const volumes=manifest.entries.filter(e=>e.originalNames.some(n=>/^(CUM_\d+_|DON_VI_\d+_|INSPIRE_MOI_AND_CURRICULA_READABLE)/.test(n)))
++ assert.ok(volumes.length>0)
++ for(const v of [...volumes,parent]){
++  const receipt=receipts.find(r=>r.hash===v.sha256&&!r.lesson);assert.ok(receipt)
++  const s=byId.get(receipt.documentId);assert.ok(s);assert.deepEqual(s.sections,[]);assert.equal(s.externalEligible,false);assert.equal(s.internalEligible,false)
++ }
++ const report={executed:true,lessonIds:458,uniqueLessonIds:458,lessonBodiesAndHashesVerified:458,draftStatusPreserved:true,duplicateVolumeReceipts:volumes.length,duplicateVolumesIndexed:0,docs:docs.length,externallyEligibleDocuments:docs.filter(d=>d.data().externalEligible).length,heldDocuments:docs.filter(d=>!d.data().externalEligible).length,paidCalls:0}
++ const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/api-rag-2026-11-25/resume-final';mkdirSync(out,{recursive:true});writeFileSync(join(out,'corpus-check.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report))
++}finally{await db.terminate()}
+diff --git a/tests/verify-api-rag-preview.mjs b/tests/verify-api-rag-preview.mjs
+new file mode 100644
+index 0000000..4dd7e48
+--- /dev/null
++++ b/tests/verify-api-rag-preview.mjs
+@@ -0,0 +1,27 @@
++// Final exact RAG preview + original Controller; synthetic candidate, no model.
++import assert from 'node:assert/strict'
++import {readFileSync,writeFileSync} from 'node:fs'
++import {createHash} from 'node:crypto'
++import {createRequire} from 'node:module'
++import {requireLocalEmulators} from '../functions/src/inspireLocalService.ts'
++import {recheckLunaSources} from '../functions/src/inspireLunaApi.ts'
++import {createLunaController} from '../functions/src/inspireLunaController.ts'
++process.env.FIREBASE_AUTH_EMULATOR_HOST='127.0.0.1:9099';process.env.FIRESTORE_EMULATOR_HOST='127.0.0.1:8080';requireLocalEmulators()
++const local='.private.local/api-rag-final-20261125',out='docs/evidence/api-rag-2026-11-25/final-preview'
++const p=JSON.parse(readFileSync(local+'/first-runtime-preview.json','utf8')),sha=s=>createHash('sha256').update(s).digest('hex')
++const data=JSON.parse(p.payload.input[0].content)
++assert.deepEqual(data.references,p.references);assert.equal(p.references.length,3);assert.equal(sha(p.body),p.payloadSHA)
++assert.deepEqual(p.payload.input.slice(1),p.request.messages.map(m=>({role:m.role,content:m.text})))
++assert.deepEqual(p.payload.tools,[]);assert.equal(p.payload.store,false);assert.equal(p.payload.max_output_tokens,512)
++await recheckLunaSources(p)
++const controller=createLunaController()
++await controller.preflight(p)
++const candidate='Đây là phản hồi giả lập chỉ dùng để kiểm tra kỹ thuật. Bạn có thể nói thêm về tình huống giả định nếu muốn.'
++await controller.validate(p,candidate)
++const evidence=controller.evidence()
++assert.equal(evidence.length,2)
++assert.ok(evidence.every(e=>e.binding===p.binding&&e.actual_execution_eligible===false&&e.user_delivery===false))
++assert.equal(evidence[1].validated_sha256,sha(candidate))
++writeFileSync(out+'/adapter-controller-trace.json',JSON.stringify({executed:true,liveCalls:0,candidate:'SYNTHETIC OFFLINE: NOT LUNA OUTPUT',payloadSHA:p.payloadSHA,binding:p.binding,exactOutboundPrivateFile:local+'/first-outbound.json',sourcesReachedAdapter:data.references.map(({text,...r})=>({...r,characters:text.length,textSHA:sha(text)})),checks:evidence,operatingRulesExported:false,permissionRechecked:true,publicDelivery:false},null,2))
++console.log('PASS: exact three permitted passages reach API input; original Controller preflight and synthetic output binding validated; zero model calls.')
++const require=createRequire(new URL('../functions/package.json',import.meta.url));await require('firebase-admin/firestore').getFirestore().terminate()
+diff --git a/tests/verify-api-rag.mjs b/tests/verify-api-rag.mjs
+new file mode 100644
+index 0000000..4b1b658
+--- /dev/null
++++ b/tests/verify-api-rag.mjs
+@@ -0,0 +1,14 @@
++// Allowlisted offline/emulator checks only. No authorization or real inference.
++import {spawnSync} from 'node:child_process'
++import {mkdirSync,writeFileSync} from 'node:fs'
++import {join,dirname} from 'node:path'
++// Keep earlier failing runs intact; choose a fresh directory explicitly.
++const out=process.env.INSPIRE_REVIEW_EVIDENCE_DIR||'docs/evidence/api-rag-2026-11-25/resume-final';mkdirSync(out,{recursive:true})
++const npm=join(dirname(process.execPath),'node_modules/npm/bin/npm-cli.js'),test=f=>['--import','./tests/register-ts.mjs','--test',f]
++const tasks={api:test('tests/inspire-luna-api.test.mjs'),safeguards:test('tests/inspire-api-rag.test.mjs'),conversation:test('tests/inspire-chat.test.mjs'),retrieval:test('tests/inspire-knowledge-conversation.test.mjs'),pagination:test('tests/inspire-pagination.test.mjs'),corpus:['--import','./tests/register-ts.mjs','tests/verify-api-rag-corpus.mjs'],quotas:test('tests/inspire-emulator.test.mjs'),backend:[npm,'--prefix','functions','run','build'],website:[npm,'run','build'],lint:['functions/lint.cjs','src/inspireLunaApi.ts','src/inspireLunaService.ts','src/inspireKnowledge.ts','src/inspireLocalService.ts','src/inspireReviewReceipt.ts'],privacy:['tests/inspire-build-audit.mjs']}
++const results={};for(const name of process.argv.slice(2).length?process.argv.slice(2):Object.keys(tasks)){
++ if(!tasks[name])throw Error('OFFLINE_ALLOWLIST_ONLY')
++ const r=spawnSync(process.execPath,tasks[name],{encoding:'utf8',windowsHide:true,timeout:600000,maxBuffer:16000000,env:{...process.env,INSPIRE_REVIEW_EVIDENCE_DIR:out}})
++ writeFileSync(out+'/'+name+'.txt',(r.stdout||'')+(r.stderr||'')+'\nEXIT_CODE='+r.status+'\n');results[name]={exitCode:r.status,error:r.error?.code??null};console.log(name+': '+r.status)
++ writeFileSync(out+'/results.json',JSON.stringify({results,paidCalls:0,scope:'Focused offline/emulator checks; historical 48/49 unchanged'},null,2))
++}process.exitCode=Object.values(results).every(r=>r.exitCode===0)?0:1
+diff --git a/vite.config.ts b/vite.config.ts
+index a3d49d4..965403a 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -26,7 +26,7 @@ export function inspirePrototype(serviceFactory = createLocalService, lunaFactor
+       // catalogue simulation remains source-free and is a separate adapter.
+       const evaluation = privateEnabled && process.env.INSPIRE_EVALUATION_DIRECTORY ?
+         evaluationAllowance(process.env.INSPIRE_EVALUATION_DIRECTORY) : undefined
+-      const chatgpt = privateEnabled ? createPrivateChatgptService({evaluation}) : undefined
++      const chatgpt = privateEnabled && process.env.INSPIRE_BILLING_ROUTE !== 'api-key' ? createPrivateChatgptService({evaluation}) : undefined
+       vite.httpServer?.once('close', () => server.close())
+       vite.httpServer?.once('close', () => luna?.close())
+       vite.httpServer?.once('close', () => chatgpt?.close())

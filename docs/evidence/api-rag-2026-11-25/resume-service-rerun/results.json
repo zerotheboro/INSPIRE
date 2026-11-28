@@ -1,0 +1,14 @@
+{
+  "results": {
+    "api": {
+      "exitCode": 0,
+      "error": null
+    },
+    "quotas": {
+      "exitCode": 0,
+      "error": null
+    }
+  },
+  "paidCalls": 0,
+  "scope": "Focused offline/emulator checks; historical 48/49 unchanged"
+}

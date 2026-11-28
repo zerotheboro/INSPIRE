@@ -32,15 +32,24 @@ export type RetryKind = "replay" | "new-attempt" | "none";
 export class ChatError extends Error {
   /**
    * Construct a failure with a machine-readable retry policy.
+   * @param {string} code Public failure identifier.
    * @param {string} message Display-safe Vietnamese explanation.
+   * @param {RetryKind} retry Explicit replay/new-attempt policy.
+   * @param {number} status HTTP status.
+   * @param {unknown} cause Internal non-serialized diagnostic cause.
    */
   constructor(
     public code: string,
     message: string,
     public retry: RetryKind = "none",
     public status = 400,
+    cause?: unknown,
   ) {
     super(message);
+    // Internal debugging only; never part of the callable/browser JSON.
+    if (cause !== undefined) {
+      Object.defineProperty(this, "cause", {value: cause});
+    }
   }
 }
 

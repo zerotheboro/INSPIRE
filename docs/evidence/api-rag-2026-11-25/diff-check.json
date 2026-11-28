@@ -1,0 +1,51 @@
+[
+  {
+    "file": "focused.patch",
+    "files": [
+      "functions/src/inspireKnowledge.ts",
+      "functions/src/inspireLocalService.ts",
+      "functions/src/inspireLunaApi.ts",
+      "functions/src/inspireLunaService.ts",
+      "functions/src/inspireReviewReceipt.ts",
+      "package.json",
+      "src/pages/AIInspire.tsx",
+      "tests/import-api-rag-bundle.mjs",
+      "tests/inspire-api-rag.test.mjs",
+      "tests/inspire-emulator.test.mjs",
+      "tests/inspire-knowledge-conversation.test.mjs",
+      "tests/inspire-luna-api.test.mjs",
+      "tests/inspire-pagination.test.mjs",
+      "tests/package-api-rag-review.py",
+      "tests/prepare-api-rag-first.mjs",
+      "tests/prepare-api-rag-http.mjs",
+      "tests/start-father-api.mjs",
+      "tests/verify-api-rag-corpus.mjs",
+      "tests/verify-api-rag-preview.mjs",
+      "tests/verify-api-rag.mjs",
+      "vite.config.ts"
+    ],
+    "baseline": "api-rag-before-20261125",
+    "applyCheckExit": 0,
+    "workspacePatchApplied": false
+  },
+  {
+    "file": "resume.patch",
+    "files": [
+      "functions/src/inspireKnowledge.ts",
+      "functions/src/inspireLunaApi.ts",
+      "tests/inspire-api-rag.test.mjs",
+      "tests/inspire-emulator.test.mjs",
+      "tests/inspire-luna-api.test.mjs",
+      "tests/inspire-pagination.test.mjs",
+      "tests/package-api-rag-review.py",
+      "tests/prepare-api-rag-first.mjs",
+      "tests/prepare-api-rag-http.mjs",
+      "tests/verify-api-rag-corpus.mjs",
+      "tests/verify-api-rag-preview.mjs",
+      "tests/verify-api-rag.mjs"
+    ],
+    "baseline": "api-resume-before-20261125",
+    "applyCheckExit": 0,
+    "workspacePatchApplied": false
+  }
+]

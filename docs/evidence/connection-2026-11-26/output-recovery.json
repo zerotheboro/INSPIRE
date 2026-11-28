@@ -1,0 +1,8 @@
+{
+  "executed": true,
+  "DPAPIReadActualProviderResult": true,
+  "providerStatus": "completed",
+  "validatedOutputHashMatchesStoredOutput": true,
+  "expiresAt": 1796281035.4705234,
+  "inferenceCalls": 0
+}

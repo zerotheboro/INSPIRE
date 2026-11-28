@@ -1,0 +1,11 @@
+{
+  "executed": true,
+  "finalCleanRestart": true,
+  "knowledgeAndVersionsIdentical": true,
+  "sourceHistoryAndOperatorLedgerIdentical": true,
+  "syntheticAccountDidNotReturn": true,
+  "consumedAndUnknownDenyTombstonesPreserved": 2,
+  "replayStillRejected": true,
+  "initialFinalCheck": "Initial test expected zero documents after account cleanup; global operation tombstones correctly remain. Initial failure log preserved; corrected check verifies their exact IDs/status/fingerprints and replay refusal. No tombstone deleted.",
+  "modelCalls": 0
+}

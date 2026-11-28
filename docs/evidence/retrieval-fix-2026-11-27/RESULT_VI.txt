@@ -1,0 +1,61 @@
+INSPIRE — sửa follow-up và mã amendment, 27/11/2026
+
+URL giữ nguyên: http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+661 records, 10.676 sections, 513 external-eligible; revision 661.
+Không import/restore, sửa permissions, ngân sách hoặc tạo ZIP. Không gọi model.
+
+CHỈ THAY ĐỔI RETRIEVAL TRONG inspireKnowledge.ts
+- Query dựa vào các lượt người dùng chưa bị supersede, giảm dần ảnh hưởng
+  theo tuổi lượt thay vì mặc định tin mới mạnh gấp ba. Câu hỏi tiếp ngắn giữ
+  chủ đề trước. Khi người dùng nói rõ chuyển chủ đề, query kết thúc thread cũ.
+- Lời gốc, cả hai roles và correction references vẫn nguyên trong adapter input.
+- Giữ nguyên tokenizer/index cũ. Nhận dạng mã tài liệu là kênh riêng: đối chiếu
+  self-ID từ tên/alias server metadata. Không lấy đoạn chỉ nhắc tên mã làm nguồn
+  đó; không thay amendment bằng tài liệu cha hoặc tự coi amendment có hiệu lực.
+- Cơ chế áp dụng mọi mã INSPIRE theo cùng cấu trúc; không có ID/question cụ thể
+  được ưu tiên trong runtime. Vẫn paginate hết eligible sources, lọc đúng quyền
+  từng section, kiểm revision/cache và giới hạn tối đa ba passages.
+
+INSPIRE-07-A
+Original có thật, đúng SHA256 d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2.
+Record original-8e9a8623b864c4282dc3d68c, version index 7, 54 sections,
+header khai báo v1.0. Scope private-reference-evaluation hiện có cho phép đọc/
+export các section tương ứng; status review-required không thay đổi.
+Nguồn tự ghi Amendment / Clarification, liên kết INSPIRE-07 v1.0. Đây là quan hệ
+được văn bản tuyên bố, không phải tự phê duyệt cách vận hành hoặc thay bản gốc.
+relations metadata đang null; không tự ghi quan hệ mới vào Firestore.
+Vì vậy ca này là lỗi truy xuất, KHÔNG phải Source Missing.
+
+NGUYÊN NHÂN
+Tokenizer ngắn bỏ '07'/'A', chỉ còn 'inspire', làm mã riêng thành từ chung.
+Tin follow-up được cộng trọng số 3 cho từ chung như thời gian, lấn ngữ cảnh cũ.
+Không cần reindex hay thay permissions để sửa hai lỗi này.
+
+THỰC THI
+- Năm ca giữ nguyên câu hỏi và expected IDs từ bằng chứng lỗi trước: 5/5 có
+  nguồn kỳ vọng trong top 3. Không sửa expectation để làm test đạt.
+- Direct, paraphrase và correction giữ CHÍNH XÁC thứ tự passages/version/hash
+  của ba ca đã đạt trước. no-regression.json xác nhận bằng assert.
+- Follow-up: đã chọn hai đoạn Vận hành và hành động từ nguồn tham vấn v6;
+  top 3 vẫn gồm một đoạn Vai trò v2. Không tuyên bố mọi passage đều lý tưởng.
+  Đối chứng chỉ tin cuối không tìm được nguồn kỳ vọng; có context thì tìm được.
+- Amendment: ba đoạn đều từ INSPIRE-07-A version index 7, đúng hash/section grant.
+- Metadata fingerprint toàn index trước/sau bằng nhau; writeAttempts=0.
+- Adapter references khớp đúng selected passages; trace đầy đủ chỉ lưu ignored
+  .private.local/retrieval-fix-20261127/adapter-<case>.json, chưa gửi đi đâu.
+- 7/7 offline regressions bằng fixtures mới: follow-up nhiều lượt, correction/
+  raw-history binding, self-ID vs mention/parent, late-page identifier, missing/
+  restricted source, permission revocation/cache, explicit topic switch.
+  Fixtures chạy trên query mock trong bộ nhớ; không thêm/xóa/sửa index thật.
+- Backend TypeScript --noEmit và touched-backend lint: exit 0.
+
+live-five-cases.json: nguồn kỳ vọng/nguồn thực, version/hash, quyền và input binding.
+source-07-A.json: bằng chứng tồn tại/quyền/quan hệ nguồn, không phải approval mới.
+focused.patch: chỉ diff lượt sửa này; giữ các thay đổi từ trước.
+
+GIỚI HẠN
+Đây vẫn là lexical retrieval và kiểm tra chọn nguồn, không phải kiểm định chất
+lượng tạo sinh hoặc lâm sàng. Missing/restricted explicit IDs không fallback sang
+nguồn khác hoặc được cấp thêm quyền. Không dùng câu trả lời fixture cho runtime.
+Không gọi OpenAI API, token-count endpoint, model metadata hoặc app-server.
+Chỉ đọc Firebase emulator cục bộ; public generation và Controller không đổi.

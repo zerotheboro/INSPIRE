@@ -1,0 +1,15 @@
+{
+  "executed": true,
+  "model": "INJECTED OFFLINE ONLY",
+  "realKeyRead": false,
+  "paidCalls": 0,
+  "trace": [
+    {
+      "case": "unnecessary search after frozen preview",
+      "trigger": "actual index revision changed during Query.get",
+      "observedError": "ATTEMPT_FAILED",
+      "queries": 1,
+      "sends": 0
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+PASS private HTTP: local status/auth, redacted source-free preview, held generation, API route closed, private paths denied, public article module reachable
+PASS three authenticated HTTP turns through native simulation including follow-up and correction
+
+EXIT_CODE=0

@@ -1,0 +1,355 @@
+{
+  "executedAt": "2026-11-27T13:24:22.468Z",
+  "liveIndexBefore": {
+    "revision": 661,
+    "records": 661,
+    "externalEligible": 513,
+    "sha256": "84f0c63e582ead86158e6c474ba056b09c9aab805dc538db6f5593d2c17e7950"
+  },
+  "liveIndexAfter": {
+    "revision": 661,
+    "records": 661,
+    "externalEligible": 513,
+    "sha256": "84f0c63e582ead86158e6c474ba056b09c9aab805dc538db6f5593d2c17e7950"
+  },
+  "indexUnchanged": true,
+  "permissionsChanged": false,
+  "writeAttempts": 0,
+  "originalExpectationsFile": "docs/evidence/rag-restore-2026-11-27/recheck/live-index.json",
+  "cases": [
+    {
+      "case": "direct",
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "selected": [
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "version": 6,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-17",
+          "sectionHash": "d4978a23a5ac4723c9f8a78657dd27dda06184a7dd5dcfeb6064ee3b7de5d7aa",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "status": "review-required"
+        },
+        {
+          "documentId": "website-counseling",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-18",
+          "sectionHash": "1c440ec8aa67669694690ff3b6464554f05c30a3b20aced6ea461de4dad87afe",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "status": "published-supporting"
+        },
+        {
+          "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "version": 2,
+          "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+          "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-20",
+          "sectionHash": "69979482d86d81fdc275b01c1aa9b7968ff0962547c4605f57bd2f1b1069c7c0",
+          "headingPath": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Điều bạn có thể hướng đến"
+          ],
+          "status": "review-required"
+        }
+      ],
+      "expectedSourceFound": true,
+      "status": "PASS",
+      "ms": 1899,
+      "permissionVersionRecheck": true,
+      "historyUnchanged": true,
+      "adapterReferencesExact": true,
+      "payloadSHA": "033a57804fde01cf783ccb435f0be9bccf9332fb574352c69303010cdb88a254",
+      "modelCalls": 0
+    },
+    {
+      "case": "paraphrase",
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "selected": [
+        {
+          "documentId": "website-counseling",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-17",
+          "sectionHash": "f6f6cf67614db4c6a9beb5d6863c651d42cbd3ba4b086529eac859e3ca352895",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "status": "published-supporting"
+        },
+        {
+          "documentId": "website-counseling",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-23",
+          "sectionHash": "f0348863d88df1bdf67372ebf9eb769ecce54662a034ab7f88ab640bb424ff92",
+          "headingPath": [
+            "PHƯƠNG HƯỚNG, GIÁ TRỊ VÀ LỰA CHỌN",
+            "Có những lúc điều khó nhất không phải là thiếu con đường — mà là không biết con đường nào thật sự là của mình"
+          ],
+          "status": "published-supporting"
+        },
+        {
+          "documentId": "website-counseling",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-29",
+          "sectionHash": "76ca4d7383d10d3c2a8133c7b7575dc19b88ae203712618e747bbcab8e21610c",
+          "headingPath": [
+            "Ý NGHĨA VÀ CÁCH SỐNG",
+            "Có những lúc điều ta cần không phải là một giải pháp mới, mà là một cách sống mới"
+          ],
+          "status": "published-supporting"
+        }
+      ],
+      "expectedSourceFound": true,
+      "status": "PASS",
+      "ms": 1738,
+      "permissionVersionRecheck": true,
+      "historyUnchanged": true,
+      "adapterReferencesExact": true,
+      "payloadSHA": "6c8f1166a1db8efc49f234ee5fc5fc2cb6a6cb2259f894e6706624de67938353",
+      "modelCalls": 0
+    },
+    {
+      "case": "follow-up",
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063",
+        "lesson-C04-06"
+      ],
+      "selected": [
+        {
+          "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "version": 2,
+          "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+          "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-20",
+          "sectionHash": "69979482d86d81fdc275b01c1aa9b7968ff0962547c4605f57bd2f1b1069c7c0",
+          "headingPath": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Điều bạn có thể hướng đến"
+          ],
+          "status": "review-required"
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "version": 6,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-16",
+          "sectionHash": "04ed22eaaf176d4e494b507a9dbab757738afb3c4be8d27296ce8c26b1816982",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "status": "review-required"
+        },
+        {
+          "documentId": "website-counseling",
+          "title": "Các chủ đề tham vấn trên website INSPIRE",
+          "version": 6,
+          "hash": "043141d04d32a5d6c46601232a9aba3a117434188114d04cae850de4afc3c6f4",
+          "sectionId": "website-counseling-17",
+          "sectionHash": "f6f6cf67614db4c6a9beb5d6863c651d42cbd3ba4b086529eac859e3ca352895",
+          "headingPath": [
+            "VẬN HÀNH VÀ HÀNH ĐỘNG",
+            "Có những lúc bạn biết rất rõ mình cần làm gì — nhưng vẫn không thể khiến cuộc đời mình chuyển động"
+          ],
+          "status": "published-supporting"
+        }
+      ],
+      "expectedSourceFound": true,
+      "status": "PASS",
+      "ms": 1717,
+      "permissionVersionRecheck": true,
+      "historyUnchanged": true,
+      "adapterReferencesExact": true,
+      "payloadSHA": "79e665bdc09a5463b323fa093be47dc90e08376f85ac31597100678646062fd5",
+      "modelCalls": 0
+    },
+    {
+      "case": "correction",
+      "expectedDocumentIds": [
+        "website-counseling",
+        "corpus-cef55cbb7beb4e5fce595063"
+      ],
+      "selected": [
+        {
+          "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+          "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+          "version": 2,
+          "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+          "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-9",
+          "sectionHash": "792728dd13c829c35daadbb775f88c9ff0f81f4a42544c4a5b6d6e029adbfc23",
+          "headingPath": [
+            "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+            "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+            "Khi nào bạn có thể cần dịch vụ này?"
+          ],
+          "status": "review-required"
+        },
+        {
+          "documentId": "corpus-cef55cbb7beb4e5fce595063",
+          "title": "INSPIRE-main/docs/counseling-topics-source.md",
+          "version": 6,
+          "hash": "cef55cbb7beb4e5fce5950635219daa256ca9975f7e41bd71d0b994bb676789a",
+          "sectionId": "corpus-cef55cbb7beb4e5fce595063-13",
+          "sectionHash": "f965c29631ff013efe22088a78714a5922942922973642ed69f20c116efb3f40",
+          "headingPath": [
+            "QUAN HỆ VỚI NGƯỜI KHÁC",
+            "Có những mối quan hệ khiến ta tổn thương không phải vì không có tình cảm, mà vì ta không biết cách ở gần nhau mà vẫn giữ được chính mình"
+          ],
+          "status": "review-required"
+        },
+        {
+          "documentId": "lesson-CD-A05",
+          "title": "CD-A05 · Ranh giới, nhu cầu và sự khác biệt",
+          "version": 2,
+          "hash": "1809e9173b3895b02ae5fe96fe38f6f63e413888ab1b77b8acc8d05034afa1f4",
+          "sectionId": "lesson-CD-A05-2",
+          "sectionHash": "dd2de1ae6c8ca56fe76ab646665c03ba1385a313a35226845811b78601612d0b",
+          "headingPath": [
+            "Ranh giới, nhu cầu và sự khác biệt",
+            "CD-A05 — Ranh giới, nhu cầu và sự khác biệt"
+          ],
+          "status": "review-required"
+        }
+      ],
+      "expectedSourceFound": true,
+      "status": "PASS",
+      "ms": 1413,
+      "permissionVersionRecheck": true,
+      "historyUnchanged": true,
+      "adapterReferencesExact": true,
+      "payloadSHA": "6ac4b019f2be53c67ff07a2d583d3603c1c252f3890361366c18872c683b8ca3",
+      "modelCalls": 0
+    },
+    {
+      "case": "existing-amendment",
+      "expectedDocumentIds": [
+        "original-8e9a8623b864c4282dc3d68c"
+      ],
+      "selected": [
+        {
+          "documentId": "original-8e9a8623b864c4282dc3d68c",
+          "title": "sources/recovered/INSPIRE-07-A.txt",
+          "version": 7,
+          "hash": "d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2",
+          "sectionId": "original-8e9a8623b864c4282dc3d68c-1",
+          "sectionHash": "f1b6fb163fdb1a57d5efe4940c6bbbfa4ce301b61f277c8387da7c9606849e1f",
+          "headingPath": [
+            "INSPIRE-07-A",
+            "LÀM RÕ ĐỊA VỊ MÔ-ĐUN, RANH GIỚI M2 VÀ TRẠNG THÁI ĐỊNH VỊ M1"
+          ],
+          "status": "review-required"
+        },
+        {
+          "documentId": "original-8e9a8623b864c4282dc3d68c",
+          "title": "sources/recovered/INSPIRE-07-A.txt",
+          "version": 7,
+          "hash": "d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2",
+          "sectionId": "original-8e9a8623b864c4282dc3d68c-45",
+          "sectionHash": "9a0c3c36e17e505da455e653a50c3bf8e98abfae3449cfbd00f5a8091f3db9e5",
+          "headingPath": [
+            "XIV. VÍ DỤ",
+            "22. Ví dụ B"
+          ],
+          "status": "review-required"
+        },
+        {
+          "documentId": "original-8e9a8623b864c4282dc3d68c",
+          "title": "sources/recovered/INSPIRE-07-A.txt",
+          "version": 7,
+          "hash": "d6a1821883188edc9df7ad103b3d8df0a7ce5cec2ed7166ee9bb6dadfaf0f2f2",
+          "sectionId": "original-8e9a8623b864c4282dc3d68c-8",
+          "sectionHash": "00e68bdcd4dd5df062d135e611efdda31436ae278b236ef5206bb977d1d7e191",
+          "headingPath": [
+            "5. Địa vị đúng của dữ liệu nội tâm"
+          ],
+          "status": "review-required"
+        }
+      ],
+      "expectedSourceFound": true,
+      "status": "PASS",
+      "ms": 1023,
+      "permissionVersionRecheck": true,
+      "historyUnchanged": true,
+      "adapterReferencesExact": true,
+      "payloadSHA": "a4e9daf2cf645d525ff09eeb47a4b0e158d8a99c9d2ed1d9e915811636cfef66",
+      "modelCalls": 0
+    }
+  ],
+  "passed": 5,
+  "total": 5,
+  "latestOnlyControl": {
+    "selected": [
+      {
+        "documentId": "bundle-0c7e0a5d429106186d01faef",
+        "title": "THREE_DEEP_LESSON_EXEMPLARS.md",
+        "version": 2,
+        "hash": "0a01c3c272508cda6a93a53086f5f313fec975eaf65f7ba42273b334ae3551e6",
+        "sectionId": "bundle-0c7e0a5d429106186d01faef-7",
+        "sectionHash": "03649ec5a437ae3afb4107a3f63872309ebadffda4cba6c3be04f6fffa109b2f",
+        "headingPath": [
+          "BÀI MẪU 1 — C3.7 NÉ TRÁNH VÀ VÒNG LẶP DUY TRÌ KHỔ ĐAU",
+          "4. Áp dụng 8 bước có tỷ lệ"
+        ],
+        "status": "review-required"
+      },
+      {
+        "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+        "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+        "version": 2,
+        "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+        "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-1",
+        "sectionHash": "06340dbe248104506f5f7352f53292acb622936d9301851eb372a45528a2d898",
+        "headingPath": [
+          "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+          "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?"
+        ],
+        "status": "review-required"
+      },
+      {
+        "documentId": "bundle-b6e864712dcf2eecb4e42c0b",
+        "title": "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC.md",
+        "version": 2,
+        "hash": "eca4f8041a06a7641afaa541bbd383fc77436570e77970e14d588484c374a264",
+        "sectionId": "bundle-b6e864712dcf2eecb4e42c0b-17",
+        "sectionHash": "4ba7f48a1f43681e70d68b7aa0417bfaba98ec1ef8527ff1d4ea4cec476aad93",
+        "headingPath": [
+          "TÔI KHÔNG CHỈ LÀ VAI TRÒ CỦA MÌNH TRONG MẮT NGƯỜI KHÁC",
+          "Nếu một ngày bạn không còn là người mà mọi người vẫn cần, bạn sẽ là ai?",
+          "Một tình huống: Người phụ nữ luôn phải giữ cho gia đình được bình yên"
+        ],
+        "status": "review-required"
+      }
+    ],
+    "expectedSourceFound": false
+  },
+  "privateAdapterTraces": ".private.local/retrieval-fix-20261127/adapter-<case>.json",
+  "liveGenerationRequests": 0,
+  "budgetChanges": false
+}

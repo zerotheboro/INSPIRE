@@ -1,0 +1,150 @@
+{
+  "results": {
+    "session": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 9680,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-chatgpt-session.test.mjs"
+      ]
+    },
+    "boundary": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 3055,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-luna.test.mjs"
+      ]
+    },
+    "full-path": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 20336,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-chatgpt-path.test.mjs"
+      ]
+    },
+    "conversation": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 1803,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-chat.test.mjs"
+      ]
+    },
+    "private-service": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 7982,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-chatgpt-emulator.test.mjs"
+      ]
+    },
+    "retrieval": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 4474,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-knowledge-conversation.test.mjs"
+      ]
+    },
+    "quotas": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 35158,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "--import",
+        "./tests/register-ts.mjs",
+        "--test",
+        "tests/inspire-emulator.test.mjs"
+      ]
+    },
+    "functions-build": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 9015,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "--prefix",
+        "functions",
+        "run",
+        "build"
+      ]
+    },
+    "website-build": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 12420,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js",
+        "run",
+        "build"
+      ]
+    },
+    "lint": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 11003,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "functions/lint.cjs",
+        "src/inspireKnowledge.ts",
+        "src/inspireChatgptTransport.ts",
+        "src/inspireChatgptSession.ts",
+        "src/inspireLunaService.ts",
+        "src/inspireLunaController.ts",
+        "src/inspireLuna.ts",
+        "src/inspireReviewReceipt.ts"
+      ]
+    },
+    "privacy": {
+      "executed": true,
+      "exitCode": 0,
+      "error": null,
+      "durationMs": 153,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "tests/inspire-build-audit.mjs"
+      ]
+    }
+  },
+  "liveCalls": 0,
+  "scope": "Focused offline checks; not a rerun or replacement of the historical 48/49 suite"
+}

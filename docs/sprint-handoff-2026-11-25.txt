@@ -1,0 +1,111 @@
+INSPIRE — bàn giao triển khai ngày 25/11/2026
+
+Chưa đạt mục tiêu Luna thật + RAG. Không gửi generation thật trong sprint này.
+Localhost: http://127.0.0.1:5173/ai-inspire?thu-rieng=1
+Màn hình riêng giữ ChatGPT · Chưa gửi; mô phỏng là adapter riêng.
+Public generation, API-key fallback, source export và grant thực tế vẫn đóng.
+
+ĐÃ TRIỂN KHAI
+1. Profile app-server riêng với environment allowlist, config chính xác được
+   kiểm trước spawn, cwd riêng, không kế thừa API key, MCP/plugin hay skills của
+   profile chính. Chính sách chung được dùng bởi transport và phép thử thật.
+   Lệnh đăng nhập dùng account/login/start type=chatgpt chính thức; không đọc/
+   trích/copy token. Không dùng chatgptAuthTokens (schema ghi internal only).
+2. App-server thật + provider SSE giả lập loopback: shell, đọc file, web và MCP
+   bị router từ chối; marker shell/network không xuất hiện. MCP đăng ký thật có
+   đối chứng chạy được khi bật/duyệt synthetic và bị ngăn khởi động khi disabled.
+   Không còn skill instructions trong input giả lập. request_user_input vẫn được
+   quảng bá; transport không thực thi server tool requests. Không tuyên bố đây là
+   chứng minh tuyệt đối hoặc chứng minh profile sau đăng nhập.
+3. Sửa transport cho turn/completed itemsView=summary: chỉ dựng full từ đúng
+   item/completed, khớp thread/turn và nguyên bytes. Không tự chấp nhận summary.
+   Bản này phát hiện thread/items/list có schema nhưng thực tế chưa hỗ trợ.
+4. Importer hiện có được mở rộng bởi bước extraction riêng: UTF-8, PDF theo trang,
+   DOCX theo heading, và tài liệu nguồn trong ZIP. Raw bytes giữ content-addressed;
+   cache extraction có hash; Document ID cũ, source history và metadata versions
+   giữ nguyên. PDF dùng pypdf 6.6.0. Không tự hợp nhất amendment/canonical authority.
+   Relations theo filename được gắn nhãn candidate, không quyết định bản đúng.
+5. Corpus hiện tại: 90 records, trong đó 66 tài liệu có văn bản được extract/index,
+   8.526 sections; 16 receipt kỹ thuật, 5 archive, 3 code/receipt được tách riêng.
+   10 lần phát hiện bản trùng được ghi lại, không nhân đôi. Không có lỗi extraction
+   ở lần chạy cuối; PDF Devamicus có văn bản trên cả 6 trang. DOCX mới chỉ được kiểm
+   bằng fixture vì kho lần này không có DOCX nội dung. Import tiếp: changed=0.
+   Không coi 90 receipt là 90 tài liệu đã đọc. Không hardcode số lượng.
+6. Review retrieval tìm trên toàn bộ reference index, giữ status/draft/relations;
+   không đi được sang dispatch external. Runtime vẫn kiểm quyền và version trước
+   turn/start. Không có nguồn thật được grant external; metadata/hash đã xác minh
+   không thay cho approval. Operating sources, bản tái dựng, content patch/lessons
+   không được tự coi là instructions hoặc cấp quyền can thiệp.
+7. Allowance đánh giá riêng 50 attempts đã có code và kiểm thử. Grant mặc định
+   không tồn tại/chưa được cấp; grant cũ 1/3 lần không hợp lệ. Scope, owner hash,
+   route/model, expiry và giới hạn đều kiểm server-side. Ledger fsync/exclusive
+   allocation sống qua restart; unknown dừng phiên; không bù hoặc tự retry.
+   Private accounting giữ nguyên guest/signed-in quota và IP rate limiter.
+
+KIỂM THỬ VÀ BẰNG CHỨNG
+docs/evidence/sprint-2026-11-25/final-checks/executed-checks.json:
+  65/65 focused Node tests hoàn tất; backend build, website build, lint toàn bộ
+  backend đã chạm và public-build canary scan đều exit 0.
+  tests/inspire-extraction.test.py: 3/3 Python tests đạt.
+isolation/: app-server thật, inference giả lập; đối chứng MCP và negative proof.
+http/http-evidence.json: HTTP localhost thật, retrieval synthetic, redaction,
+  stable preview, revoke, execute 403/API route 503/private-assets denied.
+final-checks/end-to-end-trace.json: synthetic permitted passages đi qua adapter,
+  Controller native và output binding. Không chứng minh chất lượng Luna.
+real-source-reference-trace.json: hash/refs của nguồn thật trong review input.
+  Bản input đầy đủ nằm .private.local/sprint-20261125/real-source-review-trace.json,
+  không có trong ZIP và không được gửi tới provider.
+corpus-coverage.json: collection/version/hash/sections/trạng thái và phần bị giữ.
+  Bản gốc, extraction, index và receipts chỉ ở kho private/emulator.
+Các thất bại ban đầu được giữ trong checks/: lint formatting và build sandbox.
+  final-checks là lần hoàn tất sau sửa/host access; không sửa kết quả lịch sử 48/49.
+Build còn cảnh báo bundle >500kB; không refactor ngoài phạm vi.
+Browser desktop/mobile: NOT VERIFIED. Computer Use dừng khi mở localhost vì
+  không xác định được URL an toàn. Không dùng ảnh cũ làm bằng chứng.
+
+CHẠY LẠI TRONG INSPIRE
+  npm.cmd run emulators
+  npm.cmd run father:weekend
+Khôi phục/index kho sẵn có (không cấp quyền):
+  .tools.local/python312/python.exe tests/extract-inspire-corpus.py
+  node --import ./tests/register-ts.mjs tests/import-inspire-knowledge.mjs --manifest .private.local/knowledge/corpus-manifest.json
+Dependency extraction: Python 3.12; pip install -r tests/requirements-extraction.txt
+  Chỉ cần pypdf, không cần service/embeddings trả phí.
+Focused checks:
+  $env:INSPIRE_REVIEW_EVIDENCE_DIR='docs/evidence/sprint-2026-11-25/recheck'
+  node tests/verify-inspire-chatgpt.mjs
+  node tests/app-server-isolation.mjs --positive-mcp
+  node tests/app-server-isolation.mjs
+Các lệnh app-server trên chỉ dùng provider giả lập; không gọi Luna.
+
+CÒN THIẾU — MỘT MỤC HỢP NHẤT
+Kỹ thuật: chưa có đăng nhập ChatGPT trong profile cách ly. Không được tái sử dụng
+credentials bằng cách copy profile chính. Đã chuẩn bị lệnh managed login:
+  node --import ./tests/register-ts.mjs tests/inspire-private-login.mjs --login
+Lệnh này chỉ đăng nhập, không tạo thread/turn. Dùng INSPIRE_CHATGPT_PROFILE ở một
+thư mục nonsynced, mặc định LOCALAPPDATA/INSPIRE-Private-ChatGPT. Việc đăng nhập
+phải hoàn tất trong trình duyệt; không gửi secret/token vào chat. Sau đó cần kiểm
+effective capability/instruction boundary sau login và kiểm plugin cài thật;
+cloud/workspace policy chưa được phép suy từ fixture sạch. Tool-isolation flag
+và live dispatch vì thế vẫn false. Không dùng internal token API để lách bước này.
+
+Quyết định Chủ hệ: sau khi kiểm chứng profile, duyệt exact attempt đầu tiên riêng.
+Preview đã đóng băng: docs/evidence/sprint-2026-11-25/first-attempt.json,
+  operation father-sprint-first-attempt; source-free vì runtime/export grants chưa
+  được cấp. Fingerprint f6b7e57fabd1a259b36f682cf6b93bcc6d7262bff44ae453c89e403617f5579a.
+  Câu hỏi: “Tình huống giả định: Tôi có một ngày nhiều việc. Giúp tôi chọn việc nên làm trước.”
+  1 application attempt, không tự retry, tối đa 2.000 ký tự được chấp nhận hiển thị,
+  không có trần provider token/chi phí. Thread ID còn do app-server cấp sau này.
+  Chưa phải complete runnable RPC. Grant cũ và spending authorization không đổi.
+
+Phạm vi chuẩn bị RAG đã mở toàn corpus theo yêu cầu sprint; không hỏi lại phạm vi.
+Để chạy có nguồn, cần operator ghi grant runtime/export đúng hash cho collection
+  reference đã chọn, giữ riêng hạn chế cụ thể trong corpus-coverage.json. Đây là
+  một quyết định collection, không phải approval form mỗi tin. Chuẩn bị gửi không
+  được suy là đã có quyền xuất. Preview thêm nguồn phải đổi hash và được duyệt mới.
+Phiên khoảng 100 tin: 50 câu hỏi + tối đa 50 phản hồi, tối đa 50 attempts kể cả
+  lỗi/unknown, chia 5 hội thoại x 10 câu để giữ giới hạn context hiện có. IP vẫn
+  10/10 phút và 30/24 giờ nên cần ít nhất hai ngày. Grant đánh giá này chưa phát
+  hành; INSPIRE_EVALUATION_DIRECTORY chỉ nối riêng phía server khi được cấu hình.
+
+Không deployment, real-client data, sửa Knowledge Core, commit/push hoặc Z-PROJECT.

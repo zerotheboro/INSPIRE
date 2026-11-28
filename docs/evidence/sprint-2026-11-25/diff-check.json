@@ -1,0 +1,28 @@
+{
+  "files": [
+    "functions/src/inspireChatgptProfile.ts",
+    "functions/src/inspireChatgptSession.ts",
+    "functions/src/inspireChatgptTransport.ts",
+    "functions/src/inspireEvaluationAllowance.ts",
+    "functions/src/inspireKnowledge.ts",
+    "functions/src/inspireLocalService.ts",
+    "functions/src/inspireLunaService.ts",
+    "functions/src/inspireReviewReceipt.ts",
+    "tests/app-server-isolation.mjs",
+    "tests/extract-inspire-corpus.py",
+    "tests/import-inspire-knowledge.mjs",
+    "tests/inspire-evaluation-allowance.test.mjs",
+    "tests/inspire-extraction.test.py",
+    "tests/inspire-private-login.mjs",
+    "tests/inspire-sprint.test.mjs",
+    "tests/isolation-mcp-fixture.mjs",
+    "tests/package-sprint-review.py",
+    "tests/prepare-sprint-handoff.mjs",
+    "tests/requirements-extraction.txt",
+    "tests/verify-inspire-chatgpt.mjs",
+    "vite.config.ts"
+  ],
+  "baseline": "Working tree checkpoint immediately before sprint; clean files fall back to HEAD",
+  "applyCheckExit": 0,
+  "workspacePatchApplied": false
+}
